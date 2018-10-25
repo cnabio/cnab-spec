@@ -1,2 +1,2 @@
-# cnab-spec
-Cloud Native Application Bundle Specification
+# Cloud Native Application Bundle Specification
+
