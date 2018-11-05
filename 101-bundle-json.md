@@ -13,10 +13,11 @@ A `bundle.json` is broken down into the following categories of information:
 - A list of images included with this bundle, as an array
 - A specification of which parameters may be overridden, and how those are to be validated
 - A list of credentials (name and desired location) that the application needs
+- An optional description of custom actions that this bundle implements
 
-There are two formats for a bundle (thin and thick formats). The primary way in which the `bundle.json` file differs is the presence or absence of information in a thick bundle that helps it validate the contents of an image. In a thick bundle, `mediaType` and `size` attributes may assiste the reconstitution of images from the thick format to a runtime format.
+There are two formats for a bundle (thin and thick formats). The primary way in which the `bundle.json` file differs is the presence or absence of information in a thick bundle that helps it validate the contents of an image. In a thick bundle, `mediaType` and `size` attributes may assist the reconstitution of images from the thick format to a runtime format.
 
-For the rest of the documentation, by default we'll be refererring bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
+For the rest of the documentation, by default we'll be referring bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
 
 The following is an example of a `bundle.json` for a bundled distributed as a _thin_ bundle:
 
@@ -126,7 +127,6 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
             "path": "/etc/hostkey.txt",
             "env": "HOST_KEY"
         }
-    }
 }
 ```
 
@@ -147,7 +147,7 @@ The following fields are informational pieces of metadata designed to convey add
 - `keywords`: A list of keywords
 - `maintainers`: A list of maintainers, where each maintainer may have the following:
   - `name`: Maintainer name
-  - `email`: Matainer's email
+  - `email`: Maintainer's email
   - `url`: URL to relevant maintainer information
 
 *TODO:* `bundle.json` probably requires a few more top-level fields, such as something about who published it, and something about the license, as well as a bundle api version. A decision on this is deferred until after the PoC
@@ -340,5 +340,40 @@ A `bundle.json` may optionally contain a section that describes which credential
     - `env` contains _the name of an environment variable_ that the invocation image expects to have available when executing the CNAB `run` tool (covered in the next section).
 
 When _both a path and an env_ are specified, _only one is required_ (properties are disjunctive). To require two presentations of the same material, two separate entries must be made.
+
+## Custom Actions
+
+Every implementation of a CNAB tool _must_ support three built-in actions:
+
+- `install`
+- `upgrade`
+- `uninstall`
+
+Implementations _may_ support user-defined additional actions as well. Such actions are exposed via the `bundle` definition file. An action definition contains an action _name_ followed by a description of that action:
+
+```json
+"actions": {
+    "status":{
+        "modifies": false
+    },
+    "migrate":{
+        "modifies": false
+    }
+}
+```
+
+The above declares to actions: `status` and `migrate`. This means that the associated invocation images can handle requests for `status` and `migrate` in addition to `install`, `upgrade`, and `uninstall`.
+
+Each action is accompanied by a description, which contains the following fields:
+
+- `modifies`: Indicates whether the given action will _modify resources_ in any way.
+
+The `modifies` field _must_ be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB _may_ use this information when describing history or managing releases.
+
+An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image _should not_ handle actions that are not included by the default list (`install`, `upgrade, `uninstall`) and the custom actions section.
+
+The built-in actions (`install`, `upgrade`, `uninstall`) _must not_ appear in the `actions` section, and an implementation _must not_ allow custom actions named `install`, `upgrade`, or `uninstall`.
+
+Implementations that do not support custom actions _must not_ emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it _must not_ fail to operate on bundles that declare custom actions.
 
 Next section: [The invocation image definition](102-invocation-image.md)
