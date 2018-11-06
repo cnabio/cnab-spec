@@ -73,7 +73,7 @@ Example smart server reply:
 CNAB-Capabilities: "search simple-proto smart-proto upload-thin-bundle upload-thick-bundle auth-oauth2"
 ```
 
-#### search
+### search
 
 The "search" capability came about as a way for clients to determine if the repository has a search API available at `/search`, while maintaining compatibility for simpler servers (e.g. a basic file server).
 
@@ -83,17 +83,17 @@ HTTP clients that support this capability MAY search for bundles by making a req
 
 NOTE: HTTP clients that support only the simple protocol MAY still use this capability, provided that they understand the search API demonstrated below.
 
-#### simple-proto
+### simple-proto
 
 The simple protocol is a vastly simplified API compared to the "smart" protocol. This protocol is called "simple" because it requires no CNAB-specific code on the server side during the transport process; the fetch process is a series of HTTP GET requests, where the client can assume the layout of the CNAB repository on the server.
 
 When enabled, this capability means that the server can handle requests using the simple protocol.
 
-#### smart-proto
+### smart-proto
 
 When enabled, this capability means that the server can handle requests using the smart protocol. This capability is required to handle uploads.
 
-#### upload-thin-bundle
+### upload-thin-bundle
 
 A thin bundle is one which reference container images not contained within the bundle (but are known to exist at the receiving end).
 
@@ -105,7 +105,7 @@ HTTP servers that support the "smart" protocol MAY support either the "upload-th
 
 If both the "upload-thin-bundle" and "upload-thick-bundle" capabilities are not present, the server is considered to be in read-only mode.
 
-#### upload-thick-bundle
+### upload-thick-bundle
 
 A thick bundle is one which reference container images are contained within the bundle.
 
@@ -115,15 +115,11 @@ This feature MUST NOT be enabled if "smart-proto" is disabled, as the simple pro
 
 HTTP servers that support the "smart" protocol MAY support either the "upload-thin-bundle" or "upload-thick-bundle" capability, or both.
 
-#### auth-oauth2, auth-basic, auth-digest
+### auth-oauth2, auth-basic, auth-digest
 
 The "auth-" capabilities came about as a way for clients to determine the authentication strategy to be used against the server for authentication/authorization.
 
 If no "auth-" capability is present, the server supports no auth strategy.
-
-## Authentication
-
-TBD
 
 ## The Simple Protocol
 
