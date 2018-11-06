@@ -10,7 +10,7 @@ This section of the documentation explains how CNAB can be used to create declar
 
 ## Invocation Image Middleware
 
-As described in [the Invocation Image definition](102-invocation-image.md) and [the Bundle Runtime definition](103-bundle-runtime.md), the invocation image is responsible for executing an _action_ (install, upgrade, uninstall, status) inside of the image.
+As described in [the Invocation Image definition](102-invocation-image.md) and [the Bundle Runtime definition](103-bundle-runtime.md), the invocation image is responsible for executing an _action_ (install, upgrade, uninstall) inside of the image.
 
 The aforementioned documents show examples of building CNAB bundles from non-CNAB base images. This document introduces the idea of building CNAB bundles from _middleware invocation images_, which provide underlying CNAB functionality that can be used to simplify the construction of a CNAB bundle.
 

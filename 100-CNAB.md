@@ -44,7 +44,7 @@ A bundle is comprised of bundle definition and at least one _invocation image_. 
 
 The invocation image contains a standardized filesystem layout where metadata and installation data is stored in predictable places. A _run tool_ is a the executable entry point into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the main image. The invocation image is described in detail in [102-invocation-image.md](the invocation image definition).
 
-_Actions_ are sent to the `run` command via environment variables. Actions determine whether a bundle is to be installed, upgraded, downgraded, uninstalled, or queried for status.
+_Actions_ are sent to the `run` command via environment variables. Actions determine whether a bundle is to be installed, upgraded, downgraded, or uninstalled.
 
 Invocation images allow limited configuration, as defined in two places in the bundle definition:
 

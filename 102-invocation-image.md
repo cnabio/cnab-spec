@@ -69,7 +69,7 @@ For example, _base bundles_ may use this directory to store utilities that deriv
 
 ### Base Bundles
 
-This section of the specification is non-normative. It describes a pattern for using the contents of one bundle in another bundle as a form of extension or inheritance. While this is non-normative to the specificationm, facilitating this pattern was a goal of CNAB's design.
+This section of the specification is non-normative. It describes a pattern for using the contents of one bundle in another bundle as a form of extension or inheritance. While this is non-normative to the specification, facilitating this pattern was a goal of CNAB's design.
 
 The _base bundle pattern_ is a pattern for sharing common bundle tooling across multiple bundles. Succinctly expressed, a _base bundle_ is a bundle whose contents are inherited by another bundle. The most frequent way in which is occurs is when one bundle uses a `Dockerfile` to import another bundle's invocation image in its `FROM` line.
 
@@ -151,9 +151,6 @@ case $action in
     ;;
     upgrade)
     echo "Upgrade action"
-    ;;
-    status)
-    echo "Status action"
     ;;
     *)
     echo "No action for $action"

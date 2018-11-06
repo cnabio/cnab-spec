@@ -14,7 +14,7 @@ The run tool must observe standard conventions for executing, exiting, and writi
 
 - The execution mode bit (`x`) must be set on the run tool
 - Exit codes: Exit code 0 is reserved for the case where the run tool exits with no errors. Non-zero exit codes are considered to be error states. These are interpreted according to [the Open Base Specification](http://pubs.opengroup.org/onlinepubs/9699919799//utilities/V3_chap02.html#tag_18_08_02)
-- The special output stream STDERR should be used for outputing error text
+- The special output stream STDERR should be used to write error text
 
 ### Injecting Data Into the Invocation Image
 
@@ -51,7 +51,7 @@ Credentials and parameters may be mounted as files within the image's runtime fi
 
 Files _must_ be attached to the invocation image before the image's `/cnab/app/run` tool is executed. Files _must not_ be attached to the image when the image is built. That is, files _must not_ be part of the image itself. This would cause a security violation. Files _should_ be destroyed immediately following the exit of the invocation image, though secure at-rest encryption may be a viable alternative.
 
-### Executing the Run Tool
+### Executing the Run Tool (CNAB Actions)
 
 The environment will provide the name of the current installation as `$CNAB_INSTALLATION_NAME` and the name of the action will be passed as `$CNAB_ACTION`.
 
@@ -68,9 +68,19 @@ elif [[ action == "uninstall" ]]; then
 fi
 ```
 
-This simple example executes Helm, installing the Wordpress chart with the default settings if `install` is sent, or deleting the installation if `delete` is sent.
+This simple example executes Helm, installing the Wordpress chart with the default settings if `install` is sent, or deleting the installation if `uninstall` is sent.
 
-None of the actions are required to be implemented. Bundles _ought not_ return errors simply because an action is not implemented. Errors are reserved for cases where the bundle's action failed to run correctly.
+An implementation of a CNAB runtime must support sending the following actions to an invocation image:
+
+- `install`
+- `upgrade`
+- `uninstall`
+
+Invocation images _should_ implement `install` and `uninstall`. If one of these required actions is not implemented, an invocation image _must not_ generate an error (though it _may_ generate a warning). Implementations _may_ map the same underlying operations to multiple actions (example: `install` and `upgrade` _may_ perform the same action).
+
+In addition to the default actions, CNAB runtimes _may_ support custom actions (as defined in [the bundle definition](101-bundle-json.md)). Any invocation image whose accompanying bundle definition specifies custom actions _should_ implement those custom actions. A CNAB runtime _may_ exit with an error if a custom action is declared in the bundle definition, but cannot be executed by the invocation image.
+
+A bundle _must_ exit with an error if the action is executed, but fails to run to completion. A CNAB runtime _must_ issue an error if a bundle issues an error. And an error _must not_ be issued if one of the three built-in actions is requested, but not present in the bundle. Errors are reserved for cases where something has gone wrong.
 
 ## Overriding Parameter Values
 
