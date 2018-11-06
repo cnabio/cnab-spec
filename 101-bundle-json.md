@@ -221,12 +221,12 @@ The following illustrates an `images` section:
 Fields:
 
 - images: The list of dependent images
-  - name: The image name
-  - URI: The image reference (REGISTRY/NAME:TAG). Note that _should_ be a CAS SHA, not a version tag as in the example above.
-  - digest: the cryptographically hashed digest of the image. The implementation of hash verification depends on image type.
-  - refs: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
-    - path: the path of the file where the value should be replaced
-    - field:a selector specifying a location (or locations) within that file where the value should be replaced
+  - `imageType`: The `imageType` field is required, and must describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
+  - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that _should_ be a CAS SHA, not a version tag as in the example above.
+  - `digest`: _must_ contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
+  - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
+    - `path`: the path of the file where the value should be replaced
+    - `field`:a selector specifying a location (or locations) within that file where the value should be replaced
   - `size`: The image size in bytes
   - `platform`: The target platform, as an object with two fields:
     - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
