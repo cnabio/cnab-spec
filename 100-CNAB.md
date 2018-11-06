@@ -28,7 +28,7 @@ In both cases, the object follows the same schema, and this spec refers to this 
 The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the invocation image).
 
 - A _thin bundle_ consists of just a bundle definition.
-- A _thick bundle_ consists of a packaged archive that contains both the bundle definition and an encoded representation of all of the invication images and images.
+- A _thick bundle_ consists of a packaged archive that contains both the bundle definition and an encoded representation of all of the invocation images and images.
 
 When thin bundles are processed, the referenced content (such as invocation images and other images) are retrieved from their respective storage repositories and registries. A bundle is considered to be _well formed_ if the bundle definition follows the schema and the images are in the correct formats. A bundle is considered _complete_ if it is packaged as a thick bundle, and all the components are present OR if it is packaged as a thin bundle and all of the references are resolvable. Completeness is thus in some cases contingent upon external factors such as network access.
 
@@ -40,9 +40,9 @@ Finally, this document describes a format for invocation images, including file 
 
 The current distributed computing landscape involves a combination of executable units and supporting API-based services. Executable units include Virtual Machines (VMs), Containers (e.g. Docker and OCI) and Functions-as-a-Service (FaaS), as well as higher-level PaaS services. Along with these executable units, many managed cloud services (from load balancers to databases) are provisioned and interconnected via REST (and similar network-accessible) APIs. Our goal is to provide a packaging format that can enable application providers and developers with a way of installing a multi-component application into a distributed computing environment, supporting all of the above types.
 
-A bundle is comprised of bundle definitionand at least one _invocation image_. The invocation image's job is to install zero or more components into the host environment. Such components may include (but are not limited to) containers, functions, VMs, IaaS and PaaS layers, and service frameworks.
+A bundle is comprised of bundle definition and at least one _invocation image_. The invocation image's job is to install zero or more components into the host environment. Such components may include (but are not limited to) containers, functions, VMs, IaaS and PaaS layers, and service frameworks.
 
-The invocation image contains a standardized filesystem layout where metadata and installation data is stored in predictable places. A _run tool_ is a the executable entrypoint into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the main image. The invocation image is described in detail in [102-invocation-image.md](the invocation image definition).
+The invocation image contains a standardized filesystem layout where metadata and installation data is stored in predictable places. A _run tool_ is a the executable entry point into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the main image. The invocation image is described in detail in [102-invocation-image.md](the invocation image definition).
 
 _Actions_ are sent to the `run` command via environment variables. Actions determine whether a bundle is to be installed, upgraded, downgraded, or uninstalled.
 
@@ -51,7 +51,7 @@ Invocation images allow limited configuration, as defined in two places in the b
 - A bundle definition may declare zero or more configurable parameters. User-supplied parameters are injected into the invocation image. Parameters _may_ be stored.
 - A bundle definition may declare zero or more credential requirements. This indicate which credentials must be passed into the invocation image in order for the invocation image to correctly authenticate to the services used by the bundle. Credentials are injected into the invocation image, but they _must not_ be stored.
 
-Additionally, this document defines two auxilliary components of the CNAB system: claims and repositories.
+Additionally, this document defines two auxiliary components of the CNAB system: claims and repositories.
 
 A _claim_ is a record of an installation of a bundle. When a bundle is installed into a host environment, it may be useful to track that bundle's history. The claims system is an optional part of the specification which describes a standard format for storing bundle history.
 

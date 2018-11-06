@@ -43,9 +43,11 @@ The _action_ is one of the action verbs defined in the section below.
 
 Optionally, `CNAB_REVISION` _may_ be passed, where this is a _unique string_ indicating the current "version" of the _installation_. For example, if the `my_installation` installation is upgraded twice (changing only the parameters), three `CNAB_REVISIONS` should be generated (1. install, 2. upgrade, 3. upgrade). See [the Claims definition](104-claims.md) for details on revision ids. That `status` action _must not_ increment the revision.
 
+As specified in the `bundle.json`, some parameters may be injected into the environment as environment variables.
+
 ### Mounting Files
 
-Credentials may be mounted as files within the image's runtime filesystem. This definition does not specify how files are to be attached to an image. However, it specifies the conditions under which the files appear.
+Credentials and parameters may be mounted as files within the image's runtime filesystem. This definition does not specify how files are to be attached to an image. However, it specifies the conditions under which the files appear.
 
 Files _must_ be attached to the invocation image before the image's `/cnab/app/run` tool is executed. Files _must not_ be attached to the image when the image is built. That is, files _must not_ be part of the image itself. This would cause a security violation. Files _should_ be destroyed immediately following the exit of the invocation image, though secure at-rest encryption may be a viable alternative.
 
@@ -84,15 +86,46 @@ A bundle _must_ exit with an error if the action is executed, but fails to run t
 
 A CNAB `bundle.json` file may specify zero or more parameters whose values may be specified by a user.
 
-Values that are passed into the container are passed in as environment variables, where each environment variable begins with the prefix `CNAB_P_` and to which the uppercased parameter name is appended. For example `backend_port` will be exposed inside the container as `CNAB_P_BACKEND_PORT`, and thus can be accessed inside of the `run` script:
+As specified, values may be passed into the container as environment variables. If the environment variable name is specified in the `destination`, that name will be used:
+
+```json
+"parameters": {
+    "greeting": {
+        "defaultValue": "hello",
+        "type": "string",
+        "destination": {
+            "env": "GREETING"
+        },
+        "metadata":{
+            "description": "this will be in $GREETING"
+        }
+    }
+}
+```
+
+The above will set `GREETING=hello`.
+
+In the case where no `destination` is set, a parameter is written as an environment variable with an automatically generated name.
+
+```json
+"parameters": {
+    "port": {
+        "defaultValue": 8080,
+        "type": "int",
+        "metadata": {
+            "description": "this will be $CNAB_P_PORT"
+        }
+    }
+}
+```
+
+Each environment variable begins with the prefix `CNAB_P_` and to which the uppercased parameter name is appended. For example `port` will be exposed inside the container as `CNAB_P_PORT`, and thus can be accessed inside of the `run` script:
 
 ```bash
 #!/bin/sh
 
-echo $CNAB_P_BACKEND_PORT
+echo $CNAB_P_PORT
 ```
-
-> Implementations _may_ also assign another variable to the same value. In other words, every parameter _must_ have a `CNAB_P_` version, and _may_ be duplicated under different names.
 
 The validation of user-supplied values _must_ happen outside of the CNAB bundle. Implementations of CNAB bundle tools _must_ validate user-supplied values against the `parameters` section of a `bundle.json` before injecting them into the image. The outcome of successful validation _must_ be the collection containing all parameters where either the user has supplied a value (that has been validated) or the `parameters` section of `bundles.json` contains a `defaultValue`.
 

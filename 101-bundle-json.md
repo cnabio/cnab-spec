@@ -17,7 +17,7 @@ A `bundle.json` is broken down into the following categories of information:
 
 There are two formats for a bundle (thin and thick formats). The primary way in which the `bundle.json` file differs is the presence or absence of information in a thick bundle that helps it validate the contents of an image. In a thick bundle, `mediaType` and `size` attributes may assist the reconstitution of images from the thick format to a runtime format.
 
-For the rest of the documentation, by default we'll be referring bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
+For the rest of the documentation, by default we'll be referring to bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
 
 The following is an example of a `bundle.json` for a bundled distributed as a _thin_ bundle:
 
@@ -221,12 +221,12 @@ The following illustrates an `images` section:
 Fields:
 
 - images: The list of dependent images
-  - name: The image name
-  - URI: The image reference (REGISTRY/NAME:TAG). Note that _should_ be a CAS SHA, not a version tag as in the example above.
-  - digest: the cryptographically hashed digest of the image. The implementation of hash verification depends on image type.
-  - refs: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
-    - path: the path of the file where the value should be replaced
-    - field:a selector specifying a location (or locations) within that file where the value should be replaced
+  - `imageType`: The `imageType` field is required, and must describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
+  - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that _should_ be a CAS SHA, not a version tag as in the example above.
+  - `digest`: _must_ contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
+  - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
+    - `path`: the path of the file where the value should be replaced
+    - `field`:a selector specifying a location (or locations) within that file where the value should be replaced
   - `size`: The image size in bytes
   - `platform`: The target platform, as an object with two fields:
     - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
@@ -257,8 +257,6 @@ TODO: How do we specify URI is a VM image (or Jar or other) instead of a Docker-
 
 The `parameters` section of the `bundle.json` defines which parameters a user (person installing a CNAB bundle) may _override_. Parameter specifications are flat (not tree-like), consisting of name/value pairs. The name is fixed, but the value may be overridden by the user. The parameter definition includes a specification on how to constrain the values submitted by the user.
 
-> The parameters definition is a subset of the ARM template laguage.
-
 ```json
 "parameters": {
     "backend_port" : {
@@ -268,6 +266,10 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
         "maxValue": 10240,
         "metadata": {
             "description": "The port that the backend will listen on"
+        },
+        "destination": {
+            "env": "MY_ENV_VAR",
+            "path": "/my/destination/path"
         }
     }
 }
@@ -277,6 +279,7 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
   - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
     - type: one of string, int, boolean
+    - required: if this is set to true, a value _must_ be specified (optional, not shown)
     - defaultValue: The default value (optional)
     - allowedValues: an array of allowed values (optional)
     - minValue: Minimum value (for ints) (optional)
@@ -285,12 +288,63 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
     - maxLength: Maximum number of characters allowed in the field (for strings) (optional)
     - metadata: Holds fields that are not used in validation
       - description: A user-friendly description of the parameter
+    - destination: Indicates where (in the invocation image) the parameter is to be written
+      - env: The name of an environment variable
+      - path: The fully qualified path to a file that will be created
 
 Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names _may_ begin with a digit (approximately `[A-Z0-9_]+`).
 
-For convenience, if lowercase characters are used in parameter names, they will be automatically capitalized. This effectively makes parameter names case-insensitive.
-
 > The term _parameters_ indicates the present specification of what can be provided to a bundle. The term _values_ is frequently used to indicate the user-supplied values which are tested against the parameter definitions.
+
+### Resolving Destinations
+
+When resolving destinations, there are three ways a particular parameter value may be placed into the invocation image. Here is an example illustrating all three:
+
+```json
+"parameters": {
+    "port": {
+        "defaultValue": 8080,
+        "type": "int",
+        "metadata": {
+            "description": "this will be $CNAB_P_PORT"
+        }
+    },
+    "greeting": {
+        "defaultValue": "hello",
+        "type": "string",
+        "destination": {
+            "env": "GREETING"
+        },
+        "metadata":{
+            "description": "this will be in $GREETING"
+        }
+    },
+    "config": {
+        "defaultValue": "",
+        "type": "string",
+        "destination": {
+            "path": "/opt/example-parameters/config.txt"
+        },
+        "metadata": {
+            "description": "this will be located in a file"
+        }
+    }
+}
+```
+
+The first parameter is `port`. This parameter has no destination field. Consequently, it's value will be injected into an environment variable whose prefix is `CNAB_P_`, with a capitalized version of the name (`PORT`) appended.
+
+```
+PORT=8080
+```
+
+If the `destination` field is set, at least one of `env` or `path` _must_ be specified. (Both may be provided).
+
+If `env` is set, the value of the parameter will be assigned to the given environment variable name. In the example in the previous section, `GREETING` is set to `hello`.
+
+If `path` is set, the value of the parameter will be written into a file at the specified location on the invocation image's filesystem. This file name _must not_ be present already on the invocation image's filesystem.
+
+If both `env` and `path` are specified, implementations _must_ put a copy of the data in each destination.
 
 ### Format of Parameter Specification
 
@@ -300,6 +354,7 @@ The structure of a parameters section looks like this:
 "parameters": {
     "<parameter-name>" : {
         "type" : "<type-of-parameter-value>",
+        "required": true|false
         "defaultValue": "<default-value-of-parameter>",
         "allowedValues": [ "<array-of-allowed-values>" ],
         "minValue": <minimum-value-for-int>,
@@ -308,6 +363,10 @@ The structure of a parameters section looks like this:
         "maxLength": <maximum-length-for-string-or-array-parameters>,
         "metadata": {
             "description": "<description-of-the parameter>"
+        },
+        "destination": {
+            "env": "<name-of-env-var>",
+            "path": "<fully-qualified-path>"
         }
     }
 }
