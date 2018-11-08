@@ -1,6 +1,6 @@
 # CNAB: Cloud Native Application Bundles
 
-CNAB is a _standard packaging format_ for multi-component distributed applications. It allows packages to target different runtimes and architectures. It empowers application distributors to package applications for deployment on a wide variety of cloud platforms, cloud providers, and cloud services. It also provides the capabilities necessary for delivering multi-container applications in disconnected environments.
+Cloud Native Application Bundles (CNAB) are a _standard packaging format_ for multi-component distributed applications. It allows packages to target different runtimes and architectures. It empowers application distributors to package applications for deployment on a wide variety of cloud platforms, cloud providers, and cloud services. It also provides the capabilities necessary for delivering multi-container applications in disconnected environments.
 
 CNAB is not a platform-specific tool. While it uses containers for encapsulating installation logic, it remains un-opinionated about what cloud environment it runs in. CNAB developers can bundle applications targeting environments spanning IaaS (like OpenStack or Azure), container orchestrators (like Kubernetes or Nomad), container runtimes (like local Docker or ACI), and cloud platform services (like object storage or Database as a Service). CNAB can also be used for packaging other distributed applications, such as IoT or edge computing.
 
@@ -8,7 +8,7 @@ This is a working document tracking the current design for CNAB. At a later poin
 
 ## Summary
 
-The CNAB format is a packaging format for a broad range of distributed applications. It specifies a pairing of a _bundle definition_ (`bundle.json`) to define the app, and an _invocation image_ to install the app.
+The CNAB format is a packaging format for a broad range of distributed applications. It specifies a pairing of a _bundle definition_ [(`bundle.json`)](101-bundle-json.md) to define the app, and an _invocation image_ to install the app.
 
 The _bundle definition_ is a single file that contains the following information:
 
@@ -20,12 +20,12 @@ The _bundle definition_ is a single file that contains the following information
 
 The canonical encoding of a bundle definition is a JSON-formatted file, which may be presented in one of two formats:
 
-- An unsigned JSON Object stored in `bundle.json` file, as defined in [101-bundle-json](the bundle file definition)
+- An unsigned JSON Object stored in `bundle.json` file, as defined in [101-bundle-json.md](the bundle file definition)
 - A signed JSON object stored in a `bundle.cnab` file, as described in [105-signing.md](the signature definition)
 
 In both cases, the object follows the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file").
 
-The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the invocation image).
+The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md )).
 
 - A _thin bundle_ consists of just a bundle definition.
 - A _thick bundle_ consists of a packaged archive that contains both the bundle definition and an encoded representation of all of the invocation images and images.
@@ -78,6 +78,7 @@ The following subsections define the components of CNAB:
 - [The Bundle Runtime](103-bundle-runtime.md)
 - [The Claims System](104-claims.md)
 - [Signing and Provenance](105-signing.md)
+- [Bundle Repositories](107-repositories.md)
 
 ## History
 
