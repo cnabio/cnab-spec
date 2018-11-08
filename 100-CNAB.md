@@ -4,8 +4,6 @@ Cloud Native Application Bundles (CNAB) are a _standard packaging format_ for mu
 
 CNAB is not a platform-specific tool. While it uses containers for encapsulating installation logic, it remains un-opinionated about what cloud environment it runs in. CNAB developers can bundle applications targeting environments spanning IaaS (like OpenStack or Azure), container orchestrators (like Kubernetes or Nomad), container runtimes (like local Docker or ACI), and cloud platform services (like object storage or Database as a Service). CNAB can also be used for packaging other distributed applications, such as IoT or edge computing.
 
-This is a working document tracking the current design for CNAB. At a later point, this document will be superseded by a formal specification.
-
 ## Summary
 
 The CNAB format is a packaging format for a broad range of distributed applications. It specifies a pairing of a _bundle definition_ [(`bundle.json`)](101-bundle-json.md) to define the app, and an _invocation image_ to install the app.
