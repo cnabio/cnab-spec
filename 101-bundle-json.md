@@ -134,7 +134,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
 
 The `name` and `version` fields are used to identify the CNAB bundle. Both fields are required.
 
-- Name should be human-readable (TODO: Define allowed format)
+- Name should be human-readable (TODO: Make this Graph Unicode characters)
 - Version MUST be a [SemVer2](https://semver.org) string
 
 Fields that do not match this specification _should_ cause failures.
