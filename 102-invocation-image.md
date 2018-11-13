@@ -23,10 +23,10 @@ Note that the bundle definition itself is not stored inside of the invocation im
 The following exhibits the filesystem layout:
 
 ```yaml
-cnab/                  # Required top-level directory
-└── Dockerfile​         # Optional
-└── app​                # Required
-    ├── run​            # Required: This is the main entrypoint, and MUST be executable
+cnab/                  # REQUIRED top-level directory
+└── Dockerfile​         # OPTIONAL
+└── app​                # REQUIRED
+    ├── run​            # REQUIRED: This is the main entrypoint, and MUST be executable
     ├── charts​         # Example: Helm charts might go here
     │   └── azure-voting-app​
     │       ├── Chart.yaml​
@@ -61,7 +61,7 @@ The `app/` directory contains subdirectories, each of which stores configuration
 
 The contents beneath `/cnab/app/SUBDIRECTORY` are undefined by the spec. `run` is considered the only reserved word underneath `/cnab/app/`
 
-### The Optional `/cnab/build` Directory
+### The OPTIONAL `/cnab/build` Directory
 
 The directory `/cnab/build` MAY be present within the CNAB hierarchy. The contents of this directory are undefined by the spec. However, the intention is to provide space for artifacts that are used during the assembly (or re-assembly) of the bundle, but are not part of the execution of a bundle action.
 

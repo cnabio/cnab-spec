@@ -26,7 +26,7 @@ The OCI specification contains a [standard for representing digests](https://git
 ALGO:DIGEST
 ```
 
-Where `ALGO` is the name of the cryptographic hashing function (`sha512`, `md5`, `blake2`...) plus some optional metadata, and DIGEST is the ASCII representation of the hash (typically as a hexadecimal number).
+Where `ALGO` is the name of the cryptographic hashing function (`sha512`, `md5`, `blake2`...) plus some OPTIONAL metadata, and DIGEST is the ASCII representation of the hash (typically as a hexadecimal number).
 
 > Note: The OCI specification only allows `sha256` and `sha512`. This is not a restriction we make here.
 
@@ -104,7 +104,7 @@ Comment: <GENERATOR>
 -----END PGP SIGNATURE-----
 ```
 
-In the above, `<BODY>` is the entire contents of the `bundle.json`, `<GENERATOR>` is the optional name of the program that generated the signature, and `<SIGNATURE>` is the signature itself.
+In the above, `<BODY>` is the entire contents of the `bundle.json`, `<GENERATOR>` is the OPTIONAL name of the program that generated the signature, and `<SIGNATURE>` is the signature itself.
 
 For example, here is a `bundle.json`:
 
@@ -248,13 +248,13 @@ A retraction is a clear signed JSON array.
     - signature: The signature of the specific bundle being retracted
     - reason: A human-oriented text description of why the bundle was retracted.
 
-The `signature` field is optional, but provides a content-specific test on the content retracted. It is only applicable to cases where a specific version is being retracted.
+The `signature` field is OPTIONAL, but provides a content-specific test on the content retracted. It is only applicable to cases where a specific version is being retracted.
 
-The `version` field is optional. If omitted, the entire Bundle is considerered retracted. When `version` is omitted, `signature` MUST be omitted.
+The `version` field is OPTIONAL. If omitted, the entire Bundle is considerered retracted. When `version` is omitted, `signature` MUST be omitted.
 
 To specify a range of versions, a _SemVer range_ MAY be provided in the `version` field. In this case, a `signature` MUST be omitted.
 
-The `reason` field is optional, though a retraction SHOULD have one. This MAY be used by a user agent to explain the reason for the retraction.
+The `reason` field is OPTIONAL, though a retraction SHOULD have one. This MAY be used by a user agent to explain the reason for the retraction.
 
 The following examples shows all three methods of specifying a retraction:
 

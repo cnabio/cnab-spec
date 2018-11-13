@@ -13,7 +13,7 @@ A `bundle.json` is broken down into the following categories of information:
 - A list of images included with this bundle, as an array
 - A specification of which parameters MAY be overridden, and how those are to be validated
 - A list of credentials (name and desired location) that the application needs
-- An optional description of custom actions that this bundle implements
+- An OPTIONAL description of custom actions that this bundle implements
 
 There are two formats for a bundle (thin and thick formats). The primary way in which the `bundle.json` file differs is the presence or absence of information in a thick bundle that helps it validate the contents of an image. In a thick bundle, `mediaType` and `size` attributes MAY assist the reconstitution of images from the thick format to a runtime format.
 
@@ -175,7 +175,7 @@ The `image` field MUST give a path-like or URI-like representation of the locati
 
 The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
 
-The following optional fields MAY be attached to an invocation image:
+The following OPTIONAL fields MAY be attached to an invocation image:
 
 - `size`: The image size in bytes. Implementations SHOULD verify this when a bundle is packaged as a _thick_ bundle, and MAY verify it when the image is part of a thin bundle.
 - `platform`: The target platform, as an object with two fields:
@@ -279,13 +279,13 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
   - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
     - type: one of string, int, boolean
-    - REQUIRED: if this is set to true, a value MUST be specified (optional, not shown)
-    - defaultValue: The default value (optional)
-    - allowedValues: an array of allowed values (optional)
-    - minValue: Minimum value (for ints) (optional)
-    - maxValue: Maximum value (for ints) (optional)
-    - minLength: Minimum number of characters allowed in the field (for strings) (optional)
-    - maxLength: Maximum number of characters allowed in the field (for strings) (optional)
+    - REQUIRED: if this is set to true, a value MUST be specified (OPTIONAL, not shown)
+    - defaultValue: The default value (OPTIONAL)
+    - allowedValues: an array of allowed values (OPTIONAL)
+    - minValue: Minimum value (for ints) (OPTIONAL)
+    - maxValue: Maximum value (for ints) (OPTIONAL)
+    - minLength: Minimum number of characters allowed in the field (for strings) (OPTIONAL)
+    - maxLength: Maximum number of characters allowed in the field (for strings) (OPTIONAL)
     - metadata: Holds fields that are not used in validation
       - description: A user-friendly description of the parameter
     - destination: Indicates where (in the invocation image) the parameter is to be written

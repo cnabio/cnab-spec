@@ -51,7 +51,7 @@ Invocation images allow limited configuration, as defined in two places in the b
 
 Additionally, this document defines two auxiliary components of the CNAB system: claims and repositories.
 
-A _claim_ is a record of an installation of a bundle. When a bundle is installed into a host environment, it MAY be useful to track that bundle's history. The claims system is an optional part of the specification which describes a standard format for storing bundle history.
+A _claim_ is a record of an installation of a bundle. When a bundle is installed into a host environment, it MAY be useful to track that bundle's history. The claims system is an OPTIONAL part of the specification which describes a standard format for storing bundle history.
 
 Bundles are stored in _bundle repositories_. A bundle repository is a network-accessible service for uploading and distributing CNAB objects.
 
