@@ -175,7 +175,7 @@ Detached signatures are described in [section 11.4](https://tools.ietf.org/html/
 
 They key used for an attestation must be used _only for that attestation_. Implementations _may_ use a subkey (of a master key) for specific attestations, while preserving other subkeys to perform other attestations or signings.
 
-Implementations of CNAB _ought_ to support creating and verifying attestations. Implementations of CNAB _may_ support favoring an attestation with equal weight as the original signature. Attestations _may_ be stored with the signed bundle, though there is no requirement that attestations be stored in a specific place.
+Implementations of CNAB _may_ support creating and verifying attestations. Implementations of CNAB _may_ support favoring an attestation with equal weight as the original signature. Attestations _may_ be stored with the signed bundle, though there is no requirement that attestations be stored in a specific place.
 
 Attestations _may_ use the `COMMENT:` field of a detached signature to indicate, in a human-friendly way, what the attestation is for. However, agents _must not_ consider this information definitive. Comment fields are not calculated into the signature and can be easily modified. Instead, attestation _must_ be based solely on the key.
 
@@ -211,7 +211,7 @@ Reusing a release version to replace an insecure release with a secure one is _e
 
 Instead, the prefered pattern is to retain the insecure release at its given release number, but issue a _retraction_.
 
-A *retraction* is a cryptographically signed indicator that a bundle _ought not_ be installed.
+A *retraction* is a cryptographically signed indicator that a bundle _may_ be installed.
 
 ```
 -----BEGIN PGP SIGNED MESSAGE-----
@@ -254,7 +254,7 @@ The `version` field is optional. If omitted, the entire Bundle is considerered r
 
 To specify a range of versions, a _SemVer range_ may be provided in the `version` field. In this case, a `signature` _must_ be omitted.
 
-The `reason` field is optional, though a retraction _ought_ to have one. This may be used by a user agent to explain the reason for the retraction.
+The `reason` field is optional, though a retraction _should_ have one. This may be used by a user agent to explain the reason for the retraction.
 
 The following examples shows all three methods of specifying a retraction:
 
@@ -295,6 +295,6 @@ h3sGAYdx5fA5PfmweTCvc34qUvPVnw==
 - All versions of `helloseattle` are retracted
 - Versions of `fireflies` that are less than or equal to `2.3.1` are retracted
 
-When an agent has access to a retractions list or lists, it _ought_ to evaluate the retractions for each request that would require loading the bundle. An agent _must not_ install or upgrade a bundle it knows to be retracted without the express consent of the user.
+When an agent has access to a retractions list or lists, it _should_ evaluate the retractions for each request that would require loading the bundle. An agent _must not_ install or upgrade a bundle it knows to be retracted without the express consent of the user.
 
 Next section: [declarative images](106-declarative-images.md)
