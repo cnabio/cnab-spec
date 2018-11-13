@@ -1,6 +1,10 @@
 # Cloud Native Application Bundle Specification
 
-This document describes the Cloud Native Application Bundle (CNAB) specification.
+# Abstract
+
+Cloud Native Application Bundles (CNAB) are a package format specification that describes a technology for bundling, installing, and managing distributed applications, that are by design, cloud agnostic.
+
+# Table of Contents
 
 1. [CNAB Specification](./100-CNAB.md)
     1. [The bundle.json File](101-bundle-json.md)
