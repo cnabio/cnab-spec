@@ -16,7 +16,7 @@ The _bundle definition_ is a single file that contains the following information
 - The list of executable images that this bundle will install
 - A list of credential paths or environment variables that this bundle requires to execute
 
-The canonical encoding of a bundle definition is a JSON-formatted file, which may be presented in one of two formats:
+The canonical encoding of a bundle definition is a JSON-formatted file, which MAY be presented in one of two formats:
 
 - An unsigned JSON Object stored in `bundle.json` file, as defined in [101-bundle-json.md](the bundle file definition)
 - A signed JSON object stored in a `bundle.cnab` file, as described in [105-signing.md](the signature definition)
@@ -38,7 +38,7 @@ Finally, this document describes a format for invocation images, including file 
 
 The current distributed computing landscape involves a combination of executable units and supporting API-based services. Executable units include Virtual Machines (VMs), Containers (e.g. Docker and OCI) and Functions-as-a-Service (FaaS), as well as higher-level PaaS services. Along with these executable units, many managed cloud services (from load balancers to databases) are provisioned and interconnected via REST (and similar network-accessible) APIs. Our goal is to provide a packaging format that can enable application providers and developers with a way of installing a multi-component application into a distributed computing environment, supporting all of the above types.
 
-A bundle is comprised of bundle definition and at least one _invocation image_. The invocation image's job is to install zero or more components into the host environment. Such components may include (but are not limited to) containers, functions, VMs, IaaS and PaaS layers, and service frameworks.
+A bundle is comprised of bundle definition and at least one _invocation image_. The invocation image's job is to install zero or more components into the host environment. Such components MAY include (but are not limited to) containers, functions, VMs, IaaS and PaaS layers, and service frameworks.
 
 The invocation image contains a standardized filesystem layout where metadata and installation data is stored in predictable places. A _run tool_ is a the executable entry point into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the main image. The invocation image is described in detail in [102-invocation-image.md](the invocation image definition).
 
@@ -46,18 +46,18 @@ _Actions_ are sent to the `run` command via environment variables. Actions deter
 
 Invocation images allow limited configuration, as defined in two places in the bundle definition:
 
-- A bundle definition may declare zero or more configurable parameters. User-supplied parameters are injected into the invocation image. Parameters MAY be stored.
-- A bundle definition may declare zero or more credential requirements. This indicate which credentials MUST be passed into the invocation image in order for the invocation image to correctly authenticate to the services used by the bundle. Credentials are injected into the invocation image, but they MUST NOT be stored.
+- A bundle definition MAY declare zero or more configurable parameters. User-supplied parameters are injected into the invocation image. Parameters MAY be stored.
+- A bundle definition MAY declare zero or more credential requirements. This indicate which credentials MUST be passed into the invocation image in order for the invocation image to correctly authenticate to the services used by the bundle. Credentials are injected into the invocation image, but they MUST NOT be stored.
 
 Additionally, this document defines two auxiliary components of the CNAB system: claims and repositories.
 
-A _claim_ is a record of an installation of a bundle. When a bundle is installed into a host environment, it may be useful to track that bundle's history. The claims system is an optional part of the specification which describes a standard format for storing bundle history.
+A _claim_ is a record of an installation of a bundle. When a bundle is installed into a host environment, it MAY be useful to track that bundle's history. The claims system is an optional part of the specification which describes a standard format for storing bundle history.
 
 Bundles are stored in _bundle repositories_. A bundle repository is a network-accessible service for uploading and distributing CNAB objects.
 
 ### Key Terms
 
-- Application: The functional unit composed by the components described in a bundle. This may be comprised of a mixture of containers, VMs, IaaS and PaaS definitions, and other services, as well as instructions for orchestrators and service frameworks.
+- Application: The functional unit composed by the components described in a bundle. This MAY be comprised of a mixture of containers, VMs, IaaS and PaaS definitions, and other services, as well as instructions for orchestrators and service frameworks.
 - Bundle: the collection of CNAB data and metadata necessary for installing an application on the designated cloud services.
 - Bundle definition: The information about a bundle, its parameters, credentials, images, and usage
 - `bundle.json`: The unsigned JSON-encoded representation of a bundle definition.

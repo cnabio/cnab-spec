@@ -34,7 +34,7 @@ https://cscope.sourceforge.io/
 From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/cscope.rb
 ```
 
-CNAB does not define where or how records are stored, nor how these records may be used by an implementation. However, it does describe how a CNAB-based system MUST emit the record to an invocation image, and provides some guidance on maintaining integrity of the system.
+CNAB does not define where or how records are stored, nor how these records MAY be used by an implementation. However, it does describe how a CNAB-based system MUST emit the record to an invocation image, and provides some guidance on maintaining integrity of the system.
 
 This is done so that implementors can standardize on a way of relating a release claim (the record of a release) to release operations like `install`, `upgrade`, or `delete`. This, in turn, is necessary if CNAB bundles are expected to be executable by different implementations.
 
@@ -78,7 +78,7 @@ The CNAB claim is defined as a JSON document.
 - created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
 - updated: A timestamp indicating the last time this release claim was modified
 - result: The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
-  - message: A human-readable string that communicates the outcome. Error messages may be included in `failure` conditions.
+  - message: A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
   - action: Indicates the action that the current bundle is in. Valid actions are:
     - install
     - upgrade
@@ -91,7 +91,7 @@ The CNAB claim is defined as a JSON document.
     - failure: failed before completion
     - underway: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
     - unknown: the state is unknown. This is an error condition.
-- parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations may choose not to store these for security or portability reasons.
+- parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons.
 
 > Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be re-supplied.
 
@@ -186,7 +186,7 @@ If both commands exit with code `0`, then the resulting claim will look like thi
 }
 ```
 
-Tools that implement claims may then present `result` info to end users to show the result of running an invocation image.
+Tools that implement claims MAY then present `result` info to end users to show the result of running an invocation image.
 
 ## TODO
 

@@ -11,11 +11,11 @@ A `bundle.json` is broken down into the following categories of information:
     - description: Short description of the bundle
 - Information on the invocation images, as an array
 - A list of images included with this bundle, as an array
-- A specification of which parameters may be overridden, and how those are to be validated
+- A specification of which parameters MAY be overridden, and how those are to be validated
 - A list of credentials (name and desired location) that the application needs
 - An optional description of custom actions that this bundle implements
 
-There are two formats for a bundle (thin and thick formats). The primary way in which the `bundle.json` file differs is the presence or absence of information in a thick bundle that helps it validate the contents of an image. In a thick bundle, `mediaType` and `size` attributes may assist the reconstitution of images from the thick format to a runtime format.
+There are two formats for a bundle (thin and thick formats). The primary way in which the `bundle.json` file differs is the presence or absence of information in a thick bundle that helps it validate the contents of an image. In a thick bundle, `mediaType` and `size` attributes MAY assist the reconstitution of images from the thick format to a runtime format.
 
 For the rest of the documentation, by default we'll be referring to bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
 
@@ -145,7 +145,7 @@ The following fields are informational pieces of metadata designed to convey add
 
 - `description`: A short description of a bundle
 - `keywords`: A list of keywords
-- `maintainers`: A list of maintainers, where each maintainer may have the following:
+- `maintainers`: A list of maintainers, where each maintainer MAY have the following:
   - `name`: Maintainer name
   - `email`: Maintainer's email
   - `url`: URL to relevant maintainer information
@@ -169,13 +169,13 @@ image is selected using the current driver.
 
 The `imageType` field is REQUIRED, and MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
 
-> [Duffle](https://github.com/deis/duffle), the reference implementation of a CNAB installer, introduces a layer of user-customizable drivers which are type-aware. Images may be delegated to drivers for installation.
+> [Duffle](https://github.com/deis/duffle), the reference implementation of a CNAB installer, introduces a layer of user-customizable drivers which are type-aware. Images MAY be delegated to drivers for installation.
 
 The `image` field MUST give a path-like or URI-like representation of the location of the image. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
 The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
 
-The following optional fields may be attached to an invocation image:
+The following optional fields MAY be attached to an invocation image:
 
 - `size`: The image size in bytes. Implementations SHOULD verify this when a bundle is packaged as a _thick_ bundle, and MAY verify it when the image is part of a thin bundle.
 - `platform`: The target platform, as an object with two fields:
@@ -185,7 +185,7 @@ The following optional fields may be attached to an invocation image:
 
 ## The Image List
 
-The `bundle.json` maps image metadata (name, origin, tag) to placeholders within the bundle. This allows images to be renamed, relabeled, or replaced during the CNAB bundle build operation. It also specifies the parameters that may be overridden in this image, giving tooling the ability to expose configuration options.
+The `bundle.json` maps image metadata (name, origin, tag) to placeholders within the bundle. This allows images to be renamed, relabeled, or replaced during the CNAB bundle build operation. It also specifies the parameters that MAY be overridden in this image, giving tooling the ability to expose configuration options.
 
 The following illustrates an `images` section:
 
@@ -255,7 +255,7 @@ TODO: How do we specify URI is a VM image (or Jar or other) instead of a Docker-
 
 ## Parameters
 
-The `parameters` section of the `bundle.json` defines which parameters a user (person installing a CNAB bundle) may _override_. Parameter specifications are flat (not tree-like), consisting of name/value pairs. The name is fixed, but the value may be overridden by the user. The parameter definition includes a specification on how to constrain the values submitted by the user.
+The `parameters` section of the `bundle.json` defines which parameters a user (person installing a CNAB bundle) MAY _override_. Parameter specifications are flat (not tree-like), consisting of name/value pairs. The name is fixed, but the value MAY be overridden by the user. The parameter definition includes a specification on how to constrain the values submitted by the user.
 
 ```json
 "parameters": {
@@ -298,7 +298,7 @@ Parameter names (the keys in `parameters`) ought to conform to the [Open Group B
 
 ### Resolving Destinations
 
-When resolving destinations, there are three ways a particular parameter value may be placed into the invocation image. Here is an example illustrating all three:
+When resolving destinations, there are three ways a particular parameter value MAY be placed into the invocation image. Here is an example illustrating all three:
 
 ```json
 "parameters": {
@@ -338,7 +338,7 @@ The first parameter is `port`. This parameter has no destination field. Conseque
 PORT=8080
 ```
 
-If the `destination` field is set, at least one of `env` or `path` MUST be specified. (Both may be provided).
+If the `destination` field is set, at least one of `env` or `path` MUST be specified. (Both MAY be provided).
 
 If `env` is set, the value of the parameter will be assigned to the given environment variable name. In the example in the previous section, `GREETING` is set to `hello`.
 
@@ -376,7 +376,7 @@ See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters ar
 
 ## Credentials
 
-A `bundle.json` may optionally contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that MUST be provided.
+A `bundle.json` MAY optionally contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that MUST be provided.
 
 ```json
 "credentials": {

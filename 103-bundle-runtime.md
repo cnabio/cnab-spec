@@ -8,7 +8,7 @@ The [Invocation Image definition](102-invocation-image.md) specifies the layout 
 
 The main entry point of a CNAB bundle MUST be located at `/cnab/app/run`. When a compliant driver executes a CNAB bundle, it MUST execute the `/cnab/app/run` tool. In addition, images used as invocation images SHOULD also default to running `/cnab/app/run`. For example, a `Dockerfile`'s `exec` array MUST point to this entry point.
 
-> A fixed location for the `run` tool is mandated because not all image formats provide an equivalent method for starting an application. A client implementation of CNAB may access the image and directly execute the path `/cnab/app/run`. It is also permissible, given tooling constraints, to set the default entry point to a different path.
+> A fixed location for the `run` tool is mandated because not all image formats provide an equivalent method for starting an application. A client implementation of CNAB MAY access the image and directly execute the path `/cnab/app/run`. It is also permissible, given tooling constraints, to set the default entry point to a different path.
 
 The run tool MUST observe standard conventions for executing, exiting, and writing output. On POSIX-based systems, these are:
 
@@ -21,7 +21,7 @@ The run tool MUST observe standard conventions for executing, exiting, and writi
 CNAB allows injecting data into the invocation image in two ways:
 
 - Environment Variables: This is the preferred method. In this method, data is encoded as a string and placed into the the environment with an associated name.
-- Files: Additional files may be injected _at known points_ into the invocation image. In the current specification, only credentials may be injected this way.
+- Files: Additional files MAY be injected _at known points_ into the invocation image. In the current specification, only credentials MAY be injected this way.
 
 The spec does not define or constrain any network interactions between the invocation image and external services or sources.
 
@@ -43,13 +43,13 @@ The _action_ is one of the action verbs defined in the section below.
 
 Optionally, `CNAB_REVISION` MAY be passed, where this is a _unique string_ indicating the current "version" of the _installation_. For example, if the `my_installation` installation is upgraded twice (changing only the parameters), three `CNAB_REVISIONS` should be generated (1. install, 2. upgrade, 3. upgrade). See [the Claims definition](104-claims.md) for details on revision ids. That `status` action MUST NOT increment the revision.
 
-As specified in the `bundle.json`, some parameters may be injected into the environment as environment variables.
+As specified in the `bundle.json`, some parameters MAY be injected into the environment as environment variables.
 
 ### Mounting Files
 
-Credentials and parameters may be mounted as files within the image's runtime filesystem. This definition does not specify how files are to be attached to an image. However, it specifies the conditions under which the files appear.
+Credentials and parameters MAY be mounted as files within the image's runtime filesystem. This definition does not specify how files are to be attached to an image. However, it specifies the conditions under which the files appear.
 
-Files MUST be attached to the invocation image before the image's `/cnab/app/run` tool is executed. Files MUST NOT be attached to the image when the image is built. That is, files MUST NOT be part of the image itself. This would cause a security violation. Files SHOULD be destroyed immediately following the exit of the invocation image, though secure at-rest encryption may be a viable alternative.
+Files MUST be attached to the invocation image before the image's `/cnab/app/run` tool is executed. Files MUST NOT be attached to the image when the image is built. That is, files MUST NOT be part of the image itself. This would cause a security violation. Files SHOULD be destroyed immediately following the exit of the invocation image, though secure at-rest encryption MAY be a viable alternative.
 
 ### Executing the Run Tool (CNAB Actions)
 
@@ -84,9 +84,9 @@ A bundle MUST exit with an error if the action is executed, but fails to run to 
 
 ## Overriding Parameter Values
 
-A CNAB `bundle.json` file may specify zero or more parameters whose values may be specified by a user.
+A CNAB `bundle.json` file MAY specify zero or more parameters whose values MAY be specified by a user.
 
-As specified, values may be passed into the container as environment variables. If the environment variable name is specified in the `destination`, that name will be used:
+As specified, values MAY be passed into the container as environment variables. If the environment variable name is specified in the `destination`, that name will be used:
 
 ```json
 "parameters": {
@@ -133,10 +133,10 @@ The resulting calculated values are injected into the bundle before the bundle's
 
 ## Credential Files
 
-Credentials may be supplied as files on the file system. In such cases, the following rules obtain:
+Credentials MAY be supplied as files on the file system. In such cases, the following rules obtain:
 
 - If a file is specified in the `bundle.json` credentials section, but is not present on the file system, the run tool MAY cause a fatal error
-- If a file is NOT specified in the `bundle.json`, and is not present, the run tool SHOULD NOT cause an error (though it may emit a warning)
+- If a file is NOT specified in the `bundle.json`, and is not present, the run tool SHOULD NOT cause an error (though it MAY emit a warning)
 - If a file is present, but not correctly formatted, the run tool MAY cause a fatal error
 - If a file's permissions or metadata is incorrect, the run tool MAY try to remediate (e.g. run `chmod`), or MAY cause a fatal error
 - The run tool MAY modify credential files. Consequently, any runtime implementation MUST ensure that credentials changed inside of the invocation image will not result in modifications to the source.

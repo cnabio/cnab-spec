@@ -10,7 +10,7 @@ This document outlines how CNAB bundles use a multi-layered fingerprinting and s
 - Digests are computed in accordance with the underlying image type (e.g. OCI bundles are validated by computing the top hash of a Merkle tree, VM images are computed by digest of the image)
 - Signed bundles are clear-signed `bundle.json` files according to the Open PGP specification. When present, these are used in lieu of the unsigned `bundle.json` file.
 - Authority is granted by the signed bundle, and integrity is granted via the image digests embedded in the bundle.json
-- Attestations provide a mechanism for making additional guarantees about a bundle. Attesting a bundle may indicate that a release has been certified, or passed tests, or manual checked. It is a method to attach additional cryptographically based assurances to a bundle
+- Attestations provide a mechanism for making additional guarantees about a bundle. Attesting a bundle MAY indicate that a release has been certified, or passed tests, or manual checked. It is a method to attach additional cryptographically based assurances to a bundle
 
 ## Image Integrity with Digests
 
@@ -71,11 +71,11 @@ To that end, anything that shows up in the `invocationImages` or `images` sectio
 
 Objects MUST contain a `digest` field even if the digest is present in another field. This is done to provide _access uniformity_.
 
-> OCI images, for example, may embed a digest in the image's _version_ field. According to this specification, while this is allowed, it does not remove the requirement that the `digest` field be present and filled.
+> OCI images, for example, MAY embed a digest in the image's _version_ field. According to this specification, while this is allowed, it does not remove the requirement that the `digest` field be present and filled.
 
 Different formats (viz. OCI) provide definitions for validating a digest. When possible, images should be validated using these definitions, according to their `imageType`. If a particular image type does not already define what it means to have a digest verified, the default method is to retrieve the object as-is, and checksum it in the format in which it was delivered when accessed.
 
-Drivers may choose to accept the digesting by another trusted agent in lieu of performing the digest algorithm themselves. For example, if a driver requests that a remote agent install an image on its behalf, it may trust that the image digest given by that remote agent is indeed the digest of the object in question. And it may then compare that digest to the `bundle.json`'s digest. In such cases, a driver SHOULD ensure that the channel between the driver itself and the trusted remote agent is itself secured (for example, via TLS). Failure to do so will invalidate the integrity of the check.
+Drivers MAY choose to accept the digesting by another trusted agent in lieu of performing the digest algorithm themselves. For example, if a driver requests that a remote agent install an image on its behalf, it MAY trust that the image digest given by that remote agent is indeed the digest of the object in question. And it MAY then compare that digest to the `bundle.json`'s digest. In such cases, a driver SHOULD ensure that the channel between the driver itself and the trusted remote agent is itself secured (for example, via TLS). Failure to do so will invalidate the integrity of the check.
 
 ## Signing the `bundle.json`
 
@@ -87,7 +87,7 @@ This is accomplished by _signing the bundle_.
 
 The signature method used by CNAB is defined by the [Open PGP standard](https://tools.ietf.org/html/rfc4880)'s digital signatures specification. In short, a _packaging authority_ (the individual responsible for packaging or guaranteeing the package), signs the bundle with a _private key_. The packaging authority distributes the accompanying public key via other channels (not specified herein, but including trusted HTTP servers, Keybase, etc.)
 
-The _package recipient_ (the consumer of the package) may then retrieve the public keys. Upon fetching a signed bundle, the package recipient may then _verify_ the signature on the bundle by testing it against the public key.
+The _package recipient_ (the consumer of the package) MAY then retrieve the public keys. Upon fetching a signed bundle, the package recipient MAY then _verify_ the signature on the bundle by testing it against the public key.
 
 An Open PGP signature follows [the format in Section 7 of the specification](https://tools.ietf.org/html/rfc4880#section-7):
 
@@ -167,9 +167,9 @@ The purpose of a clear-signed signature is to assert that a particular artifact 
 
 Attestations provide a way to add multiple assurances to a bundle.
 
-An attestation is used as a placeholder for the statement "The signing party has certified (attested) that condition X has been met". For example, when certification steps need to occur for a given bundle, one may use attestations to prove that the certification has been performed. In this case, the certifying party performs the process, and then (upon the bundle's passing), the certifying party adds a _detached signature_ to the set of signatures associated with the bundle.
+An attestation is used as a placeholder for the statement "The signing party has certified (attested) that condition X has been met". For example, when certification steps need to occur for a given bundle, one MAY use attestations to prove that the certification has been performed. In this case, the certifying party performs the process, and then (upon the bundle's passing), the certifying party adds a _detached signature_ to the set of signatures associated with the bundle.
 
-In a more complex case, a signed package may be certified by one party for use in one way (we'll call this "certification A"). A different party may certify the bundle for a different case ("certification B"). Note that in this case, the certifications are _independent_, and are presumably done with separate justifications. ("certificate A ensures this bundle is suitable for internal use", "certificate B ensures this bundle is suitable for use by our partners".) Because of this feature, attestations _are not chainlike_. Each individual attestation MUST be verifiable without reference to any other attestations (including the original clear-signed signature).
+In a more complex case, a signed package MAY be certified by one party for use in one way (we'll call this "certification A"). A different party MAY certify the bundle for a different case ("certification B"). Note that in this case, the certifications are _independent_, and are presumably done with separate justifications. ("certificate A ensures this bundle is suitable for internal use", "certificate B ensures this bundle is suitable for use by our partners".) Because of this feature, attestations _are not chainlike_. Each individual attestation MUST be verifiable without reference to any other attestations (including the original clear-signed signature).
 
 Detached signatures are described in [section 11.4](https://tools.ietf.org/html/rfc4880#section-11.4) of the OpenPGP specification. Attestations are to be performed by extracting the `bundle.json` from a signed bundle, and then signing that same text object. A verification of a detached signature should use the `bundle.json` text as a basis for its verification. A bundle is considered _attested_ (or _attestation verified_) when a the bundle verification passes for the expected key used in that attestation.
 
@@ -203,9 +203,9 @@ CNAB verification tools SHOULD handle the key revocation case.
 
 ## Bundle Retractions
 
-Cases may arise where a particular version (or versions) of a bundle should no longer be used. For example, if a version of a bundle is discovered to be insecure in significant ways, bundle authors may wish to _explicitly mark_ that bundle as insecure. This process MUST be done in a way that retains the integrity of the bundle.
+Cases MAY arise where a particular version (or versions) of a bundle should no longer be used. For example, if a version of a bundle is discovered to be insecure in significant ways, bundle authors MAY wish to _explicitly mark_ that bundle as insecure. This process MUST be done in a way that retains the integrity of the bundle.
 
-> This definition does not preclude the mere deletion of problematic bundles. Operators of a bundle repository, for instance, MAY opt to merely remove insecure bundles from their servers rather than mark them and leave them. However, there are cases where historic (while insecure) packages may be retained and still made available for installation.
+> This definition does not preclude the mere deletion of problematic bundles. Operators of a bundle repository, for instance, MAY opt to merely remove insecure bundles from their servers rather than mark them and leave them. However, there are cases where historic (while insecure) packages MAY be retained and still made available for installation.
 
 Reusing a release version to replace an insecure release with a secure one is _expressly prohibited_. For example, if release 2.3.1 of a bundle is deemed insecure, operators MUST NOT re-release a modified bundle as 2.3.1. The fixed version MUST modify a semantic component of the version number. For example, `2.3.2`, `2.4.0`, `3.0.0`, and even `2.3.2-alpha.1` are all acceptable increments. `2.3.1` and `2.3.1+1` are examples of forbidden version increments. Likewise, release `2.3.1` MUST NOT be renamed by semantic component. (e.g. 2.3.1-insecure is illegal, while 2.3.1+insecure is legal). For clarification on this policy, see the [SemVer 2 specification](https://semver.org).
 
@@ -252,9 +252,9 @@ The `signature` field is optional, but provides a content-specific test on the c
 
 The `version` field is optional. If omitted, the entire Bundle is considerered retracted. When `version` is omitted, `signature` MUST be omitted.
 
-To specify a range of versions, a _SemVer range_ may be provided in the `version` field. In this case, a `signature` MUST be omitted.
+To specify a range of versions, a _SemVer range_ MAY be provided in the `version` field. In this case, a `signature` MUST be omitted.
 
-The `reason` field is optional, though a retraction SHOULD have one. This may be used by a user agent to explain the reason for the retraction.
+The `reason` field is optional, though a retraction SHOULD have one. This MAY be used by a user agent to explain the reason for the retraction.
 
 The following examples shows all three methods of specifying a retraction:
 
