@@ -254,7 +254,7 @@ The `version` field is optional. If omitted, the entire Bundle is considerered r
 
 To specify a range of versions, a _SemVer range_ may be provided in the `version` field. In this case, a `signature` _must_ be omitted.
 
-The `reason` field is optional, though a retraction _may_ have one. This may be used by a user agent to explain the reason for the retraction.
+The `reason` field is optional, though a retraction _should_ have one. This may be used by a user agent to explain the reason for the retraction.
 
 The following examples shows all three methods of specifying a retraction:
 
@@ -295,6 +295,6 @@ h3sGAYdx5fA5PfmweTCvc34qUvPVnw==
 - All versions of `helloseattle` are retracted
 - Versions of `fireflies` that are less than or equal to `2.3.1` are retracted
 
-When an agent has access to a retractions list or lists, it _may_ evaluate the retractions for each request that would require loading the bundle. An agent _must not_ install or upgrade a bundle it knows to be retracted without the express consent of the user.
+When an agent has access to a retractions list or lists, it _should_ evaluate the retractions for each request that would require loading the bundle. An agent _must not_ install or upgrade a bundle it knows to be retracted without the express consent of the user.
 
 Next section: [declarative images](106-declarative-images.md)
