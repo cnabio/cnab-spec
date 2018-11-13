@@ -173,7 +173,7 @@ The `imageType` field is required, and must describe the format of the image. Th
 
 The `image` field must give a path-like or URI-like representation of the location of the image. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
-The `digest` field _must_ contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
+The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
 
 The following optional fields may be attached to an invocation image:
 
@@ -223,7 +223,7 @@ Fields:
 - images: The list of dependent images
   - `imageType`: The `imageType` field is required, and must describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
   - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that _should_ be a CAS SHA, not a version tag as in the example above.
-  - `digest`: _must_ contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
+  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
   - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
     - `path`: the path of the file where the value should be replaced
     - `field`:a selector specifying a location (or locations) within that file where the value should be replaced
@@ -233,7 +233,7 @@ Fields:
     - `os`: The operating system of the image
   - `mediaType`: The media type of the image
 
-Substitutions _must_ be supported for the following formats:
+Substitutions MUST be supported for the following formats:
 
 - JSON
 - YAML
@@ -279,7 +279,7 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
   - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
     - type: one of string, int, boolean
-    - required: if this is set to true, a value _must_ be specified (optional, not shown)
+    - required: if this is set to true, a value MUST be specified (optional, not shown)
     - defaultValue: The default value (optional)
     - allowedValues: an array of allowed values (optional)
     - minValue: Minimum value (for ints) (optional)
@@ -338,13 +338,13 @@ The first parameter is `port`. This parameter has no destination field. Conseque
 PORT=8080
 ```
 
-If the `destination` field is set, at least one of `env` or `path` _must_ be specified. (Both may be provided).
+If the `destination` field is set, at least one of `env` or `path` MUST be specified. (Both may be provided).
 
 If `env` is set, the value of the parameter will be assigned to the given environment variable name. In the example in the previous section, `GREETING` is set to `hello`.
 
 If `path` is set, the value of the parameter will be written into a file at the specified location on the invocation image's filesystem. This file name _must not_ be present already on the invocation image's filesystem.
 
-If both `env` and `path` are specified, implementations _must_ put a copy of the data in each destination.
+If both `env` and `path` are specified, implementations MUST put a copy of the data in each destination.
 
 ### Format of Parameter Specification
 
@@ -402,7 +402,7 @@ When _both a path and an env_ are specified, _only one is required_ (properties 
 
 ## Custom Actions
 
-Every implementation of a CNAB tool _must_ support three built-in actions:
+Every implementation of a CNAB tool MUST support three built-in actions:
 
 - `install`
 - `upgrade`
@@ -427,7 +427,7 @@ Each action is accompanied by a description, which contains the following fields
 
 - `modifies`: Indicates whether the given action will _modify resources_ in any way.
 
-The `modifies` field _must_ be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB MAY use this information when describing history or managing releases.
+The `modifies` field MUST be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB MAY use this information when describing history or managing releases.
 
 An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image _should not_ handle actions that are not included by the default list (`install`, `upgrade, `uninstall`) and the custom actions section.
 

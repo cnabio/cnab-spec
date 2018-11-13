@@ -39,9 +39,9 @@ cnab/                  # Required top-level directory
 
 ### The `/cnab` Directory
 
-An invocation image _must_ have a directory named `cnab` placed directly under the root of the file system hierarchy inside of an image.
+An invocation image MUST have a directory named `cnab` placed directly under the root of the file system hierarchy inside of an image.
 
-This directory _must_ have a subdirectory named `app`.
+This directory MUST have a subdirectory named `app`.
 
 This directory MAY have any of the following:
 
@@ -132,7 +132,7 @@ The above example installs and configures Helm inside of a base Ubuntu image. No
 
 ## The Run Tool
 
-The run tool _must_ be located at the path `/cnab/app/run`. It _must_ be executable. It _must_ react to the `CNAB_ACTION` provided to it.
+The run tool MUST be located at the path `/cnab/app/run`. It MUST be executable. It MUST react to the `CNAB_ACTION` provided to it.
 
 The specification does not define what language(s) the tool must be written in, or any details about how it processes the information. However, the following is a non-normative example:
 

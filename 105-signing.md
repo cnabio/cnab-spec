@@ -40,7 +40,7 @@ sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b
 
 CNAB is composed of a `bundle.json` and a number of supporting images. Those images are referenced by the `bundle.json`. Thus, digesting those artifacts and including their digest in the `bundle.json` provides a convenient way to store (and locate) digests.
 
-To that end, anything that shows up in the `invocationImages` or `images` section of the `bundle.json` _must_ have a `digest`:
+To that end, anything that shows up in the `invocationImages` or `images` section of the `bundle.json` MUST have a `digest`:
 
 ```json
 {
@@ -177,7 +177,7 @@ They key used for an attestation must be used _only for that attestation_. Imple
 
 Implementations of CNAB MAY support creating and verifying attestations. Implementations of CNAB MAY support favoring an attestation with equal weight as the original signature. Attestations MAY be stored with the signed bundle, though there is no requirement that attestations be stored in a specific place.
 
-Attestations MAY use the `COMMENT:` field of a detached signature to indicate, in a human-friendly way, what the attestation is for. However, agents _must not_ consider this information definitive. Comment fields are not calculated into the signature and can be easily modified. Instead, attestation _must_ be based solely on the key.
+Attestations MAY use the `COMMENT:` field of a detached signature to indicate, in a human-friendly way, what the attestation is for. However, agents _must not_ consider this information definitive. Comment fields are not calculated into the signature and can be easily modified. Instead, attestation MUST be based solely on the key.
 
 ```text
 -----BEGIN PGP SIGNATURE-----
@@ -207,7 +207,7 @@ Cases may arise where a particular version (or versions) of a bundle should no l
 
 > This definition does not preclude the mere deletion of problematic bundles. Operators of a bundle repository, for instance, MAY opt to merely remove insecure bundles from their servers rather than mark them and leave them. However, there are cases where historic (while insecure) packages may be retained and still made available for installation.
 
-Reusing a release version to replace an insecure release with a secure one is _expressly prohibited_. For example, if release 2.3.1 of a bundle is deemed insecure, operators _must not_ re-release a modified bundle as 2.3.1. The fixed version _must_ modify a semantic component of the version number. For example, `2.3.2`, `2.4.0`, `3.0.0`, and even `2.3.2-alpha.1` are all acceptable increments. `2.3.1` and `2.3.1+1` are examples of forbidden version increments. Likewise, release `2.3.1` _must not_ be renamed by semantic component. (e.g. 2.3.1-insecure is illegal, while 2.3.1+insecure is legal). For clarification on this policy, see the [SemVer 2 specification](https://semver.org).
+Reusing a release version to replace an insecure release with a secure one is _expressly prohibited_. For example, if release 2.3.1 of a bundle is deemed insecure, operators _must not_ re-release a modified bundle as 2.3.1. The fixed version MUST modify a semantic component of the version number. For example, `2.3.2`, `2.4.0`, `3.0.0`, and even `2.3.2-alpha.1` are all acceptable increments. `2.3.1` and `2.3.1+1` are examples of forbidden version increments. Likewise, release `2.3.1` _must not_ be renamed by semantic component. (e.g. 2.3.1-insecure is illegal, while 2.3.1+insecure is legal). For clarification on this policy, see the [SemVer 2 specification](https://semver.org).
 
 Instead, the prefered pattern is to retain the insecure release at its given release number, but issue a _retraction_.
 
@@ -250,9 +250,9 @@ A retraction is a clear signed JSON array.
 
 The `signature` field is optional, but provides a content-specific test on the content retracted. It is only applicable to cases where a specific version is being retracted.
 
-The `version` field is optional. If omitted, the entire Bundle is considerered retracted. When `version` is omitted, `signature` _must_ be omitted.
+The `version` field is optional. If omitted, the entire Bundle is considerered retracted. When `version` is omitted, `signature` MUST be omitted.
 
-To specify a range of versions, a _SemVer range_ may be provided in the `version` field. In this case, a `signature` _must_ be omitted.
+To specify a range of versions, a _SemVer range_ may be provided in the `version` field. In this case, a `signature` MUST be omitted.
 
 The `reason` field is optional, though a retraction _should_ have one. This may be used by a user agent to explain the reason for the retraction.
 

@@ -2,7 +2,7 @@
 
 A _claim_ (or _claim receipt_) is a record of a CNAB installation. This document describes how the claim system works.
 
-CNAB implementations MAY implement claims as an external storage mechanism. However, they _must_ inject information into an invocation image as explained in this document.
+CNAB implementations MAY implement claims as an external storage mechanism. However, they MUST inject information into an invocation image as explained in this document.
 
 ## Concepts of Package Management
 
@@ -34,7 +34,7 @@ https://cscope.sourceforge.io/
 From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/cscope.rb
 ```
 
-CNAB does not define where or how records are stored, nor how these records may be used by an implementation. However, it does describe how a CNAB-based system _must_ emit the record to an invocation image, and provides some guidance on maintaining integrity of the system.
+CNAB does not define where or how records are stored, nor how these records may be used by an implementation. However, it does describe how a CNAB-based system MUST emit the record to an invocation image, and provides some guidance on maintaining integrity of the system.
 
 This is done so that implementors can standardize on a way of relating a release claim (the record of a release) to release operations like `install`, `upgrade`, or `delete`. This, in turn, is necessary if CNAB bundles are expected to be executable by different implementations.
 
@@ -133,7 +133,7 @@ To satisfy these requirements, implementations of a CNAB package manager are exp
 
 ## Injecting Claim Data into an Invocation Image
 
-Complaint CNAB implementations _must_ conform to this section.
+Complaint CNAB implementations MUST conform to this section.
 
 The claim is produced outside of the CNAB package. The following claim data is injected
 into the invocation container at runtime:
