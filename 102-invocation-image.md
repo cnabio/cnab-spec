@@ -108,7 +108,7 @@ Including a Dockerfile is _recommended_ for all images built with Docker. It is 
 
 The remainder of this subsection is non-normative.
 
-The `Dockerfile` used to build the invocation image ought to be stored inside of the invocation image. This is to ensure reproducibility, and in order to allow rename operations that require a rebuild. (Likewise, if a build tool like Packer is used, this tool's configuration ought to be placed in the bundle.)
+The `Dockerfile` used to build the invocation image _may_ be stored inside of the invocation image. This is to ensure reproducibility, and in order to allow rename operations that require a rebuild. (Likewise, if a build tool like Packer is used, this tool's configuration _may_ be placed in the bundle.)
 
 This is a normal Dockerfile, and may derive from any base image.
 
