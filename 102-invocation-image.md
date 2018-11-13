@@ -104,7 +104,7 @@ The mechanisms for taking a base bundle and creating an extension bundle are not
 
 ## Image Construction Files
 
-Including a Dockerfile is _recommended_ for all images built with Docker. It is useful for reproducing a bundle. For other build tools, the build tool's definition may be included instead (e.g. `packer.json` for VM images built with Packer). Any image construction artifacts that are not explicitly allowed in the `/cnbab` directory may be placed in the `/cnab/build` directory.
+Including a Dockerfile is RECOMMENDED for all images built with Docker. It is useful for reproducing a bundle. For other build tools, the build tool's definition may be included instead (e.g. `packer.json` for VM images built with Packer). Any image construction artifacts that are not explicitly allowed in the `/cnbab` directory may be placed in the `/cnab/build` directory.
 
 The remainder of this subsection is non-normative.
 
