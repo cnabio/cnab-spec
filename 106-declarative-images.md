@@ -1,6 +1,6 @@
 # Declarative Invocation Images
 
-This section is non-normative. A CNAB implementation _may_ implement this portion to be considered conforming. However, this section maps out what the authors consider a best practice.
+This section is non-normative. A CNAB implementation MAY implement this portion to be considered conforming. However, this section maps out what the authors consider a best practice.
 
 ## Declarative Infrastructure and Declarative Installers
 
@@ -48,7 +48,7 @@ COPY cnab/app/arm /cnab/app/arm
 COPY bundle.json /cnab/bundle.json
 ```
 
-The `cnab/armbase` middleware provides the tools necessary for executing Azure Resource Manager (ARM) templates. Consequently, the present CNAB bundle _may_ have imperative components.
+The `cnab/armbase` middleware provides the tools necessary for executing Azure Resource Manager (ARM) templates. Consequently, the present CNAB bundle MAY have imperative components.
 
 The middleware image (`cnab/armbase`) contains tooling that looks in predefined locations for ARM templates, and understands how to install, upgrade, and uninstall those resources.
 

@@ -35,13 +35,13 @@ CNAB_BUNDLE_NAME=helloworld
 CNAB_ACTION=install
 ```
 
-The _installation name_ is the name of the _instance of_ this application. Consider the situation where an application ("wordpress") is installed multiple times into the same cloud. Each installation _must_ have a unique installation name, even though they will be installing the same CNAB bundle. Instance names MUST consist of Graph Unicode characters and _may_ be user-readable. The Unicode Graphic characters include letters, marks, numbers, punctuation, symbols, and spaces, from categories L, M, N, P, S, Zs.
+The _installation name_ is the name of the _instance of_ this application. Consider the situation where an application ("wordpress") is installed multiple times into the same cloud. Each installation _must_ have a unique installation name, even though they will be installing the same CNAB bundle. Instance names MUST consist of Graph Unicode characters and MAY be user-readable. The Unicode Graphic characters include letters, marks, numbers, punctuation, symbols, and spaces, from categories L, M, N, P, S, Zs.
 
 The _bundle name_ is the name of the bundle (as represented in `bundle.json`'s `name` field). The specification of this field is in the [101-bundle-json.md](bundle definition).
 
 The _action_ is one of the action verbs defined in the section below.
 
-Optionally, `CNAB_REVISION` _may_ be passed, where this is a _unique string_ indicating the current "version" of the _installation_. For example, if the `my_installation` installation is upgraded twice (changing only the parameters), three `CNAB_REVISIONS` should be generated (1. install, 2. upgrade, 3. upgrade). See [the Claims definition](104-claims.md) for details on revision ids. That `status` action _must not_ increment the revision.
+Optionally, `CNAB_REVISION` MAY be passed, where this is a _unique string_ indicating the current "version" of the _installation_. For example, if the `my_installation` installation is upgraded twice (changing only the parameters), three `CNAB_REVISIONS` should be generated (1. install, 2. upgrade, 3. upgrade). See [the Claims definition](104-claims.md) for details on revision ids. That `status` action _must not_ increment the revision.
 
 As specified in the `bundle.json`, some parameters may be injected into the environment as environment variables.
 
@@ -76,9 +76,9 @@ An implementation of a CNAB runtime must support sending the following actions t
 - `upgrade`
 - `uninstall`
 
-Invocation images _should_ implement `install` and `uninstall`. If one of these required actions is not implemented, an invocation image _must not_ generate an error (though it _may_ generate a warning). Implementations _may_ map the same underlying operations to multiple actions (example: `install` and `upgrade` _may_ perform the same action).
+Invocation images _should_ implement `install` and `uninstall`. If one of these required actions is not implemented, an invocation image _must not_ generate an error (though it MAY generate a warning). Implementations MAY map the same underlying operations to multiple actions (example: `install` and `upgrade` MAY perform the same action).
 
-In addition to the default actions, CNAB runtimes _may_ support custom actions (as defined in [the bundle definition](101-bundle-json.md)). Any invocation image whose accompanying bundle definition specifies custom actions _should_ implement those custom actions. A CNAB runtime _may_ exit with an error if a custom action is declared in the bundle definition, but cannot be executed by the invocation image.
+In addition to the default actions, CNAB runtimes MAY support custom actions (as defined in [the bundle definition](101-bundle-json.md)). Any invocation image whose accompanying bundle definition specifies custom actions _should_ implement those custom actions. A CNAB runtime MAY exit with an error if a custom action is declared in the bundle definition, but cannot be executed by the invocation image.
 
 A bundle _must_ exit with an error if the action is executed, but fails to run to completion. A CNAB runtime _must_ issue an error if a bundle issues an error. And an error _must not_ be issued if one of the three built-in actions is requested, but not present in the bundle. Errors are reserved for cases where something has gone wrong.
 
@@ -135,10 +135,10 @@ The resulting calculated values are injected into the bundle before the bundle's
 
 Credentials may be supplied as files on the file system. In such cases, the following rules obtain:
 
-- If a file is specified in the `bundle.json` credentials section, but is not present on the file system, the run tool _may_ cause a fatal error
+- If a file is specified in the `bundle.json` credentials section, but is not present on the file system, the run tool MAY cause a fatal error
 - If a file is NOT specified in the `bundle.json`, and is not present, the run tool _should not_ cause an error (though it may emit a warning)
-- If a file is present, but not correctly formatted, the run tool _may_ cause a fatal error
-- If a file's permissions or metadata is incorrect, the run tool _may_ try to remediate (e.g. run `chmod`), or _may_ cause a fatal error
-- The run tool _may_ modify credential files. Consequently, any runtime implementation _must_ ensure that credentials changed inside of the invocation image will not result in modifications to the source.
+- If a file is present, but not correctly formatted, the run tool MAY cause a fatal error
+- If a file's permissions or metadata is incorrect, the run tool MAY try to remediate (e.g. run `chmod`), or MAY cause a fatal error
+- The run tool MAY modify credential files. Consequently, any runtime implementation _must_ ensure that credentials changed inside of the invocation image will not result in modifications to the source.
 
 Next Section: [The claims definition](104-claims.md)

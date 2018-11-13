@@ -177,7 +177,7 @@ The `digest` field _must_ contain a digest, in [OCI format](https://github.com/o
 
 The following optional fields may be attached to an invocation image:
 
-- `size`: The image size in bytes. Implementations _should_ verify this when a bundle is packaged as a _thick_ bundle, and _may_ verify it when the image is part of a thin bundle.
+- `size`: The image size in bytes. Implementations _should_ verify this when a bundle is packaged as a _thick_ bundle, and MAY verify it when the image is part of a thin bundle.
 - `platform`: The target platform, as an object with two fields:
   - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
   - `os`: The operating system of the image
@@ -292,7 +292,7 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
       - env: The name of an environment variable
       - path: The fully qualified path to a file that will be created
 
-Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names _may_ begin with a digit (approximately `[A-Z0-9_]+`).
+Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
 
 > The term _parameters_ indicates the present specification of what can be provided to a bundle. The term _values_ is frequently used to indicate the user-supplied values which are tested against the parameter definitions.
 
@@ -408,7 +408,7 @@ Every implementation of a CNAB tool _must_ support three built-in actions:
 - `upgrade`
 - `uninstall`
 
-Implementations _may_ support user-defined additional actions as well. Such actions are exposed via the `bundle` definition file. An action definition contains an action _name_ followed by a description of that action:
+Implementations MAY support user-defined additional actions as well. Such actions are exposed via the `bundle` definition file. An action definition contains an action _name_ followed by a description of that action:
 
 ```json
 "actions": {
@@ -427,7 +427,7 @@ Each action is accompanied by a description, which contains the following fields
 
 - `modifies`: Indicates whether the given action will _modify resources_ in any way.
 
-The `modifies` field _must_ be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB _may_ use this information when describing history or managing releases.
+The `modifies` field _must_ be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB MAY use this information when describing history or managing releases.
 
 An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image _should not_ handle actions that are not included by the default list (`install`, `upgrade, `uninstall`) and the custom actions section.
 

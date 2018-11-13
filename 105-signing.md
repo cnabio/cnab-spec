@@ -173,11 +173,11 @@ In a more complex case, a signed package may be certified by one party for use i
 
 Detached signatures are described in [section 11.4](https://tools.ietf.org/html/rfc4880#section-11.4) of the OpenPGP specification. Attestations are to be performed by extracting the `bundle.json` from a signed bundle, and then signing that same text object. A verification of a detached signature should use the `bundle.json` text as a basis for its verification. A bundle is considered _attested_ (or _attestation verified_) when a the bundle verification passes for the expected key used in that attestation.
 
-They key used for an attestation must be used _only for that attestation_. Implementations _may_ use a subkey (of a master key) for specific attestations, while preserving other subkeys to perform other attestations or signings.
+They key used for an attestation must be used _only for that attestation_. Implementations MAY use a subkey (of a master key) for specific attestations, while preserving other subkeys to perform other attestations or signings.
 
-Implementations of CNAB _may_ support creating and verifying attestations. Implementations of CNAB _may_ support favoring an attestation with equal weight as the original signature. Attestations _may_ be stored with the signed bundle, though there is no requirement that attestations be stored in a specific place.
+Implementations of CNAB MAY support creating and verifying attestations. Implementations of CNAB MAY support favoring an attestation with equal weight as the original signature. Attestations MAY be stored with the signed bundle, though there is no requirement that attestations be stored in a specific place.
 
-Attestations _may_ use the `COMMENT:` field of a detached signature to indicate, in a human-friendly way, what the attestation is for. However, agents _must not_ consider this information definitive. Comment fields are not calculated into the signature and can be easily modified. Instead, attestation _must_ be based solely on the key.
+Attestations MAY use the `COMMENT:` field of a detached signature to indicate, in a human-friendly way, what the attestation is for. However, agents _must not_ consider this information definitive. Comment fields are not calculated into the signature and can be easily modified. Instead, attestation _must_ be based solely on the key.
 
 ```text
 -----BEGIN PGP SIGNATURE-----
@@ -205,13 +205,13 @@ CNAB verification tools _should_ handle the key revocation case.
 
 Cases may arise where a particular version (or versions) of a bundle should no longer be used. For example, if a version of a bundle is discovered to be insecure in significant ways, bundle authors may wish to _explicitly mark_ that bundle as insecure. This process must be done in a way that retains the integrity of the bundle.
 
-> This definition does not preclude the mere deletion of problematic bundles. Operators of a bundle repository, for instance, _may_ opt to merely remove insecure bundles from their servers rather than mark them and leave them. However, there are cases where historic (while insecure) packages may be retained and still made available for installation.
+> This definition does not preclude the mere deletion of problematic bundles. Operators of a bundle repository, for instance, MAY opt to merely remove insecure bundles from their servers rather than mark them and leave them. However, there are cases where historic (while insecure) packages may be retained and still made available for installation.
 
 Reusing a release version to replace an insecure release with a secure one is _expressly prohibited_. For example, if release 2.3.1 of a bundle is deemed insecure, operators _must not_ re-release a modified bundle as 2.3.1. The fixed version _must_ modify a semantic component of the version number. For example, `2.3.2`, `2.4.0`, `3.0.0`, and even `2.3.2-alpha.1` are all acceptable increments. `2.3.1` and `2.3.1+1` are examples of forbidden version increments. Likewise, release `2.3.1` _must not_ be renamed by semantic component. (e.g. 2.3.1-insecure is illegal, while 2.3.1+insecure is legal). For clarification on this policy, see the [SemVer 2 specification](https://semver.org).
 
 Instead, the prefered pattern is to retain the insecure release at its given release number, but issue a _retraction_.
 
-A *retraction* is a cryptographically signed indicator that a bundle _may_ be installed.
+A *retraction* is a cryptographically signed indicator that a bundle MAY be installed.
 
 ```
 -----BEGIN PGP SIGNED MESSAGE-----

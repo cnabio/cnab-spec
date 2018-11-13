@@ -2,7 +2,7 @@
 
 A _claim_ (or _claim receipt_) is a record of a CNAB installation. This document describes how the claim system works.
 
-CNAB implementations _may_ implement claims as an external storage mechanism. However, they _must_ inject information into an invocation image as explained in this document.
+CNAB implementations MAY implement claims as an external storage mechanism. However, they _must_ inject information into an invocation image as explained in this document.
 
 ## Concepts of Package Management
 

@@ -43,7 +43,7 @@ An invocation image _must_ have a directory named `cnab` placed directly under t
 
 This directory _must_ have a subdirectory named `app`.
 
-This directory _may_ have any of the following:
+This directory MAY have any of the following:
 
 - `Dockerfile`: A valid Dockerfile used for constructing this image
 - Files for the form `Dockerfile.$INFO`, where `$INFO` is a further specification of that Dockerfile (e.g. `Dockerfile.arm64`)
@@ -63,7 +63,7 @@ The contents beneath `/cnab/app/SUBDIRECTORY` are undefined by the spec. `run` i
 
 ### The Optional `/cnab/build` Directory
 
-The directory `/cnab/build` _may_ be present within the CNAB hierarchy. The contents of this directory are undefined by the spec. However, the intention is to provide space for artifacts that are used during the assembly (or re-assembly) of the bundle, but are not part of the execution of a bundle action.
+The directory `/cnab/build` MAY be present within the CNAB hierarchy. The contents of this directory are undefined by the spec. However, the intention is to provide space for artifacts that are used during the assembly (or re-assembly) of the bundle, but are not part of the execution of a bundle action.
 
 For example, _base bundles_ may use this directory to store utilities that derived bundles may use during bundle building.
 
@@ -98,7 +98,7 @@ The example above is simply intended to show how by reserving the `/cnab` direct
 The mechanisms for taking a base bundle and creating an extension bundle are not formalized in the definition, as tooling may implement this pattern as fit for the tooling's domain. However, there are particular points of consideration that implementations may wish to address:
 
 - Run tools make good candidates for reuse, and may then be well suited for base bundles
-- A base bundle _may_ define parameters and credentials in its bundle definition. In such cases, implementations of the base bundle pattern may wish to bubble this configuration up to the extension bundle via tooling.
+- A base bundle MAY define parameters and credentials in its bundle definition. In such cases, implementations of the base bundle pattern may wish to bubble this configuration up to the extension bundle via tooling.
 - The `/cnab/build` directory may be used to store tooling in a base bundle that extension bundles can use during bundle assembly.
 - Docker and other OCI tooling may provide mechanisms for creating a bundle by composing via more than one base image. The present specification does not prohibit composition, and this section of the specification is non-normative.
 
@@ -108,7 +108,7 @@ Including a Dockerfile is _recommended_ for all images built with Docker. It is 
 
 The remainder of this subsection is non-normative.
 
-The `Dockerfile` used to build the invocation image _may_ be stored inside of the invocation image. This is to ensure reproducibility, and in order to allow rename operations that require a rebuild. (Likewise, if a build tool like Packer is used, this tool's configuration _may_ be placed in the bundle.)
+The `Dockerfile` used to build the invocation image MAY be stored inside of the invocation image. This is to ensure reproducibility, and in order to allow rename operations that require a rebuild. (Likewise, if a build tool like Packer is used, this tool's configuration MAY be placed in the bundle.)
 
 This is a normal Dockerfile, and may derive from any base image.
 
