@@ -136,7 +136,7 @@ The resulting calculated values are injected into the bundle before the bundle's
 Credentials may be supplied as files on the file system. In such cases, the following rules obtain:
 
 - If a file is specified in the `bundle.json` credentials section, but is not present on the file system, the run tool MAY cause a fatal error
-- If a file is NOT specified in the `bundle.json`, and is not present, the run tool _should not_ cause an error (though it may emit a warning)
+- If a file is NOT specified in the `bundle.json`, and is not present, the run tool SHOULD NOT cause an error (though it may emit a warning)
 - If a file is present, but not correctly formatted, the run tool MAY cause a fatal error
 - If a file's permissions or metadata is incorrect, the run tool MAY try to remediate (e.g. run `chmod`), or MAY cause a fatal error
 - The run tool MAY modify credential files. Consequently, any runtime implementation MUST ensure that credentials changed inside of the invocation image will not result in modifications to the source.
