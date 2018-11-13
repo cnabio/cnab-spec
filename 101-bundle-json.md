@@ -376,7 +376,7 @@ See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters ar
 
 ## Credentials
 
-A `bundle.json` MAY optionally contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that MUST be provided.
+A `bundle.json` MAY contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that MUST be provided.
 
 ```json
 "credentials": {
