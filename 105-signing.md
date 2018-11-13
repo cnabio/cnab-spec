@@ -6,7 +6,7 @@ This document outlines how CNAB bundles use a multi-layered fingerprinting and s
 
 ## Summary
 
-- Every image and invocation image field in the `bundle.json` must have a `digest:` field that must contain a digest of the image.
+- Every image and invocation image field in the `bundle.json` MUST have a `digest:` field that MUST contain a digest of the image.
 - Digests are computed in accordance with the underlying image type (e.g. OCI bundles are validated by computing the top hash of a Merkle tree, VM images are computed by digest of the image)
 - Signed bundles are clear-signed `bundle.json` files according to the Open PGP specification. When present, these are used in lieu of the unsigned `bundle.json` file.
 - Authority is granted by the signed bundle, and integrity is granted via the image digests embedded in the bundle.json
@@ -69,7 +69,7 @@ To that end, anything that shows up in the `invocationImages` or `images` sectio
 }
 ```
 
-Objects must contain a `digest` field even if the digest is present in another field. This is done to provide _access uniformity_.
+Objects MUST contain a `digest` field even if the digest is present in another field. This is done to provide _access uniformity_.
 
 > OCI images, for example, may embed a digest in the image's _version_ field. According to this specification, while this is allowed, it does not remove the requirement that the `digest` field be present and filled.
 
@@ -81,7 +81,7 @@ Drivers may choose to accept the digesting by another trusted agent in lieu of p
 
 The `bundle.json` file will contain the digests of all executable objects. That is, everything in the `invocationImages` and `images` sections will have digests that will make it possible to ensure that their content has not been tampered with.
 
-Consequently, the `bundle.json` acts as an authoritative resource for image integrity. To act as an authoritative source, however, it must provide an additional assertion: The `bundle.json` must assert the intention of the bundle creator, in marking this as a _verified bundle_.
+Consequently, the `bundle.json` acts as an authoritative resource for image integrity. To act as an authoritative source, however, it MUST provide an additional assertion: The `bundle.json` MUST assert the intention of the bundle creator, in marking this as a _verified bundle_.
 
 This is accomplished by _signing the bundle_.
 
@@ -169,11 +169,11 @@ Attestations provide a way to add multiple assurances to a bundle.
 
 An attestation is used as a placeholder for the statement "The signing party has certified (attested) that condition X has been met". For example, when certification steps need to occur for a given bundle, one may use attestations to prove that the certification has been performed. In this case, the certifying party performs the process, and then (upon the bundle's passing), the certifying party adds a _detached signature_ to the set of signatures associated with the bundle.
 
-In a more complex case, a signed package may be certified by one party for use in one way (we'll call this "certification A"). A different party may certify the bundle for a different case ("certification B"). Note that in this case, the certifications are _independent_, and are presumably done with separate justifications. ("certificate A ensures this bundle is suitable for internal use", "certificate B ensures this bundle is suitable for use by our partners".) Because of this feature, attestations _are not chainlike_. Each individual attestation must be verifiable without reference to any other attestations (including the original clear-signed signature).
+In a more complex case, a signed package may be certified by one party for use in one way (we'll call this "certification A"). A different party may certify the bundle for a different case ("certification B"). Note that in this case, the certifications are _independent_, and are presumably done with separate justifications. ("certificate A ensures this bundle is suitable for internal use", "certificate B ensures this bundle is suitable for use by our partners".) Because of this feature, attestations _are not chainlike_. Each individual attestation MUST be verifiable without reference to any other attestations (including the original clear-signed signature).
 
 Detached signatures are described in [section 11.4](https://tools.ietf.org/html/rfc4880#section-11.4) of the OpenPGP specification. Attestations are to be performed by extracting the `bundle.json` from a signed bundle, and then signing that same text object. A verification of a detached signature should use the `bundle.json` text as a basis for its verification. A bundle is considered _attested_ (or _attestation verified_) when a the bundle verification passes for the expected key used in that attestation.
 
-They key used for an attestation must be used _only for that attestation_. Implementations MAY use a subkey (of a master key) for specific attestations, while preserving other subkeys to perform other attestations or signings.
+They key used for an attestation MUST be used _only for that attestation_. Implementations MAY use a subkey (of a master key) for specific attestations, while preserving other subkeys to perform other attestations or signings.
 
 Implementations of CNAB MAY support creating and verifying attestations. Implementations of CNAB MAY support favoring an attestation with equal weight as the original signature. Attestations MAY be stored with the signed bundle, though there is no requirement that attestations be stored in a specific place.
 
@@ -197,13 +197,13 @@ UkmNdIkOChvHv42XkWnF1t1Hyi51ig==
 ## Key Revocation and Expiration
 
 When public keys are expired or revoked, bundles signed with those keys become invalid.
-They must be re-signed with a valid key.
+They MUST be re-signed with a valid key.
 
 CNAB verification tools SHOULD handle the key revocation case.
 
 ## Bundle Retractions
 
-Cases may arise where a particular version (or versions) of a bundle should no longer be used. For example, if a version of a bundle is discovered to be insecure in significant ways, bundle authors may wish to _explicitly mark_ that bundle as insecure. This process must be done in a way that retains the integrity of the bundle.
+Cases may arise where a particular version (or versions) of a bundle should no longer be used. For example, if a version of a bundle is discovered to be insecure in significant ways, bundle authors may wish to _explicitly mark_ that bundle as insecure. This process MUST be done in a way that retains the integrity of the bundle.
 
 > This definition does not preclude the mere deletion of problematic bundles. Operators of a bundle repository, for instance, MAY opt to merely remove insecure bundles from their servers rather than mark them and leave them. However, there are cases where historic (while insecure) packages may be retained and still made available for installation.
 

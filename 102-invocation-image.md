@@ -1,6 +1,6 @@
 # The Invocation Images
 
-The `invocationImages` section of a `bundle.json` must contain at least one image (the invocation image). This image must be formatted according to the specification laid out in the present document.
+The `invocationImages` section of a `bundle.json` MUST contain at least one image (the invocation image). This image MUST be formatted according to the specification laid out in the present document.
 The appropriate invocation image is selected using the current driver.
 
 When a bundle is executed, the invocation image will be retrieved (if necessary) and started. Credential and parameter data is passed to it, and then its `run` tool is executed. (See [The Bundle Runtime](103-bundle-runtime.md) for details).
@@ -26,7 +26,7 @@ The following exhibits the filesystem layout:
 cnab/                  # Required top-level directory
 └── Dockerfile​         # Optional
 └── app​                # Required
-    ├── run​            # Required: This is the main entrypoint, and must be executable
+    ├── run​            # Required: This is the main entrypoint, and MUST be executable
     ├── charts​         # Example: Helm charts might go here
     │   └── azure-voting-app​
     │       ├── Chart.yaml​
@@ -57,7 +57,7 @@ This directory MUST NOT have any files or directories not explicitly named in th
 
 ### The `/cnab/app` Directory
 
-The `app/` directory contains subdirectories, each of which stores configuration for a particular target environment. The `app/run` file _must be an executable file_ that will act as the "main" installer for this CNAB bundle. This is the only file that is required in this directory.
+The `app/` directory contains subdirectories, each of which stores configuration for a particular target environment. The `app/run` file _MUST be an executable file_ that will act as the "main" installer for this CNAB bundle. This is the only file that is REQUIRED in this directory.
 
 The contents beneath `/cnab/app/SUBDIRECTORY` are undefined by the spec. `run` is considered the only reserved word underneath `/cnab/app/`
 

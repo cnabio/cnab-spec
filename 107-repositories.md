@@ -24,7 +24,7 @@ It should also be noted that `<path>` can be many levels deep. `/foo` and `/foo/
 
 ### Authentication
 
-Standard HTTP authentication is used if authentication is required to access a repository, and MAY be configured and enforced by the HTTP server software. Clients SHOULD support Basic authentication as described by RFC 2617. Servers SHOULD support Basic authentication by relying upon the HTTP server placed in front of the CNAB server software.
+Standard HTTP authentication is used if authentication is REQUIRED to access a repository, and MAY be configured and enforced by the HTTP server software. Clients SHOULD support Basic authentication as described by RFC 2617. Servers SHOULD support Basic authentication by relying upon the HTTP server placed in front of the CNAB server software.
 
 Clients and servers MAY support other common forms of HTTP based authentication, such as Digest authentication or OAuth2.
 
@@ -91,7 +91,7 @@ When enabled, this capability means that the server can handle requests using th
 
 ### smart-proto
 
-When enabled, this capability means that the server can handle requests using the smart protocol. This capability is required to handle uploads.
+When enabled, this capability means that the server can handle requests using the smart protocol. This capability is REQUIRED to handle uploads.
 
 ### upload-thin-bundle
 
@@ -208,7 +208,7 @@ The request MUST contain exactly one query parameter, `service=$servicename`, wh
 
 Service names are defined as a particular action (e.g. "upload-bundle") that both the client and the server understand for a particular operation, such as uploading bundles, logging in, fetching bundles, etc.
 
-Because the communication protocol between the client and the server is left up entirely to the implementaton of the requested service name, no request type (such as GET/POST/PUT/PATCH) is required, but for demonstration purposes we are demonstrating the protocol using a GET request.
+Because the communication protocol between the client and the server is left up entirely to the implementaton of the requested service name, no request type (such as GET/POST/PUT/PATCH) is REQUIRED, but for demonstration purposes we are demonstrating the protocol using a GET request.
 
 ```bash
 GET $REPO_URL?service=upload-bundle HTTP/1.1

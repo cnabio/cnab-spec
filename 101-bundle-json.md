@@ -132,7 +132,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
 
 ## Name and Version: Identifying Metadata
 
-The `name` and `version` fields are used to identify the CNAB bundle. Both fields are required.
+The `name` and `version` fields are used to identify the CNAB bundle. Both fields are REQUIRED.
 
 - Name should be human-readable (TODO: Make this Graph Unicode characters)
 - Version MUST be a [SemVer2](https://semver.org) string
@@ -167,11 +167,11 @@ image is selected using the current driver.
 ]
 ```
 
-The `imageType` field is required, and must describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
+The `imageType` field is REQUIRED, and MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
 
 > [Duffle](https://github.com/deis/duffle), the reference implementation of a CNAB installer, introduces a layer of user-customizable drivers which are type-aware. Images may be delegated to drivers for installation.
 
-The `image` field must give a path-like or URI-like representation of the location of the image. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
+The `image` field MUST give a path-like or URI-like representation of the location of the image. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
 The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
 
@@ -221,7 +221,7 @@ The following illustrates an `images` section:
 Fields:
 
 - images: The list of dependent images
-  - `imageType`: The `imageType` field is required, and must describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
+  - `imageType`: The `imageType` field is REQUIRED, and MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
   - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
   - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
   - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
@@ -279,7 +279,7 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
   - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
     - type: one of string, int, boolean
-    - required: if this is set to true, a value MUST be specified (optional, not shown)
+    - REQUIRED: if this is set to true, a value MUST be specified (optional, not shown)
     - defaultValue: The default value (optional)
     - allowedValues: an array of allowed values (optional)
     - minValue: Minimum value (for ints) (optional)
@@ -354,7 +354,7 @@ The structure of a parameters section looks like this:
 "parameters": {
     "<parameter-name>" : {
         "type" : "<type-of-parameter-value>",
-        "required": true|false
+        "REQUIRED": true|false
         "defaultValue": "<default-value-of-parameter>",
         "allowedValues": [ "<array-of-allowed-values>" ],
         "minValue": <minimum-value-for-int>,
@@ -376,7 +376,7 @@ See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters ar
 
 ## Credentials
 
-A `bundle.json` may optionally contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that must be provided.
+A `bundle.json` may optionally contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that MUST be provided.
 
 ```json
 "credentials": {
@@ -394,11 +394,11 @@ A `bundle.json` may optionally contain a section that describes which credential
 ```
 
 - The `credentials` container is a map of human-friendly credential names to a description of where the invocation image expects to find them.
-  - The name key must be human-readable
+  - The name key MUST be human-readable
     - `path` describes the _absolute path within the invocation image_ where the invocation image expects to find the credential
     - `env` contains _the name of an environment variable_ that the invocation image expects to have available when executing the CNAB `run` tool (covered in the next section).
 
-When _both a path and an env_ are specified, _only one is required_ (properties are disjunctive). To require two presentations of the same material, two separate entries must be made.
+When _both a path and an env_ are specified, _only one is REQUIRED_ (properties are disjunctive). To require two presentations of the same material, two separate entries MUST be made.
 
 ## Custom Actions
 

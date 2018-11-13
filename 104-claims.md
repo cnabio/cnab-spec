@@ -40,7 +40,7 @@ This is done so that implementors can standardize on a way of relating a release
 
 ### Anatomy of a Claim
 
-While implementors are not required to implement claims, this is that standard format for claims-supporting systems.
+While implementors are not REQUIRED to implement claims, this is that standard format for claims-supporting systems.
 
 The CNAB claim is defined as a JSON document.
 
@@ -72,10 +72,10 @@ The CNAB claim is defined as a JSON document.
 }
 ```
 
-- name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It must be unique within the installation environment, though that constraint must be imposed externally. Elsewhere, this field is referenced as the _installation name_.
-- revision: An [ULID](https://github.com/ulid/spec) that must change each time the release is modified.
+- name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
+- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
 - bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md)
-- created: A timestamp indicating when this release claim was first created. This must not be changed after initial creation.
+- created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
 - updated: A timestamp indicating the last time this release claim was modified
 - result: The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
   - message: A human-readable string that communicates the outcome. Error messages may be included in `failure` conditions.
@@ -89,11 +89,11 @@ The CNAB claim is defined as a JSON document.
   - status: Indicates the status of the last phase transition. Valid statuses are:
     - success: completed successfully
     - failure: failed before completion
-    - underway: in progress. This should only be used if the invocation container must exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
+    - underway: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
     - unknown: the state is unknown. This is an error condition.
 - parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations may choose not to store these for security or portability reasons.
 
-> Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials must be re-supplied.
+> Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be re-supplied.
 
 TODO: What is the best timestamp format to use? Does JSON have a preference?
 

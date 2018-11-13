@@ -6,13 +6,13 @@ The [Invocation Image definition](102-invocation-image.md) specifies the layout 
 
 ## The Run Tool (Main Entry Point)
 
-The main entry point of a CNAB bundle MUST be located at `/cnab/app/run`. When a compliant driver executes a CNAB bundle, it MUST execute the `/cnab/app/run` tool. In addition, images used as invocation images SHOULD also default to running `/cnab/app/run`. For example, a `Dockerfile`'s `exec` array must point to this entry point.
+The main entry point of a CNAB bundle MUST be located at `/cnab/app/run`. When a compliant driver executes a CNAB bundle, it MUST execute the `/cnab/app/run` tool. In addition, images used as invocation images SHOULD also default to running `/cnab/app/run`. For example, a `Dockerfile`'s `exec` array MUST point to this entry point.
 
 > A fixed location for the `run` tool is mandated because not all image formats provide an equivalent method for starting an application. A client implementation of CNAB may access the image and directly execute the path `/cnab/app/run`. It is also permissible, given tooling constraints, to set the default entry point to a different path.
 
-The run tool must observe standard conventions for executing, exiting, and writing output. On POSIX-based systems, these are:
+The run tool MUST observe standard conventions for executing, exiting, and writing output. On POSIX-based systems, these are:
 
-- The execution mode bit (`x`) must be set on the run tool
+- The execution mode bit (`x`) MUST be set on the run tool
 - Exit codes: Exit code 0 is reserved for the case where the run tool exits with no errors. Non-zero exit codes are considered to be error states. These are interpreted according to [the Open Base Specification](http://pubs.opengroup.org/onlinepubs/9699919799//utilities/V3_chap02.html#tag_18_08_02)
 - The special output stream STDERR should be used to write error text
 
@@ -70,13 +70,13 @@ fi
 
 This simple example executes Helm, installing the Wordpress chart with the default settings if `install` is sent, or deleting the installation if `uninstall` is sent.
 
-An implementation of a CNAB runtime must support sending the following actions to an invocation image:
+An implementation of a CNAB runtime MUST support sending the following actions to an invocation image:
 
 - `install`
 - `upgrade`
 - `uninstall`
 
-Invocation images SHOULD implement `install` and `uninstall`. If one of these required actions is not implemented, an invocation image MUST NOT generate an error (though it MAY generate a warning). Implementations MAY map the same underlying operations to multiple actions (example: `install` and `upgrade` MAY perform the same action).
+Invocation images SHOULD implement `install` and `uninstall`. If one of these REQUIRED actions is not implemented, an invocation image MUST NOT generate an error (though it MAY generate a warning). Implementations MAY map the same underlying operations to multiple actions (example: `install` and `upgrade` MAY perform the same action).
 
 In addition to the default actions, CNAB runtimes MAY support custom actions (as defined in [the bundle definition](101-bundle-json.md)). Any invocation image whose accompanying bundle definition specifies custom actions SHOULD implement those custom actions. A CNAB runtime MAY exit with an error if a custom action is declared in the bundle definition, but cannot be executed by the invocation image.
 
