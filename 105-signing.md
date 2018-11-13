@@ -75,7 +75,7 @@ Objects must contain a `digest` field even if the digest is present in another f
 
 Different formats (viz. OCI) provide definitions for validating a digest. When possible, images should be validated using these definitions, according to their `imageType`. If a particular image type does not already define what it means to have a digest verified, the default method is to retrieve the object as-is, and checksum it in the format in which it was delivered when accessed.
 
-Drivers may choose to accept the digesting by another trusted agent in lieu of performing the digest algorithm themselves. For example, if a driver requests that a remote agent install an image on its behalf, it may trust that the image digest given by that remote agent is indeed the digest of the object in question. And it may then compare that digest to the `bundle.json`'s digest. In such cases, a driver _should_ ensure that the channel between the driver itself and the trusted remote agent is itself secured (for example, via TLS). Failure to do so will invalidate the integrity of the check.
+Drivers may choose to accept the digesting by another trusted agent in lieu of performing the digest algorithm themselves. For example, if a driver requests that a remote agent install an image on its behalf, it may trust that the image digest given by that remote agent is indeed the digest of the object in question. And it may then compare that digest to the `bundle.json`'s digest. In such cases, a driver SHOULD ensure that the channel between the driver itself and the trusted remote agent is itself secured (for example, via TLS). Failure to do so will invalidate the integrity of the check.
 
 ## Signing the `bundle.json`
 
@@ -177,7 +177,7 @@ They key used for an attestation must be used _only for that attestation_. Imple
 
 Implementations of CNAB MAY support creating and verifying attestations. Implementations of CNAB MAY support favoring an attestation with equal weight as the original signature. Attestations MAY be stored with the signed bundle, though there is no requirement that attestations be stored in a specific place.
 
-Attestations MAY use the `COMMENT:` field of a detached signature to indicate, in a human-friendly way, what the attestation is for. However, agents _must not_ consider this information definitive. Comment fields are not calculated into the signature and can be easily modified. Instead, attestation MUST be based solely on the key.
+Attestations MAY use the `COMMENT:` field of a detached signature to indicate, in a human-friendly way, what the attestation is for. However, agents MUST NOT consider this information definitive. Comment fields are not calculated into the signature and can be easily modified. Instead, attestation MUST be based solely on the key.
 
 ```text
 -----BEGIN PGP SIGNATURE-----
@@ -199,7 +199,7 @@ UkmNdIkOChvHv42XkWnF1t1Hyi51ig==
 When public keys are expired or revoked, bundles signed with those keys become invalid.
 They must be re-signed with a valid key.
 
-CNAB verification tools _should_ handle the key revocation case.
+CNAB verification tools SHOULD handle the key revocation case.
 
 ## Bundle Retractions
 
@@ -207,7 +207,7 @@ Cases may arise where a particular version (or versions) of a bundle should no l
 
 > This definition does not preclude the mere deletion of problematic bundles. Operators of a bundle repository, for instance, MAY opt to merely remove insecure bundles from their servers rather than mark them and leave them. However, there are cases where historic (while insecure) packages may be retained and still made available for installation.
 
-Reusing a release version to replace an insecure release with a secure one is _expressly prohibited_. For example, if release 2.3.1 of a bundle is deemed insecure, operators _must not_ re-release a modified bundle as 2.3.1. The fixed version MUST modify a semantic component of the version number. For example, `2.3.2`, `2.4.0`, `3.0.0`, and even `2.3.2-alpha.1` are all acceptable increments. `2.3.1` and `2.3.1+1` are examples of forbidden version increments. Likewise, release `2.3.1` _must not_ be renamed by semantic component. (e.g. 2.3.1-insecure is illegal, while 2.3.1+insecure is legal). For clarification on this policy, see the [SemVer 2 specification](https://semver.org).
+Reusing a release version to replace an insecure release with a secure one is _expressly prohibited_. For example, if release 2.3.1 of a bundle is deemed insecure, operators MUST NOT re-release a modified bundle as 2.3.1. The fixed version MUST modify a semantic component of the version number. For example, `2.3.2`, `2.4.0`, `3.0.0`, and even `2.3.2-alpha.1` are all acceptable increments. `2.3.1` and `2.3.1+1` are examples of forbidden version increments. Likewise, release `2.3.1` MUST NOT be renamed by semantic component. (e.g. 2.3.1-insecure is illegal, while 2.3.1+insecure is legal). For clarification on this policy, see the [SemVer 2 specification](https://semver.org).
 
 Instead, the prefered pattern is to retain the insecure release at its given release number, but issue a _retraction_.
 
@@ -254,7 +254,7 @@ The `version` field is optional. If omitted, the entire Bundle is considerered r
 
 To specify a range of versions, a _SemVer range_ may be provided in the `version` field. In this case, a `signature` MUST be omitted.
 
-The `reason` field is optional, though a retraction _should_ have one. This may be used by a user agent to explain the reason for the retraction.
+The `reason` field is optional, though a retraction SHOULD have one. This may be used by a user agent to explain the reason for the retraction.
 
 The following examples shows all three methods of specifying a retraction:
 
@@ -295,6 +295,6 @@ h3sGAYdx5fA5PfmweTCvc34qUvPVnw==
 - All versions of `helloseattle` are retracted
 - Versions of `fireflies` that are less than or equal to `2.3.1` are retracted
 
-When an agent has access to a retractions list or lists, it _should_ evaluate the retractions for each request that would require loading the bundle. An agent _must not_ install or upgrade a bundle it knows to be retracted without the express consent of the user.
+When an agent has access to a retractions list or lists, it SHOULD evaluate the retractions for each request that would require loading the bundle. An agent MUST NOT install or upgrade a bundle it knows to be retracted without the express consent of the user.
 
 Next section: [declarative images](106-declarative-images.md)

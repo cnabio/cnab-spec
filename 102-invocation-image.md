@@ -53,7 +53,7 @@ This directory MAY have any of the following:
 - `README.txt` or `README.md`: A text file containing information about this bundle
 - `LICENSE`: A text file containing the license(s) for this image
 
-This directory _must not_ have any files or directories not explicitly named in the present document. The `/cnab` directory is considered a reserved namespace where future CNAB revisions may place new files or directories.
+This directory MUST NOT have any files or directories not explicitly named in the present document. The `/cnab` directory is considered a reserved namespace where future CNAB revisions may place new files or directories.
 
 ### The `/cnab/app` Directory
 

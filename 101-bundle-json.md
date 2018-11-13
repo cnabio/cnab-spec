@@ -137,7 +137,7 @@ The `name` and `version` fields are used to identify the CNAB bundle. Both field
 - Name should be human-readable (TODO: Make this Graph Unicode characters)
 - Version MUST be a [SemVer2](https://semver.org) string
 
-Fields that do not match this specification _should_ cause failures.
+Fields that do not match this specification SHOULD cause failures.
 
 ## Informational Metadata
 
@@ -177,7 +177,7 @@ The `digest` field MUST contain a digest, in [OCI format](https://github.com/ope
 
 The following optional fields may be attached to an invocation image:
 
-- `size`: The image size in bytes. Implementations _should_ verify this when a bundle is packaged as a _thick_ bundle, and MAY verify it when the image is part of a thin bundle.
+- `size`: The image size in bytes. Implementations SHOULD verify this when a bundle is packaged as a _thick_ bundle, and MAY verify it when the image is part of a thin bundle.
 - `platform`: The target platform, as an object with two fields:
   - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
   - `os`: The operating system of the image
@@ -222,7 +222,7 @@ Fields:
 
 - images: The list of dependent images
   - `imageType`: The `imageType` field is required, and must describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
-  - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that _should_ be a CAS SHA, not a version tag as in the example above.
+  - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
   - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
   - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
     - `path`: the path of the file where the value should be replaced
@@ -342,7 +342,7 @@ If the `destination` field is set, at least one of `env` or `path` MUST be speci
 
 If `env` is set, the value of the parameter will be assigned to the given environment variable name. In the example in the previous section, `GREETING` is set to `hello`.
 
-If `path` is set, the value of the parameter will be written into a file at the specified location on the invocation image's filesystem. This file name _must not_ be present already on the invocation image's filesystem.
+If `path` is set, the value of the parameter will be written into a file at the specified location on the invocation image's filesystem. This file name MUST NOT be present already on the invocation image's filesystem.
 
 If both `env` and `path` are specified, implementations MUST put a copy of the data in each destination.
 
@@ -431,8 +431,8 @@ The `modifies` field MUST be set to `true` if any resource that is managed by th
 
 An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image _should not_ handle actions that are not included by the default list (`install`, `upgrade, `uninstall`) and the custom actions section.
 
-The built-in actions (`install`, `upgrade`, `uninstall`) _must not_ appear in the `actions` section, and an implementation _must not_ allow custom actions named `install`, `upgrade`, or `uninstall`.
+The built-in actions (`install`, `upgrade`, `uninstall`) MUST NOT appear in the `actions` section, and an implementation MUST NOT allow custom actions named `install`, `upgrade`, or `uninstall`.
 
-Implementations that do not support custom actions _must not_ emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it _must not_ fail to operate on bundles that declare custom actions.
+Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
 
 Next section: [The invocation image definition](102-invocation-image.md)

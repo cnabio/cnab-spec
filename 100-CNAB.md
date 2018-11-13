@@ -47,7 +47,7 @@ _Actions_ are sent to the `run` command via environment variables. Actions deter
 Invocation images allow limited configuration, as defined in two places in the bundle definition:
 
 - A bundle definition may declare zero or more configurable parameters. User-supplied parameters are injected into the invocation image. Parameters MAY be stored.
-- A bundle definition may declare zero or more credential requirements. This indicate which credentials must be passed into the invocation image in order for the invocation image to correctly authenticate to the services used by the bundle. Credentials are injected into the invocation image, but they _must not_ be stored.
+- A bundle definition may declare zero or more credential requirements. This indicate which credentials must be passed into the invocation image in order for the invocation image to correctly authenticate to the services used by the bundle. Credentials are injected into the invocation image, but they MUST NOT be stored.
 
 Additionally, this document defines two auxiliary components of the CNAB system: claims and repositories.
 
