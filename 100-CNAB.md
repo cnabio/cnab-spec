@@ -23,7 +23,7 @@ The canonical encoding of a bundle definition is a JSON-formatted file, which MA
 - An unsigned JSON Object stored in `bundle.json` file, as defined in [101-bundle-json.md](the bundle file definition)
 - A signed JSON object stored in a `bundle.cnab` file, as described in [105-signing.md](the signature definition)
 
-In both cases, the object follows the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file").
+In both cases, the object follows the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file"). However, as a signed bundle definition represents an immutable bundle, all invocation images and images references must have a digest.
 
 The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md )).
 

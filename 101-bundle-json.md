@@ -173,7 +173,7 @@ The `imageType` field is REQUIRED, and MUST describe the format of the image. Th
 
 The `image` field MUST give a path-like or URI-like representation of the location of the image. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
-The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
+The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.). Unsigned bundles MAY omit this field.
 
 The following OPTIONAL fields MAY be attached to an invocation image:
 

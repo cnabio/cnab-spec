@@ -40,7 +40,7 @@ sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b
 
 CNAB is composed of a `bundle.json` and a number of supporting images. Those images are referenced by the `bundle.json`. Thus, digesting those artifacts and including their digest in the `bundle.json` provides a convenient way to store (and locate) digests.
 
-To that end, anything that shows up in the `invocationImages` or `images` section of the `bundle.json` MUST have a `digest`:
+To that end, in a signed bundle, anything that shows up in the `invocationImages` or `images` section of the `bundle.json` MUST have a `digest`:
 
 ```json
 {
@@ -76,6 +76,8 @@ Objects MUST contain a `digest` field even if the digest is present in another f
 Different formats (viz. OCI) provide definitions for validating a digest. When possible, images should be validated using these definitions, according to their `imageType`. If a particular image type does not already define what it means to have a digest verified, the default method is to retrieve the object as-is, and checksum it in the format in which it was delivered when accessed.
 
 Drivers MAY choose to accept the digesting by another trusted agent in lieu of performing the digest algorithm themselves. For example, if a driver requests that a remote agent install an image on its behalf, it MAY trust that the image digest given by that remote agent is indeed the digest of the object in question. And it MAY then compare that digest to the `bundle.json`'s digest. In such cases, a driver SHOULD ensure that the channel between the driver itself and the trusted remote agent is itself secured (for example, via TLS). Failure to do so will invalidate the integrity of the check.
+
+As an example, the digest of docker and oci images in a thin bundle are not validated by the CNAB runtime, but by the container engine and the registry hosting those images. In the example above, when the docker driver creates the container with the specified invocation image, it specifies `technosophos/helloworld:0.1.0@sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b` as the container image. It is the responsibility of the container runtime and registry to guarantee immutability of the referenced image.
 
 ## Signing the `bundle.json`
 
