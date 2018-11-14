@@ -502,4 +502,45 @@ The built-in actions (`install`, `upgrade`, `uninstall`) MUST NOT appear in the 
 
 Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
 
+## Extensions
+
+In many cases, the bundle descriptor is a sufficient artifact for delivering a CNAB bundle, since invocation images and other images may be retrieved from registries and repositories. Consequently, it is important to provide an extension mechanism. An _extension_ is a named collection of auxiliary data whose meaning is defined outside of this specification.
+
+Tools _may_ define and declare additional fields inside of the `extension` section. Tools _must not_ define additional fields anywhere else in the bundle descriptor. Implementations _may_ produce an error or _may_ ignore additional fields outside of the extension. However, implementations _should_ preserve the data inside of the `extensions` section even when that information is not understood by the implementation.
+
+The `extensions` 
+
+```json
+{
+    "extensions": {
+        "example.com/duffle-bag": {
+            "icon": "https://example.com/icon.png",
+            "iconType": "PNG"
+        },
+        "example.com/backup-preferences": {
+            "frequency": "daily"
+        }
+    }
+}
+```
+
+The format is:
+
+```json
+{
+    "extensions": {
+        "EXTENSION NAME": "ARBITRARY JSON DATA"
+    }
+}
+```
+
+The fields are defined as follows:
+
+- `extensions` defines the wrapper object for extensions
+  - EXTENSION NAME: a unique name for an extension. Names _should_ follow the format `DOMAIN/PATH`, where DOMAIN conforms to the DNS naming convention, and path elements are separated by forward slashes (`/`).
+  - The value of the extension must be valid JSON, but is otherwise undefined.
+
+The usage of extensions is undefined. However, bundles _should_ be installable by runtimes that do not understand the extensions.
+
+
 Next section: [The invocation image definition](102-invocation-image.md)
