@@ -354,7 +354,7 @@ The structure of a parameters section looks like this:
 "parameters": {
     "<parameter-name>" : {
         "type" : "<type-of-parameter-value>",
-        "REQUIRED": true|false
+        "required": true|false
         "defaultValue": "<default-value-of-parameter>",
         "allowedValues": [ "<array-of-allowed-values>" ],
         "minValue": <minimum-value-for-int>,
