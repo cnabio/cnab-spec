@@ -6,7 +6,7 @@ While CNAB has not officially been assigned to a standards body, it is good prac
 
 Specifications shall each track their own versions, where a version is [semantically versioned](https://semver.org).
 
-The CNAB Core specification shall therefore be formally referenced as _Cloud Native Application Bundle Core 1.0.0_. The phase of the process _may_ be appended as a stability marker: _Cloud Native Application Bundle Core 1.0.0-WD_. It _may_ be abbreviated to _CNAB1_.
+The CNAB Core specification shall therefore be formally referenced as _Cloud Native Application Bundle Core 1.0.0_. The phase of the process MAY be appended as a stability marker: _Cloud Native Application Bundle Core 1.0.0-WD_. It MAY be abbreviated to _CNAB1_.
 
 ## Process
 
