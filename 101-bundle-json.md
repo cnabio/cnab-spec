@@ -173,7 +173,7 @@ The `imageType` field is REQUIRED, and MUST describe the format of the image. Th
 
 The `image` field MUST give a path-like or URI-like representation of the location of the image. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
-The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.). Unsigned bundles MAY ommit this field.
+The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.). Unsigned bundles MAY omit this field.
 
 The following OPTIONAL fields MAY be attached to an invocation image:
 
@@ -221,15 +221,9 @@ The following illustrates an `images` section:
 Fields:
 
 - images: The list of dependent images
-<<<<<<< HEAD
   - `imageType`: The `imageType` field is REQUIRED, and MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
   - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
-  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
-=======
-  - `imageType`: The `imageType` field is required, and must describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
-  - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that _should_ be a CAS SHA, not a version tag as in the example above.
-  - `digest`: _must_ contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.) Unsigned bundles _may_ ommit this field.
->>>>>>> Nits
+  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.). Unsigned bundles MAY omit this field.
   - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
     - `path`: the path of the file where the value should be replaced
     - `field`:a selector specifying a location (or locations) within that file where the value should be replaced
