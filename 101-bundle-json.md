@@ -190,30 +190,32 @@ The `bundle.json` maps image metadata (name, origin, tag) to placeholders within
 The following illustrates an `images` section:
 
 ```json
-{ ​
-"images": [​
-        { ​
-            "name": "frontend",​
-            "uri": "gabrtv.azurecr.io/gabrtv/vote-frontend:a5ff67...",​
+{
+"images": [
+        { 
+            "description": "frontend",
+            "imageType": "docker",
+            "image": "gabrtv.azurecr.io/gabrtv/vote-frontend:a5ff67...",
             "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "refs": [​
-                {​
-                    "path": "./charts/azure-voting-app/values.yaml",​
-                    "field": "AzureVoteFront.deployment.image"​
-                }​
-            ]​
-        },​
-        { ​
-            "name": "backend",​
+            "refs": [
+                {
+                    "path": "./charts/azure-voting-app/values.yaml",
+                    "field": "AzureVoteFront.deployment.image"
+                }
+            ]
+        },
+        {
+            "description": "backend",
+            "imageType": "docker",
             "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "uri": "gabrtv.azurecr.io/gabrtv/vote-backend:a5ff67...",​
-            "refs": [​
-                {​
-                    "path": "./charts/azure-voting-app/values.yaml",​
-                    "field": "AzureVoteBack.deployment.image"​
-                }​
-            ]​
-        }​
+            "image": "gabrtv.azurecr.io/gabrtv/vote-backend:a5ff67...",
+            "refs": [
+                {
+                    "path": "./charts/azure-voting-app/values.yaml",
+                    "field": "AzureVoteBack.deployment.image"
+                }
+            ]
+        }
     ]
 }
 ```
@@ -221,6 +223,7 @@ The following illustrates an `images` section:
 Fields:
 
 - images: The list of dependent images
+  - `description`: The description field is REQUIRED and provides additional context of the purpose of the image.
   - `imageType`: The `imageType` field is REQUIRED, and MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
   - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
   - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
