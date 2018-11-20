@@ -69,6 +69,16 @@ Bundles are stored in _bundle repositories_. A bundle repository is a network-ac
 - Invocation Image: The  image that contains the bootstrapping and installation logic for the bundle
 - Repository: A storage and retrieval service for CNAB objects.
 
+Also, when referencing tooling, we use the following terms:
+
+- `CNAB runtime` or `runtime`: A program capable of reading a CNAB bundle and executing it
+- `CNAB builder` or `builder`: A program that can assemble a CNAB bundle
+- `bundle tooling`: Programs or tooling that generate CNAB bundle contents
+
+Individual tools may meet more than one of the definitions above, but we have chosen to separate them in order to offer guidance such as:
+
+> A runtime MUST support the 'install', 'upgrade', and 'uninstall' actions, while bundle tooling MAY choose not to implement 'upgrade'.
+
 ### The Definitions
 
 The following subsections define the components of CNAB:
