@@ -11,11 +11,11 @@ A `bundle.json` is broken down into the following categories of information:
     - description: Short description of the bundle
 - Information on the invocation images, as an array
 - A list of images included with this bundle, as an array
-- A specification of which parameters may be overridden, and how those are to be validated
+- A specification of which parameters MAY be overridden, and how those are to be validated
 - A list of credentials (name and desired location) that the application needs
-- An optional description of custom actions that this bundle implements
+- An OPTIONAL description of custom actions that this bundle implements
 
-There are two formats for a bundle (thin and thick formats). The primary way in which the `bundle.json` file differs is the presence or absence of information in a thick bundle that helps it validate the contents of an image. In a thick bundle, `mediaType` and `size` attributes may assist the reconstitution of images from the thick format to a runtime format.
+There are two formats for a bundle (thin and thick formats). The primary way in which the `bundle.json` file differs is the presence or absence of information in a thick bundle that helps it validate the contents of an image. In a thick bundle, `mediaType` and `size` attributes MAY assist the reconstitution of images from the thick format to a runtime format.
 
 For the rest of the documentation, by default we'll be referring to bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
 
@@ -132,12 +132,12 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
 
 ## Name and Version: Identifying Metadata
 
-The `name` and `version` fields are used to identify the CNAB bundle. Both fields are required.
+The `name` and `version` fields are used to identify the CNAB bundle. Both fields are REQUIRED.
 
 - Name should be human-readable (TODO: Make this Graph Unicode characters)
 - Version MUST be a [SemVer2](https://semver.org) string
 
-Fields that do not match this specification _should_ cause failures.
+Fields that do not match this specification SHOULD cause failures.
 
 ## Informational Metadata
 
@@ -145,7 +145,7 @@ The following fields are informational pieces of metadata designed to convey add
 
 - `description`: A short description of a bundle
 - `keywords`: A list of keywords
-- `maintainers`: A list of maintainers, where each maintainer may have the following:
+- `maintainers`: A list of maintainers, where each maintainer MAY have the following:
   - `name`: Maintainer name
   - `email`: Maintainer's email
   - `url`: URL to relevant maintainer information
@@ -167,17 +167,17 @@ image is selected using the current driver.
 ]
 ```
 
-The `imageType` field is required, and must describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
+The `imageType` field is REQUIRED, and MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
 
-> [Duffle](https://github.com/deis/duffle), the reference implementation of a CNAB installer, introduces a layer of user-customizable drivers which are type-aware. Images may be delegated to drivers for installation.
+> [Duffle](https://github.com/deis/duffle), the reference implementation of a CNAB installer, introduces a layer of user-customizable drivers which are type-aware. Images MAY be delegated to drivers for installation.
 
-The `image` field must give a path-like or URI-like representation of the location of the image. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
+The `image` field MUST give a path-like or URI-like representation of the location of the image. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
-The `digest` field _must_ contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
+The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
 
-The following optional fields may be attached to an invocation image:
+The following OPTIONAL fields MAY be attached to an invocation image:
 
-- `size`: The image size in bytes. Implementations _should_ verify this when a bundle is packaged as a _thick_ bundle, and _may_ verify it when the image is part of a thin bundle.
+- `size`: The image size in bytes. Implementations SHOULD verify this when a bundle is packaged as a _thick_ bundle, and MAY verify it when the image is part of a thin bundle.
 - `platform`: The target platform, as an object with two fields:
   - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
   - `os`: The operating system of the image
@@ -185,7 +185,7 @@ The following optional fields may be attached to an invocation image:
 
 ## The Image List
 
-The `bundle.json` maps image metadata (name, origin, tag) to placeholders within the bundle. This allows images to be renamed, relabeled, or replaced during the CNAB bundle build operation. It also specifies the parameters that may be overridden in this image, giving tooling the ability to expose configuration options.
+The `bundle.json` maps image metadata (name, origin, tag) to placeholders within the bundle. This allows images to be renamed, relabeled, or replaced during the CNAB bundle build operation. It also specifies the parameters that MAY be overridden in this image, giving tooling the ability to expose configuration options.
 
 The following illustrates an `images` section:
 
@@ -221,9 +221,9 @@ The following illustrates an `images` section:
 Fields:
 
 - images: The list of dependent images
-  - `imageType`: The `imageType` field is required, and must describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
-  - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that _should_ be a CAS SHA, not a version tag as in the example above.
-  - `digest`: _must_ contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
+  - `imageType`: The `imageType` field is REQUIRED, and MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
+  - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
+  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
   - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
     - `path`: the path of the file where the value should be replaced
     - `field`:a selector specifying a location (or locations) within that file where the value should be replaced
@@ -233,7 +233,7 @@ Fields:
     - `os`: The operating system of the image
   - `mediaType`: The media type of the image
 
-Substitutions _must_ be supported for the following formats:
+Substitutions MUST be supported for the following formats:
 
 - JSON
 - YAML
@@ -255,7 +255,7 @@ TODO: How do we specify URI is a VM image (or Jar or other) instead of a Docker-
 
 ## Parameters
 
-The `parameters` section of the `bundle.json` defines which parameters a user (person installing a CNAB bundle) may _override_. Parameter specifications are flat (not tree-like), consisting of name/value pairs. The name is fixed, but the value may be overridden by the user. The parameter definition includes a specification on how to constrain the values submitted by the user.
+The `parameters` section of the `bundle.json` defines which parameters a user (person installing a CNAB bundle) MAY _override_. Parameter specifications are flat (not tree-like), consisting of name/value pairs. The name is fixed, but the value MAY be overridden by the user. The parameter definition includes a specification on how to constrain the values submitted by the user.
 
 ```json
 "parameters": {
@@ -279,26 +279,26 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
   - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
     - type: one of string, int, boolean
-    - required: if this is set to true, a value _must_ be specified (optional, not shown)
-    - defaultValue: The default value (optional)
-    - allowedValues: an array of allowed values (optional)
-    - minValue: Minimum value (for ints) (optional)
-    - maxValue: Maximum value (for ints) (optional)
-    - minLength: Minimum number of characters allowed in the field (for strings) (optional)
-    - maxLength: Maximum number of characters allowed in the field (for strings) (optional)
+    - REQUIRED: if this is set to true, a value MUST be specified (OPTIONAL, not shown)
+    - defaultValue: The default value (OPTIONAL)
+    - allowedValues: an array of allowed values (OPTIONAL)
+    - minValue: Minimum value (for ints) (OPTIONAL)
+    - maxValue: Maximum value (for ints) (OPTIONAL)
+    - minLength: Minimum number of characters allowed in the field (for strings) (OPTIONAL)
+    - maxLength: Maximum number of characters allowed in the field (for strings) (OPTIONAL)
     - metadata: Holds fields that are not used in validation
       - description: A user-friendly description of the parameter
     - destination: Indicates where (in the invocation image) the parameter is to be written
       - env: The name of an environment variable
       - path: The fully qualified path to a file that will be created
 
-Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names _may_ begin with a digit (approximately `[A-Z0-9_]+`).
+Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
 
 > The term _parameters_ indicates the present specification of what can be provided to a bundle. The term _values_ is frequently used to indicate the user-supplied values which are tested against the parameter definitions.
 
 ### Resolving Destinations
 
-When resolving destinations, there are three ways a particular parameter value may be placed into the invocation image. Here is an example illustrating all three:
+When resolving destinations, there are three ways a particular parameter value MAY be placed into the invocation image. Here is an example illustrating all three:
 
 ```json
 "parameters": {
@@ -338,13 +338,13 @@ The first parameter is `port`. This parameter has no destination field. Conseque
 PORT=8080
 ```
 
-If the `destination` field is set, at least one of `env` or `path` _must_ be specified. (Both may be provided).
+If the `destination` field is set, at least one of `env` or `path` MUST be specified. (Both MAY be provided).
 
 If `env` is set, the value of the parameter will be assigned to the given environment variable name. In the example in the previous section, `GREETING` is set to `hello`.
 
-If `path` is set, the value of the parameter will be written into a file at the specified location on the invocation image's filesystem. This file name _must not_ be present already on the invocation image's filesystem.
+If `path` is set, the value of the parameter will be written into a file at the specified location on the invocation image's filesystem. This file name MUST NOT be present already on the invocation image's filesystem.
 
-If both `env` and `path` are specified, implementations _must_ put a copy of the data in each destination.
+If both `env` and `path` are specified, implementations MUST put a copy of the data in each destination.
 
 ### Format of Parameter Specification
 
@@ -376,7 +376,7 @@ See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters ar
 
 ## Credentials
 
-A `bundle.json` may optionally contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that must be provided.
+A `bundle.json` MAY contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that MUST be provided.
 
 ```json
 "credentials": {
@@ -394,21 +394,21 @@ A `bundle.json` may optionally contain a section that describes which credential
 ```
 
 - The `credentials` container is a map of human-friendly credential names to a description of where the invocation image expects to find them.
-  - The name key must be human-readable
+  - The name key MUST be human-readable
     - `path` describes the _absolute path within the invocation image_ where the invocation image expects to find the credential
     - `env` contains _the name of an environment variable_ that the invocation image expects to have available when executing the CNAB `run` tool (covered in the next section).
 
-When _both a path and an env_ are specified, _only one is required_ (properties are disjunctive). To require two presentations of the same material, two separate entries must be made.
+When _both a path and an env_ are specified, _only one is REQUIRED_ (properties are disjunctive). To require two presentations of the same material, two separate entries MUST be made.
 
 ## Custom Actions
 
-Every implementation of a CNAB tool _must_ support three built-in actions:
+Every implementation of a CNAB tool MUST support three built-in actions:
 
 - `install`
 - `upgrade`
 - `uninstall`
 
-Implementations _may_ support user-defined additional actions as well. Such actions are exposed via the `bundle` definition file. An action definition contains an action _name_ followed by a description of that action:
+Implementations MAY support user-defined additional actions as well. Such actions are exposed via the `bundle` definition file. An action definition contains an action _name_ followed by a description of that action:
 
 ```json
 "actions": {
@@ -427,12 +427,12 @@ Each action is accompanied by a description, which contains the following fields
 
 - `modifies`: Indicates whether the given action will _modify resources_ in any way.
 
-The `modifies` field _must_ be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB _may_ use this information when describing history or managing releases.
+The `modifies` field MUST be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB MAY use this information when describing history or managing releases.
 
-An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image _should not_ handle actions that are not included by the default list (`install`, `upgrade, `uninstall`) and the custom actions section.
+An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image SHOULD NOT handle actions that are not included by the default list (`install`, `upgrade, `uninstall`) and the custom actions section.
 
-The built-in actions (`install`, `upgrade`, `uninstall`) _must not_ appear in the `actions` section, and an implementation _must not_ allow custom actions named `install`, `upgrade`, or `uninstall`.
+The built-in actions (`install`, `upgrade`, `uninstall`) MUST NOT appear in the `actions` section, and an implementation MUST NOT allow custom actions named `install`, `upgrade`, or `uninstall`.
 
-Implementations that do not support custom actions _must not_ emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it _must not_ fail to operate on bundles that declare custom actions.
+Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
 
 Next section: [The invocation image definition](102-invocation-image.md)

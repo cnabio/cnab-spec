@@ -2,7 +2,7 @@
 
 A _claim_ (or _claim receipt_) is a record of a CNAB installation. This document describes how the claim system works.
 
-CNAB implementations _may_ implement claims as an external storage mechanism. However, they _must_ inject information into an invocation image as explained in this document.
+CNAB implementations MAY implement claims as an external storage mechanism. However, they MUST inject information into an invocation image as explained in this document.
 
 ## Concepts of Package Management
 
@@ -34,13 +34,13 @@ https://cscope.sourceforge.io/
 From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/cscope.rb
 ```
 
-CNAB does not define where or how records are stored, nor how these records may be used by an implementation. However, it does describe how a CNAB-based system _must_ emit the record to an invocation image, and provides some guidance on maintaining integrity of the system.
+CNAB does not define where or how records are stored, nor how these records MAY be used by an implementation. However, it does describe how a CNAB-based system MUST emit the record to an invocation image, and provides some guidance on maintaining integrity of the system.
 
 This is done so that implementors can standardize on a way of relating a release claim (the record of a release) to release operations like `install`, `upgrade`, or `delete`. This, in turn, is necessary if CNAB bundles are expected to be executable by different implementations.
 
 ### Anatomy of a Claim
 
-While implementors are not required to implement claims, this is that standard format for claims-supporting systems.
+While implementors are not REQUIRED to implement claims, this is that standard format for claims-supporting systems.
 
 The CNAB claim is defined as a JSON document.
 
@@ -72,13 +72,13 @@ The CNAB claim is defined as a JSON document.
 }
 ```
 
-- name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It must be unique within the installation environment, though that constraint must be imposed externally. Elsewhere, this field is referenced as the _installation name_.
-- revision: An [ULID](https://github.com/ulid/spec) that must change each time the release is modified.
+- name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
+- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
 - bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md)
-- created: A timestamp indicating when this release claim was first created. This must not be changed after initial creation.
+- created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
 - updated: A timestamp indicating the last time this release claim was modified
 - result: The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
-  - message: A human-readable string that communicates the outcome. Error messages may be included in `failure` conditions.
+  - message: A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
   - action: Indicates the action that the current bundle is in. Valid actions are:
     - install
     - upgrade
@@ -89,11 +89,11 @@ The CNAB claim is defined as a JSON document.
   - status: Indicates the status of the last phase transition. Valid statuses are:
     - success: completed successfully
     - failure: failed before completion
-    - underway: in progress. This should only be used if the invocation container must exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
+    - underway: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
     - unknown: the state is unknown. This is an error condition.
-- parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations may choose not to store these for security or portability reasons.
+- parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons.
 
-> Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials must be re-supplied.
+> Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be re-supplied.
 
 TODO: What is the best timestamp format to use? Does JSON have a preference?
 
@@ -133,7 +133,7 @@ To satisfy these requirements, implementations of a CNAB package manager are exp
 
 ## Injecting Claim Data into an Invocation Image
 
-Complaint CNAB implementations _must_ conform to this section.
+Complaint CNAB implementations MUST conform to this section.
 
 The claim is produced outside of the CNAB package. The following claim data is injected
 into the invocation container at runtime:
@@ -186,7 +186,7 @@ If both commands exit with code `0`, then the resulting claim will look like thi
 }
 ```
 
-Tools that implement claims may then present `result` info to end users to show the result of running an invocation image.
+Tools that implement claims MAY then present `result` info to end users to show the result of running an invocation image.
 
 ## TODO
 
