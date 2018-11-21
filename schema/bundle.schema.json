@@ -1,0 +1,286 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://cnab.io/v1/bundle.schema.json",
+    "title": "CNAB1 Bundle Descriptor",
+    "description": "Cloud Native Application - Core version 1 - Bundle Descriptor",
+    "type": "object",
+    "properties": {
+        "schemaVersion":{
+            "description": "The version of the CNAB specification. This should always be the integer 1 for this schema version.",
+            "type": "string"
+        },
+        "name":{
+            "description": "The name of this bundle",
+            "type":"string"
+        },
+        "version":{
+            "description": "A SemVer2 version for this bundle",
+            "type": "string"
+        },
+        "description":{
+            "description": "A description of this bundle, intended for users",
+            "type": "string"
+        },
+        "keywords":{
+            "description": "A list of keywords describing the bundle, intended for users",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "maintainers":{
+            "description": "A list of parties responsible for this bundle, with contact info",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of party reponsible for this bundle",
+                    "type": "string"
+                },
+                "email":{
+                    "description": "Email address of responsible part",
+                    "type": "string"
+                },
+                "url":{
+                    "description": "URL about responsible party, perhaps containing additional contact info",
+                    "type": "string"
+                }
+            },
+            "required": ["name"]
+        },
+        "license":{
+            "description": "The SPDX license code or proprietary license name for this bundle",
+            "type": "string"
+        },
+        "invocationImages":{
+            "description": "The array of invocation image definitions for this bundle",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "image":{
+                        "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
+                        "type": "string"
+                    },
+                    "imageType":{
+                        "description": "The type of image. If this is not specified, 'oci' is assumed",
+                        "type": "string",
+                        "default": "oci"
+                    },
+                    "digest":{
+                        "description": "A cryptographic hash digest that can be used to validate the image. This may be interpreted differently based on imageType",
+                        "type": "string"
+                    },
+                    "size": {
+                        "description": "The image size in bytes",
+                        "type":"integer"
+                    },
+                    "platform":{
+                        "description": "The target platform",
+                        "type": "object",
+                        "properties": {
+                            "architecture": {
+                                "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
+                                "type": "string"
+                            },
+                            "os": {
+                                "description": "The operating system of the image (linux, windows, darwin,...)",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "mediaType":{
+                        "description": "The media type of the image",
+                        "type": "string"
+                    }
+                },
+                "required": ["image"]
+            }
+        },
+        "images":{
+            "description": "The array of application image definitions for this bundle",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "description": "A description of the purpose of this image",
+                        "type": "string"
+                    },
+                    "image":{
+                        "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
+                        "type": "string"
+                    },
+                    "imageType":{
+                        "description": "The type of image. If this is not specified, 'oci' is assumed",
+                        "type": "string",
+                        "default": "oci"
+                    },
+                    "digest":{
+                        "description": "A cryptographic hash digest that can be used to validate the image. This may be interpreted differently based on imageType",
+                        "type": "string"
+                    },
+                    "size": {
+                        "description": "The image size in bytes",
+                        "type":"integer"
+                    },
+                    "platform":{
+                        "description": "The target platform",
+                        "type": "object",
+                        "properties": {
+                            "architecture": {
+                                "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
+                                "type": "string"
+                            },
+                            "os": {
+                                "description": "The operating system of the image (linux, windows, darwin,...)",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "mediaType":{
+                        "description": "The media type of the image",
+                        "type": "string"
+                    },
+                    "refs": {
+                        "description": "The locations in the invocation image that reference this image. Used for rewriting",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "path": {
+                                    "description": "The path in the CNAB bundle to the file. It will be calculated from the root of the container",
+                                    "type": "string"
+                                },
+                                "field": {
+                                    "description": "The field to be replaced",
+                                    "type": "string"
+                                },
+                                "mediaType": {
+                                    "description": "The MIME type of the file, used for determining how to process it",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": ["image"]
+            }
+        },
+        "credentials":{
+            "description":"Credentials to be injected into the invocation image",
+            "type": "object",
+            "additionalProperties": {
+                "description": "Credentials are declared as name/object pairs",
+                "type": "object",
+                "properties": {
+                    "path":{
+                        "description": "The path inside of the invocation image where credentials are expected to appear",
+                        "type": "string"
+                    },
+                    "env":{
+                        "description": "The environment variable name, such as MY_VALUE, in which the credential is expected to appear",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "A user-friendly description of this credential",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "actions":{
+            "description": "Custom actions that can be triggered on this bundle",
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "modifies": {
+                        "description": "Must be set to true if any resource managed by this bundle is changed by this action",
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "extensions":{
+            "$comment": "reserved for future usage"
+        },
+        "parameters":{
+            "description": "Parameters that can be injected into the invocation image",
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "description": "data type of the parameter",
+                        "type":"string",
+                        "pattern":"^(string|int|boolean)$"
+                    },
+                    "required": {
+                        "description": "if true, this parameter must be supplied",
+                        "type": "boolean"
+                    },
+                    "defaultValue": {
+                        "description": "default value of this parameter",
+                        "$comment": "how do we specify that this could be?",
+                        "anyOf": [
+                            {"type": "string"},
+                            {"type": "integer"},
+                            {"type": "boolean"},
+                            {"type":"null"}
+                        ]
+                    },
+                    "allowedValues": {
+                        "description": "optional exhaustive list of allowed values",
+                        "type":"array"
+                    },
+                    "minValue": {
+                        "description": "Minimum integer value",
+                        "type": "integer"
+                    },
+                    "maxValue": {
+                        "description": "Maximum integer value",
+                        "type": "integer"
+                    },
+                    "minLength":{
+                        "description": "Minimum string or array length",
+                        "type": "integer"
+                    },
+                    "maxLength": {
+                        "description": "Maximum string or array length",
+                        "type": "integer"
+                    },
+                    "metadata":{
+                        "description": "Extra data about parameters",
+                        "type": "object",
+                        "properties": {
+                            "description": {
+                                "description": "Description of this parameter",
+                                "type":"string"
+                            }
+                        }
+                    },
+                    "destination": {
+                        "type": "object",
+                        "properties": {
+                            "path":{
+                                "description": "The path inside of the invocation image where parameter data is expected to appear",
+                                "type": "string"
+                            },
+                            "env":{
+                                "description": "The environment variable name, such as MY_VALUE, in which the parameter is expected to appear",
+                                "type": "string"
+                            },
+                            "description": {
+                                "description": "A user-friendly description of this credential",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "required": ["type"]
+            }
+        }
+        
+    },
+    "required": [ "name", "version", "invocationImages"]
+  }
