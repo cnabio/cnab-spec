@@ -23,7 +23,7 @@ Here is an example of a declarative CNAB bundle that uses the Azure Resource Man
 ```text
 arm-aci
 └── cnab
-    ├── Dockerfile
+    ├── build/Dockerfile
     ├── bundle.json
     └── app
         └── arm
