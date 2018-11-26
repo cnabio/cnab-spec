@@ -87,3 +87,14 @@ An implementation IS NOT compliant if it fails to satisfy one or more of the MUS
 
 [c99-unspecified]: http://www.open-std.org/jtc1/sc22/wg14/www/C99RationaleV5.10.pdf#page=18
 [rfc2119]: http://tools.ietf.org/html/rfc2119
+
+# Document Naming Conventions
+
+During the draft period of the specification, the documents are named according to the following convention:
+
+- `000-099` contains front matter
+- `100`-`799` contain the specification proper
+    - The first digit is the chapter number
+    - The following two digits are the section numbers
+- `800`-`899` is reserved for non-normative content (examples, patterns, best practices)
+- `900`-`999` is reserved for appendices 

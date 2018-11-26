@@ -439,3 +439,4 @@ The built-in actions (`install`, `upgrade`, `uninstall`) MUST NOT appear in the 
 Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
 
 Next section: [The invocation image definition](102-invocation-image.md)
+
