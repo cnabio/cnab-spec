@@ -27,6 +27,13 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
     "name": "helloworld",
     "version": "0.1.2",
     "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
+    "maintainers": [
+        {
+            "name": "Matt Butcher",
+            "email": "technosophos@gmail.com",
+            "url": "https://example.com"
+        }
+    ],
     "invocationImages": [
         {
             "imageType": "docker",
@@ -234,9 +241,9 @@ Fields:
   - `image`: The REQUIRED `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
   - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
   - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
-    - `path`: the path of the file where the value should be replaced
-    - `field`:a selector specifying a location (or locations) within that file where the value should be replaced
-    - `mediaType`: the media type of the file, which can be used to determine the file type. If unset, tooling may choose any strategy for detecting format
+    - `path`: The path of the file where the value should be replaced
+    - `field`: A selector specifying a location (or locations) within that file where the value should be replaced
+    - `mediaType`: The media type of the file, which can be used to determine the file type. If unset, tooling may choose any strategy for detecting format
   - `size`: The image size in bytes
   - `platform`: The target platform, as an object with two fields:
     - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
