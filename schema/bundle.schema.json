@@ -1,0 +1,309 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://cnab.io/v1/bundle.schema.json",
+    "title": "CNAB1 Bundle Descriptor",
+    "description": "Cloud Native Application - Core version 1 - Bundle Descriptor",
+    "type": "object",
+    "properties": {
+        "schemaVersion": {
+            "description": "The version of the CNAB specification. This should always be the integer 1 for this schema version.",
+            "type": "string"
+        },
+        "name":{
+            "description": "The name of this bundle",
+            "type": "string"
+        },
+        "version":{
+            "description": "A SemVer2 version for this bundle",
+            "type": "string",
+            "pattern": "v?([0-9]+)(\\.[0-9]+)?(\\.[0-9]+)?(-([0-9A-Za-z\\-]+(\\.[0-9A-Za-z\\-]+)*))?(\\+([0-9A-Za-z\\-]+(\\.[0-9A-Za-z\\-]+)*))?"
+        },
+        "description":{
+            "description": "A description of this bundle, intended for users",
+            "type": "string"
+        },
+        "keywords":{
+            "description": "A list of keywords describing the bundle, intended for users",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "maintainers":{
+            "description": "A list of parties responsible for this bundle, with contact info",
+            "type": "array",
+            "items": {
+                "description": "An object that describes a maintainer",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "Name of party reponsible for this bundle",
+                        "type": "string"
+                    },
+                    "email":{
+                        "description": "Email address of responsible party",
+                        "type": "string"
+                    },
+                    "url":{
+                        "description": "URL of the responsible party, perhaps containing additional contact info",
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["name"]
+        },
+        "license":{
+            "description": "The SPDX license code or proprietary license name for this bundle",
+            "type": "string"
+        },
+        "invocationImages":{
+            "description": "The array of invocation image definitions for this bundle",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/invocationImage"
+            }
+        },
+        "images":{
+            "description": "The array of application images installed by this bundle",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/image"
+            }
+        },
+        "credentials":{
+            "description":"Credentials to be injected into the invocation image",
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/credential"
+            }
+        },
+        "actions":{
+            "description": "Custom actions that can be triggered on this bundle",
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "modifies": {
+                        "description": "Must be set to true if the action can change any resource managed by this bundle",
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "extensions":{
+            "$comment": "reserved for future usage"
+        },
+        "parameters":{
+            "description": "Parameters that can be injected into the invocation image",
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/parameter"
+            }
+        }
+        
+    },
+    "required": [ "name", "version", "invocationImages"],
+    "definitions": {
+        "invocationImage": {
+            "description": "A bootstrapping image for the CNAB bundle.",
+            "type": "object",
+            "properties": {
+                "image":{
+                    "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
+                    "type": "string"
+                },
+                "imageType":{
+                    "description": "The type of image. If this is not specified, 'oci' is assumed",
+                    "type": "string",
+                    "default": "oci"
+                },
+                "digest":{
+                    "description": "A cryptographic hash digest that can be used to validate the image. This may be interpreted differently based on imageType",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "The image size in bytes",
+                    "type":"integer"
+                },
+                "platform":{
+                    "description": "The target platform",
+                    "type": "object",
+                    "properties": {
+                        "architecture": {
+                            "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
+                            "type": "string"
+                        },
+                        "os": {
+                            "description": "The operating system of the image (linux, windows, darwin,...)",
+                            "type": "string"
+                        }
+                    }
+                },
+                "mediaType":{
+                    "description": "The media type of the image",
+                    "type": "string"
+                }
+            },
+            "required": ["image"]
+        },
+        "image": {
+            "description": "An application image for this CNAB bundle",
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "A description of the purpose of this image",
+                    "type": "string"
+                },
+                "image":{
+                    "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
+                    "type": "string"
+                },
+                "imageType":{
+                    "description": "The type of image. If this is not specified, 'oci' is assumed",
+                    "type": "string",
+                    "default": "oci"
+                },
+                "digest":{
+                    "description": "A cryptographic hash digest that can be used to validate the image. This may be interpreted differently based on imageType",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "The image size in bytes",
+                    "type":"integer"
+                },
+                "platform":{
+                    "description": "The target platform",
+                    "type": "object",
+                    "properties": {
+                        "architecture": {
+                            "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
+                            "type": "string"
+                        },
+                        "os": {
+                            "description": "The operating system of the image (linux, windows, darwin,...)",
+                            "type": "string"
+                        }
+                    }
+                },
+                "mediaType":{
+                    "description": "The media type of the image",
+                    "type": "string"
+                },
+                "refs": {
+                    "description": "The locations in the invocation image that reference this image. Used for rewriting",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "path": {
+                                "description": "The path in the CNAB bundle to a file that references this image. It will be calculated from the root of the container",
+                                "type": "string"
+                            },
+                            "field": {
+                                "description": "The field to be replaced in the file specified by the 'path' property",
+                                "type": "string"
+                            },
+                            "mediaType": {
+                                "description": "The MIME type of the file, used for determining how to process it",
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["image"]
+        },
+        "credential": {
+            "description": "Credential defines a particular credential, and where it should be placed in the invocation image",
+            "type": "object",
+            "properties": {
+                "path":{
+                    "description": "The path inside of the invocation image where credentials will be mounted",
+                    "type": "string"
+                },
+                "env":{
+                    "description": "The environment variable name, such as MY_VALUE, into which the credential will be placed",
+                    "type": "string"
+                },
+                
+                "description": {
+                    "description": "A user-friendly description of this credential",
+                    "type": "string"
+                }
+            }
+        },
+        "parameter": {
+            "description": "A paramter that can be passed into the invocation image",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "The data type of the parameter",
+                    "type":"string",
+                    "pattern":"^(string|int|boolean)$"
+                },
+                "required": {
+                    "description": "If true, this parameter must be supplied",
+                    "type": "boolean"
+                },
+                "defaultValue": {
+                    "description": "The default value of this parameter",
+                    "anyOf": [
+                        {"type": "string"},
+                        {"type": "integer"},
+                        {"type": "boolean"},
+                        {"type":"null"}
+                    ]
+                },
+                "allowedValues": {
+                    "description": "An optional exhaustive list of allowed values",
+                    "type":"array"
+                },
+                "minValue": {
+                    "description": "Minimum integer value (ignored for non-integer parameters)",
+                    "type": "integer"
+                },
+                "maxValue": {
+                    "description": "Maximum integer value (ignored for non-integer parameters)",
+                    "type": "integer"
+                },
+                "minLength":{
+                    "description": "Minimum string length (ignored for non-string parameters)",
+                    "type": "integer"
+                },
+                "maxLength": {
+                    "description": "Maximum string length (ignored for non-string parameters)",
+                    "type": "integer"
+                },
+                "metadata":{
+                    "description": "Extra data about the parameter",
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "description": "Description of this parameter",
+                            "type":"string"
+                        }
+                    }
+                },
+                "destination": {
+                    "type": "object",
+                    "properties": {
+                        "path":{
+                            "description": "The path inside of the invocation image where parameter data is mounted",
+                            "type": "string"
+                        },
+                        "env":{
+                            "description": "The environment variable name, such as MY_VALUE, in which the parameter value is stored",
+                            "type": "string"
+                        },
+                        "description": {
+                            "description": "A user-friendly description of this parameter",
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": ["type"]
+        }
+    },
+    "additionalProperties": false
+}
