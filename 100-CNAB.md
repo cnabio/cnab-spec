@@ -21,11 +21,11 @@ The _bundle definition_ is a single file that contains the following information
 The canonical encoding of a bundle definition is a JSON-formatted file, which MAY be presented in one of two formats:
 
 - An unsigned JSON Object stored in a `bundle.json` file, as defined in [the bundle file definition](101-bundle-json.md)
-- A signed JSON object stored in a `bundle.cnab` file, as described in [the signature defintion](105-signing.md)
+- A signed JSON object stored in a `bundle.cnab` file, as described in [the signature definition](105-signing.md)
 
 In both cases, the object follows the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file").
 
-The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md )).
+The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md)).
 
 - A _thin bundle_ consists of just a bundle definition.
 - A _thick bundle_ consists of a packaged archive that contains both the bundle definition and an encoded representation of all of the invocation images and images.
@@ -65,9 +65,19 @@ Bundles are stored in _bundle repositories_. A bundle repository is a network-ac
 - `bundle.json`: The unsigned JSON-encoded representation of a bundle definition.
 - `bundle.cnab`: The signed JSON-encoded representation of a bundle definition.
 - Claim: A record of a particular installation of a bundle.
-- Image: Used generically, a container image (e.g. Docker) or a VM image.
+- Image: Used generically, a container image (e.g. OCI images) or a VM image.
 - Invocation Image: The  image that contains the bootstrapping and installation logic for the bundle
 - Repository: A storage and retrieval service for CNAB objects.
+
+Also, when referencing tooling, we use the following terms:
+
+- `CNAB runtime` or `runtime`: A program capable of reading a CNAB bundle and executing it
+- `CNAB builder` or `builder`: A program that can assemble a CNAB bundle
+- `bundle tooling`: Programs or tooling that generate CNAB bundle contents
+
+Individual tools may meet more than one of the definitions above, but we have chosen to separate them in order to offer guidance such as:
+
+> A runtime MUST support the 'install', 'upgrade', and 'uninstall' actions, while bundle tooling MAY choose not to implement 'upgrade'.
 
 ### The Definitions
 
@@ -78,7 +88,18 @@ The following subsections define the components of CNAB:
 - [The Bundle Runtime](103-bundle-runtime.md)
 - [The Claims System](104-claims.md)
 - [Signing and Provenance](105-signing.md)
-- [Bundle Repositories](107-repositories.md)
+
+The following sections define other systems in the CNAB ecosystem
+
+- [Bundle Repositories](200-repositories.md)
+
+The following sections contain non-normative guidance
+
+- [Declarative Bundles](801-declarative-images.md)
+
+The process for standardization is described in an appendix:
+
+- [Specification Process](901-process.md)
 
 ## History
 
