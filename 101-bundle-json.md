@@ -4,7 +4,7 @@ This section describes the format and function of the `bundle.json` document.
 
 A `bundle.json` is broken down into the following categories of information:
 
-- The schema version of the bundle
+- The schema version of the bundle, as a string with a `v` prefix. This schema is to be referenced as `v1` or `v1.0.0-WD`
 - The top-level package information (`name` and `version`)
     - name: The bundle name
     - version: Semantic version of the bundle
@@ -23,10 +23,17 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
 
 ```json
 {
-    "schemaVersion": "v1",
+    "schemaVersion": "v1.0.0-WD",
     "name": "helloworld",
     "version": "0.1.2",
     "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
+    "maintainers": [
+        {
+            "name": "Matt Butcher",
+            "email": "technosophos@gmail.com",
+            "url": "https://example.com"
+        }
+    ],
     "invocationImages": [
         {
             "imageType": "docker",
@@ -36,7 +43,8 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
     ],
     "images": [
         {
-            "name": "image1",
+            "image": "technosophos/microservice:1.2.3",
+            "description": "my microservice",
             "digest": "sha256:aaaaaaaaaaaa...",
             "uri": "urn:image1uri",
             "refs": [
@@ -77,7 +85,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
 
 ```json
 {
-    "schemaVersion": 1,
+    "schemaVersion": "v1",
     "name": "helloworld",
     "version": "1.0.0",
     "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
@@ -96,6 +104,8 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
     ],
     "images": [
         {
+            "image": "technosophos/helloworld:0.1.2",
+            "description": "helloworld microservice",
             "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
             "size": 1337,
             "digest": "sha256:bbbbbbbbbbbb...",
@@ -127,8 +137,11 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
             "path": "/etc/hostkey.txt",
             "env": "HOST_KEY"
         }
+    }
 }
 ```
+
+In descriptions below, fields marked REQUIRED MUST be present in any conformant bundle descriptor, while fields not thusly marked are considered optional.
 
 ## Name and Version: Identifying Metadata
 
@@ -167,13 +180,13 @@ image is selected using the current driver.
 ]
 ```
 
-The `imageType` field is REQUIRED, and MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
+The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
 
 > [Duffle](https://github.com/deis/duffle), the reference implementation of a CNAB installer, introduces a layer of user-customizable drivers which are type-aware. Images MAY be delegated to drivers for installation.
 
-The `image` field MUST give a path-like or URI-like representation of the location of the image. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
+The `image` field MUST give a path-like or URI-like representation of the location of the image. It is REQUIRED. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
-The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.). Unsigned bundles MAY omit this field.
+The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.) If this field is omitted, a runtime is not obligated to validate the image.
 
 The following OPTIONAL fields MAY be attached to an invocation image:
 
@@ -190,30 +203,32 @@ The `bundle.json` maps image metadata (name, origin, tag) to placeholders within
 The following illustrates an `images` section:
 
 ```json
-{ ​
-"images": [​
-        { ​
-            "name": "frontend",​
-            "uri": "gabrtv.azurecr.io/gabrtv/vote-frontend:a5ff67...",​
+{
+"images": [
+        { 
+            "description": "frontend",
+            "imageType": "docker",
+            "image": "gabrtv.azurecr.io/gabrtv/vote-frontend:a5ff67...",
             "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "refs": [​
-                {​
-                    "path": "./charts/azure-voting-app/values.yaml",​
-                    "field": "AzureVoteFront.deployment.image"​
-                }​
-            ]​
-        },​
-        { ​
-            "name": "backend",​
+            "refs": [
+                {
+                    "path": "./charts/azure-voting-app/values.yaml",
+                    "field": "AzureVoteFront.deployment.image"
+                }
+            ]
+        },
+        {
+            "description": "backend",
+            "imageType": "docker",
             "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "uri": "gabrtv.azurecr.io/gabrtv/vote-backend:a5ff67...",​
-            "refs": [​
-                {​
-                    "path": "./charts/azure-voting-app/values.yaml",​
-                    "field": "AzureVoteBack.deployment.image"​
-                }​
-            ]​
-        }​
+            "image": "gabrtv.azurecr.io/gabrtv/vote-backend:a5ff67...",
+            "refs": [
+                {
+                    "path": "./charts/azure-voting-app/values.yaml",
+                    "field": "AzureVoteBack.deployment.image"
+                }
+            ]
+        }
     ]
 }
 ```
@@ -221,12 +236,14 @@ The following illustrates an `images` section:
 Fields:
 
 - images: The list of dependent images
-  - `imageType`: The `imageType` field is REQUIRED, and MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`.
-  - `image`: The `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
-  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.). Unsigned bundles MAY omit this field.
+  - `description`: The description field provides additional context of the purpose of the image.
+  - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
+  - `image`: The REQUIRED `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
+  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
   - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
-    - `path`: the path of the file where the value should be replaced
-    - `field`:a selector specifying a location (or locations) within that file where the value should be replaced
+    - `path`: The path of the file where the value should be replaced
+    - `field`: A selector specifying a location (or locations) within that file where the value should be replaced
+    - `mediaType`: The media type of the file, which can be used to determine the file type. If unset, tooling may choose any strategy for detecting format
   - `size`: The image size in bytes
   - `platform`: The target platform, as an object with two fields:
     - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
@@ -276,10 +293,10 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
 ```
 
 - parameters: name/value pairs describing a user-overridable parameter
-  - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
+  - `<name>`: The name of the parameter. This is REQUIRED. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
-    - type: one of string, int, boolean
-    - REQUIRED: if this is set to true, a value MUST be specified (OPTIONAL, not shown)
+    - type: one of string, int, boolean (REQUIRED)
+    - required: if this is set to true, a value MUST be specified (OPTIONAL, not shown)
     - defaultValue: The default value (OPTIONAL)
     - allowedValues: an array of allowed values (OPTIONAL)
     - minValue: Minimum value (for ints) (OPTIONAL)
@@ -397,6 +414,7 @@ A `bundle.json` MAY contain a section that describes which credentials the bundl
   - The name key MUST be human-readable
     - `path` describes the _absolute path within the invocation image_ where the invocation image expects to find the credential
     - `env` contains _the name of an environment variable_ that the invocation image expects to have available when executing the CNAB `run` tool (covered in the next section).
+    - `description` contains a user-friendly description of the credential.
 
 When _both a path and an env_ are specified, _only one is REQUIRED_ (properties are disjunctive). To require two presentations of the same material, two separate entries MUST be made.
 
@@ -436,3 +454,4 @@ The built-in actions (`install`, `upgrade`, `uninstall`) MUST NOT appear in the 
 Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
 
 Next section: [The invocation image definition](102-invocation-image.md)
+

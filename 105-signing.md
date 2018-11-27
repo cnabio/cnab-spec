@@ -299,4 +299,4 @@ h3sGAYdx5fA5PfmweTCvc34qUvPVnw==
 
 When an agent has access to a retractions list or lists, it SHOULD evaluate the retractions for each request that would require loading the bundle. An agent MUST NOT install or upgrade a bundle it knows to be retracted without the express consent of the user.
 
-Next section: [declarative images](106-declarative-images.md)
+Next section: [Bundle Repositories](200-repositories.md)
