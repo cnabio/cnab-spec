@@ -37,7 +37,7 @@ CNAB_ACTION=install
 
 The _installation name_ is the name of the _instance of_ this application. Consider the situation where an application ("wordpress") is installed multiple times into the same cloud. Each installation MUST have a unique installation name, even though they will be installing the same CNAB bundle. Instance names MUST consist of Graph Unicode characters and MAY be user-readable. The Unicode Graphic characters include letters, marks, numbers, punctuation, symbols, and spaces, from categories L, M, N, P, S, Zs.
 
-The _bundle name_ is the name of the bundle (as represented in `bundle.json`'s `name` field). The specification of this field is in the [101-bundle-json.md](bundle definition).
+The _bundle name_ is the name of the bundle (as represented in `bundle.json`'s `name` field). The specification of this field is in the [bundle definition](101-bundle-json.md).
 
 The _action_ is one of the action verbs defined in the section below.
 

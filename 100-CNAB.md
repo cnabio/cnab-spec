@@ -20,12 +20,12 @@ The _bundle definition_ is a single file that contains the following information
 
 The canonical encoding of a bundle definition is a JSON-formatted file, which MAY be presented in one of two formats:
 
-- An unsigned JSON Object stored in `bundle.json` file, as defined in [101-bundle-json.md](the bundle file definition)
-- A signed JSON object stored in a `bundle.cnab` file, as described in [105-signing.md](the signature definition)
+- An unsigned JSON Object stored in `bundle.json` file, as defined in [the bundle file definition](101-bundle-json.md)
+- A signed JSON object stored in a `bundle.cnab` file, as described in [the signature definition](105-signing.md)
 
 In both cases, the object follows the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file").
 
-The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md )).
+The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md)).
 
 - A _thin bundle_ consists of just a bundle definition.
 - A _thick bundle_ consists of a packaged archive that contains both the bundle definition and an encoded representation of all of the invocation images and images.
@@ -42,7 +42,7 @@ The current distributed computing landscape involves a combination of executable
 
 A bundle is comprised of bundle definition and at least one _invocation image_. The invocation image's job is to install zero or more components into the host environment. Such components MAY include (but are not limited to) containers, functions, VMs, IaaS and PaaS layers, and service frameworks.
 
-The invocation image contains a standardized filesystem layout where metadata and installation data is stored in predictable places. A _run tool_ is a the executable entry point into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the main image. The invocation image is described in detail in [102-invocation-image.md](the invocation image definition).
+The invocation image contains a standardized filesystem layout where metadata and installation data is stored in predictable places. A _run tool_ is a the executable entry point into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the main image. The invocation image is described in detail in [the invocation image definition](102-invocation-image.md).
 
 _Actions_ are sent to the `run` command via environment variables. Actions determine whether a bundle is to be installed, upgraded, downgraded, or uninstalled.
 
