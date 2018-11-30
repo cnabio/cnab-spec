@@ -62,9 +62,9 @@ Similar tooling could choose to load the values by name from a database, vault, 
 Credentials must be injected into the runtime of the invocation image. The following strategies are known to work:
 
 - Environment Variables:
-    - Injected via environment variable services (Docker and Kubernetes)
-    - Loaded into VMs via cloud-init
+  - Injected via environment variable services (Docker and Kubernetes)
+  - Loaded into VMs via cloud-init
 - Paths:
-    - Mounted as volumes (or wrappers, such as Kubernetes secrets)
-    - Injected at runtime into the top layer of the container
-    - Loaded into VMs via cloud-init
+  - Mounted as volumes (or wrappers, such as Kubernetes secrets)
+  - Injected at runtime into the top layer of the container
+  - Loaded into VMs via cloud-init

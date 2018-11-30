@@ -17,7 +17,7 @@ The specification will proceed through the following phases:
 - *Working Draft (WD)*: During this phase, the specification is open for review. During this phase, major (breaking) changes may be made.
 - *Candidate Recommendation (CR)*: This phase indicates that a final review is immanent. During this phase, minor (non-breaking) changes may be made, and major changes will be considered if they present an immanent problem with the specification.
 - *Recommendation (REC)*: This phase indicates that the specification is stable, and the present version is no longer open for changes to the conformance of the specification
-    - W3C [class 1 and 2 changes](https://www.w3.org/2017/Process-20170301/#correction-classes) are allowed on a recommendation.
-    - W3C class 3 and 4 changes can be addressed in a _minor version update_.
+  - W3C [class 1 and 2 changes](https://www.w3.org/2017/Process-20170301/#correction-classes) are allowed on a recommendation.
+  - W3C class 3 and 4 changes can be addressed in a _minor version update_.
 
 And [errata section](https://www.w3.org/2017/Process-20170301/#rec-modify) may be added to a specification as an appendix, as a location for tracking clarifications and changes.

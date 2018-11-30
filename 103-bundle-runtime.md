@@ -68,7 +68,7 @@ elif [[ action == "uninstall" ]]; then
 fi
 ```
 
-This simple example executes Helm, installing the Wordpress chart with the default settings if `install` is sent, or deleting the installation if `uninstall` is sent.
+This simple example executes Helm, installing the WordPress chart with the default settings if `install` is sent, or deleting the installation if `uninstall` is sent.
 
 An implementation of a CNAB runtime MUST support sending the following actions to an invocation image:
 

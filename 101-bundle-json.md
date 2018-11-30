@@ -62,7 +62,7 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
             "minValue": 10,
             "maxValue": 10240,
             "metadata": {
-               "description": "The port that the backend will listen on"
+               "description": "The port that the back-end will listen on"
             }
         }
     },
@@ -352,7 +352,7 @@ When resolving destinations, there are three ways a particular parameter value M
 The first parameter is `port`. This parameter has no destination field. Consequently, it's value will be injected into an environment variable whose prefix is `CNAB_P_`, with a capitalized version of the name (`PORT`) appended.
 
 ```
-PORT=8080
+CNAB_P_PORT=8080
 ```
 
 If the `destination` field is set, at least one of `env` or `path` MUST be specified. (Both MAY be provided).
@@ -447,11 +447,10 @@ Each action is accompanied by a description, which contains the following fields
 
 The `modifies` field MUST be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB MAY use this information when describing history or managing releases.
 
-An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image SHOULD NOT handle actions that are not included by the default list (`install`, `upgrade, `uninstall`) and the custom actions section.
+An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image SHOULD NOT handle actions that are not included by the default list (`install`, `upgrade`, `uninstall`) and the custom actions section.
 
 The built-in actions (`install`, `upgrade`, `uninstall`) MUST NOT appear in the `actions` section, and an implementation MUST NOT allow custom actions named `install`, `upgrade`, or `uninstall`.
 
-Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
+Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an ismplementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
 
 Next section: [The invocation image definition](102-invocation-image.md)
-

@@ -208,7 +208,7 @@ The request MUST contain exactly one query parameter, `service=$servicename`, wh
 
 Service names are defined as a particular action (e.g. "upload-bundle") that both the client and the server understand for a particular operation, such as uploading bundles, logging in, fetching bundles, etc.
 
-Because the communication protocol between the client and the server is left up entirely to the implementaton of the requested service name, no request type (such as GET/POST/PUT/PATCH) is REQUIRED, but for demonstration purposes we are demonstrating the protocol using a GET request.
+Because the communication protocol between the client and the server is left up entirely to the implementation of the requested service name, no request type (such as GET/POST/PUT/PATCH) is REQUIRED, but for demonstration purposes we are demonstrating the protocol using a GET request.
 
 ```bash
 GET $REPO_URL?service=upload-bundle HTTP/1.1
@@ -314,7 +314,7 @@ In early versions of reference implementations of the CNAB spec, we experimented
 
 CNAB clients should be able to handle the entire repository lifecycle, from logging in, searching, publishing, and fetching bundles.
 
-As a reference implentation to the CNAB spec, Duffle implements the following commands to handle a CNAB repository's lifecycle:
+As a reference implementation to the CNAB spec, Duffle implements the following commands to handle a CNAB repository's lifecycle:
 
 - `duffle login` logs in to a bundle repository
 - `duffle logout` logs out from a bundle repository
