@@ -161,7 +161,7 @@ ANjudClHNUNQFojriAX8YAO4V2yGVg==
 -----END PGP SIGNATURE-----
 ```
 
-Note that because we have _clear signed_ the `bundle.json`, there is no longer any need to transmit the `bundle.json` separately from the signed bundle. In fact, due to encoding differences, it is _preferable to use the signed bundle in lieu of the unsigned bundle_. 
+Note that because we have _clear signed_ the `bundle.json`, there is no longer any need to transmit the `bundle.json` separately from the signed bundle. In fact, due to encoding differences, it is _preferable to use the signed bundle in lieu of the unsigned bundle_.
 
 ## Attestations
 
@@ -211,7 +211,7 @@ Cases MAY arise where a particular version (or versions) of a bundle should no l
 
 Reusing a release version to replace an insecure release with a secure one is _expressly prohibited_. For example, if release 2.3.1 of a bundle is deemed insecure, operators MUST NOT re-release a modified bundle as 2.3.1. The fixed version MUST modify a semantic component of the version number. For example, `2.3.2`, `2.4.0`, `3.0.0`, and even `2.3.2-alpha.1` are all acceptable increments. `2.3.1` and `2.3.1+1` are examples of forbidden version increments. Likewise, release `2.3.1` MUST NOT be renamed by semantic component. (e.g. 2.3.1-insecure is illegal, while 2.3.1+insecure is legal). For clarification on this policy, see the [SemVer 2 specification](https://semver.org).
 
-Instead, the prefered pattern is to retain the insecure release at its given release number, but issue a _retraction_.
+Instead, the preferred pattern is to retain the insecure release at its given release number, but issue a _retraction_.
 
 A *retraction* is a cryptographically signed indicator that a bundle MAY be installed.
 
@@ -252,7 +252,7 @@ A retraction is a clear signed JSON array.
 
 The `signature` field is OPTIONAL, but provides a content-specific test on the content retracted. It is only applicable to cases where a specific version is being retracted.
 
-The `version` field is OPTIONAL. If omitted, the entire Bundle is considerered retracted. When `version` is omitted, `signature` MUST be omitted.
+The `version` field is OPTIONAL. If omitted, the entire Bundle is considered retracted. When `version` is omitted, `signature` MUST be omitted.
 
 To specify a range of versions, a _SemVer range_ MAY be provided in the `version` field. In this case, a `signature` MUST be omitted.
 
@@ -272,7 +272,7 @@ Hash: SHA512
     },
     {
         "bundle": "helloseattle",
-        "reason": "the helloseattle tool has been removed do to licensing restrictions"
+        "reason": "the helloseattle tool has been removed due to licensing restrictions"
     },
     {
         "bundle": "fireflies",

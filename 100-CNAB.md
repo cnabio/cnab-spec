@@ -42,7 +42,7 @@ The current distributed computing landscape involves a combination of executable
 
 A bundle is comprised of a bundle definition and at least one _invocation image_. The invocation image's job is to install zero or more components into the host environment. Such components MAY include (but are not limited to) containers, functions, VMs, IaaS and PaaS layers, and service frameworks.
 
-The invocation image contains a standardized filesystem layout where metadata and installation data is stored in predictable places. A _run tool_ is a the executable entry point into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the main image. The invocation image is described in detail in [the invocation image definition](102-invocation-image.md).
+The invocation image contains a standardized filesystem layout where metadata and installation data is stored in predictable places. A _run tool_ is the executable entry point into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the invocation image. The invocation image is described in detail in [the invocation image definition](102-invocation-image.md).
 
 _Actions_ are sent to the `run` command via environment variables. Actions determine whether a bundle is to be installed, upgraded, downgraded, or uninstalled.
 
@@ -66,7 +66,7 @@ Bundles are stored in _bundle repositories_. A bundle repository is a network-ac
 - `bundle.cnab`: The signed JSON-encoded representation of a bundle definition.
 - Claim: A record of a particular installation of a bundle.
 - Image: Used generically, a container image (e.g. OCI images) or a VM image.
-- Invocation Image: The  image that contains the bootstrapping and installation logic for the bundle
+- Invocation Image: The image that contains the bootstrapping and installation logic for the bundle
 - Repository: A storage and retrieval service for CNAB objects.
 
 Also, when referencing tooling, we use the following terms:
