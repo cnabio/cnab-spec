@@ -68,3 +68,5 @@ Credentials must be injected into the runtime of the invocation image. The follo
   - Mounted as volumes (or wrappers, such as Kubernetes secrets)
   - Injected at runtime into the top layer of the container
   - Loaded into VMs via cloud-init
+
+Next section: [Base Bundles](803-base-bundles.md)

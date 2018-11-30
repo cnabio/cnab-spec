@@ -56,4 +56,4 @@ The middleware image (`cnab/armbase`) contains tooling that looks in predefined 
 
 While declarative invocation images are considered the best practice, they are non-normative because CNAB does not require specific images to be used as base images. The CNAB definition is focused on describing the conditions under which a bundle MAY be correctly packaged and executed. We have chosen, however, to not prescribe the shape of the CNAB executable.
 
-Next section: [Bundle repositories](107-repositories.md)
+Next section: [Credential Sets](802-credential-sets.md)
