@@ -32,3 +32,5 @@ The mechanisms for taking a base bundle and creating an extension bundle are not
 - A base bundle MAY define parameters and credentials in its bundle definition. In such cases, implementations of the base bundle pattern MAY wish to bubble this configuration up to the extension bundle via tooling.
 - The `/cnab/build` directory MAY be used to store tooling in a base bundle that extension bundles can use during bundle assembly.
 - Docker and other OCI tooling MAY provide mechanisms for creating a bundle by composing via more than one base image. The present specification does not prohibit composition, and this section of the specification is non-normative.
+
+Next section: [Process](901-process.md)

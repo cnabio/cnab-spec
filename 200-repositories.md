@@ -323,3 +323,5 @@ As a reference implementation to the CNAB spec, Duffle implements the following 
 - `duffle search` searches across logged in bundle repositories for bundles
 
 [bundle.json]: 101-bundle-json.md
+
+Next section: [Declarative Invocation Images](801-declarative-images.md)
