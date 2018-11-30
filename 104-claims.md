@@ -46,12 +46,12 @@ The CNAB claim is defined as a JSON document.
 
 ```json
 {
-  "name": "hellohelm",
+  "name": "technosophos.hellohelm",
   "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29",
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "modified": "2018-08-30T20:39:59.611068556-06:00",
   "bundle": {
-    "name": "hellohelm",
+    "name": "technosophos.hellohelm",
     "version": "0.1.0",
     "invocationImages": [
       {
@@ -169,11 +169,11 @@ If both commands exit with code `0`, then the resulting claim will look like thi
 
 ```json
 {
-    "name": "my_first_install",
+    "name": "technosophos.my_first_install",
     "revision": "01CN530TF9Q095VTRYP1M8797C",
     "bundle": {
         "uri": "hub.docker.com/technosophos/example_cnab",
-        "name": "example_cnab",
+        "name": "technosophos.example_cnab",
         "version": "0.1.0"
     },
     "created": "TIMESTAMP",

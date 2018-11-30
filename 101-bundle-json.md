@@ -6,9 +6,9 @@ A `bundle.json` is broken down into the following categories of information:
 
 - The schema version of the bundle, as a string with a `v` prefix. This schema is to be referenced as `v1` or `v1.0.0-WD`
 - The top-level package information (`name` and `version`)
-    - name: The bundle name
-    - version: Semantic version of the bundle
-    - description: Short description of the bundle
+  - name: The bundle name, including namespacing. The namespace can have one or more elements separated by a dot (e.g. `acme.tunnels.wordpress`). The left most element of the namespace is the most general moving toward more specific elements on the right.
+  - version: Semantic version of the bundle
+  - description: Short description of the bundle
 - Information on the invocation images, as an array
 - A list of images included with this bundle, as an array
 - A specification of which parameters MAY be overridden, and how those are to be validated
@@ -24,7 +24,7 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
 ```json
 {
     "schemaVersion": "v1.0.0-WD",
-    "name": "helloworld",
+    "name": "technosophos.helloworld",
     "version": "0.1.2",
     "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
     "maintainers": [
@@ -86,7 +86,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
 ```json
 {
     "schemaVersion": "v1",
-    "name": "helloworld",
+    "name": "technosophos.helloworld",
     "version": "1.0.0",
     "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
     "invocationImages": [

@@ -44,7 +44,7 @@ To that end, in a signed bundle, anything that shows up in the `invocationImages
 
 ```json
 {
-    "name": "helloworld",
+    "name": "technosophos.helloworld",
     "version": "0.1.2",
     "invocationImages": [
         {
@@ -112,7 +112,7 @@ For example, here is a `bundle.json`:
 
 ```json
 {
-    "name": "foo",
+    "name": "technosophos.foo",
     "version": "1.0",
     "invocationImages": [
         {
@@ -134,7 +134,7 @@ This is signed using the technique called _clear signing_ (OpenPGP, Section 7), 
 Hash: SHA512
 
 {
-    "name": "foo",
+    "name": "technosophos.foo",
     "version": "1.0",
     "invocationImages": [
         {

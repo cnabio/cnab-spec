@@ -180,7 +180,7 @@ Hash: SHA256
 
 {
     "schemaVersion": "v1",
-    "name": "helloworld",
+    "name": "technosophos.helloworld",
     "version": "2.0.0",
     "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
     ...
@@ -264,8 +264,8 @@ Link: <https://<host>:<port>/search?q=helloworld&page=2>; rel="next", <https://<
 {
     "apiVersion": "v1",
     "bundles": {
-        "bacongobbler/helloworld": "https://<host>:<port>/v2/bacongobbler/helloworld",
-        "radu-matei/helloworld": "https://<host>:<port>/v2/radu-matei/helloworld",
+        "bacongobbler.helloworld": "https://<host>:<port>/v2/bacongobbler/helloworld",
+        "radu-matei.helloworld": "https://<host>:<port>/v2/radu-matei/helloworld",
     }
 }
 ```
