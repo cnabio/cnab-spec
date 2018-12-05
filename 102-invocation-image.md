@@ -84,7 +84,7 @@ Example:
 FROM ubuntu:latest
 
 COPY ./Dockerfile /cnab/Dockerfile
-COPY ./bundle.json /cnab/manfiest.json
+COPY ./bundle.json /cnab/manifest.json
 COPY ./parameters.json /cnab/parameters.json
 
 RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
