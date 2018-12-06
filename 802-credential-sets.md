@@ -27,9 +27,9 @@ The description above indicates that there are three credentials required to exe
 
 The names on each credential are unique within the bundle:
 
-- kubeconfig
-- image_token
-- hostkey
+- `kubeconfig`
+- `image_token`
+- `hostkey`
 
 That name can be used to reference the credential from tooling. Consequently, tooling may choose to construct a map from an external value to the credential name.
 
@@ -52,7 +52,7 @@ credentials:
 This credential set tells the client application (`duffle`) to map CNAB bundle credential sections to certain local values:
 
 - When a bundle requests `kubeconfig`, a file will be loaded from the local file system and injected into the container at `/home/.kube/config`
-- When a bundle requests `image_token`, the literal value `1234aaaaa` will be loaded into the environment variable `AZ_IMAGE_TOKEN
+- When a bundle requests `image_token`, the literal value `1234aaaaa` will be loaded into the environment variable `AZ_IMAGE_TOKEN`
 - When a bundle requests `hostkey`, the local environment variable `$HOSTKEY` will be dereferenced, and its value injected into the container's `HOST_KEY` variable as well as the container's filesystem path `/etc/hostkey.txt`.
 
 Similar tooling could choose to load the values by name from a database, vault, or file.
