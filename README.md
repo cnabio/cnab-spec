@@ -30,7 +30,7 @@ The mailing list for e-mail communications:
 - Send emails to: [dev@opencontainers.org](mailto:dev@opencontainers.org)
 - To subscribe see: https://groups.google.com/a/opencontainers.org/forum/#!forum/dev
 
-And a #cnab Slack channel under
+Temporary #cnab Slack channel for related discussion in
 [CNCF's Slack workspace](https://slack.cncf.io/).
 
 ## Notational Conventions
