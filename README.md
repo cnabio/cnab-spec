@@ -24,6 +24,15 @@ Cloud Native Application Bundles (CNAB) are a package format specification that 
 
 The specification and code is licensed under the Apache 2.0 license found in the [LICENSE](./LICENSE) file.
 
+## Communications
+
+The mailing list for e-mail communications:
+- Send emails to: [dev@opencontainers.org](mailto:dev@opencontainers.org)
+- To subscribe see: https://groups.google.com/a/opencontainers.org/forum/#!forum/dev
+
+And a #cnab Slack channel under
+[CNCF's Slack workspace](https://slack.cncf.io/).
+
 ## Notational Conventions
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" are to be interpreted as described in [RFC 2119][rfc2119].
