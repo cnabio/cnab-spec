@@ -89,13 +89,12 @@ The following subsections define the components of CNAB:
 - [The Claims System](104-claims.md)
 - [Signing and Provenance](105-signing.md)
 
-The following sections define other systems in the CNAB ecosystem
-
-- [Bundle Repositories](200-repositories.md)
-
 The following sections contain non-normative guidance
 
 - [Declarative Bundles](801-declarative-images.md)
+- [Credential Sets](802-credential-sets.md)
+- [Base Bundles](803-base-bundles.md)
+- [Storing CNAB Bundles](804-repositories.md)
 
 The process for standardization is described in an appendix:
 

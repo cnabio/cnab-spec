@@ -6,8 +6,10 @@
     - [The Bundle Runtime](103-bundle-runtime.md)
     - [The Claims System](104-claims.md)
     - [Signing and Provenance](105-signing.md)
-2. [Cloud Native Application Bundle Repositories 1.0.0 (CNAB-Repo1)](200-repositories.md) 
-3. Non-normative Information
+2. Non-normative Sections
     - [Declarative Bundles](801-declarative-images.md)
-4. Process Documentation
+    - [Credential Sets](802-credential-sets.md)
+    - [Base Bundles](803-base-bundles.md)
+    - [Repositories](804-repositories.md)
+3. Process Documentation
     - [Specification Process](901-process.md)
