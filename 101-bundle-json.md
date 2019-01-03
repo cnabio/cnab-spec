@@ -68,10 +68,10 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
     },
     "credentials": {
         "kubeconfig": {
-            "path": "/home/.kube/config",
+            "path": "/home/.kube/config"
         },
         "image_token": {
-            "env": "AZ_IMAGE_TOKEN",
+            "env": "AZ_IMAGE_TOKEN"
         },
         "hostkey": {
             "path": "/etc/hostkey.txt",
@@ -128,10 +128,10 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
     },
     "credentials": {
         "kubeconfig": {
-            "path": "/home/.kube/config",
+            "path": "/home/.kube/config"
         },
         "image_token": {
-            "env": "AZ_IMAGE_TOKEN",
+            "env": "AZ_IMAGE_TOKEN"
         },
         "hostkey": {
             "path": "/etc/hostkey.txt",
@@ -398,10 +398,10 @@ A `bundle.json` MAY contain a section that describes which credentials the bundl
 ```json
 "credentials": {
     "kubeconfig": {
-        "path": "/home/.kube/config",
+        "path": "/home/.kube/config"
     },
     "image_token": {
-        "env": "AZ_IMAGE_TOKEN",
+        "env": "AZ_IMAGE_TOKEN"
     },
     "hostkey": {
         "path": "/etc/hostkey.txt",
