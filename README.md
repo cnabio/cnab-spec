@@ -22,7 +22,7 @@ Cloud Native Application Bundles (CNAB) are a package format specification that 
 
 ## Contributing
 
-The specification and code is licensed under the Apache 2.0 license found in the [LICENSE](./LICENSE) file.
+The specification is licensed under [OWF Contributor License Agreement 1.0 - Copyright and Patent](http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owf-contributor-license-agreement-1-0---copyright-and-patent) in the [LICENSE](./LICENSE) file.
 
 ## Communications
 
