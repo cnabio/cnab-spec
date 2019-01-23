@@ -42,7 +42,7 @@ This is done so that implementors can standardize on a way of relating a release
 
 While implementors are not REQUIRED to implement claims, this is that standard format for claims-supporting systems.
 
-The CNAB claim is defined as a JSON document.
+The CNAB claim is defined as a JSON document. The specification currently does not require that claims be formatted as Canonical JSON.
 
 ```json
 {

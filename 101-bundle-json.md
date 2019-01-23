@@ -2,6 +2,10 @@
 
 This section describes the format and function of the `bundle.json` document.
 
+The `bundle.json` file is a representation of bundle metadata. It MUST be represented as [Canonical JSON](http://wiki.laptop.org/go/Canonical_JSON). While Canonical JSON is parseable by any JSON parser, its serialized form is consistent. This is a necessity when comparing two textual representations of the same data (such as when hashing).
+
+> JSON data in this document has been formatted for readability using line breaks and indentation. This is not Canonical JSON. These examples were generated using the UNIX command `canonjson SOURCE.json | jq .` Where appropriate, the Canonical JSON text will also be provided. Small snippets of JSON may be shown in the order in which the fields are described (for clarity) rather than in Canonical JSON order.
+
 A `bundle.json` is broken down into the following categories of information:
 
 - The schema version of the bundle, as a string with a `v` prefix. This schema is to be referenced as `v1` or `v1.0.0-WD`
@@ -23,6 +27,7 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
 
 ```json
 {
+<<<<<<< HEAD
     "schemaVersion": "v1.0.0-WD",
     "name": "technosophos.helloworld",
     "version": "0.1.2",
@@ -64,26 +69,121 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
                "description": "The port that the back-end will listen on"
             }
         }
-    },
-    "credentials": {
-        "kubeconfig": {
-            "path": "/home/.kube/config"
-        },
-        "image_token": {
-            "env": "AZ_IMAGE_TOKEN"
-        },
-        "hostkey": {
-            "path": "/etc/hostkey.txt",
-            "env": "HOST_KEY"
+||||||| merged common ancestors
+    "schemaVersion": "v1.0.0-WD",
+    "name": "helloworld",
+    "version": "0.1.2",
+    "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
+    "maintainers": [
+        {
+            "name": "Matt Butcher",
+            "email": "technosophos@gmail.com",
+            "url": "https://example.com"
         }
+    ],
+    "invocationImages": [
+        {
+            "imageType": "docker",
+            "image": "technosophos/helloworld:0.1.0",
+            "digest": "sha256:aaaaaaa..."
+        }
+    ],
+    "images": [
+        {
+            "image": "technosophos/microservice:1.2.3",
+            "description": "my microservice",
+            "digest": "sha256:aaaaaaaaaaaa...",
+            "uri": "urn:image1uri",
+            "refs": [
+                {
+                    "path": "image1path",
+                    "field": "image.1.field"
+                }
+            ]
+        }
+    ],
+    "parameters": {
+        "backend_port" : {
+            "type" : "int",
+            "defaultValue": 80,
+            "minValue": 10,
+            "maxValue": 10240,
+            "metadata": {
+               "description": "The port that the back-end will listen on"
+            }
+        }
+=======
+  "credentials": {
+    "hostkey": {
+      "env": "HOST_KEY",
+      "path": "/etc/hostkey.txt"
+>>>>>>> Require Canonical JSON for bundle.json
+    },
+    "image_token": {
+      "env": "AZ_IMAGE_TOKEN"
+    },
+    "kubeconfig": {
+      "path": "/home/.kube/config"
     }
+  },
+  "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
+  "images": [
+    {
+      "description": "my microservice",
+      "digest": "sha256:aaaaaaaaaaaa...",
+      "image": "technosophos/microservice:1.2.3",
+      "refs": [
+        {
+          "field": "image.1.field",
+          "path": "image1path"
+        }
+      ],
+      "uri": "urn:image1uri"
+    }
+  ],
+  "invocationImages": [
+    {
+      "digest": "sha256:aaaaaaa...",
+      "image": "technosophos/helloworld:0.1.0",
+      "imageType": "docker"
+    }
+  ],
+  "maintainers": [
+    {
+      "email": "technosophos@gmail.com",
+      "name": "Matt Butcher",
+      "url": "https://example.com"
+    }
+  ],
+  "name": "helloworld",
+  "parameters": {
+    "backend_port": {
+      "defaultValue": 80,
+      "maxValue": 10240,
+      "metadata": {
+        "description": "The port that the back-end will listen on"
+      },
+      "minValue": 10,
+      "type": "int"
+    }
+  },
+  "schemaVersion": "v1.0.0-WD",
+  "version": "0.1.2"
 }
+```
+Source: [101.01-bundle.json](examples/101.01-bundle.json)
+
+The canonical JSON version of the above is:
+
+```json
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"},"image_token":{"env":"AZ_IMAGE_TOKEN"},"kubeconfig":{"path":"/home/.kube/config"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":[{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3","refs":[{"field":"image.1.field","path":"image1path"}],"uri":"urn:image1uri"}],"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"technosophos@gmail.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
 And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
 
 ```json
 {
+<<<<<<< HEAD
     "schemaVersion": "v1",
     "name": "technosophos.helloworld",
     "version": "1.0.0",
@@ -124,23 +224,118 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
                "description": "The port that the backend will listen on"
             }
         }
-    },
-    "credentials": {
-        "kubeconfig": {
-            "path": "/home/.kube/config"
-        },
-        "image_token": {
-            "env": "AZ_IMAGE_TOKEN"
-        },
-        "hostkey": {
-            "path": "/etc/hostkey.txt",
-            "env": "HOST_KEY"
+||||||| merged common ancestors
+    "schemaVersion": "v1",
+    "name": "helloworld",
+    "version": "1.0.0",
+    "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
+    "invocationImages": [
+        {
+            "imageType": "docker",
+            "image": "technosophos/helloworld:1.2.3",
+            "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+            "size": 1337,
+            "digest": "sha256:aaaaaaaaaaaa...",
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
         }
+    ],
+    "images": [
+        {
+            "image": "technosophos/helloworld:0.1.2",
+            "description": "helloworld microservice",
+            "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+            "size": 1337,
+            "digest": "sha256:bbbbbbbbbbbb...",
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    ],
+    "parameters": {
+        "backend_port" : {
+            "type" : "int",
+            "defaultValue": 80,
+            "minValue": 10,
+            "maxValue": 10240,
+            "metadata": {
+               "description": "The port that the backend will listen on"
+            }
+        }
+=======
+  "credentials": {
+    "hostkey": {
+      "env": "HOST_KEY",
+      "path": "/etc/hostkey.txt"
+>>>>>>> Require Canonical JSON for bundle.json
+    },
+    "image_token": {
+      "env": "AZ_IMAGE_TOKEN"
+    },
+    "kubeconfig": {
+      "path": "/home/.kube/config"
     }
+  },
+  "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
+  "images": [
+    {
+      "description": "helloworld microservice",
+      "digest": "sha256:bbbbbbbbbbbb...",
+      "image": "technosophos/helloworld:0.1.2",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
+      },
+      "size": 1337
+    }
+  ],
+  "invocationImages": [
+    {
+      "digest": "sha256:aaaaaaaaaaaa...",
+      "image": "technosophos/helloworld:1.2.3",
+      "imageType": "docker",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
+      },
+      "size": 1337
+    }
+  ],
+  "name": "helloworld",
+  "parameters": {
+    "backend_port": {
+      "defaultValue": 80,
+      "maxValue": 10240,
+      "metadata": {
+        "description": "The port that the backend will listen on"
+      },
+      "minValue": 10,
+      "type": "int"
+    }
+  },
+  "schemaVersion": "v1.0.0-WD",
+  "version": "1.0.0"
 }
 ```
+Source: [101.02-bundle.json](examples/101.02-bundle.json)
 
 In descriptions below, fields marked REQUIRED MUST be present in any conformant bundle descriptor, while fields not thusly marked are considered optional.
+
+## Schema Version
+
+Every `bundle.json` MUST have a `schemaVersion` element.
+
+The schema version must reference the version of the schema used for this document. It follows the [SemVer v2 specification](https://semver.org/). The following pre-release markers are recognized:
+
+- `WD` indicates that the document references a working draft of the specification, and is not considered stable.
+- `CR` indicates that the document references a candidate recommendation. Stability is not assured.
+
+The current schema version is `v1.0.0-WD`, which is considered unstable. 
 
 ## Name and Version: Identifying Metadata
 
@@ -172,9 +367,9 @@ image is selected using the current driver.
 ```json
 "invocationImages": [
     {
-        "imageType": "docker",
+        "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
         "image": "technosophos/helloworld:0.1.0",
-        "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
+        "imageType": "docker"
     }
 ]
 ```
@@ -474,6 +669,6 @@ An invocation image _ought_ to handle all custom targets declared in the `action
 
 The built-in actions (`install`, `upgrade`, `uninstall`) MUST NOT appear in the `actions` section, and an implementation MUST NOT allow custom actions named `install`, `upgrade`, or `uninstall`.
 
-Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an ismplementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
+Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
 
 Next section: [The invocation image definition](102-invocation-image.md)
