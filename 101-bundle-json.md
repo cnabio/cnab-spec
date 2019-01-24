@@ -327,14 +327,17 @@ Parameter specifications are flat (not tree-like), consisting of name/value pair
 - parameters: name/value pairs describing a user-overridable parameter
   - `<name>`: The name of the parameter. This is REQUIRED. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
-    - type: one of string, int, boolean (REQUIRED)
+    - type: "null", "boolean", "string", "number", or "integer". These types correspond to the main primitive types of JSON (with _integer_ as a special case). Objects and arrays are not supported, as the serialization of these is underdetermined. (REQUIRED)
     - required: if this is set to true, a value MUST be specified (OPTIONAL, not shown)
     - defaultValue: The default value (OPTIONAL)
-    - allowedValues: an array of allowed values (OPTIONAL)
-    - minValue: Minimum value (for ints) (OPTIONAL)
-    - maxValue: Maximum value (for ints) (OPTIONAL)
+    - enum (alias allowedValues): an array of allowed values (OPTIONAL)
+    - minimum (alias minValue): Minimum value (for numeric and integer) (OPTIONAL)
+    - exclusiveMinimum: Exclusive minimum value (for numeric and integer) (OPTIONAL) 
+    - maximum (alias maxValue): Maximum value (for numeric and integer) (OPTIONAL)
+    - exclusiveMaximum: Exclusive maximum value (for numeric and integer) (OPTIONAL)
     - minLength: Minimum number of characters allowed in the field (for strings) (OPTIONAL)
     - maxLength: Maximum number of characters allowed in the field (for strings) (OPTIONAL)
+    - pattern: An ECMA 262 regular expression that must match the string (OPTIONAL)
     - metadata: Holds fields that are not used in validation (OPTIONAL)
       - description: A user-friendly description of the parameter
     - destination: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
@@ -342,6 +345,10 @@ Parameter specifications are flat (not tree-like), consisting of name/value pair
       - path: The fully qualified path to a file that will be created
 
 Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
+
+Evaluation of the validation keywords should conform to the applicable sections of [Section 6 of the JSONSchema specification](https://tools.ietf.org/html/draft-handrews-json-schema-validation-01#section-6).
+
+Some validation terms have aliased keywords for backward compatibility with ARM template validators. A CNAB runtime SHOULD implement all aliases. A CNAB builder SHOULD NOT prefer the aliases over the regular names. In this way, aliases will be phased out. The present syntax is based on a subset of JSONSchema's validators.
 
 > The term _parameters_ indicates the present specification of what can be provided to a bundle. The term _values_ is frequently used to indicate the user-supplied values which are tested against the parameter definitions.
 
@@ -395,8 +402,8 @@ The structure of a parameters section looks like this:
         "allowedValues": [ "<array-of-allowed-values>" ],
         "minValue": <minimum-value-for-int>,
         "maxValue": <maximum-value-for-int>,
-        "minLength": <minimum-length-for-string-or-array>,
-        "maxLength": <maximum-length-for-string-or-array-parameters>,
+        "minimum": <minimum-length-for-string-or-array>,
+        "maximum": <maximum-length-for-string-or-array-parameters>,
         "metadata": {
             "description": "<description-of-the parameter>"
         },

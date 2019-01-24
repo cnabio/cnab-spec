@@ -248,7 +248,7 @@
                 "type": {
                     "description": "The data type of the parameter",
                     "type":"string",
-                    "pattern":"^(string|int|boolean)$"
+                    "pattern":"^(string|int|integer|numeric|null|boolean)$"
                 },
                 "required": {
                     "description": "If true, this parameter must be supplied",
@@ -264,15 +264,35 @@
                     ]
                 },
                 "allowedValues": {
+                    "description": "Alias of enum. Considered deprecated",
+                    "type":"array"
+                },
+                "enum": {
                     "description": "An optional exhaustive list of allowed values",
                     "type":"array"
                 },
                 "minValue": {
-                    "description": "Minimum integer value (ignored for non-integer parameters)",
+                    "description": "Deprecated alias of minimum",
+                    "type": "integer"
+                },
+                "minimum": {
+                    "description": "Minimum numeric value (ignored for non-numeric/integer parameters)",
+                    "type": "integer"
+                },
+                "exclusiveMinimum": {
+                    "description": "Exclusive minimum numeric value (ignored for non-numeric/integer parameters)",
                     "type": "integer"
                 },
                 "maxValue": {
+                    "description": "Deprecated alias of maximum",
+                    "type": "integer"
+                },
+                "maximum": {
                     "description": "Maximum integer value (ignored for non-integer parameters)",
+                    "type": "integer"
+                },
+                "exclusiveMaximum": {
+                    "description": "Exclusive maximum integer value (ignored for non-integer parameters)",
                     "type": "integer"
                 },
                 "minLength":{
@@ -282,6 +302,10 @@
                 "maxLength": {
                     "description": "Maximum string length (ignored for non-string parameters)",
                     "type": "integer"
+                },
+                "pattern": {
+                    "description": "ECMA 262 regular expression that must match a string value",
+                    "type": "string"
                 },
                 "metadata":{
                     "description": "Extra data about the parameter",
