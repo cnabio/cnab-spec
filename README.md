@@ -26,11 +26,17 @@ The specification is licensed under [OWF Contributor License Agreement 1.0 - Cop
 
 ## Communications
 
-The mailing list for e-mail communications:
+### Meetings
+* Community Meeting: Weekly - Wednesdays at 09:00 AM US Pacific
+  * https://zoom.us/j/653255416
+  * [Meeting notes and Agenda](https://aka.ms/cnab/meeting).
+
+### Mailing List
 - Send emails to: [dev@opencontainers.org](mailto:dev@opencontainers.org)
 - To subscribe see: https://groups.google.com/a/opencontainers.org/forum/#!forum/dev
 
-Temporary #cnab Slack channel for related discussion in
+### Slack Channel
+#cnab Slack channel for related discussion in
 [CNCF's Slack workspace](https://slack.cncf.io/).
 
 ## Notational Conventions
