@@ -190,8 +190,9 @@ The following fields are informational pieces of metadata designed to convey add
 
 ## Invocation Images
 
-The `invocationImages` section describes the images that contains the bootstrapping for the image. The appropriate invocation
-image is selected using the current driver.
+The `invocationImages` section describes the images that contains the bootstrapping for the image. The appropriate invocation image is selected using the current driver.
+
+A CNAB bundle MUST have at least one invocation image.
 
 ```json
 "invocationImages": [
@@ -485,7 +486,7 @@ The above declares to actions: `status` and `migrate`. This means that the assoc
 
 Each action is accompanied by a description, which contains the following fields:
 
-- `modifies`: Indicates whether the given action will _modify resources_ in any way.
+- `modifies`: Indicates whether the given action will _modify resources_ in any way. If not provided, it will be assumed `false`.
 - `description`: A human readable description of the action (OPTIONAL)
 - `stateless`: The action does not act on a claim, and does not require credentials. This is useful for exposing dry-run actions, printing documentation, etc. (OPTIONAL)
 
