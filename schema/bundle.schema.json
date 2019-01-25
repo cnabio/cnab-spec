@@ -117,10 +117,6 @@
                     "type": "string",
                     "default": "oci"
                 },
-                "digest":{
-                    "description": "A cryptographic hash digest that can be used to validate the image. This may be interpreted differently based on imageType",
-                    "type": "string"
-                },
                 "size": {
                     "description": "The image size in bytes",
                     "type":"integer"
@@ -162,10 +158,6 @@
                     "description": "The type of image. If this is not specified, 'oci' is assumed",
                     "type": "string",
                     "default": "oci"
-                },
-                "digest":{
-                    "description": "A cryptographic hash digest that can be used to validate the image. This may be interpreted differently based on imageType",
-                    "type": "string"
                 },
                 "size": {
                     "description": "The image size in bytes",

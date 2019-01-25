@@ -37,15 +37,13 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
     "invocationImages": [
         {
             "imageType": "docker",
-            "image": "technosophos/helloworld:0.1.0",
-            "digest": "sha256:aaaaaaa..."
+            "image": "technosophos/helloworld:0.1.0@sha256:aaaaaaa..."
         }
     ],
     "images": {
         "my-microservice": {
             "image": "technosophos/microservice:1.2.3",
             "description": "my microservice",
-            "digest": "sha256:aaaaaaaaaaaa...",
             "uri": "urn:image1uri",
             "refs": [
                 {
@@ -92,10 +90,9 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
     "invocationImages": [
         {
             "imageType": "docker",
-            "image": "technosophos/helloworld:1.2.3",
+            "image": "technosophos/helloworld:1.2.3@sha256:aaaaaaaaaaaa...",
             "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
             "size": 1337,
-            "digest": "sha256:aaaaaaaaaaaa...",
             "platform": {
                 "architecture": "amd64",
                 "os": "linux"
@@ -108,7 +105,6 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
             "description": "helloworld microservice",
             "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
             "size": 1337,
-            "digest": "sha256:bbbbbbbbbbbb...",
             "platform": {
                 "architecture": "amd64",
                 "os": "linux"
@@ -174,8 +170,7 @@ image is selected using the current driver.
 "invocationImages": [
     {
         "imageType": "docker",
-        "image": "technosophos/helloworld:0.1.0",
-        "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
+        "image": "technosophos/helloworld:0.1.0@sha:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
     }
 ]
 ```
@@ -186,7 +181,13 @@ The `imageType` field MUST describe the format of the image. The list of formats
 
 The `image` field MUST give a path-like or URI-like representation of the location of the image. It is REQUIRED. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
-The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.) If this field is omitted, a runtime is not obligated to validate the image.
+The image field is of the format:
+
+```
+REGISTRY/IMAGE:TAG@DIGEST
+```
+
+See the section on Resolving Image References for more information about the format of an image reference.
 
 The following OPTIONAL fields MAY be attached to an invocation image:
 
@@ -195,6 +196,20 @@ The following OPTIONAL fields MAY be attached to an invocation image:
   - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
   - `os`: The operating system of the image
 - `mediaType`: The media type of the image
+
+### Resolving Image References
+
+With invocation images and images that use the OCI image format, the referenced image is of the format `REGISTRY/IMAGE:TAG@DIGEST`.
+
+`REGISTRY` is optional. `IMAGE` is required. `TAG` is optional. `DIGEST` is optional, but strongly recommended.
+
+- If `IMAGE` is not specified, the runtime MUST fail with an error.
+- When `DIGEST` is specified, the runtime MUST use the version specified by that digest and MUST fail if an image of that digest cannot be found.
+- When no `DIGEST` is specified, but a `TAG` is specified, the runtime MUST use an image with that tag or fail.
+- When neither `DIGEST` nor `TAG` is defined, the behavior is undefined.
+- If `REGISTRY` is missing, a runtime SHOULD assume `dockerhub.io` is the registry. This matches the behavior of existing clients.
+
+For images that are not OCI images, the digest MAY be embedded using the `@digest` notation above. However, for such formats, `TAG`, `NAME`, and `REGISTRY` remain undefined in this spec.
 
 ## The Image Map
 
@@ -208,8 +223,7 @@ The following illustrates an `images` section:
         "frontend": { 
             "description": "frontend component image",
             "imageType": "docker",
-            "image": "gabrtv.azurecr.io/gabrtv/vote-frontend:a5ff67...",
-            "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
+            "image": "gabrtv.azurecr.io/gabrtv/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
             "refs": [
                 {
                     "path": "./charts/azure-voting-app/values.yaml",
@@ -220,8 +234,7 @@ The following illustrates an `images` section:
         "backend": {
             "description": "backend component image",
             "imageType": "docker",
-            "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "image": "gabrtv.azurecr.io/gabrtv/vote-backend:a5ff67...",
+            "image": "gabrtv.azurecr.io/gabrtv/vote-backend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
             "refs": [
                 {
                     "path": "./charts/azure-voting-app/values.yaml",
@@ -238,8 +251,7 @@ Fields:
 - images: The list of dependent images
   - `description`: The description field provides additional context of the purpose of the image. 
   - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
-  - `image`: The REQUIRED `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
-  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
+  - `image`: The REQUIRED `image` field provides a valid reference (`REGISTRY/NAME:TAG@DIGEST`) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above. See the section Resolving Image References for more information on how this is to be resolved.
   - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
     - `path`: The path of the file where the value should be replaced
     - `field`: A selector specifying a location (or locations) within that file where the value should be replaced
