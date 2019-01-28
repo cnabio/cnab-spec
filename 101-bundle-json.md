@@ -10,7 +10,7 @@ A `bundle.json` is broken down into the following categories of information:
     - version: Semantic version of the bundle
     - description: Short description of the bundle
 - Information on the invocation images, as an array
-- A list of images included with this bundle, as an array
+- A map of images included with this bundle, as a `component name` to `image definition` map
 - A specification of which parameters MAY be overridden, and how those are to be validated
 - A list of credentials (name and desired location) that the application needs
 - An OPTIONAL description of custom actions that this bundle implements
@@ -41,8 +41,8 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
             "digest": "sha256:aaaaaaa..."
         }
     ],
-    "images": [
-        {
+    "images": {
+        "my-microservice": {
             "image": "technosophos/microservice:1.2.3",
             "description": "my microservice",
             "digest": "sha256:aaaaaaaaaaaa...",
@@ -54,7 +54,7 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
                 }
             ]
         }
-    ],
+    },
     "parameters": {
         "backend_port" : {
             "type" : "int",
@@ -102,8 +102,8 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
             }
         }
     ],
-    "images": [
-        {
+    "images": {
+        "my-microservice": {
             "image": "technosophos/helloworld:0.1.2",
             "description": "helloworld microservice",
             "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
@@ -114,7 +114,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
                 "os": "linux"
             }
         }
-    ],
+    },
     "parameters": {
         "backend_port" : {
             "type" : "int",
@@ -196,7 +196,7 @@ The following OPTIONAL fields MAY be attached to an invocation image:
   - `os`: The operating system of the image
 - `mediaType`: The media type of the image
 
-## The Image List
+## The Image Map
 
 The `bundle.json` maps image metadata (name, origin, tag) to placeholders within the bundle. This allows images to be renamed, relabeled, or replaced during the CNAB bundle build operation. It also specifies the parameters that MAY be overridden in this image, giving tooling the ability to expose configuration options.
 
@@ -204,9 +204,9 @@ The following illustrates an `images` section:
 
 ```json
 {
-"images": [
-        { 
-            "description": "frontend",
+"images": {
+        "frontend": { 
+            "description": "frontend component image",
             "imageType": "docker",
             "image": "gabrtv.azurecr.io/gabrtv/vote-frontend:a5ff67...",
             "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
@@ -217,8 +217,8 @@ The following illustrates an `images` section:
                 }
             ]
         },
-        {
-            "description": "backend",
+        "backend": {
+            "description": "backend component image",
             "imageType": "docker",
             "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
             "image": "gabrtv.azurecr.io/gabrtv/vote-backend:a5ff67...",
@@ -229,14 +229,14 @@ The following illustrates an `images` section:
                 }
             ]
         }
-    ]
+    }
 }
 ```
 
 Fields:
 
 - images: The list of dependent images
-  - `description`: The description field provides additional context of the purpose of the image.
+  - `description`: The description field provides additional context of the purpose of the image. 
   - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
   - `image`: The REQUIRED `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
   - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
@@ -255,6 +255,8 @@ Substitutions MUST be supported for the following formats:
 - JSON
 - YAML
 - XML
+
+In addition to these substitutions, the image map data is also made available to the invocation image at runtime. See [Image map](103-bundle-runtime.md#image-map) for more details.
 
 ### Field Selectors
 

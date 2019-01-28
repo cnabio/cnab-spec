@@ -141,4 +141,91 @@ Credentials MAY be supplied as files on the file system. In such cases, the foll
 - If a file's permissions or metadata is incorrect, the run tool MAY try to remediate (e.g. run `chmod`), or MAY cause a fatal error
 - The run tool MAY modify credential files. Consequently, any runtime implementation MUST ensure that credentials changed inside of the invocation image will not result in modifications to the source.
 
+## <a name="image-map">Image maps</a>
+
+At runtime the `image` section of the CNAB is mounted in file `/cnab/app/image-map.json`. 
+For this example CNAB bundle:
+
+```json
+{
+    "schemaVersion": "v1.0.0-WD",
+    "name": "helloworld",
+    "version": "0.1.2",
+    "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
+    "maintainers": [
+        {
+            "name": "Matt Butcher",
+            "email": "technosophos@gmail.com",
+            "url": "https://example.com"
+        }
+    ],
+    "invocationImages": [
+        {
+            "imageType": "docker",
+            "image": "technosophos/helloworld:0.1.0",
+            "digest": "sha256:aaaaaaa..."
+        }
+    ],
+    "images": {
+        "my-microservice": {
+            "image": "technosophos/microservice:1.2.3",
+            "description": "my microservice",
+            "digest": "sha256:aaaaaaaaaaaa...",
+            "uri": "urn:image1uri",
+            "refs": [
+                {
+                    "path": "image1path",
+                    "field": "image.1.field"
+                }
+            ]
+        }
+    },
+    "parameters": {
+        "backend_port" : {
+            "type" : "int",
+            "defaultValue": 80,
+            "minValue": 10,
+            "maxValue": 10240,
+            "metadata": {
+               "description": "The port that the back-end will listen on"
+            }
+        }
+    },
+    "credentials": {
+        "kubeconfig": {
+            "path": "/home/.kube/config",
+        },
+        "image_token": {
+            "env": "AZ_IMAGE_TOKEN",
+        },
+        "hostkey": {
+            "path": "/etc/hostkey.txt",
+            "env": "HOST_KEY"
+        }
+    }
+}
+```
+
+The `/cnab/app/image-map.json` file mounted in the invocation image will be:
+
+```json
+{    
+    "my-microservice": {
+        "image": "technosophos/microservice:1.2.3",
+        "description": "my microservice",
+        "digest": "sha256:aaaaaaaaaaaa...",
+        "uri": "urn:image1uri",
+        "refs": [
+            {
+                "path": "image1path",
+                "field": "image.1.field"
+            }
+        ]
+    }
+}
+ 
+```
+
+The run tool MAY use this file to modify its behavior, if declarative substitution is not enough.
+
 Next Section: [The claims definition](104-claims.md)
