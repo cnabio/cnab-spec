@@ -95,7 +95,7 @@ The CNAB claim is defined as a JSON document.
 
 > Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be re-supplied.
 
-TODO: What is the best timestamp format to use? Does JSON have a preference?
+Timestamps in JSON are defined in the [ECMAScript specification](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-date-time-string-format), which matches the [ISO-8601 Extended Format](https://www.iso.org/iso-8601-date-and-time-format.html).
 
 ### ULIDs for Revisions
 
