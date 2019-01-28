@@ -45,6 +45,8 @@ Optionally, `CNAB_REVISION` MAY be passed, where this is a _unique string_ indic
 
 As specified in the `bundle.json`, some parameters MAY be injected into the environment as environment variables.
 
+A runtime MAY provide other `CNAB_`-prefixed variables. Parameters and credentials SHOULD NOT provide `CNAB_`-prefixed variables.
+
 ### Mounting Files
 
 Credentials and parameters MAY be mounted as files within the image's runtime filesystem. This definition does not specify how files are to be attached to an image. However, it specifies the conditions under which the files appear.
@@ -130,6 +132,8 @@ echo $CNAB_P_PORT
 The validation of user-supplied values MUST happen outside of the CNAB bundle. Implementations of CNAB bundle tools MUST validate user-supplied values against the `parameters` section of a `bundle.json` before injecting them into the image. The outcome of successful validation MUST be the collection containing all parameters where either the user has supplied a value (that has been validated) or the `parameters` section of `bundles.json` contains a `defaultValue`.
 
 The resulting calculated values are injected into the bundle before the bundle's `run` is executed (and also in such a way that the `run` has access to these variables.) This works analogously to `CNAB_ACTION` and `CNAB_INSTALLATION_NAME`.
+
+Resolution of conflicts in environment variable names is discussed in [the Bundle.json Description](101-bundle-json.md).
 
 ## Credential Files
 

@@ -420,6 +420,17 @@ A `bundle.json` MAY contain a section that describes which credentials the bundl
 
 When _both a path and an env_ are specified, _only one is REQUIRED_ (properties are disjunctive). To require two presentations of the same material, two separate entries MUST be made.
 
+### Resolving Destination Conflicts in Environment Variables and Paths
+
+Parameters and credentials may specify environment variables or paths as destinations.
+
+- Implementations SHOULD produce an error if a parameter and a credential use the same destination environment variable
+- Implementations SHOULD produce an error if a parameter and a credential use the same destination path
+- Implementations MUST NOT override a credential value with a parameter value
+- Implementations SHOULD NOT allow any parameter or credential to declare an environment variable with the prefix `CNAB_`
+- Implementations MUST NOT allow a parameter or credential to override any environment variable with the `CNAB_` prefix
+    - The `CNAB_` variables are defined in the [Bundle Runtime Description](./103-bundle-runtime.md) of this specification
+
 ## Custom Actions
 
 Every implementation of a CNAB tool MUST support three built-in actions:
