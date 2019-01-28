@@ -2,9 +2,11 @@
 *Working Draft, Nov. 2018*
 
 
-Cloud Native Application Bundles (CNAB) are a _standard packaging format_ for multi-component distributed applications. It allows packages to target different runtimes and architectures. It empowers application distributors to package applications for deployment on a wide variety of cloud platforms, cloud providers, and cloud services. It also provides the capabilities necessary for delivering multi-container applications in disconnected environments.
+The Cloud Native Application Bundle (CNAB) is a _standard packaging format_ for multi-component distributed applications. It allows packages to target different runtimes and architectures. It empowers application distributors to package applications for deployment on a wide variety of cloud platforms, providers, and services. Furthermore, it provides necessary capabilities for delivering multi-container applications in disconnected (airgapped) environments.
 
-CNAB is not a platform-specific tool. While it uses containers for encapsulating installation logic, it remains un-opinionated about what cloud environment it runs in. CNAB developers can bundle applications targeting environments spanning IaaS (like OpenStack or Azure), container orchestrators (like Kubernetes or Nomad), container runtimes (like local Docker or ACI), and cloud platform services (like object storage or Database as a Service). CNAB can also be used for packaging other distributed applications, such as IoT or edge computing.
+CNAB is not a platform-specific tool. While it uses *containers* for encapsulating installation logic, it remains un-opinionated about what cloud environment it runs in. CNAB developers can bundle applications targeting environments spanning IaaS (like OpenStack or Azure), container orchestrators (like Kubernetes or Nomad), container runtimes (like local Docker or ACI), and cloud platform services (like object storage or Database as a Service). 
+
+CNAB can also be used for packaging other distributed applications, such as IoT or edge computing.
 
 ## Summary
 
@@ -18,19 +20,21 @@ The _bundle definition_ is a single file that contains the following information
 - The list of executable images that this bundle will install
 - A list of credential paths or environment variables that this bundle requires to execute
 
-The canonical encoding of a bundle definition is a JSON-formatted file, which MAY be presented in one of two formats:
+The canonical encoding of a bundle definition is a JSON-formatted file, which MAY be presented in either signed or unsigned format.
 
-- An unsigned JSON Object stored in a `bundle.json` file, as defined in [the bundle file definition](101-bundle-json.md)
-- A signed JSON object stored in a `bundle.cnab` file, as described in [the signature definition](105-signing.md)
+- If unsigned, the CNAB is encoded as a JSON Object stored in a `bundle.json` file, as defined in [the bundle file definition](101-bundle-json.md)
+- If signed, the CNAB is encoded as a JSON object stored in a `bundle.cnab` file, as described in [the signature definition](105-signing.md)
 
-In both cases, the object follows the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file"). However, as a signed bundle definition represents an immutable bundle, all invocation images and images references must have a digest.
+In either case, CNAB has the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file"). 
+
+However, as a signed bundle definition represents an immutable bundle, all invocation images and images references must have a digest.
 
 The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md)).
 
 - A _thin bundle_ consists of just a bundle definition.
 - A _thick bundle_ consists of a packaged archive that contains both the bundle definition and an encoded representation of all of the invocation images and images.
 
-When thin bundles are processed, the referenced content (such as invocation images and other images) are retrieved from their respective storage repositories and registries. A bundle is considered to be _well formed_ if the bundle definition follows the schema and the images are in the correct formats. A bundle is considered _complete_ if it is packaged as a thick bundle, and all the components are present OR if it is packaged as a thin bundle and all of the references are resolvable. Completeness is thus in some cases contingent upon external factors such as network access.
+When thin bundles are processed, the referenced content (such as invocation images and other images) are retrieved from their respective storage repositories and registries. A bundle is considered to be _well formed_ if it's definition follows the CNAB schema and the images are in the correct formats. A bundle is considered _complete_ if it is packaged as a thick bundle, and all the components are present OR if it is packaged as a thin bundle and all of the references are resolvable. Completeness is thus in some cases contingent upon external factors such as network access.
 
 Bundles use cryptographic verification on multiple levels. Images (Docker, OCI, VM) are digested, and their cryptographic digest is then embedded into the `bundle.json`. The `bundle.json` is then signed using a public/private key system to ensure that it has not been tampered with. A signed bundle is named `bundle.cnab`. A bundle is considered _secure_ if the bundle definition contains the correct digests for all images, and the bundle definition is cryptographically signed.
 
