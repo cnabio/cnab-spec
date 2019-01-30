@@ -349,16 +349,16 @@ Parameter specifications are flat (not tree-like), consisting of name/value pair
 - `parameters`: name/value pairs describing a user-overridable parameter
   - `<name>`: The name of the parameter. This is REQUIRED. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
-    - `type`: "null", "boolean", "string", "number", or "integer". These types correspond to the main primitive types of JSON (with _integer_ as a special case). Objects and arrays are not supported, as the serialization of these is underdetermined. (REQUIRED)
+    - `type`: "null", "boolean", "string", "number", "integer", "bytes". These types correspond to the main primitive types of JSON (with _integer_ and _bytes_ as special cases). Objects and arrays are not supported, as the serialization of these is underdetermined. (REQUIRED)
     - `required`: if this is set to true, a value MUST be specified (OPTIONAL, not shown)
-    - `defaultValue`: The default value (OPTIONAL)
-    - `enum`: an array of allowed values (OPTIONAL)
+    - `defaultValue`: The default value. For type `bytes`, defaultValue is a string containing a base64 payload (OPTIONAL)
+    - `enum`: an array of allowed values. For type `bytes`, values must be strings containing a base64 payload (OPTIONAL)
     - `minimum`: Minimum value (for numeric and integer) (OPTIONAL)
     - `exclusiveMinimum`: Exclusive minimum value (for numeric and integer) (OPTIONAL) 
     - `maximum`: Maximum value (for numeric and integer) (OPTIONAL)
     - `exclusiveMaximum`: Exclusive maximum value (for numeric and integer) (OPTIONAL)
-    - `minLength`: Minimum number of characters allowed in the field (for strings) (OPTIONAL)
-    - `maxLength`: Maximum number of characters allowed in the field (for strings) (OPTIONAL)
+    - `minLength`: Minimum number of characters allowed in the field (for strings and bytes) (OPTIONAL)
+    - `maxLength`: Maximum number of characters allowed in the field (for strings and bytes) (OPTIONAL)
     - `pattern`: An ECMA 262 regular expression that must match the string (OPTIONAL)
     - `metadata`: Holds fields that are not used in validation (OPTIONAL)
       - `description`: A user-friendly description of the parameter
