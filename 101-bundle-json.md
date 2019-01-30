@@ -444,10 +444,16 @@ Implementations MAY support user-defined additional actions as well. Such action
 ```json
 "actions": {
     "status":{
-        "modifies": false
+        "modifies": false,
+        "description": "retrieves the status of an installation"
     },
     "migrate":{
         "modifies": false
+    },
+    "dry-run":{
+        "modifies": false,
+        "stateless": true,
+        "description": "prints what install would do with the given parameters values"
     }
 }
 ```
@@ -457,8 +463,13 @@ The above declares to actions: `status` and `migrate`. This means that the assoc
 Each action is accompanied by a description, which contains the following fields:
 
 - `modifies`: Indicates whether the given action will _modify resources_ in any way.
+- `description`: A human readable description of the action (OPTIONAL)
+- `stateless`: The action does not act on a claim, and does not require credentials. This is usefull for exposing dry-run actions, printing documentation, etc. (OPTIONAL)
 
 The `modifies` field MUST be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB MAY use this information when describing history or managing releases.
+
+The `stateless` field indicates that the runtime bypass credentials validation (the user MAY or MAY NOT pass any credentials), and will not keep track of this action. Primary intent is to provide Invocation Images to provide dry-run and detailed help functionalities.
+Stateless actions can be invoked on a non-existing installation.
 
 An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image SHOULD NOT handle actions that are not included by the default list (`install`, `upgrade`, `uninstall`) and the custom actions section.
 
