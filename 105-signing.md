@@ -53,11 +53,10 @@ To that end, in a signed bundle, anything that shows up in the `invocationImages
             "digest": "sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b"
         }
     ],
-    "images": [
-        {
-            "name": "image1",
+    "images": {
+        "image1": {
+            "image": "image1name:image1tag",
             "digest": "sha256:aaaa624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b",
-            "uri": "urn:image1uri",
             "refs": [
                 {
                     "path": "image1path",
@@ -65,7 +64,7 @@ To that end, in a signed bundle, anything that shows up in the `invocationImages
                 }
             ],
         }
-    ]
+    }
 }
 ```
 
