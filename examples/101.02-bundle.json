@@ -12,8 +12,8 @@
       }
     },
     "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
-    "images": [
-      {
+    "images": {
+      "my-microservice": {
         "description": "helloworld microservice",
         "digest": "sha256:bbbbbbbbbbbb...",
         "image": "technosophos/helloworld:0.1.2",
@@ -24,7 +24,7 @@
         },
         "size": 1337
       }
-    ],
+    },
     "invocationImages": [
       {
         "digest": "sha256:aaaaaaaaaaaa...",

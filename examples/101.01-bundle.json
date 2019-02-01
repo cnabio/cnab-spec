@@ -12,8 +12,8 @@
       }
     },
     "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
-    "images": [
-      {
+    "images": {
+      "my-microservice": {
         "description": "my microservice",
         "digest": "sha256:aaaaaaaaaaaa...",
         "image": "technosophos/microservice:1.2.3",
@@ -25,7 +25,7 @@
         ],
         "uri": "urn:image1uri"
       }
-    ],
+    },
     "invocationImages": [
       {
         "digest": "sha256:aaaaaaa...",
@@ -35,7 +35,7 @@
     ],
     "maintainers": [
       {
-        "email": "technosophos@gmail.com",
+        "email": "matt.butcher@microsoft.com",
         "name": "Matt Butcher",
         "url": "https://example.com"
       }
