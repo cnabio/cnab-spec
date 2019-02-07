@@ -304,9 +304,9 @@ The `parameters` section of the `bundle.json` defines which parameters a user (p
     - maxValue: Maximum value (for ints) (OPTIONAL)
     - minLength: Minimum number of characters allowed in the field (for strings) (OPTIONAL)
     - maxLength: Maximum number of characters allowed in the field (for strings) (OPTIONAL)
-    - metadata: Holds fields that are not used in validation
+    - metadata: Holds fields that are not used in validation (OPTIONAL)
       - description: A user-friendly description of the parameter
-    - destination: Indicates where (in the invocation image) the parameter is to be written
+    - destination: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
       - env: The name of an environment variable
       - path: The fully qualified path to a file that will be created
 

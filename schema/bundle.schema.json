@@ -302,7 +302,7 @@
                     }
                 }
             },
-            "required": ["type"]
+            "required": ["type", "destination"]
         }
     },
     "additionalProperties": false
