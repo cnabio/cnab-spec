@@ -46,7 +46,6 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
             "image": "technosophos/microservice:1.2.3",
             "description": "my microservice",
             "digest": "sha256:aaaaaaaaaaaa...",
-            "uri": "urn:image1uri",
             "refs": [
                 {
                     "path": "image1path",
