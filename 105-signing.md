@@ -67,7 +67,7 @@ To that end, in a signed bundle, anything that shows up in the `invocationImages
 }
 ```
 
-Non-OCI images may still append digests using the `@DIGESET` form above. A runtime must be able to translate such a reference to the appropriate image, and perform the appropriate validation.
+Non-OCI images may still append digests using the `@DIGEST` form above. A runtime must be able to translate such a reference to the appropriate image, and perform the appropriate validation.
 
 Different formats (viz. OCI) provide definitions for validating a digest. Images SHOULD be validated using these definitions, according to their `imageType`. If a particular image type does not already define what it means to have a digest verified, the default method is to retrieve the object as-is, and checksum it in the format in which it was delivered when accessed.
 
