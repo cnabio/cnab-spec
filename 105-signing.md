@@ -40,7 +40,7 @@ sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b
 
 CNAB is composed of a `bundle.json` and a number of supporting images. Those images are referenced by the `bundle.json`. Thus, digesting those artifacts and including their digest in the `bundle.json` provides a convenient way to store (and locate) digests.
 
-To that end, in a signed bundle, anything that shows up in the `invocationImages` or `images` section of the `bundle.json` MUST have a digest attached to the image:
+To that end, in a signed bundle, anything that shows up in the `invocationImages` or `images` section of the `bundle.json` MUST have a digested image reference:
 
 ```json
 {
