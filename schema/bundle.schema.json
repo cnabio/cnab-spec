@@ -86,6 +86,14 @@
                     "modifies": {
                         "description": "Must be set to true if the action can change any resource managed by this bundle",
                         "type": "boolean"
+                    },
+                    "description": {
+                        "description": "A description of the purpose of this action",
+                        "type": "string"
+                    },
+                    "stateless":{
+                        "description": "Indicates that the action is purely informational, that credentials are not required, and that the runtime should not keep track of its invocation",
+                        "type": "boolean"
                     }
                 }
             }
