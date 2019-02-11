@@ -78,7 +78,7 @@
             }
         },
         "actions":{
-            "description": "Custom actions that can be triggered on this bundle",
+            "description": "Custom actions that can be triggered on this bundle, action name should be namespaced and use reverse DNS notation",
             "type": "object",
             "additionalProperties": {
                 "type": "object",
