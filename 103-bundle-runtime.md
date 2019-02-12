@@ -135,7 +135,7 @@ An invocation image MAY implement any of the following well known custom actions
     }
 }
 ```
-  - Additionaly to the fields defined above, an invocation image MAY add custom fields as they want. To avoid amiguous naming, those fields names MAY be namespaced. An example of that could be a CNAB bundle deploying Kubernetes workloads and exposing scale details:
+  - Additionaly to the fields defined above, an invocation image MAY add custom fields as they want. To avoid ambiguous naming, those fields names MAY be namespaced. An example of that could be a CNAB bundle deploying Kubernetes workloads and exposing scale details:
 ```json
 {
     "status": "Pending",
