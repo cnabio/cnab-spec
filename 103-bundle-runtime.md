@@ -91,7 +91,7 @@ An invocation image MAY implement any of the following well known custom actions
 - `io.cnab.help` (with `stateless`: true and `modifies`: false): print an help message to the standard output. Implementations MAY print different messages depending on the parameters values passed to the invocation image.
 - `io.cnab.log` (with `stateless`: false and `modifies`: false): print logs of the installed system to the standard output.
 - `io.cnab.status` (with `stateless`: false and `modifies`: false): print a human readable status message to the standard output.
-- `io.cnab.status+json` (with `stateless`: false and `modifies`: false): print a json payload describing the detailed status with the following schema:
+- `io.cnab.status+json` (with `stateless`: false and `modifies`: false): print a json payload describing the detailed status with the following schema ([here](schema/status.schema.json) is the json schema for this):
 
 ```json
 {
