@@ -95,7 +95,7 @@ An invocation image MAY implement any of the following well known custom actions
 ```json
 {
     "status": "Failed",
-    "message": "Component frontend failed to deploy properly",
+    "message": "Component front-end failed to deploy properly",
     "components":{
         "backend": {
             "status": "Ready"
@@ -109,15 +109,39 @@ An invocation image MAY implement any of the following well known custom actions
 ```
   - `status` is a value indicating the deployment status of a component or of the whole bundle. Well known values are `Failed`, `Ready`, `Pending`. An invocation image MAY use other custom-values, but tools must at least understand those values.
   - `message` optional field giving details about the current bundle or component status.
-  - `components`: map of components/statuses allowing a more detailed status. A component can itself have subcomponent, to enable scenarios like aggregating statuses in CNABs composed of other CNABs.
-  - Additionaly to the fields defined above, an invocation image MAY add custom fields as they want. An example of that could be a CNAB bundle deploying Kubernetes workloads and exposing scale details:
+  - `components`: map of components/statuses allowing a more detailed status. A component can itself have subcomponent, to enable scenarios like aggregating statuses in CNABs composed of other CNABs. e.g.:
+```json
+{
+    "status": "Ready",
+    "components": {
+        "gke": {
+            "status" : "Ready",
+            "components": {
+                "kube-api": {
+                    "status": "Ready"
+                },
+                "network": {
+                    "status": "Ready"
+                },
+                "scheduler": {
+                    "status": "Ready"
+                }
+            }
+        },
+        "wordpress": {
+            "status": "Ready"
+        }
+    }
+}
+```
+  - Additionaly to the fields defined above, an invocation image MAY add custom fields as they want. To avoid amiguous naming, those fields names MAY be namespaced. An example of that could be a CNAB bundle deploying Kubernetes workloads and exposing scale details:
 ```json
 {
     "status": "Pending",
     "components":{
         "backend": {
             "status": "Ready",
-            "scale": {
+            "com.example.scale": {
                 "desired": 3,
                 "actual": 3,
                 "failed": 0,
@@ -126,7 +150,7 @@ An invocation image MAY implement any of the following well known custom actions
         },
         "front-end": {
             "status": "Pending",
-            "scale": {
+            "com.example.scale": {
                 "desired": 3,
                 "actual": 2,
                 "failed": 0,
