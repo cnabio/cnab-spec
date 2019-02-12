@@ -6,6 +6,7 @@ This document outlines how CNAB bundles use a multi-layered fingerprinting and s
 
 ## Summary
 
+- The JSON data MUST be represented as [Canonical JSON](http://wiki.laptop.org/go/Canonical_JSON)
 - Every image and invocation image field in the `bundle.json` MUST have a `digest:` field that MUST contain a digest of the image.
 - Digests are computed in accordance with the underlying image type (e.g. OCI bundles are validated by computing the top hash of a Merkle tree, VM images are computed by digest of the image)
 - Signed bundles are clear-signed `bundle.json` files according to the Open PGP specification. When present, these are used in lieu of the unsigned `bundle.json` file.
