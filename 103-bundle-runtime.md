@@ -87,6 +87,7 @@ A bundle MUST exit with an error if the action is executed, but fails to run to 
 #### Well known custom actions
 
 An invocation image MAY implement any of the following well known custom actions. A CNAB indicates that it supports those actions by including them in its custom action list (as defined in [the bundle definition](101-bundle-json.md)).
+- `io.cnab.dry-run` (with `stateless`: true and `modifies`: false): execute the installation in a dry-run mode, allowing to see what would happen with the given set of parameter values.
 - `io.cnab.help` (with `stateless`: true and `modifies`: false): print an help message to the standard output. Implementations MAY print different messages depending on the parameters values passed to the invocation image.
 - `io.cnab.log` (with `stateless`: false and `modifies`: false): print logs of the installed system to the standard output.
 - `io.cnab.status` (with `stateless`: false and `modifies`: false): print a human readable status message to the standard output.
