@@ -502,22 +502,22 @@ The built-in actions (`install`, `upgrade`, `uninstall`) MUST NOT appear in the 
 
 Implementations that do not support custom actions MUST NOT emit errors (either runtime or validation) if a bundle defines custom actions. That is, even if an implementation cannot execute custom actions, it MUST NOT fail to operate on bundles that declare custom actions.
 
-## Extensions
+## Custom Extensions
 
-In many cases, the bundle descriptor is a sufficient artifact for delivering a CNAB bundle, since invocation images and other images may be retrieved from registries and repositories. Consequently, it is important to provide an extension mechanism. An _extension_ is a named collection of auxiliary data whose meaning is defined outside of this specification.
+In many cases, the bundle descriptor is a sufficient artifact for delivering a CNAB bundle, since invocation images and other images may be retrieved from registries and repositories. Consequently, it is important to provide an extension mechanism. A _custom extension_ is a named collection of auxiliary data whose meaning is defined outside of this specification.
 
-Tools MAY define and declare additional fields inside of the `extensions` section. Tools MUST NOT define additional fields anywhere else in the bundle descriptor. Implementations MAY produce an error or MAY ignore additional fields outside of the extension. However, implementations SHOULD preserve the data inside of the `extensions` section even when that information is not understood by the implementation.
+Tools MAY define and declare additional fields inside of the `custom` section. Tools MUST NOT define additional fields anywhere else in the bundle descriptor. Implementations may produce an error or may ignore additional fields outside of the extension. However, implementations SHOULD preserve the data inside of the `custom` section even when that information is not understood by the implementation.
 
-The `extensions` 
+The `custom` object is used as follows:
 
 ```json
 {
-    "extensions": {
-        "example.com/duffle-bag": {
+    "custom": {
+        "com.example.duffle-bag": {
             "icon": "https://example.com/icon.png",
             "iconType": "PNG"
         },
-        "example.com/backup-preferences": {
+        "com.example.backup-preferences": {
             "frequency": "daily"
         }
     }
@@ -537,18 +537,10 @@ The format is:
 The fields are defined as follows:
 
 - `extensions` defines the wrapper object for extensions
-  - EXTENSION NAME: a unique name for an extension. Names SHOULD follow the format `DOMAIN/PATH`, where DOMAIN conforms to the DNS naming convention, and path elements are separated by forward slashes (`/`).
+  - EXTENSION NAME: a unique name for an extension. Names SHOULD follow the reverse DNS format `DOMAIN.ADDITIONAL.INFORMATION`, where DOMAIN conforms to the reverse DNS naming convention (`com.example` or `io.cnab`), and additional elements are separated by dots (`.`).
   - The value of the extension must be valid JSON, but is otherwise undefined.
 
 The usage of extensions is undefined. However, bundles SHOULD be installable by runtimes that do not understand the extensions.
-
-### Additional Files
-
-The CNAB core specification does not define files in addition to the bundle descriptor, the exported bundle, and (to a lesser degree) the invocation images.
-
-The specification does not prohibit runtimes or tools from using external files for auxiliary purposes. However, a conformant CNAB bundle MUST be executable without extra files. Thus, extensions MAY incorporate other files.
-
-It is beyond the scope of the specification to determine how those files are to be transmitted, stored, or retrieved.
 
 
 Next section: [The invocation image definition](102-invocation-image.md)
