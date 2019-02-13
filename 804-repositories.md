@@ -9,4 +9,4 @@ CNAB bundles can be stored in [OCI Distribution-compliant repository](https://gi
 _This section is under active discussion and design_
 
 
-Next section: [Standardization Process](901-process.md)
+Next section: [Well known custom actions](805-well-known-custom-actions.md)

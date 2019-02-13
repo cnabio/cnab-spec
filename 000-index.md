@@ -11,5 +11,6 @@
     - [Credential Sets](802-credential-sets.md)
     - [Base Bundles](803-base-bundles.md)
     - [Repositories](804-repositories.md)
+    - [Well known custom actions](805-well-known-custom-actions.md)
 3. Process Documentation
     - [Specification Process](901-process.md)
