@@ -152,82 +152,79 @@ For this example CNAB bundle:
 
 ```json
 {
-    "schemaVersion": "v1.0.0-WD",
-    "name": "helloworld",
-    "version": "0.1.2",
-    "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
-    "maintainers": [
-        {
-            "name": "Matt Butcher",
-            "email": "technosophos@gmail.com",
-            "url": "https://example.com"
-        }
-    ],
-    "invocationImages": [
-        {
-            "imageType": "docker",
-            "image": "technosophos/helloworld:0.1.0",
-            "digest": "sha256:aaaaaaa..."
-        }
-    ],
-    "images": {
-        "my-microservice": {
-            "image": "technosophos/microservice:1.2.3",
-            "description": "my microservice",
-            "digest": "sha256:aaaaaaaaaaaa...",
-            "uri": "urn:image1uri",
-            "refs": [
-                {
-                    "path": "image1path",
-                    "field": "image.1.field"
-                }
-            ]
-        }
+  "credentials": {
+    "hostkey": {
+      "env": "HOST_KEY",
+      "path": "/etc/hostkey.txt"
     },
-    "parameters": {
-        "backend_port" : {
-            "type" : "int",
-            "defaultValue": 80,
-            "minValue": 10,
-            "maxValue": 10240,
-            "metadata": {
-               "description": "The port that the back-end will listen on"
-            }
-        }
+    "image_token": {
+      "env": "AZ_IMAGE_TOKEN"
     },
-    "credentials": {
-        "kubeconfig": {
-            "path": "/home/.kube/config",
-        },
-        "image_token": {
-            "env": "AZ_IMAGE_TOKEN",
-        },
-        "hostkey": {
-            "path": "/etc/hostkey.txt",
-            "env": "HOST_KEY"
-        }
+    "kubeconfig": {
+      "path": "/home/.kube/config"
     }
+  },
+  "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
+  "images": {
+    "my-microservice": {
+      "description": "my microservice",
+      "digest": "sha256:aaaaaaaaaaaa...",
+      "image": "technosophos/microservice:1.2.3",
+      "refs": [
+        {
+          "field": "image.1.field",
+          "path": "image1path"
+        }
+      ]
+    }
+  },
+  "invocationImages": [
+    {
+      "digest": "sha256:aaaaaaa...",
+      "image": "technosophos/helloworld:0.1.0",
+      "imageType": "docker"
+    }
+  ],
+  "maintainers": [
+    {
+      "email": "technosophos@gmail.com",
+      "name": "Matt Butcher",
+      "url": "https://example.com"
+    }
+  ],
+  "name": "helloworld",
+  "parameters": {
+    "backend_port": {
+      "defaultValue": 80,
+      "maxValue": 10240,
+      "metadata": {
+        "description": "The port that the back-end will listen on"
+      },
+      "minValue": 10,
+      "type": "int"
+    }
+  },
+  "schemaVersion": "v1.0.0-WD",
+  "version": "0.1.2"
 }
 ```
 
 The `/cnab/app/image-map.json` file mounted in the invocation image will be:
 
 ```json
-{    
+{
     "my-microservice": {
-        "image": "technosophos/microservice:1.2.3",
         "description": "my microservice",
         "digest": "sha256:aaaaaaaaaaaa...",
-        "uri": "urn:image1uri",
+        "image": "technosophos/microservice:1.2.3",
         "refs": [
             {
-                "path": "image1path",
-                "field": "image.1.field"
+                "field": "image.1.field",
+                "path": "image1path"
             }
         ]
     }
 }
- 
 ```
 
 The run tool MAY use this file to modify its behavior, if declarative substitution is not enough.

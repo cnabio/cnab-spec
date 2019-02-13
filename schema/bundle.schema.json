@@ -93,7 +93,8 @@
                     },
                     "stateless":{
                         "description": "Indicates that the action is purely informational, that credentials are not required, and that the runtime should not keep track of its invocation",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "default": "false"
                     }
                 }
             }
@@ -110,7 +111,7 @@
         }
         
     },
-    "required": [ "name", "version", "invocationImages"],
+    "required": [ "name", "version", "invocationImages", "schemaVersion"],
     "definitions": {
         "invocationImage": {
             "description": "A bootstrapping image for the CNAB bundle.",
