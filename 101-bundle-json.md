@@ -170,8 +170,8 @@ The current schema version is `v1.0.0-WD`, which is considered unstable.
 
 The `name` and `version` fields are used to identify the CNAB bundle. Both fields are REQUIRED.
 
-- Name should be human-readable (TODO: Make this Graph Unicode characters)
-- Version MUST be a [SemVer2](https://semver.org) string
+- `name` MUST contain only characters from the Unicode graph characters
+- `version` MUST be a [SemVer2](https://semver.org) string
 
 Fields that do not match this specification SHOULD cause failures.
 
@@ -179,14 +179,13 @@ Fields that do not match this specification SHOULD cause failures.
 
 The following fields are informational pieces of metadata designed to convey additional information about a bundle, but not to be used as identification for a bundle:
 
-- `description`: A short description of a bundle
-- `keywords`: A list of keywords
-- `maintainers`: A list of maintainers, where each maintainer MAY have the following:
+- `description`: A short description of a bundle (OPTIONAL)
+- `keywords`: A list of keywords (OPTIONAL)
+- `license`: The license under which this bundle is covered. This SHOULD use one of the [SPDX License Identifiers](https://spdx.org/licenses/) whenever possible (OPTIONAL)
+- `maintainers`: An OPTIONAL list of maintainers, where each maintainer MAY optionally have the following:
   - `name`: Maintainer name
   - `email`: Maintainer's email
   - `url`: URL to relevant maintainer information
-
-*TODO:* `bundle.json` probably requires a few more top-level fields, such as something about who published it, and something about the license, as well as a bundle api version. A decision on this is deferred until after the PoC
 
 ## Invocation Images
 
