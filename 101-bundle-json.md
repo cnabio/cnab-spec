@@ -473,14 +473,14 @@ Implementations MAY support user-defined additional actions as well. Such action
 
 ```json
 "actions": {
-    "status":{
+    "io.cnab.status":{
         "modifies": false,
         "description": "retrieves the status of an installation"
     },
-    "migrate":{
+    "io.cnab.migrate":{
         "modifies": false
     },
-    "dry-run":{
+    "io.cnab.dry-run":{
         "modifies": false,
         "stateless": true,
         "description": "prints what install would do with the given parameters values"
@@ -488,7 +488,9 @@ Implementations MAY support user-defined additional actions as well. Such action
 }
 ```
 
-The above declares to actions: `status` and `migrate`. This means that the associated invocation images can handle requests for `status` and `migrate` in addition to `install`, `upgrade`, and `uninstall`.
+The action _name_ SHOULD be namespaced and SHOULD use reverse DNS notation - e.g. `com.example.action`. 
+
+The above declares three actions: `io.cnab.status`, `io.cnab.migrate` and `io.cnab.dry-run`. This means that the associated invocation images can handle requests for `io.cnab.status`, `io.cnab.migrate` and `io.cnab.dry-run` in addition to `install`, `upgrade`, and `uninstall`.
 
 Each action is accompanied by a description, which contains the following fields:
 
