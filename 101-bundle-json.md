@@ -297,7 +297,9 @@ TODO: How do we specify URI is a VM image (or Jar or other) instead of a Docker-
 
 ## Parameters
 
-The `parameters` section of the `bundle.json` defines which parameters a user (person installing a CNAB bundle) MAY _override_. Parameter specifications are flat (not tree-like), consisting of name/value pairs. The name is fixed, but the value MAY be overridden by the user. The parameter definition includes a specification on how to constrain the values submitted by the user.
+The `parameters` section of the `bundle.json` defines which parameters a user (person installing a CNAB bundle) MAY configure on an invocation image. Parameters represent information about the application configuration, and may be persisted by the runtime.
+
+Parameter specifications are flat (not tree-like), consisting of name/value pairs. The name is fixed, but the value MAY be overridden by the user. The parameter definition includes a specification on how to constrain the values submitted by the user.
 
 ```json
 "parameters": {
@@ -418,7 +420,13 @@ See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters ar
 
 ## Credentials
 
-A `bundle.json` MAY contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that MUST be provided.
+A `bundle.json` MAY contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that are required by the invocation image in order for the invocation image to perform its tasks.
+
+Credentials differ from parameters in intention: A _parameter_ represents application configuration. A _credential_ represents the _identity of the agent performing the action_. For example, the lifecycle of one bundle installation may be managed by several individuals. When interacting with that bundle, individuals may use their own credentials. However, the bundle's _parameters_ are assumed to be attached to the bundle itself, regardless of which individual is presently acting on that bundle.
+
+What about parameters such as database passwords used by the application? Properly speaking, these are _parameters_ if the application uses them.
+
+> Note that the CNAB specification does not mandate specific security implementations on storage of either parameters or credentials. CNAB Runtimes ought to consider that both parameters and credentials may contain secret data, and OUGHT to secure both parameter and credential data in ways appropriate to the underlying platform. It is recommended that credentials are not persisted between actions, and that parameters _are_ persisted between actions.
 
 ```json
 "credentials": {
