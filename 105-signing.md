@@ -121,7 +121,7 @@ For example, here is a `bundle.json`:
             "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
         }
     ],
-    "images": [],
+    "images": {},
     "parameters": {},
     "credentials": {}
 }
@@ -143,7 +143,7 @@ Hash: SHA512
             "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
         }
     ],
-    "images": [],
+    "images": {},
     "parameters": {},
     "credentials": {}
 }

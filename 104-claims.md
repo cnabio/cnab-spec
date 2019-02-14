@@ -59,7 +59,7 @@ The CNAB claim is defined as a JSON document. The specification currently does n
         "image": "technosophos/demo2:0.2.0"
       }
     ],
-    "images": [],
+    "images": {},
     "parameters": {},
     "credentials": {}
   },

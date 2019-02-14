@@ -64,9 +64,9 @@
             }
         },
         "images":{
-            "description": "The array of application images installed by this bundle",
-            "type": "array",
-            "items": {
+            "description": "Images that are used by this bundle",
+            "type": "object",
+            "additionalProperties": {
                 "$ref": "#/definitions/image"
             }
         },
