@@ -42,6 +42,9 @@
     "parameters": {
       "backend_port": {
         "defaultValue": 80,
+        "destination": {
+          "path": "/path/to/backend_port"
+        },
         "maxValue": 10240,
         "metadata": {
           "description": "The port that the backend will listen on"
