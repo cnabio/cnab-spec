@@ -84,11 +84,11 @@ In addition to the default actions, CNAB runtimes MAY support custom actions (as
 
 A bundle MUST exit with an error if the action is executed, but fails to run to completion. A CNAB runtime MUST issue an error if a bundle issues an error. And an error MUST NOT be issued if one of the three built-in actions is requested, but not present in the bundle. Errors are reserved for cases where something has gone wrong.
 
-## Overriding Parameter Values
+## Setting Parameter Values
 
 A CNAB `bundle.json` file MAY specify zero or more parameters whose values MAY be specified by a user.
 
-As specified, values MAY be passed into the container as environment variables. If the environment variable name is specified in the `destination`, that name will be used:
+If the `destination` field contains a key named `env`, values MUST be passed into the container as environment variables, where the value of the `env` field is the name of the environment variable.
 
 ```json
 "parameters": {
@@ -105,29 +105,40 @@ As specified, values MAY be passed into the container as environment variables. 
 }
 ```
 
-The above will set `GREETING=hello`.
+By default (if no override value is provided by the CNAB runtime), the above will set `GREETING=hello`. If the runtime specifies a value `salutations`, then the environment variable would be set to `GREETING=salutations`.
 
-In the case where no `destination` is set, a parameter is written as an environment variable with an automatically generated name.
+The parameter value is evaluated thus:
+
+- If the CNAB runtime provides a value, that value MAY be sanitized, then validated (as described below), then injected as the parameter value. In the event that sanitization or validation fail, the runtime SHOULD return an error and discontinue the action.
+- If the CNAB runtime does not provide a value, but `defaultValue` is set, then the default value MUST be used.
+- If no value is provided and `defaultValue` is unset, the runtime MUST set the value to an empty string (""), regardless of type.
+
+> Setting the value of other types to a default value based on type, e.g. Boolean to `false` or integer to `0`, is considered _incorrect behavior_. Setting the value to `null`, `nil`, or a related character string is also considered incorrect.
+
+In the case where the `destination` object has a `path` field, the CNAB runtime MUST create a file at that path. The file MUST have sufficient permissions that the effective user ID of the image can read the contents of the file. And the contents of the file MUST be the parameter value (calculated according to the rules above).
 
 ```json
 "parameters": {
-    "port": {
-        "defaultValue": 8080,
-        "type": "int",
-        "metadata": {
-            "description": "this will be $CNAB_P_PORT"
+    "greeting": {
+        "defaultValue": "hello",
+        "type": "string",
+        "destination": {
+            "path": "/var/run/greeting.txt"
+        },
+        "metadata":{
+            "description": "this will be in $GREETING"
         }
     }
 }
 ```
 
-Each environment variable begins with the prefix `CNAB_P_` and to which the uppercased parameter name is appended. For example `port` will be exposed inside the container as `CNAB_P_PORT`, and thus can be accessed inside of the `run` script:
+In the example above, the CNAB runtime creates a file at `/var/run/greeting.txt` whose content (if not overridden) is `hello`. If an empty string is provided as the parameter value, the file must still be created.
 
-```bash
-#!/bin/sh
+A `path` MUST be absolute. But in the event that a CNAB runtime receives a relative path, it MUST treat the file as if it were the root path were prepended. Thus `var/run/greeting.txt` is treated (on Linux/UNIX) as `/var/run/greeting.txt`. In the cases where operating system pathing types differ, a CNAB runtime MAY freely translate between absolute pathing structures. `c:\foo.txt`, when passed to a Linux/UNIX system, MAY be translated to `/foo.txt`. In this way, multiple invocation images may share parameters regardless of the underlying OS.
 
-echo $CNAB_P_PORT
-```
+If `destination` contains both a `path` and an `env`, the CNAB runtime MUST provide both.
+
+### Validating parameters
 
 The validation of user-supplied values MUST happen outside of the CNAB bundle. Implementations of CNAB bundle tools MUST validate user-supplied values against the `parameters` section of a `bundle.json` before injecting them into the image. The outcome of successful validation MUST be the collection containing all parameters where either the user has supplied a value (that has been validated) or the `parameters` section of `bundles.json` contains a `defaultValue`.
 

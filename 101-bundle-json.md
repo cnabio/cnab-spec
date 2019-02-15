@@ -341,17 +341,10 @@ Parameter names (the keys in `parameters`) ought to conform to the [Open Group B
 
 ### Resolving Destinations
 
-When resolving destinations, there are three ways a particular parameter value MAY be placed into the invocation image. Here is an example illustrating all three:
+When resolving destinations, there are two ways a particular parameter value MAY be placed into the invocation image. Here is an example illustrating both:
 
 ```json
 "parameters": {
-    "port": {
-        "defaultValue": 8080,
-        "type": "int",
-        "metadata": {
-            "description": "this will be $CNAB_P_PORT"
-        }
-    },
     "greeting": {
         "defaultValue": "hello",
         "type": "string",
@@ -375,13 +368,7 @@ When resolving destinations, there are three ways a particular parameter value M
 }
 ```
 
-The first parameter is `port`. This parameter has no destination field. Consequently, it's value will be injected into an environment variable whose prefix is `CNAB_P_`, with a capitalized version of the name (`PORT`) appended.
-
-```
-CNAB_P_PORT=8080
-```
-
-If the `destination` field is set, at least one of `env` or `path` MUST be specified. (Both MAY be provided).
+For the (REQUIRED) `destination` field, at least one of `env` or `path` MUST be specified. (Both MAY be provided).
 
 If `env` is set, the value of the parameter will be assigned to the given environment variable name. In the example in the previous section, `GREETING` is set to `hello`.
 
