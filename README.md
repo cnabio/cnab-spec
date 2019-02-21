@@ -12,6 +12,8 @@ Cloud Native Application Bundles (CNAB) are a package format specification that 
   1. [The Bundle Runtime](103-bundle-runtime.md)
   1. [The Claims System](104-claims.md)
   1. [Signing and Provenance](105-signing.md)
+- Chapter 2: [Cloud Native Application Bundle Registry 1.0.0 (CNAB-Reg)](200-cnab-registries.md)
+- Chapter 3: [Cloud Native Application Bundle Security 1.0.0 (CNAB-Sec)](300-cnab-security.md)
 - Chapter 8: Non-normative Content
   1. [Declarative Invocation Images](801-declarative-images.md)
   1. [Credential Sets](802-credential-sets.md)
