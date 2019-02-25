@@ -3,50 +3,60 @@
     "hostkey": {
       "env": "HOST_KEY",
       "path": "/etc/hostkey.txt"
+    }
+  },
+  "custom": {
+    "com.example.backup-preferences": {
+      "frequency": "daily"
     },
-    "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
-    "images": {
-      "my-microservice": {
-        "description": "my microservice",
-        "digest": "sha256:aaaaaaaaaaaa...",
-        "image": "technosophos/microservice:1.2.3",
-        "refs": [
-          {
-            "field": "image.1.field",
-            "path": "image1path"
-          }
-        ]
-      }
-    },
-    "invocationImages": [
-      {
-        "digest": "sha256:aaaaaaa...",
-        "image": "technosophos/helloworld:0.1.0",
-        "imageType": "docker"
-      }
-    ],
-    "maintainers": [
-      {
-        "email": "matt.butcher@microsoft.com",
-        "name": "Matt Butcher",
-        "url": "https://example.com"
-      }
-    ],
-    "name": "helloworld",
-    "parameters": {
-      "backend_port": {
-        "defaultValue": 80,
-        "destination": {
-          "env": "BACKEND_PORT"
-        },
-        "maxValue": 10240,
-        "metadata": {
-          "description": "The port that the back-end will listen on"
-        },
-        "minValue": 10,
-        "type": "int"
-      }
-    },
-    "schemaVersion": "v1.0.0-WD",
-    "version": "0.1.2"
-  }
+    "com.example.duffle-bag": {
+      "icon": "https://example.com/icon.png",
+      "iconType": "PNG"
+    }
+  },
+  "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
+  "images": {
+    "my-microservice": {
+      "description": "my microservice",
+      "digest": "sha256:aaaaaaaaaaaa...",
+      "image": "technosophos/microservice:1.2.3",
+      "refs": [
+        {
+          "field": "image.1.field",
+          "path": "image1path"
+        }
+      ]
+    }
+  },
+  "invocationImages": [
+    {
+      "digest": "sha256:aaaaaaa...",
+      "image": "technosophos/helloworld:0.1.0",
+      "imageType": "docker"
+    }
+  ],
+  "maintainers": [
+    {
+      "email": "matt.butcher@microsoft.com",
+      "name": "Matt Butcher",
+      "url": "https://example.com"
+    }
+  ],
+  "name": "helloworld",
+  "parameters": {
+    "backend_port": {
+      "defaultValue": 80,
+      "destination": {
+        "env": "BACKEND_PORT"
+      },
+      "maxValue": 10240,
+      "metadata": {
+        "description": "The port that the back-end will listen on"
+      },
+      "minValue": 10,
+      "type": "int"
+    }
+  },
+  "schemaVersion": "v1.0.0-WD",
+  "version": "0.1.2"
+}

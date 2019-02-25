@@ -31,12 +31,15 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
     "hostkey": {
       "env": "HOST_KEY",
       "path": "/etc/hostkey.txt"
+    }
+  },
+  "custom": {
+    "com.example.backup-preferences": {
+      "frequency": "daily"
     },
-    "image_token": {
-      "env": "AZ_IMAGE_TOKEN"
-    },
-    "kubeconfig": {
-      "path": "/home/.kube/config"
+    "com.example.duffle-bag": {
+      "icon": "https://example.com/icon.png",
+      "iconType": "PNG"
     }
   },
   "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
@@ -91,7 +94,7 @@ Source: [101.01-bundle.json](examples/101.01-bundle.json)
 The canonical JSON version of the above is:
 
 ```json
-{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"},"image_token":{"env":"AZ_IMAGE_TOKEN"},"kubeconfig":{"path":"/home/.kube/config"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3","refs":[{"field":"image.1.field","path":"image1path"}]}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"destination":{"env":"BACKEND_PORT"},"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3","refs":[{"field":"image.1.field","path":"image1path"}]}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"destination":{"env":"BACKEND_PORT"},"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
 And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
@@ -159,6 +162,24 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
 Source: [101.02-bundle.json](examples/101.02-bundle.json)
 
 In descriptions below, fields marked REQUIRED MUST be present in any conformant bundle descriptor, while fields not thusly marked are considered optional.
+
+## Dotted Names
+
+Within this specification, certain user-supplied names SHOULD be expressed in the form of a _dotted name_, which is defined herein as a name composed by concatenating name components (Unicode letters and the dash (`-`) character) together, separated by dot (`.`) characters. Whitespace characters are not allowed within names, nor is there a defined escape sequence for the `.` character.
+
+Dotted names are used to encourage name spacing and reduce the likelihood of naming collisions.
+
+Dotted names SHOULD follow the reverse-DNS pattern used by [Java, C#, and other languages](https://en.wikipedia.org/wiki/Reverse_domain_name_notation).
+
+CNAB tools MUST NOT treat these strings as domain names or domain components, as this specification allows characters that are not legal in DNS addresses.
+
+Examples:
+
+- `com.example.myapp.port`
+- `org.example.action.status`
+- `example.foo` (This format MAY be used, but the reverse DNS format is preferred)
+
+A string MUST have at least one dot to be considered a _dotted name_.
 
 ## Schema Version
 
@@ -481,7 +502,7 @@ Implementations MAY support user-defined additional actions as well. Such action
 }
 ```
 
-The action _name_ SHOULD be namespaced and SHOULD use reverse DNS notation - e.g. `com.example.action`. 
+The action _name_ SHOULD use _dotted name_ syntax as defined earlier in this section.
 
 The above declares three actions: `io.cnab.status`, `io.cnab.migrate` and `io.cnab.dry-run`. This means that the associated invocation images can handle requests for `io.cnab.status`, `io.cnab.migrate` and `io.cnab.dry-run` in addition to `install`, `upgrade`, and `uninstall`.
 
@@ -504,9 +525,9 @@ Implementations that do not support custom actions MUST NOT emit errors (either 
 
 ## Custom Extensions
 
-In many cases, the bundle descriptor is a sufficient artifact for delivering a CNAB bundle, since invocation images and other images may be retrieved from registries and repositories. Consequently, it is important to provide an extension mechanism. A _custom extension_ is a named collection of auxiliary data whose meaning is defined outside of this specification.
+In many cases, the bundle descriptor is a sufficient artifact for delivering a CNAB bundle, since invocation images and other images may be retrieved from registries and repositories. However, it is important to provide an extension mechanism. A _custom extension_ is a named collection of auxiliary data whose meaning is defined outside of this specification.
 
-Tools MAY define and declare additional fields inside of the `custom` section. Tools MUST NOT define additional fields anywhere else in the bundle descriptor. Implementations may produce an error or may ignore additional fields outside of the extension. However, implementations SHOULD preserve the data inside of the `custom` section even when that information is not understood by the implementation.
+Tools MAY define and declare additional fields inside of the `custom` section. Tools MUST NOT define additional fields anywhere else in the bundle descriptor. Implementations MAY produce an error or MAY ignore additional fields outside of the extension, but MUST be consistent in either ignoring or producing an error. However, implementations SHOULD preserve the data inside of the `custom` section even when that information is not understood by the implementation.
 
 The `custom` object is used as follows:
 
@@ -528,7 +549,7 @@ The format is:
 
 ```json
 {
-    "extensions": {
+    "custom": {
         "EXTENSION NAME": "ARBITRARY JSON DATA"
     }
 }
@@ -536,8 +557,8 @@ The format is:
 
 The fields are defined as follows:
 
-- `extensions` defines the wrapper object for extensions
-  - EXTENSION NAME: a unique name for an extension. Names SHOULD follow the reverse DNS format `DOMAIN.ADDITIONAL.INFORMATION`, where DOMAIN conforms to the reverse DNS naming convention (`com.example` or `io.cnab`), and additional elements are separated by dots (`.`).
+- `custom` defines the wrapper object for extensions
+  - EXTENSION NAME: a unique name for an extension. Names SHOULD follow the dotted name format described earlier in this section.
   - The value of the extension must be valid JSON, but is otherwise undefined.
 
 The usage of extensions is undefined. However, bundles SHOULD be installable by runtimes that do not understand the extensions.
