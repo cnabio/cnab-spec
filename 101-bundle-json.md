@@ -71,6 +71,9 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
   "parameters": {
     "backend_port": {
       "defaultValue": 80,
+      "destination": {
+        "env": "BACKEND_PORT"
+      },
       "maxValue": 10240,
       "metadata": {
         "description": "The port that the back-end will listen on"
@@ -88,67 +91,70 @@ Source: [101.01-bundle.json](examples/101.01-bundle.json)
 The canonical JSON version of the above is:
 
 ```json
-{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"},"image_token":{"env":"AZ_IMAGE_TOKEN"},"kubeconfig":{"path":"/home/.kube/config"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3","refs":[{"field":"image.1.field","path":"image1path"}]}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"},"image_token":{"env":"AZ_IMAGE_TOKEN"},"kubeconfig":{"path":"/home/.kube/config"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3","refs":[{"field":"image.1.field","path":"image1path"}]}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"destination":{"env":"BACKEND_PORT"},"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
 And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
 
 ```json
 {
-    "credentials": {
-      "hostkey": {
-        "env": "HOST_KEY",
-        "path": "/etc/hostkey.txt"
+  "credentials": {
+    "hostkey": {
+      "env": "HOST_KEY",
+      "path": "/etc/hostkey.txt"
+    },
+    "image_token": {
+      "env": "AZ_IMAGE_TOKEN"
+    },
+    "kubeconfig": {
+      "path": "/home/.kube/config"
+    }
+  },
+  "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
+  "images": {
+    "my-microservice": {
+      "description": "helloworld microservice",
+      "digest": "sha256:bbbbbbbbbbbb...",
+      "image": "technosophos/helloworld:0.1.2",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
       },
-      "image_token": {
-        "env": "AZ_IMAGE_TOKEN"
+      "size": 1337
+    }
+  },
+  "invocationImages": [
+    {
+      "digest": "sha256:aaaaaaaaaaaa...",
+      "image": "technosophos/helloworld:1.2.3",
+      "imageType": "docker",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
       },
-      "kubeconfig": {
-        "path": "/home/.kube/config"
-      }
-    },
-    "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
-    "images": {
-      "my-microservice": {
-        "description": "helloworld microservice",
-        "digest": "sha256:bbbbbbbbbbbb...",
-        "image": "technosophos/helloworld:0.1.2",
-        "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-        "platform": {
-          "architecture": "amd64",
-          "os": "linux"
-        },
-        "size": 1337
-      }
-    },
-    "invocationImages": [
-      {
-        "digest": "sha256:aaaaaaaaaaaa...",
-        "image": "technosophos/helloworld:1.2.3",
-        "imageType": "docker",
-        "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-        "platform": {
-          "architecture": "amd64",
-          "os": "linux"
-        },
-        "size": 1337
-      }
-    ],
-    "name": "helloworld",
-    "parameters": {
-      "backend_port": {
-        "defaultValue": 80,
-        "maxValue": 10240,
-        "metadata": {
-          "description": "The port that the backend will listen on"
-        },
-        "minValue": 10,
-        "type": "int"
-      }
-    },
-    "schemaVersion": "v1.0.0-WD",
-    "version": "1.0.0"
-  }
+      "size": 1337
+    }
+  ],
+  "name": "helloworld",
+  "parameters": {
+    "backend_port": {
+      "defaultValue": 80,
+      "destination": {
+        "path": "/path/to/backend_port"
+      },
+      "maxValue": 10240,
+      "metadata": {
+        "description": "The port that the backend will listen on"
+      },
+      "minValue": 10,
+      "type": "int"
+    }
+  },
+  "schemaVersion": "v1.0.0-WD",
+  "version": "1.0.0"
+}
 ```
 Source: [101.02-bundle.json](examples/101.02-bundle.json)
 

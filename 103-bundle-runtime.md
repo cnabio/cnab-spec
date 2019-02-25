@@ -196,6 +196,9 @@ For this example CNAB bundle:
   "parameters": {
     "backend_port": {
       "defaultValue": 80,
+      "destination": {
+        "env": "BACKEND_PORT"
+      },
       "maxValue": 10240,
       "metadata": {
         "description": "The port that the back-end will listen on"
