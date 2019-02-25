@@ -145,9 +145,7 @@ into the invocation container at runtime:
 
 > Credential data, which is also injected into the invocation image, is _not_ managed by the claim system. Rules for injecting credentials are found in [the bundle runtime definition](103-bundle-runtime.md).
 
-The parameters passed in by the user are vetted against `parameters.json` outside of the container, and then injected into the container as environment variables of the form: `$CNAB_P_{parameterName.toUpper}="{parameterValue}"`.
-
-For example, the parameter `hello_world` in the claim is presented to the invocation image as the environment variables `CNAB_P_HELLO_WORLD`.
+Parameters that are declared with an `env` key in the `destination` object, their values will be injected as environment variables according to the name specified. Likewise, files will be injected if `path` is set on `destination`.
 
 ## Calculating the Result
 
@@ -188,8 +186,8 @@ If both commands exit with code `0`, then the resulting claim will look like thi
 
 Tools that implement claims MAY then present `result` info to end users to show the result of running an invocation image.
 
-## TODO
+## Credentials and Claims
 
-- Define how action is determined, as this is beyond merely running an executable
+Credential data MUST NOT be stored in claims. Credentials are identity-specific, while claims are identity-neutral.
 
 Next section: [signing and verifying bundles](105-signing.md)
