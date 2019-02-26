@@ -159,7 +159,8 @@ Credentials MAY be supplied as files on the file system. In such cases, the foll
 
 ## <a name="image-map">Image maps</a>
 
-At runtime the `image` section of the CNAB is mounted in file `/cnab/app/image-map.json`. 
+At runtime the `image` section of the CNAB is mounted in file `/cnab/app/image-map.json`. This data MAY be used by an invocation image to perform replacements on local files for the purpose of adjusting image references.
+
 For this example CNAB bundle:
 
 ```json
@@ -185,7 +186,8 @@ For this example CNAB bundle:
       "refs": [
         {
           "field": "image.1.field",
-          "path": "image1path"
+          "path": "/path/to/file.json",
+          "expressionType": "jq"
         }
       ]
     }
@@ -234,8 +236,14 @@ The `/cnab/app/image-map.json` file mounted in the invocation image will be:
         "image": "technosophos/microservice:1.2.3",
         "refs": [
             {
-                "field": "image.1.field",
-                "path": "image1path"
+              "field": "image.1.field",
+              "path": "/path/to/file.json",
+              "expressionType": "jq"
+            },
+            {
+              "field": "#image-name",
+              "path": "/path/to/file.xml",
+              "expressionType": "css-selector"
             }
         ]
     }
@@ -243,5 +251,25 @@ The `/cnab/app/image-map.json` file mounted in the invocation image will be:
 ```
 
 The run tool MAY use this file to modify its behavior, if declarative substitution is not enough.
+
+The two `refs` above indicate that two substitutions SHOULD be performed:
+
+- In `/path/to/file.json`, the field `image.1.field` should be set to `technosophos/microservice:1.2.3`
+- In `/path/to/file.xml`, the field `#image-name` should be set to `technosophos/microservice:1.2.3`
+
+The `expressionType` field defines the expression language used in `field`. This is a hint to the run tool as to how it should use `field` when processing `path`. If no `expressionType` is set, the assumption is that `expressionType` is `pcre`.
+
+In the example above, `"expressionType": "jq"` indicates that the [jq language](https://github.com/stedolan/jq/wiki/jq-Language-Description) should be used to perform the substitution of `image.1.field` in the file `/path/to/file.json`. And the `"expressionType": "css-selector"` indicates that `#image-name` should be treated as a [CSS Selector](https://www.w3.org/TR/selectors-3/) when applied to `/path/to/file.xml`.
+
+
+The following `expressionTypes` are defined by this specification:
+
+- `pcre`:[Pearl Compatible Regular Expressions](http://www.pcre.org/), which is the default. These are to be evaluated as "for each match against `field`, the value of `image` is substituted."
+- `css-selector` and `css-selector3`: [CSS3 Selectors](https://www.w3.org/TR/selectors-3/)
+- `jq`: [the jq Language](https://github.com/stedolan/jq/wiki/jq-Language-Description)
+
+If support for these expression languages is provided, the `field` MUST be evaluated according to their respective specifications. Other expression languages _may_ be used in the `expressionType` field.
+
+If an invocation image implements support for substitutions, it SHOULD produce an error if any `expressionType` is not supported, or if any substitution cannot be performed.
 
 Next Section: [The claims definition](104-claims.md)

@@ -19,6 +19,7 @@
         "image": "technosophos/microservice:1.2.3",
         "refs": [
           {
+            "expressionType": "jq",
             "field": "image.1.field",
             "path": "image1path"
           }

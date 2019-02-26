@@ -215,6 +215,11 @@
                             "mediaType": {
                                 "description": "The MIME type of the file, used for determining how to process it",
                                 "type": "string"
+                            },
+                            "expressionType": {
+                                "description": "The expression language used for replacing 'field' in 'path'",
+                                "type": "string",
+                                "default": "pcre"
                             }
                         }
                     }

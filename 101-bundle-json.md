@@ -268,37 +268,47 @@ Fields:
   - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
   - `image`: The REQUIRED `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
   - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
-  - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
+  - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. The behavior associated with this section is defined below. Each entry contains the following properties:
     - `path`: The path of the file where the value should be replaced
     - `field`: A selector specifying a location (or locations) within that file where the value should be replaced
     - `mediaType`: The media type of the file, which can be used to determine the file type. If unset, tooling may choose any strategy for detecting format
+    - `expressionType`: The expression language that should be used to evaluate `field`.
   - `size`: The image size in bytes
   - `platform`: The target platform, as an object with two fields:
     - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
     - `os`: The operating system of the image
   - `mediaType`: The media type of the image
 
-Substitutions MUST be supported for the following formats:
+### Reference Substitution (`refs`)
 
-- JSON
-- YAML
-- XML
+The `refs` section provides tools for mapping fully qualified image names into paths present within the invocation image.
 
-In addition to these substitutions, the image map data is also made available to the invocation image at runtime. See [Image map](103-bundle-runtime.md#image-map) for more details.
+A CNAB Runtime MUST pass the images map into the invocation image, as described in [the Bundle Runtime definition](103-bundle-runtime.md#image-map). Invocation images MAY implement support for this feature.
 
-### Field Selectors
+For example, consider the following `refs` declaration:
 
-*TODO:* We have multiple competing standards in this space, and those that are popular for JSON are not the same as those popular for XML. This portion is thus not complete.
+```json
+"images": {
+    "my-microservice": {
+      "description": "my microservice",
+      "digest": "sha256:aaaaaaaaaaaa...",
+      "image": "technosophos/microservice:1.2.3",
+      "refs": [
+        {
+          "field": "service.image",
+          "path": "/cnab/charts/values.yaml",
+          "expressionType": `css-selector`
+        }
+      ]
+    }
+  },
+```
 
-For fields, the selectors are based on the _de facto_ format used in tools like `jq`, which is a subset of the [CSS selector](https://www.w3.org/TR/selectors-3/) path. Examples:
+For the image described as `my-microservice`, the file `/cnab/charts/values.yaml` inside of the invocation image is to be parsed, and inside of that file, the value of `service.image` is to be set to `technosophos/microservice:1.2.3`.
 
-- `foo.bar.baz` is interpreted as "find element baz whose parent is bar and whose grandparent is foo".
-- `#baz` in XML is "the element whose ID attribute is set to "baz"". It is a no-op in YAML and JSON.
-- TODO: Will we need to support attribute selectors?
+The behavior of the invocation image is described in [the Bundle Runtime definition](103-bundle-runtime.md#image-map).
 
-TODO: How do we specify multiple replacements within a single file?
-
-TODO: How do we specify URI is a VM image (or Jar or other) instead of a Docker-style image? Or do we? And if not, why not?
+CNAB Runtimes MAY dynamically create or override `refs` sections when appropriate. For example, if an image is relocated as part of a CNAB installation, the runtime may create a `refs` section to indicate that change.
 
 ## Parameters
 
