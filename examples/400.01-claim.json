@@ -1,0 +1,26 @@
+{
+    "name": "technosophos.hellohelm",
+    "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29",
+    "created": "2018-08-30T20:39:55.549002887-06:00",
+    "modified": "2018-08-30T20:39:59.611068556-06:00",
+    "bundle": {
+      "schemaVersion": "v1.0.0-WD",
+      "name": "technosophos.hellohelm",
+      "version": "0.1.0",
+      "invocationImages": [
+        {
+          "imageType": "docker",
+          "image": "technosophos/demo2:0.2.0"
+        }
+      ],
+      "images": {},
+      "parameters": {},
+      "credentials": {}
+    },
+    "result": {
+      "message": "",
+      "action": "install",
+      "status": "success"
+    },
+    "parameters": {}
+  }
