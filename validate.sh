@@ -1,4 +1,9 @@
 #!/bin/sh
+###
+# Use this to validate that the files in examples/* accord with the schema in schema/
+#
+# To get `ajv`, run `npm install -g ajv-cli`
+###
 
 set -eou pipefail
 
