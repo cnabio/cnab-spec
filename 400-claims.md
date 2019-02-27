@@ -45,7 +45,7 @@ This is done so that implementors can standardize on a way of relating a release
 
 ### Anatomy of a Claim
 
-While implementors are not REQUIRED to implement claims, this is that standard format for claims-supporting systems.
+While implementors are not REQUIRED to implement claims, this is the standard format for claims-supporting systems.
 
 The CNAB claim is defined as a JSON document. The specification currently does not require that claims be formatted as Canonical JSON.
 
@@ -85,13 +85,7 @@ The CNAB claim is defined as a JSON document. The specification currently does n
 - updated: A timestamp indicating the last time this release claim was modified
 - result: The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
   - message: A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
-  - action: Indicates the action that the current bundle is in. Valid actions are:
-    - install
-    - upgrade
-    - delete
-    - downgrade
-    - status
-    - unknown
+  - action: Indicates the action that the current bundle is in. This may be any of the built-in actions (`install`, `upgrade`, `uninstall`) as well as any custom actions as defined in the bundle descriptor. The special name `unknown` MAY be used in the case where the CNAB Runtime cannot determine the action name of a claim.
   - status: Indicates the status of the last phase transition. Valid statuses are:
     - success: completed successfully
     - failure: failed before completion
@@ -139,7 +133,7 @@ To satisfy these requirements, implementations of a CNAB package manager are exp
 
 ## Injecting Claim Data into an Invocation Image
 
-Complaint CNAB implementations MUST conform to this section.
+Compliant CNAB implementations MUST conform to this section.
 
 The claim is produced outside of the CNAB package. The following claim data is injected
 into the invocation container at runtime:
@@ -151,7 +145,7 @@ into the invocation container at runtime:
 
 > Credential data, which is also injected into the invocation image, is _not_ managed by the claim system. Rules for injecting credentials are found in [the bundle runtime definition](103-bundle-runtime.md).
 
-Parameters that are declared with an `env` key in the `destination` object, their values will be injected as environment variables according to the name specified. Likewise, files will be injected if `path` is set on `destination`.
+Parameters declared with an `env` key in the `destination` object MUST have their values injected as environment variables according to the name specified. Likewise, files MUST be injected if `path` is set on `destination`.
 
 ## Calculating the Result
 

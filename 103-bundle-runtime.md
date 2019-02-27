@@ -45,7 +45,7 @@ The _action_ is the action name. It MUST be either one of the built-in actions o
 
 A `CNAB_REVISION` SHOULD be passed into an install operation, and MUST be passed into `upgrade` and `uninstall`, where this is a _unique string_ indicating the current "version" of the _installation_. For example, if the `my_installation` installation is upgraded twice (changing only the parameters), three `CNAB_REVISIONS` should be generated (1. install, 2. upgrade, 3. upgrade).
 
-Revisions are regenerated on destructive operations so that one installation may be tracked over various revisions. CNAB Runtimes MUST generate a new `CNAB_REVISION` for every `install`, `upgrade`, or `uninstall` action. That is, if an application is installed once, upgraded twice, and then uninstalled, four revisions should have been generated. For additionally defined targets, a new `CNAB_REVISION` MUST be generated if the target is labeled `"modifies": true`, and MUST NOT be generated if `"modifies": false`.
+Revisions are regenerated on destructive operations so that one installation may be tracked over various revisions. CNAB Runtimes MUST generate a new `CNAB_REVISION` for every `install`, `upgrade`, or `uninstall` action. That is, if an application is installed once, upgraded twice, and then uninstalled, four revisions must be generated. For additionally defined targets, a new `CNAB_REVISION` MUST be generated if the target is labeled `"modifies": true`, and MUST NOT be generated if `"modifies": false`.
 
 A `CNAB_REVISION` SHOULD be a [ULID](https://github.com/ulid/spec).
 
