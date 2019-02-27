@@ -35,13 +35,23 @@ CNAB_BUNDLE_NAME=helloworld
 CNAB_ACTION=install
 ```
 
-The _installation name_ is the name of the _instance of_ this application. Consider the situation where an application ("wordpress") is installed multiple times into the same cloud. Each installation MUST have a unique installation name, even though they will be installing the same CNAB bundle. Instance names MUST consist of Graph Unicode characters and MAY be user-readable. The Unicode Graphic characters include letters, marks, numbers, punctuation, symbols, and spaces, from categories L, M, N, P, S, Zs.
+The _installation name_ is the name of the _instance of_ this application. The value of `CNAB_INSTALLATION_NAME` MUST be the installation name. Consider the situation where an application ("wordpress") is installed multiple times into the same cloud. Each installation MUST have a unique installation name, even though they will be installing the same CNAB bundle. Instance names MUST consist of Graph Unicode characters and MAY be user-readable. The Unicode Graphic characters include letters, marks, numbers, punctuation, symbols, and spaces, from categories L, M, N, P, S, Zs.
 
-The _bundle name_ is the name of the bundle (as represented in `bundle.json`'s `name` field). The specification of this field is in the [bundle definition](101-bundle-json.md).
+The _bundle name_ is the name of the bundle (as represented in `bundle.json`'s `name` field). The specification of this field is in the [bundle definition](101-bundle-json.md). The value of `CNAB_BUNDLE_NAME` MUST be set to the bundle name.
 
-The _action_ is one of the action verbs defined in the section below.
+The _action_ is the action name. It MUST be either one of the built-in actions or one of the actions named in the `actions` portion of the bundle descriptor. `CNAB_ACTION` MUST be set to the action name.
 
-Optionally, `CNAB_REVISION` MAY be passed, where this is a _unique string_ indicating the current "version" of the _installation_. For example, if the `my_installation` installation is upgraded twice (changing only the parameters), three `CNAB_REVISIONS` should be generated (1. install, 2. upgrade, 3. upgrade). See [the Claims definition](104-claims.md) for details on revision ids. That `status` action MUST NOT increment the revision.
+### The CNAB Revision Variable
+
+A `CNAB_REVISION` SHOULD be passed into an install operation, and MUST be passed into `upgrade` and `uninstall`, where this is a _unique string_ indicating the current "version" of the _installation_. For example, if the `my_installation` installation is upgraded twice (changing only the parameters), three `CNAB_REVISIONS` should be generated (1. install, 2. upgrade, 3. upgrade).
+
+Revisions are regenerated on destructive operations so that one installation may be tracked over various revisions. CNAB Runtimes MUST generate a new `CNAB_REVISION` for every `install`, `upgrade`, or `uninstall` action. That is, if an application is installed once, upgraded twice, and then uninstalled, four revisions must be generated. For additionally defined targets, a new `CNAB_REVISION` MUST be generated if the target is labeled `"modifies": true`, and MUST NOT be generated if `"modifies": false`.
+
+A `CNAB_REVISION` SHOULD be a [ULID](https://github.com/ulid/spec).
+
+A `CNAB_LAST_REVISION` SHOULD be provided during `upgrade` and `uninstall` operations. It MAY be provided during actions specified in the bundle descriptor. When provided, it MUST be set to the revision from the previous operation. If no previous revision exist, this SHOULD be set to the empty string (`""`). (It SHOULD NOT be set to `0`, as is sometimes the practice in UNIX programming, as `0` is considered a possible, though undesirable, revision ID)
+
+### Parameters as Variables
 
 As specified in the `bundle.json`, some parameters MAY be injected into the environment as environment variables.
 
@@ -243,5 +253,3 @@ The `/cnab/app/image-map.json` file mounted in the invocation image will be:
 ```
 
 The run tool MAY use this file to modify its behavior, if declarative substitution is not enough.
-
-Next Section: [The claims definition](104-claims.md)
