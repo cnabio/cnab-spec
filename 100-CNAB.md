@@ -71,7 +71,7 @@ Bundles are stored in _bundle repositories_. A bundle repository is a network-ac
 - Claim: A record of a particular installation of a bundle.
 - Image: Used generically, a container image (e.g. OCI images) or a VM image.
 - Invocation Image: The image that contains the bootstrapping and installation logic for the bundle
-- Repository: A storage and retrieval service for CNAB objects.
+- Registry: A storage and retrieval service for CNAB objects.
 
 Also, when referencing tooling, we use the following terms:
 
