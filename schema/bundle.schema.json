@@ -99,8 +99,8 @@
                 }
             }
         },
-        "extensions":{
-            "$comment": "reserved for future usage"
+        "custom":{
+            "$comment": "reserved for custom extensions"
         },
         "parameters":{
             "description": "Parameters that can be injected into the invocation image",
