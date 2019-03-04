@@ -10,9 +10,9 @@ A `bundle.json` is broken down into the following categories of information:
 
 - The schema version of the bundle, as a string with a `v` prefix. This schema is to be referenced as `v1` or `v1.0.0-WD`
 - The top-level package information (`name` and `version`)
-  - name: The bundle name, including namespacing. The namespace can have one or more elements separated by a dot (e.g. `acme.tunnels.wordpress`). The left most element of the namespace is the most general moving toward more specific elements on the right.
-  - version: Semantic version of the bundle
-  - description: Short description of the bundle
+  - `name`: The bundle name, including namespacing. The namespace can have one or more elements separated by a dot (e.g. `acme.tunnels.wordpress`). The left most element of the namespace is the most general moving toward more specific elements on the right.
+  - `version`: Semantic version of the bundle
+  - `description`: Short description of the bundle
 - Information on the invocation images, as an array
 - A map of images included with this bundle, as a `component name` to `image definition` map
 - A specification of which parameters MAY be overridden, and how those are to be validated
@@ -284,7 +284,7 @@ The following illustrates an `images` section:
 
 Fields:
 
-- images: The list of dependent images
+- `images`: The list of dependent images
   - `description`: The description field provides additional context of the purpose of the image. 
   - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
   - `image`: The REQUIRED `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
@@ -346,26 +346,26 @@ Parameter specifications are flat (not tree-like), consisting of name/value pair
 }
 ```
 
-- parameters: name/value pairs describing a user-overridable parameter
+- `parameters`: name/value pairs describing a user-overridable parameter
   - `<name>`: The name of the parameter. This is REQUIRED. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
-    - type: "null", "boolean", "string", "number", or "integer". These types correspond to the main primitive types of JSON (with _integer_ as a special case). Objects and arrays are not supported, as the serialization of these is underdetermined. (REQUIRED)
-    - required: if this is set to true, a value MUST be specified (OPTIONAL, not shown)
-    - defaultValue: The default value (OPTIONAL)
-    - enum (alias allowedValues): an array of allowed values (OPTIONAL)
-    - minimum (alias minValue): Minimum value (for numeric and integer) (OPTIONAL)
-    - exclusiveMinimum: Exclusive minimum value (for numeric and integer) (OPTIONAL) 
-    - maximum (alias maxValue): Maximum value (for numeric and integer) (OPTIONAL)
-    - exclusiveMaximum: Exclusive maximum value (for numeric and integer) (OPTIONAL)
-    - minLength: Minimum number of characters allowed in the field (for strings) (OPTIONAL)
-    - maxLength: Maximum number of characters allowed in the field (for strings) (OPTIONAL)
-    - pattern: An ECMA 262 regular expression that must match the string (OPTIONAL)
-    - metadata: Holds fields that are not used in validation (OPTIONAL)
-      - description: A user-friendly description of the parameter
-    - destination: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
-      - env: The name of an environment variable
-      - path: The fully qualified path to a file that will be created
-    - apply-to: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
+    - `type`: "null", "boolean", "string", "number", or "integer". These types correspond to the main primitive types of JSON (with _integer_ as a special case). Objects and arrays are not supported, as the serialization of these is underdetermined. (REQUIRED)
+    - `required`: if this is set to true, a value MUST be specified (OPTIONAL, not shown)
+    - `defaultValue`: The default value (OPTIONAL)
+    - `enum` (alias `allowedValues`): an array of allowed values (OPTIONAL)
+    - `minimum` (alias `minValue`): Minimum value (for numeric and integer) (OPTIONAL)
+    - `exclusiveMinimum`: Exclusive minimum value (for numeric and integer) (OPTIONAL) 
+    - `maximum` (alias `maxValue`): Maximum value (for numeric and integer) (OPTIONAL)
+    - `exclusiveMaximum`: Exclusive maximum value (for numeric and integer) (OPTIONAL)
+    - `minLength`: Minimum number of characters allowed in the field (for strings) (OPTIONAL)
+    - `maxLength`: Maximum number of characters allowed in the field (for strings) (OPTIONAL)
+    - `pattern`: An ECMA 262 regular expression that must match the string (OPTIONAL)
+    - `metadata`: Holds fields that are not used in validation (OPTIONAL)
+      - `description`: A user-friendly description of the parameter
+    - `destination`: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
+      - `env`: The name of an environment variable
+      - `path`: The fully qualified path to a file that will be created
+    - `apply-to`: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
 
 Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
 
@@ -568,7 +568,7 @@ The format is:
 The fields are defined as follows:
 
 - `custom` defines the wrapper object for extensions
-  - EXTENSION NAME: a unique name for an extension. Names SHOULD follow the dotted name format described earlier in this section.
+  - `EXTENSION NAME`: a unique name for an extension. Names SHOULD follow the dotted name format described earlier in this section.
   - The value of the extension must be valid JSON, but is otherwise undefined.
 
 The usage of extensions is undefined. However, bundles SHOULD be installable by runtimes that do not understand the extensions.
