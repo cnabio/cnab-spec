@@ -19,7 +19,7 @@ A `bundle.json` is broken down into the following categories of information:
 - A list of credentials (name and desired location) that the application needs
 - An OPTIONAL description of custom actions that this bundle implements
 
-There are two formats for a bundle (thin and thick formats). The primary way in which the `bundle.json` file differs is the presence or absence of information in a thick bundle that helps it validate the contents of an image. In a thick bundle, `mediaType` and `size` attributes MAY assist the reconstitution of images from the thick format to a runtime format.
+The `bundle.json` is also known as a _thin bundle_. Bundles come in two formats: thick and thin. Read more about thick and thin bundles in the [bundle formats section](104-bundle-formats.md).
 
 For the rest of the documentation, by default we'll be referring to bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
 
