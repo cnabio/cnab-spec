@@ -197,27 +197,6 @@
                 "mediaType":{
                     "description": "The media type of the image",
                     "type": "string"
-                },
-                "refs": {
-                    "description": "The locations in the invocation image that reference this image. Used for rewriting",
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "path": {
-                                "description": "The path in the CNAB bundle to a file that references this image. It will be calculated from the root of the container",
-                                "type": "string"
-                            },
-                            "field": {
-                                "description": "The field to be replaced in the file specified by the 'path' property",
-                                "type": "string"
-                            },
-                            "mediaType": {
-                                "description": "The MIME type of the file, used for determining how to process it",
-                                "type": "string"
-                            }
-                        }
-                    }
                 }
             },
             "required": ["image"]
