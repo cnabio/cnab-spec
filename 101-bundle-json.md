@@ -340,7 +340,8 @@ Parameter specifications are flat (not tree-like), consisting of name/value pair
         "destination": {
             "env": "MY_ENV_VAR",
             "path": "/my/destination/path"
-        }
+        },
+        "apply-to": ["install", "action1", "action2"]
     }
 }
 ```
@@ -364,6 +365,7 @@ Parameter specifications are flat (not tree-like), consisting of name/value pair
     - destination: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
       - env: The name of an environment variable
       - path: The fully qualified path to a file that will be created
+    - apply-to: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
 
 Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
 
@@ -431,7 +433,8 @@ The structure of a parameters section looks like this:
         "destination": {
             "env": "<name-of-env-var>",
             "path": "<fully-qualified-path>"
-        }
+        },
+        "apply-to": ["action1", "action2"]
     }
 }
 ```
