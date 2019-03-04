@@ -20,10 +20,7 @@ The _bundle definition_ is a single file that contains the following information
 - The list of executable images that this bundle will install
 - A list of credential paths or environment variables that this bundle requires to execute
 
-The canonical encoding of a bundle definition is a JSON-formatted file, which MAY be presented in either signed or unsigned format.
-
-- If unsigned, the CNAB is encoded as a JSON Object stored in a `bundle.json` file, as defined in [the bundle file definition](101-bundle-json.md)
-- If signed, the CNAB is encoded as a JSON object stored in a `bundle.cnab` file, as described in [the signature definition](105-signing.md)
+The canonical encoding of a bundle definition is a JSON-formatted file, which MUST be encoded as a Canonical JSON Object stored in a `bundle.json` file, as defined in [the bundle file definition](101-bundle-json.md)
 
 In either case, CNAB has the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file"). 
 
