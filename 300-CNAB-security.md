@@ -11,6 +11,8 @@ This specification addresses two related problems:
 - Securing the delivery of packages from a source to a client
 - Ensuring the provenance of a bundle robustly, even across networks and over long periods of time
 
+Industry standards such as [NISTIR-8176](https://csrc.nist.gov/News/2017/NIST-Releases-NISTIR-8176) provide recommendations on how container security may be achieved, and a goal of this specification is to meet such recommendations.
+
 ## Key Terms
 
 In addition to the terminology introduced in the CNAB Core specification, this specification uses additional terms:
