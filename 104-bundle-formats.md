@@ -39,20 +39,43 @@ Thick bundles MUST contain the bundle descriptor. In addition, a thick bundle MU
 
 A thick bundle SHOULD be encoded as a gzipped TAR. This specification is neutral as to what compression ratio is used.
 
-The internal layout of the TAR should be as follows:
-
+The internal layout of the TAR SHOULD be as follows:
 ```
 ├── artifacts
-│   ├── example.com-technosophos-invocation-image-1.2.3.tar
-│   └── example.com-technosophos-microservice-latest.tar
+│   └── ...
 └── bundle.json
 ```
-
 The `bundle.json` MUST always be located at the root of the archive.
 
-All images MUST be located inside of the `artifacts` directory, with no subdirectories.
+All images MUST be located inside of the `artifacts` directory.
 
-While CNAB implementations MAY create other directories at the root of the archive, they MUST NOT create subdirectories in `artifacts`.
+CNAB implementations MAY create other directories at the root of the archive.
+
+The contents of the `artifacts` directory SHOULD be either:
+ 
+* a collection of image TAR files, for example:
+    ```
+    ├── artifacts
+    │   ├── example.com-technosophos-invocation-image-1.2.3.tar
+    │   └── example.com-technosophos-microservice-latest.tar
+    └── bundle.json
+    ```
+    or
+ 
+* an image layout in a subdirectory 'artifacts/layout' conforming to the [OCI Image Layout Specification](https://github.com/opencontainers/image-spec/blob/master/image-layout.md), for example:
+    ```
+    ├── artifacts
+    │   └── layout
+    │       ├── blobs
+    │       │   └── sha256
+    │       │       ├── 3588d02542238316759cbf24502f4344ffcc8a60c803870022f335d1390c13b4
+    │       │       ├── 4b0bc1c4050b03c95ef2a8e36e25feac42fd31283e8c30b3ee5df6b043155d3c
+    │       │       └── 7968321274dc6b6171697c33df7815310468e694ac5be0ec03ff053bb135e768
+    │       ├── index.json
+    │       └── oci-layout
+    └── bundle.json
+    ```
+    
 
 ### Transmitting Thick Bundles
 
