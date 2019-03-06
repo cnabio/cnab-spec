@@ -37,6 +37,20 @@
     }
   ],
   "name": "helloworld",
+  "outputs": {
+    "hostName" : {
+        "type" : "string",
+        "path" : "/cnab/app/outputs/hostname"
+     },
+    "port" : {
+      "type" : "integer",
+      "path" : "/cnab/app/outputs/port"
+    },
+    "clientCert" : {
+        "type" : "file",
+        "path" : "/cnab/app/outputs/clientCert"
+    }
+  },
   "parameters": {
     "backend_port": {
       "defaultValue": 80,

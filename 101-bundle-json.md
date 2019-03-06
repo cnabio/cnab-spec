@@ -18,6 +18,7 @@ A `bundle.json` is broken down into the following categories of information:
 - A specification of which parameters MAY be overridden, and how those are to be validated
 - A list of credentials (name and desired location) that the application needs
 - An OPTIONAL description of custom actions that this bundle implements
+- A list of outputs (name, type and location) that the application produces
 
 The `bundle.json` is also known as a _thin bundle_. Bundles come in two formats: thick and thin. Read more about thick and thin bundles in the [bundle formats section](104-bundle-formats.md).
 
@@ -65,6 +66,20 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
     }
   ],
   "name": "helloworld",
+  "outputs": {
+    "hostName" : {
+        "type" : "string",
+        "path" : "/cnab/app/outputs/hostname"
+     },
+    "port" : {
+      "type" : "integer",
+      "path" : "/cnab/app/outputs/port"
+    },
+    "clientCert" : {
+        "type" : "file",
+        "path" : "/cnab/app/outputs/clientCert"
+    }
+  },
   "parameters": {
     "backend_port": {
       "defaultValue": 80,
@@ -88,7 +103,11 @@ Source: [101.01-bundle.json](examples/101.01-bundle.json)
 The canonical JSON version of the above is:
 
 ```json
+<<<<<<< HEAD
 {"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"destination":{"env":"BACKEND_PORT"},"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
+=======
+{"credentials": {"hostkey": {"env": "HOST_KEY", "path": "/etc/hostkey.txt"}}, "custom": {"com.example.backup-preferences": {"frequency": "daily"}, "com.example.duffle-bag": {"icon": "https://example.com/icon.png", "iconType": "PNG"}}, "description": "An example 'thin' helloworld Cloud-Native Application Bundle", "images": {"my-microservice": {"description": "my microservice", "digest": "sha256:aaaaaaaaaaaa...", "image": "technosophos/microservice:1.2.3", "refs": [{"field": "image.1.field", "path": "image1path"}]}}, "invocationImages": [{"digest": "sha256:aaaaaaa...", "image": "technosophos/helloworld:0.1.0", "imageType": "docker"}], "maintainers": [{"email": "matt.butcher@microsoft.com", "name": "Matt Butcher", "url": "https://example.com"}], "name": "helloworld", "outputs": {"clientCert": {"path": "/cnab/app/outputs/clientCert", "type": "file"}, "hostName": {"path": "/cnab/app/outputs/hostname", "type": "string"}, "port": {"path": "/cnab/app/outputs/port", "type": "integer"}}, "parameters": {"backend_port": {"defaultValue": 80, "destination": {"env": "BACKEND_PORT"}, "maxValue": 10240, "metadata": {"description": "The port that the back-end will listen on"}, "minValue": 10, "type": "int"}}, "schemaVersion": "v1.0.0-WD", "version": "0.1.2"}
+>>>>>>> Introduce CNAB Outputs to the Spec
 ```
 
 And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
@@ -135,6 +154,20 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
     }
   ],
   "name": "helloworld",
+  "outputs": {
+    "hostName" : {
+        "type" : "string",
+        "path" : "/cnab/app/outputs/hostname"
+     },
+    "port" : {
+      "type" : "integer",
+      "path" : "/cnab/app/outputs/port"
+    },
+    "clientCert" : {
+        "type" : "file",
+        "path" : "/cnab/app/outputs/clientCert"
+    }
+  },
   "parameters": {
     "backend_port": {
       "defaultValue": 80,
@@ -531,5 +564,35 @@ The fields are defined as follows:
 
 The usage of extensions is undefined. However, bundles SHOULD be installable by runtimes that do not understand the extensions.
 
+## Outputs
+
+The `outputs` section of the `bundle.json` defines which outputs an application will produce during the course of executing a bundle. Outputs are expected to be written to one or more files on the file system of the invocation image. The location of this file MUST be provided in the output definition.
+
+Output specifications are flat (not tree-like), consisting of name/value pairs. The output definition includes a destination the output will be written to, along with a type to help bundle users identify how to consume them.
+
+```json
+"outputs" : {
+    "hostName" : {
+        "type" : "string",
+        "path" : "/cnab/app/outputs/hostname"
+    },
+    "port" : {
+        "type" : "integer",
+        "path" : "/cnab/app/outputs/port"
+    },
+    "clientCert" : {
+        "type" : "file",
+        "path" : "/cnab/app/outputs/clientCert"
+    }
+}
+```
+
+- `output`: name/value pairs describing an application output
+  - `<name>`: The name of the output. This is REQUIRED. In the example above: `hostName`, `port`, `clientCert`. This
+    is mapped to a value definition, which contains the following fields:
+    - `type`: "null", "boolean", "string", "number", or "integer" or "file". These types correspond to the main primitive types of JSON (with _integer_ and _file_ as a special case). (REQUIRED)
+    - `path`: The fully qualified path to a file that will be created (REQUIRED)
+    - `description`: A user-friendly description of the output (OPTIONAL)
+    - `apply-to`: restricts this output to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
 
 Next section: [The invocation image definition](102-invocation-image.md)
