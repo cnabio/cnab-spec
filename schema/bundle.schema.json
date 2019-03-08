@@ -248,7 +248,7 @@
                 "type": {
                     "description": "The data type of the parameter",
                     "type":"string",
-                    "pattern":"^(string|int|integer|numeric|null|boolean)$"
+                    "pattern":"^(string|int|integer|numeric|null|boolean|bytes)$"
                 },
                 "required": {
                     "description": "If true, this parameter must be supplied",
