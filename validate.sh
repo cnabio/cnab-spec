@@ -20,3 +20,10 @@ for json in $(ls -1 examples/*-claim.json); do
   echo "Testing json '$json' against schema '$schema'"
   ajv test -s $schema -d $json --valid -r schema/bundle.schema.json
 done
+
+# Test all of the claim files against the claim schema.
+for json in $(ls -1 examples/*-status.json); do
+  schema="schema/status.schema.json"
+  echo "Testing json '$json' against schema '$schema'"
+  ajv test -s $schema -d $json --valid -r schema/bundle.schema.json
+done
