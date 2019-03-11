@@ -327,10 +327,6 @@
                         "env":{
                             "description": "The environment variable name, such as MY_VALUE, in which the parameter value is stored",
                             "type": "string"
-                        },
-                        "description": {
-                            "description": "A user-friendly description of this parameter",
-                            "type": "string"
                         }
                     }
                 },
