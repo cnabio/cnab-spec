@@ -1,0 +1,10 @@
+{
+    "status": "Ready",
+    "message": "All systems go",
+    "components":{
+      "web": {
+        "status": "Ready",
+        "message": "Listening on port :8080"
+      }
+    }
+  }

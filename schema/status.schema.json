@@ -2,7 +2,24 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "http://cnab.io/v1/status.schema.json",
     "title": "CNAB Status json schema",
-    "$ref": "#/definitions/component",
+    "type": "object",
+    "properties": {
+        "status": {
+            "type": "string",
+            "description": "string identifying the status of a component (Ready, Pending, Failed are well known values)"
+        },
+        "message": {
+            "type": "string",
+            "description": "details about the current status"
+        },
+        "components": {
+            "type":"object",
+            "additionalProperties": {
+                "$ref": "#/definitions/component"
+            }	            
+        },
+        "additionalProperties": true
+    },
     "definitions": {
         "component":{
             "type":"object",
@@ -18,7 +35,7 @@
                 "components": {
                     "type":"object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/component"
+                        "$ref": "#"
                     }	            
                 },
                 "additionalProperties": true
