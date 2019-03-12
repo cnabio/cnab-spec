@@ -191,13 +191,7 @@ For this example CNAB bundle:
     "my-microservice": {
       "description": "my microservice",
       "digest": "sha256:aaaaaaaaaaaa...",
-      "image": "technosophos/microservice:1.2.3",
-      "refs": [
-        {
-          "field": "image.1.field",
-          "path": "image1path"
-        }
-      ]
+      "image": "technosophos/microservice:1.2.3"
     }
   },
   "invocationImages": [
@@ -241,15 +235,9 @@ The `/cnab/app/image-map.json` file mounted in the invocation image will be:
     "my-microservice": {
         "description": "my microservice",
         "digest": "sha256:aaaaaaaaaaaa...",
-        "image": "technosophos/microservice:1.2.3",
-        "refs": [
-            {
-                "field": "image.1.field",
-                "path": "image1path"
-            }
-        ]
+        "image": "technosophos/microservice:1.2.3"
     }
 }
 ```
 
-The run tool MAY use this file to modify its behavior, if declarative substitution is not enough.
+The run tool MAY use this file to modify its behavior. For example, a run tool MAY replace default image references with the references provided in this file.

@@ -47,13 +47,7 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
     "my-microservice": {
       "description": "my microservice",
       "digest": "sha256:aaaaaaaaaaaa...",
-      "image": "technosophos/microservice:1.2.3",
-      "refs": [
-        {
-          "field": "image.1.field",
-          "path": "image1path"
-        }
-      ]
+      "image": "technosophos/microservice:1.2.3"
     }
   },
   "invocationImages": [
@@ -94,7 +88,7 @@ Source: [101.01-bundle.json](examples/101.01-bundle.json)
 The canonical JSON version of the above is:
 
 ```json
-{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3","refs":[{"field":"image.1.field","path":"image1path"}]}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"destination":{"env":"BACKEND_PORT"},"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","parameters":{"backend_port":{"defaultValue":80,"destination":{"env":"BACKEND_PORT"},"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
 And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
@@ -247,7 +241,7 @@ The following OPTIONAL fields MAY be attached to an invocation image:
 
 ## The Image Map
 
-The `bundle.json` maps image metadata (name, origin, tag) to placeholders within the bundle. This allows images to be renamed, relabeled, or replaced during the CNAB bundle build operation. It also specifies the parameters that MAY be overridden in this image, giving tooling the ability to expose configuration options.
+The `bundle.json` maps image metadata (name, origin, tag) to placeholders within the bundle. This allows images to be renamed, relabeled, or replaced during the CNAB bundle build operation.
 
 The following illustrates an `images` section:
 
@@ -257,26 +251,14 @@ The following illustrates an `images` section:
         "frontend": { 
             "description": "frontend component image",
             "imageType": "docker",
-            "image": "gabrtv.azurecr.io/gabrtv/vote-frontend:a5ff67...",
-            "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "refs": [
-                {
-                    "path": "./charts/azure-voting-app/values.yaml",
-                    "field": "AzureVoteFront.deployment.image"
-                }
-            ]
+            "image": "example.com/gabrtv/vote-frontend:a5ff67...",
+            "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
         },
         "backend": {
             "description": "backend component image",
             "imageType": "docker",
             "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "image": "gabrtv.azurecr.io/gabrtv/vote-backend:a5ff67...",
-            "refs": [
-                {
-                    "path": "./charts/azure-voting-app/values.yaml",
-                    "field": "AzureVoteBack.deployment.image"
-                }
-            ]
+            "image": "example.com/gabrtv/vote-backend:a5ff67..."
         }
     }
 }
@@ -289,37 +271,13 @@ Fields:
   - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
   - `image`: The REQUIRED `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
   - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
-  - `refs`: An array listing the locations which refer to this image, and whose values should be replaced by the value specified in URI. Each entry contains the following properties:
-    - `path`: The path of the file where the value should be replaced
-    - `field`: A selector specifying a location (or locations) within that file where the value should be replaced
-    - `mediaType`: The media type of the file, which can be used to determine the file type. If unset, tooling may choose any strategy for detecting format
   - `size`: The image size in bytes
   - `platform`: The target platform, as an object with two fields:
     - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
     - `os`: The operating system of the image
   - `mediaType`: The media type of the image
 
-Substitutions MUST be supported for the following formats:
-
-- JSON
-- YAML
-- XML
-
-In addition to these substitutions, the image map data is also made available to the invocation image at runtime. See [Image map](103-bundle-runtime.md#image-map) for more details.
-
-### Field Selectors
-
-*TODO:* We have multiple competing standards in this space, and those that are popular for JSON are not the same as those popular for XML. This portion is thus not complete.
-
-For fields, the selectors are based on the _de facto_ format used in tools like `jq`, which is a subset of the [CSS selector](https://www.w3.org/TR/selectors-3/) path. Examples:
-
-- `foo.bar.baz` is interpreted as "find element baz whose parent is bar and whose grandparent is foo".
-- `#baz` in XML is "the element whose ID attribute is set to "baz"". It is a no-op in YAML and JSON.
-- TODO: Will we need to support attribute selectors?
-
-TODO: How do we specify multiple replacements within a single file?
-
-TODO: How do we specify URI is a VM image (or Jar or other) instead of a Docker-style image? Or do we? And if not, why not?
+The image map data is made available to the invocation image at runtime. This allows invocation images to perform various substitutions during installation (for example, moving images to different storage mechanisms or registries, and renaming appropriately). See [Image map](103-bundle-runtime.md#image-map) for more details.
 
 ## Parameters
 

@@ -19,13 +19,7 @@
     "my-microservice": {
       "description": "my microservice",
       "digest": "sha256:aaaaaaaaaaaa...",
-      "image": "technosophos/microservice:1.2.3",
-      "refs": [
-        {
-          "field": "image.1.field",
-          "path": "image1path"
-        }
-      ]
+      "image": "technosophos/microservice:1.2.3"
     }
   },
   "invocationImages": [
