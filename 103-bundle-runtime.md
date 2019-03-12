@@ -195,8 +195,9 @@ For this example CNAB bundle:
   "images": {
     "my-microservice": {
       "description": "my microservice",
-      "digest": "sha256:aaaaaaaaaaaa...",
-      "image": "technosophos/microservice:1.2.3"
+      "image": "technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
+      "originalImage": "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
+      "digest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
     }
   },
   "invocationImages": [
@@ -237,10 +238,11 @@ The `/cnab/app/image-map.json` file mounted in the invocation image will be:
 {
     "my-microservice": {
         "description": "my microservice",
-        "digest": "sha256:aaaaaaaaaaaa...",
-        "image": "technosophos/microservice:1.2.3"
+        "image": "technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
+        "originalImage": "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
+        "digest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
     }
 }
 ```
 
-The run tool MAY use this file to modify its behavior. For example, a run tool MAY replace default image references with the references provided in this file.
+The run tool MAY use this file to modify its behavior. For example, a run tool MAY replace default image references with the references provided in this file or MAY substitute image references having a value of an `originalImage` field of this file with the value of the corresponding `image` field of this file (in which case the run tool MAY also substitute corresponding digests having values in `originalDigest` fields with values of the corresponding `originalDigest` fields).

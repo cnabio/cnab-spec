@@ -172,6 +172,10 @@
                     "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
                     "type": "string"
                 },
+                "originalImage":{
+                    "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image. If this is not specified, the value is assumed to be that of the image field",
+                    "type": "string"
+                },
                 "imageType":{
                     "description": "The type of image. If this is not specified, 'oci' is assumed",
                     "type": "string",
@@ -179,6 +183,10 @@
                 },
                 "digest":{
                     "description": "A cryptographic hash digest that can be used to validate the image. This may be interpreted differently based on imageType",
+                    "type": "string"
+                },
+                "originalDigest":{
+                    "description": "A cryptographic hash digest that can be used to validate the image. This may be interpreted differently based on imageType. If this is not specified, the value is assumed to be that of the originalDigest field",
                     "type": "string"
                 },
                 "size": {
