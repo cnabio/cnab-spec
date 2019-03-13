@@ -1,3 +1,8 @@
+---
+title: The bundle.json File
+weight: 101
+---
+
 # The bundle.json File
 
 This section describes the format and function of the `bundle.json` document.

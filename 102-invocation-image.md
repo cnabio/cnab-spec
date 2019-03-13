@@ -1,3 +1,8 @@
+---
+title: The Invocation Images
+weight: 102
+---
+
 # The Invocation Images
 
 The `invocationImages` section of a `bundle.json` MUST contain at least one image (the invocation image). This image MUST be formatted according to the specification laid out in the present document.

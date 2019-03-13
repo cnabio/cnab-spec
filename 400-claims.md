@@ -1,3 +1,8 @@
+---
+title: CNAB Claims 1.0
+weight: 400
+---
+
 # CNAB Claims 1.0 (CNAB-Claims1)
 *[Working Draft](901-process.md), Feb. 2019*
 

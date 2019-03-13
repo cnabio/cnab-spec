@@ -1,3 +1,8 @@
+---
+title: Bundles Security
+weight: 300
+---
+
 # Cloud Native Application Bundles Security (CNAB-Sec) 1.0 WD
 
 The CNAB Security specification augments the [CNAB Core specification](100-CNAB.md) by standardizing on security mechanisms for signing, verifying, and attesting CNAB packages. It describes both a client/registry security model and a verification chain (provenance) model. By design, this provides security mechanisms that work in air-gapped networks.

@@ -1,3 +1,8 @@
+---
+title: CNAB Specifications
+weight: 000
+---
+
 # CNAB Specifications
 
 1. [Cloud Native Application Bundle Core 1.0.0 (CNAB1)](100-CNAB.md)

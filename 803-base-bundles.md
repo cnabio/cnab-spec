@@ -1,3 +1,8 @@
+---
+title: The Base Bundle Pattern
+weight: 803
+---
+
 # The Base Bundle Pattern
 
 This section of the specification is non-normative. It describes a pattern for using the contents of one bundle in another bundle as a form of extension or inheritance. While this is non-normative to the specification, facilitating this pattern was a goal of CNAB's design.

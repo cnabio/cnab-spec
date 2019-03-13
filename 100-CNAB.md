@@ -1,3 +1,8 @@
+---
+title: Core
+weight: 100
+---
+
 # Cloud Native Application Bundle Core 1.0.0 (CNAB1)
 *[Working Draft](901-process.md), Nov. 2018*
 
