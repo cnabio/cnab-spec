@@ -1,5 +1,5 @@
 ---
-title: CNAB Claims 1.0
+title: Claims System
 weight: 400
 ---
 

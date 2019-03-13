@@ -1,6 +1,6 @@
 ---
-title: CNAB Specifications
-weight: 000
+title: CNAB Specification
+weight: 001
 ---
 
 # CNAB Specifications

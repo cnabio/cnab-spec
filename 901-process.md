@@ -1,5 +1,5 @@
 ---
-title: Appendix A: Preliminary Release Process
+title: Standardization Process
 weight: 901
 ---
 

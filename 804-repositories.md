@@ -1,6 +1,5 @@
 ---
-title: CNAB Registries
-weight: 804
+title: Registries
 ---
 
 # CNAB Registries
