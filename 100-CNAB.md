@@ -20,18 +20,18 @@ The _bundle definition_ is a single file that contains the following information
 - The list of executable images that this bundle will install
 - A list of credential paths or environment variables that this bundle requires to execute
 
-The canonical encoding of a bundle definition is a JSON-formatted file, which MUST be encoded as a Canonical JSON Object stored in a `bundle.json` file, as defined in [the bundle file definition](101-bundle-json.md)
-
-In either case, CNAB has the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file"). 
+The canonical encoding of a bundle definition is a JSON-formatted file, which MUST be encoded as a Canonical JSON Object stored in a `bundle.json` file, as defined in [the bundle file definition](101-bundle-json.md).
 
 However, as a signed bundle definition represents an immutable bundle, all invocation images and images references must have a digest.
 
-The bundle definition can be stored on its own, or as part of a _packed archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md)).
+The bundle definition can be stored on its own, or as part of a _packaged archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md)).
 
 - A _thin bundle_ consists of just a bundle definition.
 - A _thick bundle_ consists of a packaged archive that contains both the bundle definition and an encoded representation of all of the invocation images and images.
 
-When thin bundles are processed, the referenced content (such as invocation images and other images) are retrieved from their respective storage repositories and registries. A bundle is considered to be _well formed_ if it's definition follows the CNAB schema and the images are in the correct formats. A bundle is considered _complete_ if it is packaged as a thick bundle, and all the components are present OR if it is packaged as a thin bundle and all of the references are resolvable. Completeness is thus in some cases contingent upon external factors such as network access.
+In either case, CNAB has the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file"). 
+
+When thin bundles are processed, the referenced content (such as invocation images and other images) are retrieved from their respective storage repositories and registries. A bundle is considered to be _well formed_ if its definition follows the CNAB schema and the images are in the correct formats. A bundle is considered _complete_ if it is packaged as a thick bundle, and all the components are present OR if it is packaged as a thin bundle and all of the references are resolvable. Completeness is thus in some cases contingent upon external factors such as network access.
 
 Bundles use cryptographic verification on multiple levels. Images (Docker, OCI, VM) are digested, and their cryptographic digest is then embedded into the `bundle.json`. The `bundle.json` is then signed using a public/private key system to ensure that it has not been tampered with. A signed bundle is named `bundle.cnab`. A bundle is considered _secure_ if the bundle definition contains the correct digests for all images, and the bundle definition is cryptographically signed.
 
