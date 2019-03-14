@@ -1,5 +1,5 @@
 ---
-title: CNAB Specification
+title: Index
 weight: 001
 ---
 
