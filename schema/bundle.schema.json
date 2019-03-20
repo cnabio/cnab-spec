@@ -348,7 +348,7 @@
                 "type": {
                     "description": "The data type of the parameter",
                     "type":"string",
-                    "pattern":"^(string|int|integer|numeric|null|boolean|bytes)$"
+                    "pattern":"^(string|int|integer|numeric|null|boolean|file)$"
                 }
                 
             },
