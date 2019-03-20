@@ -1,5 +1,5 @@
 ---
-title: Bundles Security
+title: Bundle Security
 weight: 300
 ---
 
