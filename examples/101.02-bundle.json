@@ -40,17 +40,19 @@
     ],
     "name": "helloworld",
     "outputs": {
-      "hostName" : {
-        "type" : "string",
-        "path" : "/cnab/app/outputs/hostname"
-      },
-      "port" : {
-        "type" : "integer",
-        "path" : "/cnab/app/outputs/port"
-      },
       "clientCert" : {
-        "type" : "file",
-        "path" : "/cnab/app/outputs/clientCert"
+        "path" : "/cnab/app/outputs/clientCert",
+        "type" : "file"
+      },
+      "hostName" : {
+          "apply-to" : ["isntall"],
+          "description" : "the hostname produced installing the bundle",
+          "path" : "/cnab/app/outputs/hostname",
+          "type" : "string"
+       },
+      "port" : {
+        "path" : "/cnab/app/outputs/port",
+        "type" : "integer"
       }
     },
     "parameters": {

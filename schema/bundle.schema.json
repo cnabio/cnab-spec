@@ -108,6 +108,13 @@
             "additionalProperties": {
                 "$ref": "#/definitions/parameter"
             }
+        },
+        "outputs":{
+            "description": "Values that are produced by executing the invocation image",
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/output"
+            }
         }
         
     },
@@ -318,6 +325,34 @@
                 }
             },
             "required": ["type", "destination"]
+        },
+        "output": {
+            "description": "A value that is produced by running an invocation image",
+            "type": "object",
+            "properties": {
+                "apply-to":{                    
+                    "description": "An optional exhaustive list of actions producing this output",
+                    "type":"array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "description" : {
+                    "description": "Helpful text describing the output",
+                    "type": "string"
+                },
+                "path":{
+                    "description": "The path inside of the invocation image where output will be written",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "The data type of the parameter",
+                    "type":"string",
+                    "pattern":"^(string|int|integer|numeric|null|boolean|bytes)$"
+                }
+                
+            },
+            "required": ["type", "path"]
         }
     },
     "additionalProperties": false
