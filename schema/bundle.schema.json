@@ -108,8 +108,14 @@
             "additionalProperties": {
                 "$ref": "#/definitions/parameter"
             }
+        },
+        "schemas": {
+            "description": "A set of named JSON Schema documents.",
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "http://json-schema.org/draft-07/schema#"
+            }
         }
-        
     },
     "required": [ "name", "version", "invocationImages", "schemaVersion"],
     "definitions": {
@@ -221,13 +227,17 @@
             }
         },
         "parameter": {
-            "description": "A paramter that can be passed into the invocation image",
+            "description": "A parameter that can be passed into the invocation image",
             "type": "object",
             "properties": {
                 "type": {
                     "description": "The data type of the parameter",
                     "type":"string",
                     "pattern":"^(string|int|integer|numeric|null|boolean|bytes)$"
+                },
+                "schema": {
+                    "description": "A reference to a JSON schema document that is used to validate the structure of the parameter. Only applies to string parameter types.",
+                    "type": "string"
                 },
                 "required": {
                     "description": "If true, this parameter must be supplied",

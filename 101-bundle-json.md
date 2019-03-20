@@ -308,6 +308,7 @@ Parameter specifications are flat (not tree-like), consisting of name/value pair
   - `<name>`: The name of the parameter. This is REQUIRED. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields:
     - `type`: "null", "boolean", "string", "number", "integer", "bytes". These types correspond to the main primitive types of JSON (with _integer_ and _bytes_ as special cases). Objects and arrays are not supported, as the serialization of these is underdetermined. (REQUIRED)
+    - `schema`: A reference to a JSON schema document that is used to validate the structure of the parameter. Only applies to string parameter types (OPTIONAL)
     - `required`: if this is set to true, a value MUST be specified (OPTIONAL, not shown)
     - `defaultValue`: The default value. For type `bytes`, defaultValue is a string containing a base64 payload (OPTIONAL)
     - `enum`: an array of allowed values. For type `bytes`, values must be strings containing a base64 payload (OPTIONAL)
@@ -332,6 +333,62 @@ Evaluation of the validation keywords should conform to the applicable sections 
 Some validation terms have aliased keywords for backward compatibility with ARM template validators. A CNAB runtime SHOULD implement all aliases. A CNAB builder SHOULD NOT prefer the aliases over the regular names. In this way, aliases will be phased out. The present syntax is based on a subset of JSONSchema's validators.
 
 > The term _parameters_ indicates the present specification of what can be provided to a bundle. The term _values_ is frequently used to indicate the user-supplied values which are tested against the parameter definitions.
+
+### Format of Parameter Specification
+
+The structure of a parameters section looks like this:
+
+```json
+"parameters": {
+    "<parameter-name>" : {
+        "type" : "<type-of-parameter-value>",
+        "schema": "<reference-to-schema-document>",
+        "required": true|false
+        "defaultValue": "<default-value-of-parameter>",
+        "allowedValues": [ "<array-of-allowed-values>" ],
+        "minValue": <minimum-value-for-int>,
+        "maxValue": <maximum-value-for-int>,
+        "minimum": <minimum-length-for-string-or-array>,
+        "maximum": <maximum-length-for-string-or-array-parameters>,
+        "metadata": {
+            "description": "<description-of-the parameter>"
+        },
+        "destination": {
+            "env": "<name-of-env-var>",
+            "path": "<fully-qualified-path>"
+        },
+        "apply-to": ["action1", "action2"]
+    }
+}
+```
+
+See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters are injected into the invocation image.
+
+### Specifying Schema References
+
+Schema references are helpful in defining parameter types that are not explicitly supported in the specification, such as arrays and objects. In the example below we define a schema for an array of strings. We then reference the schema `stringArray` in the `greetings` parameter.
+
+```json
+{
+    "parameters": {
+        "greetings": {
+            "type": "string",
+            "destination": {
+                "env": "GREETINGS"
+            },
+            "schema": "#/schemas/stringArray"
+        }
+    },
+    "schemas": {
+        "stringArray": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    }
+}
+```
 
 ### Resolving Destinations
 
@@ -369,35 +426,6 @@ If `env` is set, the value of the parameter will be assigned to the given enviro
 If `path` is set, the value of the parameter will be written into a file at the specified location on the invocation image's filesystem. This file name MUST NOT be present already on the invocation image's filesystem.
 
 If both `env` and `path` are specified, implementations MUST put a copy of the data in each destination.
-
-### Format of Parameter Specification
-
-The structure of a parameters section looks like this:
-
-```json
-"parameters": {
-    "<parameter-name>" : {
-        "type" : "<type-of-parameter-value>",
-        "required": true|false
-        "defaultValue": "<default-value-of-parameter>",
-        "allowedValues": [ "<array-of-allowed-values>" ],
-        "minValue": <minimum-value-for-int>,
-        "maxValue": <maximum-value-for-int>,
-        "minimum": <minimum-length-for-string-or-array>,
-        "maximum": <maximum-length-for-string-or-array-parameters>,
-        "metadata": {
-            "description": "<description-of-the parameter>"
-        },
-        "destination": {
-            "env": "<name-of-env-var>",
-            "path": "<fully-qualified-path>"
-        },
-        "apply-to": ["action1", "action2"]
-    }
-}
-```
-
-See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters are injected into the invocation image.
 
 ## Credentials
 
