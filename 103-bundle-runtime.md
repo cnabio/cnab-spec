@@ -1,3 +1,8 @@
+---
+title: The Bundle Runtime
+weight: 103
+---
+
 # The Bundle Runtime
 
 This section describes how the invocation image is executed, and how data is injected into the image.

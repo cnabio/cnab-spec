@@ -1,3 +1,7 @@
+---
+title: Registries
+---
+
 # CNAB Registries
 
 CNAB bundles can be stored in [OCI Distribution-compliant repository](https://github.com/opencontainers/distribution-spec/blob/master/spec.md)

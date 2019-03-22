@@ -1,3 +1,8 @@
+---
+title: Standardization Process
+weight: 901
+---
+
 # Appendix A: Preliminary Release Process
 
 While CNAB has not officially been assigned to a standards body, it is good practice to put in place a provisional process for indicating the status, stability, and reliability of the specification.

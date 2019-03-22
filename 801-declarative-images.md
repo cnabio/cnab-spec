@@ -1,3 +1,8 @@
+---
+title: Declarative Invocation Images
+weight: 801
+---
+
 # Declarative Invocation Images
 
 This section is non-normative. A CNAB implementation MAY implement this portion to be considered conforming. However, this section maps out what the authors consider a best practice.

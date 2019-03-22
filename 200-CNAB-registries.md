@@ -1,3 +1,8 @@
+---
+title: Registries
+weight: 200
+---
+
 # CNAB Registries 1.0
 Working Draft, Feb. 2019
 
