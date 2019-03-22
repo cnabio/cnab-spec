@@ -221,13 +221,13 @@
             }
         },
         "parameter": {
-            "description": "A paramter that can be passed into the invocation image",
+            "description": "A parameter that can be passed into the invocation image",
             "type": "object",
             "properties": {
                 "type": {
                     "description": "The data type of the parameter",
                     "type":"string",
-                    "pattern":"^(string|int|integer|numeric|null|boolean|bytes)$"
+                    "pattern":"^(string|int|integer|number|null|boolean|bytes)$"
                 },
                 "required": {
                     "description": "If true, this parameter must be supplied",
@@ -255,11 +255,11 @@
                     "type": "integer"
                 },
                 "minimum": {
-                    "description": "Minimum numeric value (ignored for non-numeric/integer parameters)",
+                    "description": "Minimum value for integer and number parameter types",
                     "type": "integer"
                 },
                 "exclusiveMinimum": {
-                    "description": "Exclusive minimum numeric value (ignored for non-numeric/integer parameters)",
+                    "description": "Exclusive minimum value for integer and number parameter types",
                     "type": "integer"
                 },
                 "maxValue": {
@@ -267,11 +267,11 @@
                     "type": "integer"
                 },
                 "maximum": {
-                    "description": "Maximum integer value (ignored for non-integer parameters)",
+                    "description": "Maximum value for integer and number parameter types",
                     "type": "integer"
                 },
                 "exclusiveMaximum": {
-                    "description": "Exclusive maximum integer value (ignored for non-integer parameters)",
+                    "description": "Exclusive maximum value for integer and number parameter types",
                     "type": "integer"
                 },
                 "minLength":{
