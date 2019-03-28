@@ -39,16 +39,14 @@
   "name": "helloworld",
   "parameters": {
     "backend_port": {
-      "defaultValue": 80,
+      "default": 80,
+      "description": "The port that the back-end will listen on",
       "destination": {
         "env": "BACKEND_PORT"
       },
-      "maxValue": 10240,
-      "metadata": {
-        "description": "The port that the back-end will listen on"
-      },
-      "minValue": 10,
-      "type": "int"
+      "maximum": 10240,
+      "minimum": 10,
+      "type": "integer"
     }
   },
   "schemaVersion": "v1.0.0-WD",
