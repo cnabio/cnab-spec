@@ -72,7 +72,7 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
       "type" : "file"
     },
     "hostName" : {
-        "apply-to" : ["isntall"],
+        "apply-to" : ["install"],
         "description" : "the hostname produced installing the bundle",
         "path" : "/cnab/app/outputs/hostname",
         "type" : "string"
@@ -106,7 +106,7 @@ Source: [101.01-bundle.json](examples/101.01-bundle.json)
 The canonical JSON version of the above is:
 
 ```json
-{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"clientCert":{"path":"/cnab/app/outputs/clientCert","type":"file"},"hostName":{"apply-to":["isntall"],"description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname","type":"string"},"port":{"path":"/cnab/app/outputs/port","type":"integer"}},"parameters":{"backend_port":{"defaultValue":80,"destination":{"env":"BACKEND_PORT"},"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"clientCert":{"path":"/cnab/app/outputs/clientCert","type":"file"},"hostName":{"apply-to":["install"],"description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname","type":"string"},"port":{"path":"/cnab/app/outputs/port","type":"integer"}},"parameters":{"backend_port":{"defaultValue":80,"destination":{"env":"BACKEND_PORT"},"maxValue":10240,"metadata":{"description":"The port that the back-end will listen on"},"minValue":10,"type":"int"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
 And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
@@ -159,7 +159,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
         "type" : "file"
       },
       "hostName" : {
-          "apply-to" : ["isntall"],
+          "apply-to" : ["install"],
           "description" : "the hostname produced installing the bundle",
           "path" : "/cnab/app/outputs/hostname",
           "type" : "string"

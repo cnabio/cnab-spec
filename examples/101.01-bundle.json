@@ -43,7 +43,7 @@
       "type" : "file"
     },
     "hostName" : {
-        "apply-to" : ["isntall"],
+        "apply-to" : ["install"],
         "description" : "the hostname produced installing the bundle",
         "path" : "/cnab/app/outputs/hostname",
         "type" : "string"
