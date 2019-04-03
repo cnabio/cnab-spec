@@ -16,8 +16,7 @@ weight: 001
 5. Non-normative Sections
     - [Declarative Bundles](801-declarative-images.md)
     - [Credential Sets](802-credential-sets.md)
-    - [Base Bundles](803-base-bundles.md)
-    - [Repositories](804-repositories.md)
-    - [Well known custom actions](805-well-known-custom-actions.md)
+    - [Repositories](803-repositories.md)
+    - [Well known custom actions](804-well-known-custom-actions.md)
 6. Process Documentation
     - [Specification Process](901-process.md)
