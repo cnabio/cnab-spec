@@ -40,6 +40,7 @@
   "outputs": {
     "clientCert" : {
       "path" : "/cnab/app/outputs/clientCert",
+      "sensitive" : true,
       "type" : "file"
     },
     "hostName" : {
