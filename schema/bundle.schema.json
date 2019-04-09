@@ -48,9 +48,9 @@
                         "description": "URL of the responsible party, perhaps containing additional contact info",
                         "type": "string"
                     }
-                }
-            },
-            "required": ["name"]
+                },
+                "required": ["name"]
+            }
         },
         "license":{
             "description": "The SPDX license code or proprietary license name for this bundle",
