@@ -57,7 +57,7 @@ All images MUST be located inside of the `artifacts` directory.
 CNAB implementations MAY create other directories at the root of the archive.
 
 The contents of the `artifacts` directory SHOULD be either:
- 
+
 * a collection of image TAR files, for example:
     ```
     ├── artifacts
@@ -66,7 +66,7 @@ The contents of the `artifacts` directory SHOULD be either:
     └── bundle.json
     ```
     or
- 
+
 * an image layout in a subdirectory 'artifacts/layout' conforming to the [OCI Image Layout Specification](https://github.com/opencontainers/image-spec/blob/master/image-layout.md), for example:
     ```
     ├── artifacts
@@ -80,7 +80,7 @@ The contents of the `artifacts` directory SHOULD be either:
     │       └── oci-layout
     └── bundle.json
     ```
-    
+
 
 ### Transmitting Thick Bundles
 

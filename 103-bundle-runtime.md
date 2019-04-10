@@ -106,17 +106,17 @@ A CNAB `bundle.json` file MAY specify zero or more parameters whose values MAY b
 If the `destination` field contains a key named `env`, values MUST be passed into the container as environment variables, where the value of the `env` field is the name of the environment variable.
 
 ```json
-"parameters": {
+{
+  "parameters": {
     "greeting": {
-        "defaultValue": "hello",
-        "type": "string",
-        "destination": {
-            "env": "GREETING"
-        },
-        "metadata":{
-            "description": "this will be in $GREETING"
-        }
+      "default": "hello",
+      "description": "this will be in $GREETING",
+      "destination": {
+        "env": "GREETING"
+      },
+      "type": "string"
     }
+  }
 }
 ```
 
@@ -126,25 +126,25 @@ The parameter value is evaluated thus:
 
 - If the CNAB runtime provides a value, that value MAY be sanitized, then validated (as described below), then injected as the parameter value. In the event that sanitization or validation fail, the runtime SHOULD return an error and discontinue the action.
 - If the parameter is marked `required` and a value is not supplied, the CNAB Runtime MUST produce an error and discontinue action.
-- If the CNAB runtime does not provide a value, but `defaultValue` is set, then the default value MUST be used.
-- If no value is provided and `defaultValue` is unset, the runtime MUST set the value to an empty string (""), regardless of type.
+- If the CNAB runtime does not provide a value, but `default` is set, then the default value MUST be used.
+- If no value is provided and `default` is unset, the runtime MUST set the value to an empty string (""), regardless of type.
 
 > Setting the value of other types to a default value based on type, e.g. Boolean to `false` or integer to `0`, is considered _incorrect behavior_. Setting the value to `null`, `nil`, or a related character string is also considered incorrect.
 
 In the case where the `destination` object has a `path` field, the CNAB runtime MUST create a file at that path. The file MUST have sufficient permissions that the effective user ID of the image can read the contents of the file. And the contents of the file MUST be the parameter value (calculated according to the rules above).
 
 ```json
-"parameters": {
+{
+  "parameters": {
     "greeting": {
-        "defaultValue": "hello",
-        "type": "string",
-        "destination": {
-            "path": "/var/run/greeting.txt"
-        },
-        "metadata":{
-            "description": "this will be in $GREETING"
-        }
+      "default": "hello",
+      "description": "this will be in $GREETING",
+      "destination": {
+        "path": "/var/run/greeting.txt"
+      },
+      "type": "string"
     }
+  }
 }
 ```
 
@@ -156,7 +156,7 @@ If `destination` contains both a `path` and an `env`, the CNAB runtime MUST prov
 
 ### Validating parameters
 
-The validation of user-supplied values MUST happen outside of the CNAB bundle. Implementations of CNAB bundle tools MUST validate user-supplied values against the `parameters` section of a `bundle.json` before injecting them into the image. The outcome of successful validation MUST be the collection containing all parameters where either the user has supplied a value (that has been validated) or the `parameters` section of `bundles.json` contains a `defaultValue`.
+The validation of user-supplied values MUST happen outside of the CNAB bundle. Implementations of CNAB bundle tools MUST validate user-supplied values against the `parameters` section of a `bundle.json` before injecting them into the image. The outcome of successful validation MUST be the collection containing all parameters where either the user has supplied a value (that has been validated) or the `parameters` section of `bundles.json` contains a `default`.
 
 The resulting calculated values are injected into the bundle before the bundle's `run` is executed (and also in such a way that the `run` has access to these variables.) This works analogously to `CNAB_ACTION` and `CNAB_INSTALLATION_NAME`.
 
@@ -174,7 +174,7 @@ Credentials MAY be supplied as files on the file system. In such cases, the foll
 
 ## <a name="image-map">Image maps</a>
 
-At runtime the `image` section of the CNAB is mounted in file `/cnab/app/image-map.json`. 
+At runtime the `image` section of the CNAB is mounted in file `/cnab/app/image-map.json`.
 For this example CNAB bundle:
 
 ```json
@@ -216,16 +216,14 @@ For this example CNAB bundle:
   "name": "helloworld",
   "parameters": {
     "backend_port": {
-      "defaultValue": 80,
+      "default": 80,
       "destination": {
         "env": "BACKEND_PORT"
       },
-      "maxValue": 10240,
-      "metadata": {
-        "description": "The port that the back-end will listen on"
-      },
-      "minValue": 10,
-      "type": "int"
+      "maximum": 10240,
+      "description": "The port that the back-end will listen on",
+      "minimum": 10,
+      "type": "integer"
     }
   },
   "schemaVersion": "v1.0.0-WD",
