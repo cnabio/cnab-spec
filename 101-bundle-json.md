@@ -239,7 +239,6 @@ The following OPTIONAL fields MAY be attached to an invocation image:
   - `os`: The operating system of the image
 - `mediaType`: The media type of the image
 - `originalImage`: provides a path-like or URI-like representation of the original location of the image. If the `originalImage` field is omitted, as in the example above, its value defaults to that of the `image` field.
-- `originalDigest`: contains a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the original image. The calculation of how the original image matches the digest is dependent upon image type. If the `originalDigest` field is omitted, as in the example above, its value defaults to that of the `digest` field.
 
 ## The Image Map
 
