@@ -59,10 +59,10 @@ When a client pulls a bundle from a registry, the client MUST verify the package
 - Fetch (from a TUF endpoint) the signature object for the given bundle
 - Fetch the bundle descriptor (optionally by fetching a thick bundle and unpacking the descriptor)
 - Verify the requisite signatures for a package, as described in [the TUF specification](https://github.com/theupdateframework/specification/blob/master/tuf-spec.md#5-detailed-workflows).
-- Verify that each Invocation Image in the bundle descriptor (a) has a digest, and (b) the digest matches the referenced image (by recalculating the hash)
-- Verify that each Image referenced in the bundle descriptor (a) has a digest, and (b) the digest matches the referenced image (by recalculating the hash)
+- Verify that each Invocation Image in the bundle descriptor (a) has a content digest, and (b) the content digest matches the referenced image (by recalculating the hash)
+- Verify that each Image referenced in the bundle descriptor (a) has a content digest, and (b) the content digest matches the referenced image (by recalculating the hash)
 
-A client MUST be able to verify SHA-256 and SHA-512 digests. But this specification accords with the CNAB Core specification in that it does not dictate what are the the contents of the Invocation Images or regular Images. Examples in this document often refer to OCI images as the content of these image fields, but other formats are acceptable.
+A client MUST be able to verify SHA-256 and SHA-512 content digests. But this specification accords with the CNAB Core specification in that it does not dictate what are the the contents of the Invocation Images or regular Images. Examples in this document often refer to OCI images as the content of these image fields, but other formats are acceptable.
 
 If any of these steps fail to obtain, the client MUST NOT perform an action on the bundle. Clients SHOULD produce an error.
 
@@ -70,8 +70,8 @@ If any of these steps fail to obtain, the client MUST NOT perform an action on t
 
 When a client pushes a bundle to a registry, the client MUST prepare the security data on the package, which consists of the following:
 
-- Generate the digest (SHA-256 or SHA-512) of each invocation image, and write this information into the bundle descriptor
-- Generate the digest of each image, and write this information into the bundle descriptor
+- Generate the content digest (SHA-256 or SHA-512) of each invocation image, and write this information into the bundle descriptor
+- Generate the content digest of each image, and write this information into the bundle descriptor
 - Optionally, push the images to their appropriate remote location (thin bundles)
 - Sign the requisite portion of the bundle
 	- For thin bundles, this is the bundle descriptor alone
