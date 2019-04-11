@@ -247,18 +247,21 @@ The following illustrates an `images` section:
 
 ```json
 {
-  "images": {
-    "backend": {
-      "description": "backend component image",
-      "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-      "image": "example.com/gabrtv/vote-backend:a5ff67...",
-      "imageType": "docker"
-    },
-    "frontend": {
-      "description": "frontend component image",
-      "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-      "image": "example.com/gabrtv/vote-frontend:a5ff67...",
-      "imageType": "docker"
+"images": {
+        "frontend": { 
+            "description": "frontend component image",
+            "imageType": "docker",
+            "image": "example.com/gabrtv/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
+            "originalImage": "example.com/opendeis/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
+            "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
+        },
+        "backend": {
+            "description": "backend component image",
+            "imageType": "docker",
+            "image": "example.com/gabrtv/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
+            "originalImage": "example.com/opendeis/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
+            "digest": "sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686"
+        }
     }
   }
 }
@@ -269,8 +272,9 @@ Fields:
 - `images`: The list of dependent images
   - `description`: The description field provides additional context of the purpose of the image.
   - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
-  - `image`: The REQUIRED `image` field provides a valid reference (REGISTRY/NAME:TAG) for the image. Note that SHOULD be a CAS SHA, not a version tag as in the example above.
-  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.)
+  - `image`: The REQUIRED `image` field provides a valid reference for the image. Note that SHOULD be a CAS SHA, as in the example above, not a version tag.
+  - `originalImage`: provides a valid reference for the image. Note that SHOULD be a CAS SHA, as in the example above, not a version tag. If the `originalImage` field is omitted, its value defaults to that of the `image` field.
+  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images use checksums.)
   - `size`: The image size in bytes
   - `platform`: The target platform, as an object with two fields:
     - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
