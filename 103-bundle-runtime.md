@@ -245,4 +245,4 @@ The `/cnab/app/image-map.json` file mounted in the invocation image will be:
 }
 ```
 
-The run tool MAY use this file to modify its behavior. For example, a run tool MAY replace default image references with the references provided in this file or MAY substitute image references having a value of an `originalImage` field of this file with the value of the corresponding `image` field of this file (in which case the run tool MAY also substitute corresponding digests having values in `originalDigest` fields with values of the corresponding `originalDigest` fields).
+The run tool MAY use this file to modify its behavior. For example, a run tool MAY replace default image references with the references provided in this file or MAY substitute image references having a value of an `originalImage` field of this file with the value of the corresponding `image` field of this file.
