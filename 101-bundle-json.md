@@ -238,6 +238,7 @@ The following OPTIONAL fields MAY be attached to an invocation image:
   - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
   - `os`: The operating system of the image
 - `mediaType`: The media type of the image
+- `originalImage`: provides a path-like or URI-like representation of the original location of the image. If the `originalImage` field is omitted, as in the example above, its value defaults to that of the `image` field.
 
 ## The Image Map
 
