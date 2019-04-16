@@ -1,3 +1,8 @@
+---
+title: Claims System
+weight: 400
+---
+
 # CNAB Claims 1.0 (CNAB-Claims1)
 *[Working Draft](901-process.md), Feb. 2019*
 
@@ -113,7 +118,7 @@ The parameter data stored in a claim data is _the resolved key/value pairs_ that
 - The values supplied by the user are validated by the rules specified in the `bundle.json` file
 - The output of this operation is a set of key/value pairs in which:
   - Valid user-supplied values are presented
-  - Default values are supplied for all parameters where `defaultValue` is provided and no user-supplied value overrides this
+  - Default values are supplied for all parameters where `default` is provided and no user-supplied value overrides this
 
 ### How is the Claim Used
 

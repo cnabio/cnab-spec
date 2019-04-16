@@ -1,75 +1,73 @@
 {
-    "credentials": {
-      "hostkey": {
-        "env": "HOST_KEY",
-        "path": "/etc/hostkey.txt"
+  "credentials": {
+    "hostkey": {
+      "env": "HOST_KEY",
+      "path": "/etc/hostkey.txt"
+    },
+    "image_token": {
+      "env": "AZ_IMAGE_TOKEN"
+    },
+    "kubeconfig": {
+      "path": "/home/.kube/config"
+    }
+  },
+  "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
+  "images": {
+    "my-microservice": {
+      "description": "helloworld microservice",
+      "digest": "sha256:bbbbbbbbbbbb...",
+      "image": "technosophos/helloworld:0.1.2",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
       },
-      "image_token": {
-        "env": "AZ_IMAGE_TOKEN"
+      "size": 1337
+    }
+  },
+  "invocationImages": [
+    {
+      "digest": "sha256:aaaaaaaaaaaa...",
+      "image": "technosophos/helloworld:1.2.3",
+      "imageType": "docker",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
       },
-      "kubeconfig": {
-        "path": "/home/.kube/config"
-      }
+      "size": 1337
+    }
+  ],
+  "name": "helloworld",
+  "outputs": {
+    "clientCert" : {
+      "path" : "/cnab/app/outputs/clientCert",
+      "sensitive" : true,
+      "type" : "file"
     },
-    "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
-    "images": {
-      "my-microservice": {
-        "description": "helloworld microservice",
-        "digest": "sha256:bbbbbbbbbbbb...",
-        "image": "technosophos/helloworld:0.1.2",
-        "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-        "platform": {
-          "architecture": "amd64",
-          "os": "linux"
-        },
-        "size": 1337
-      }
-    },
-    "invocationImages": [
-      {
-        "digest": "sha256:aaaaaaaaaaaa...",
-        "image": "technosophos/helloworld:1.2.3",
-        "imageType": "docker",
-        "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-        "platform": {
-          "architecture": "amd64",
-          "os": "linux"
-        },
-        "size": 1337
-      }
-    ],
-    "name": "helloworld",
-    "outputs": {
-      "clientCert" : {
-        "path" : "/cnab/app/outputs/clientCert",
-        "sensitive" : true,
-        "type" : "file"
+    "hostName" : {
+        "apply-to" : ["isntall"],
+        "description" : "the hostname produced installing the bundle",
+        "path" : "/cnab/app/outputs/hostname",
+        "type" : "string"
+     },
+    "port" : {
+      "path" : "/cnab/app/outputs/port",
+      "type" : "integer"
+    }
+  },
+  "parameters": {
+    "backend_port": {
+      "default": 80,
+      "description": "The port that the backend will listen on",
+      "destination": {
+        "path": "/path/to/backend_port"
       },
-      "hostName" : {
-          "apply-to" : ["isntall"],
-          "description" : "the hostname produced installing the bundle",
-          "path" : "/cnab/app/outputs/hostname",
-          "type" : "string"
-       },
-      "port" : {
-        "path" : "/cnab/app/outputs/port",
-        "type" : "integer"
-      }
-    },
-    "parameters": {
-      "backend_port": {
-        "defaultValue": 80,
-        "destination": {
-          "path": "/path/to/backend_port"
-        },
-        "maxValue": 10240,
-        "metadata": {
-          "description": "The port that the backend will listen on"
-        },
-        "minValue": 10,
-        "type": "int"
-      }
-    },
-    "schemaVersion": "v1.0.0-WD",
-    "version": "1.0.0"
-  }
+      "maximum": 10240,
+      "minimum": 10,
+      "type": "integer"
+    }
+  },
+  "schemaVersion": "v1.0.0-WD",
+  "version": "1.0.0"
+}

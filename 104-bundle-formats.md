@@ -1,3 +1,8 @@
+---
+title: Bundle Formats
+weight: 104
+---
+
 # Bundle Formats
 
 This section of the specification addresses how bundles are to be represented. The CNAB Core specification defines two representations ("thick" and "thin"), and any CNAB compliant bundle MUST be representable in both formats. CNAB runtimes MUST support thin bundles, and SHOULD support thick bundles. Various other CNAB tools MAY support only one or the other. For example, a bundle builder could support generating thick bundles, but not thin bundles, and yet still meet the requirements of the specification.
@@ -52,7 +57,7 @@ All images MUST be located inside of the `artifacts` directory.
 CNAB implementations MAY create other directories at the root of the archive.
 
 The contents of the `artifacts` directory SHOULD be either:
- 
+
 * a collection of image TAR files, for example:
     ```
     ├── artifacts
@@ -61,7 +66,7 @@ The contents of the `artifacts` directory SHOULD be either:
     └── bundle.json
     ```
     or
- 
+
 * an image layout in a subdirectory 'artifacts/layout' conforming to the [OCI Image Layout Specification](https://github.com/opencontainers/image-spec/blob/master/image-layout.md), for example:
     ```
     ├── artifacts
@@ -75,7 +80,7 @@ The contents of the `artifacts` directory SHOULD be either:
     │       └── oci-layout
     └── bundle.json
     ```
-    
+
 
 ### Transmitting Thick Bundles
 

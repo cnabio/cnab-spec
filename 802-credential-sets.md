@@ -1,3 +1,8 @@
+---
+title: Credential Sets
+weight: 802
+---
+
 # Credential Sets
 
 This is a non-normative section that describes how credentials can be passed into an invocation image. This strategy is implemented by `duffle`.

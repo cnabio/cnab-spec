@@ -48,9 +48,9 @@
                         "description": "URL of the responsible party, perhaps containing additional contact info",
                         "type": "string"
                     }
-                }
-            },
-            "required": ["name"]
+                },
+                "required": ["name"]
+            }
         },
         "license":{
             "description": "The SPDX license code or proprietary license name for this bundle",
@@ -105,8 +105,14 @@
         "parameters":{
             "description": "Parameters that can be injected into the invocation image",
             "type": "object",
+            "properties": {
+                "required": { "$ref": "http://json-schema.org/draft-07/schema#/properties/required" }
+            },
             "additionalProperties": {
-                "$ref": "#/definitions/parameter"
+                "allOf": [
+                    { "$ref":  "#/definitions/parameter" },
+                    { "$ref":  "http://json-schema.org/draft-07/schema#" }
+                ]
             }
         },
         "outputs":{
@@ -116,7 +122,6 @@
                 "$ref": "#/definitions/output"
             }
         }
-        
     },
     "required": [ "name", "version", "invocationImages", "schemaVersion"],
     "definitions": {
@@ -126,6 +131,10 @@
             "properties": {
                 "image":{
                     "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
+                    "type": "string"
+                },
+                "originalImage":{
+                    "description": "A resolvable reference to the original image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image. If this is not specified, the value is assumed to be that of the image field",
                     "type": "string"
                 },
                 "imageType":{
@@ -172,6 +181,10 @@
                 },
                 "image":{
                     "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
+                    "type": "string"
+                },
+                "originalImage":{
+                    "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image. If this is not specified, the value is assumed to be that of the image field",
                     "type": "string"
                 },
                 "imageType":{
@@ -228,81 +241,9 @@
             }
         },
         "parameter": {
-            "description": "A paramter that can be passed into the invocation image",
+            "description": "A parameter that can be passed into the invocation image",
             "type": "object",
             "properties": {
-                "type": {
-                    "description": "The data type of the parameter",
-                    "type":"string",
-                    "pattern":"^(string|int|integer|numeric|null|boolean|bytes)$"
-                },
-                "required": {
-                    "description": "If true, this parameter must be supplied",
-                    "type": "boolean"
-                },
-                "defaultValue": {
-                    "description": "The default value of this parameter",
-                    "anyOf": [
-                        {"type": "string"},
-                        {"type": "integer"},
-                        {"type": "boolean"},
-                        {"type":"null"}
-                    ]
-                },
-                "allowedValues": {
-                    "description": "Alias of enum. Considered deprecated",
-                    "type":"array"
-                },
-                "enum": {
-                    "description": "An optional exhaustive list of allowed values",
-                    "type":"array"
-                },
-                "minValue": {
-                    "description": "Deprecated alias of minimum",
-                    "type": "integer"
-                },
-                "minimum": {
-                    "description": "Minimum numeric value (ignored for non-numeric/integer parameters)",
-                    "type": "integer"
-                },
-                "exclusiveMinimum": {
-                    "description": "Exclusive minimum numeric value (ignored for non-numeric/integer parameters)",
-                    "type": "integer"
-                },
-                "maxValue": {
-                    "description": "Deprecated alias of maximum",
-                    "type": "integer"
-                },
-                "maximum": {
-                    "description": "Maximum integer value (ignored for non-integer parameters)",
-                    "type": "integer"
-                },
-                "exclusiveMaximum": {
-                    "description": "Exclusive maximum integer value (ignored for non-integer parameters)",
-                    "type": "integer"
-                },
-                "minLength":{
-                    "description": "Minimum string length (ignored for non-string parameters)",
-                    "type": "integer"
-                },
-                "maxLength": {
-                    "description": "Maximum string length (ignored for non-string parameters)",
-                    "type": "integer"
-                },
-                "pattern": {
-                    "description": "ECMA 262 regular expression that must match a string value",
-                    "type": "string"
-                },
-                "metadata":{
-                    "description": "Extra data about the parameter",
-                    "type": "object",
-                    "properties": {
-                        "description": {
-                            "description": "Description of this parameter",
-                            "type":"string"
-                        }
-                    }
-                },
                 "destination": {
                     "type": "object",
                     "properties": {
