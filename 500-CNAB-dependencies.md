@@ -66,7 +66,7 @@ The `requires` object defines the criteria for the dependent bundle:
 * `bundle`: A reference to a bundle in the format REGISTRY/NAME.
 * `version`: A set of criteria applied to the bundle version when selecting an
     acceptable version of the bundle.
-    * `range`: An allowed version range. 
+    * `ranges`: An array of allowed version ranges. 
     
         Versions are specified using semver, with or without a leading "v". 
         An `x` in the place of the minor or patch place can be used to specify 
