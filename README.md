@@ -29,7 +29,7 @@ The specification is licensed under [OWF Contributor License Agreement 1.0 - Cop
 ## Communications
 
 ### Meetings
-* Community Meeting: Weekly - Wednesdays at 09:00 AM US Pacific
+* Community Meeting: Every other Wednesday at 09:00 AM US Pacific
   * https://zoom.us/j/653255416
   * [Meeting notes and Agenda](https://aka.ms/cnab/meeting).
 
