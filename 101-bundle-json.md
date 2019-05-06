@@ -168,7 +168,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
       "type" : "file"
     },
     "hostName" : {
-        "apply-to" : ["isntall"],
+        "apply-to" : ["install"],
         "description" : "the hostname produced installing the bundle",
         "path" : "/cnab/app/outputs/hostname",
         "type" : "string"
@@ -773,14 +773,14 @@ Output specifications are flat (not tree-like), consisting of name/value pairs. 
     - `additionalProperties`: Output validation requiring that any additional properties in the resulting object conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `allOf`: Output validation requiring that the resulting value match ALL of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
     - `anyOf`: Output validation requiring that the resulting value match ANY of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
-    - `applyTo`: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
+    - `applyTo`: restricts this output to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
     - `const`: Output validation requiring that the resulting value matches exactly the specified const. MAY be of any type, including null. (OPTIONAL)
     - `contains`: Output validation requiring at least one item included in the resulting array conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `contentEncoding`: Indicates that the resulting content should interpreted as binary data and decoded using the encoding named by this property. MUST be a string in accordance with [RFC2045, Sec 6.1](https://json-schema.org/latest/json-schema-validation.html#RFC2045). (OPTIONAL)
     - `contentMediaType`: MIME type indicating the media type of the resulting content. MUST be a string in accordance with [RFC2046](https://json-schema.org/latest/json-schema-validation.html#RFC2046). (OPTIONAL)
     - `default`: A default JSON value associated with a particular schema. RECOMMENDED that a default value be valid against the associated schema. (OPTIONAL)
     - `definitions`: Provides a standardized location for bundle authors to inline re-usable JSON Schemas into a more general schema. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
-    - `dependencies`: Specifies rules that are evaluated if the parameter type is an object and contains a certain property. MUST be an object where each named dependency is either an array of unique strings or a JSON schema. (OPTIONAL)
+    - `dependencies`: Specifies rules that are evaluated if the output type is an object and contains a certain property. MUST be an object where each named dependency is either an array of unique strings or a JSON schema. (OPTIONAL)
     - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
     - `else`: Output validation requiring that the resulting value match the specified schema. Only matches if the resulting value does NOT match the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
     - `enum`: Output validation requiring that the resulting value is one of the specified items in the specified array. MUST be a non-empty array of unique elements that can be of any type. (OPTIONAL)
@@ -802,9 +802,9 @@ Output specifications are flat (not tree-like), consisting of name/value pairs. 
     - `not`: Output validation requiring that the resulting value NOT match the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `oneOf`: Output validation requiring that the resulting value match ONE of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
     - `path`: The fully qualified path to a file that will be created (REQUIRED)
-    - `patternProperties`: The set of matching properties and schemas for their values included in an object type parameter. MUST be an object where each named property is a regular expression with a JSON schema as the value. (OPTIONAL)
+    - `patternProperties`: The set of matching properties and schemas for their values included in an object type output. MUST be an object where each named property is a regular expression with a JSON schema as the value. (OPTIONAL)
     - `pattern`: Output validation requiring that the resulting string match the regular expression specified. MUST be a string representation of a valid ECMA 262 regular expression. (OPTIONAL)
-    - `properties`: The set of named properties and schemas for their values included in an object type parameter. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
+    - `properties`: The set of named properties and schemas for their values included in an object type output. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
     - `propertyNames`: Output validation requiring that each property name in an object match the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `sensitive`: Indicates that a runtime should treat the output as a sensitive value. Defaults to false (OPTIONAL)
     - `then`: Output validation requiring that the resulting value match the specified schema. Only matches if the resulting value matches the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
