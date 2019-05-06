@@ -17,8 +17,8 @@ Cloud Native Application Bundles (CNAB) are a package format specification that 
 - Chapter 8: Non-normative Content
   1. [Declarative Invocation Images](801-declarative-images.md)
   1. [Credential Sets](802-credential-sets.md)
-  1. [The Base Bundle Pattern](803-base-bundles.md)
-  1. [Repositories](804-repositories.md)
+  1. [Repositories](803-repositories.md)
+  1. [Well known custom actions](804-well-known-custom-actions.md)
 - Chapter 9: Appendix
   1. [Appendix A: Preliminary Release Process](901-process.md)
 
@@ -29,7 +29,7 @@ The specification is licensed under [OWF Contributor License Agreement 1.0 - Cop
 ## Communications
 
 ### Meetings
-* Community Meeting: Weekly - Wednesdays at 09:00 AM US Pacific
+* Community Meeting: Every other Wednesday at 09:00 AM US Pacific
   * https://zoom.us/j/653255416
   * [Meeting notes and Agenda](https://aka.ms/cnab/meeting).
 
