@@ -39,12 +39,14 @@
   "name": "helloworld",
   "outputs": {
     "clientCert" : {
+      "contentEncoding" : "base64",
+      "contentMediaType" : "application/x-x509-user-cert",
       "path" : "/cnab/app/outputs/clientCert",
       "sensitive" : true,
-      "type" : "file"
+      "type" : "string"
     },
     "hostName" : {
-        "apply-to" : ["install"],
+        "applyTo" : ["install"],
         "description" : "the hostname produced installing the bundle",
         "path" : "/cnab/app/outputs/hostname",
         "type" : "string"

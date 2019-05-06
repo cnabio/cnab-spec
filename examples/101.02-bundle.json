@@ -41,6 +41,8 @@
   "name": "helloworld",
   "outputs": {
     "clientCert" : {
+      "contentEncoding" : "base64",
+      "contentMediaType" : "application/x-x509-user-cert",
       "path" : "/cnab/app/outputs/clientCert",
       "sensitive" : true,
       "type" : "file"
