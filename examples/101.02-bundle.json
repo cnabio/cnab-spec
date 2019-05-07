@@ -45,7 +45,7 @@
       "contentMediaType" : "application/x-x509-user-cert",
       "path" : "/cnab/app/outputs/clientCert",
       "sensitive" : true,
-      "type" : "file"
+      "type" : "string"
     },
     "hostName" : {
         "apply-to" : ["isntall"],

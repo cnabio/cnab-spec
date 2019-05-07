@@ -118,8 +118,14 @@
         "outputs":{
             "description": "Values that are produced by executing the invocation image",
             "type": "object",
+            "properties": {
+                "required": { "$ref": "http://json-schema.org/draft-07/schema#/properties/required" }
+            },
             "additionalProperties": {
-                "$ref": "#/definitions/output"
+                "allOf": [
+                    { "$ref":  "#/definitions/output" },
+                    { "$ref":  "http://json-schema.org/draft-07/schema#" }
+                ]
             }
         }
     },
@@ -271,25 +277,16 @@
             "description": "A value that is produced by running an invocation image",
             "type": "object",
             "properties": {
-                "apply-to":{                    
+                "applyTo":{                    
                     "description": "An optional exhaustive list of actions producing this output",
                     "type":"array",
                     "items": {
                         "type": "string"
                     }
                 },
-                "description" : {
-                    "description": "Helpful text describing the output",
-                    "type": "string"
-                },
                 "path":{
                     "description": "The path inside of the invocation image where output will be written",
                     "type": "string"
-                },
-                "type": {
-                    "description": "The data type of the parameter",
-                    "type":"string",
-                    "pattern":"^(string|int|integer|numeric|null|boolean|file)$"
                 }
                 
             },
