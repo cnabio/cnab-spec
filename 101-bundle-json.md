@@ -80,7 +80,7 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
       "type" : "file"
     },
     "hostName" : {
-        "apply-to" : ["install"],
+        "applyTo" : ["install"],
         "description" : "the hostname produced installing the bundle",
         "path" : "/cnab/app/outputs/hostname",
         "type" : "string"
@@ -168,7 +168,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
       "type" : "file"
     },
     "hostName" : {
-        "apply-to" : ["install"],
+        "applyTo" : ["install"],
         "description" : "the hostname produced installing the bundle",
         "path" : "/cnab/app/outputs/hostname",
         "type" : "string"
