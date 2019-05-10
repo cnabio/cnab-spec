@@ -114,6 +114,19 @@
                     { "$ref":  "http://json-schema.org/draft-07/schema#" }
                 ]
             }
+        },
+        "outputs":{
+            "description": "Values that are produced by executing the invocation image",
+            "type": "object",
+            "properties": {
+                "required": { "$ref": "http://json-schema.org/draft-07/schema#/properties/required" }
+            },
+            "additionalProperties": {
+                "allOf": [
+                    { "$ref":  "#/definitions/output" },
+                    { "$ref":  "http://json-schema.org/draft-07/schema#" }
+                ]
+            }
         }
     },
     "required": [ "name", "version", "invocationImages", "schemaVersion"],
@@ -259,6 +272,25 @@
                 }
             },
             "required": ["type", "destination"]
+        },
+        "output": {
+            "description": "A value that is produced by running an invocation image",
+            "type": "object",
+            "properties": {
+                "applyTo":{                    
+                    "description": "An optional exhaustive list of actions producing this output",
+                    "type":"array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "path":{
+                    "description": "The path inside of the invocation image where output will be written",
+                    "type": "string"
+                }
+                
+            },
+            "required": ["type", "path"]
         }
     },
     "additionalProperties": false

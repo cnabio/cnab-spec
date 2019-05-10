@@ -39,6 +39,25 @@
     }
   ],
   "name": "helloworld",
+  "outputs": {
+    "clientCert" : {
+      "contentEncoding" : "base64",
+      "contentMediaType" : "application/x-x509-user-cert",
+      "path" : "/cnab/app/outputs/clientCert",
+      "sensitive" : true,
+      "type" : "string"
+    },
+    "hostName" : {
+        "applyTo" : ["install"],
+        "description" : "the hostname produced installing the bundle",
+        "path" : "/cnab/app/outputs/hostname",
+        "type" : "string"
+     },
+    "port" : {
+      "path" : "/cnab/app/outputs/port",
+      "type" : "integer"
+    }
+  },
   "parameters": {
     "backend_port": {
       "default": 80,
