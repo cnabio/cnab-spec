@@ -442,7 +442,7 @@ The structure of a parameters section looks like the section below.
       "then": <json-schema>,
       "title": <string>,
       "type": <string> | [ <string> ],
-      "uniqueItems": boolean,
+      "uniqueItems": <boolean>,
       "writeOnly": <boolean>
     },
     "required": [ <string> ]
