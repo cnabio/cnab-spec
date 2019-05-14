@@ -407,6 +407,7 @@ Parameter specifications consist of name/value pairs. The name is fixed, but the
     - `title`: Short, human-readable descriptive name for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
     - `type`: Parameter validation requiring that the user-provided value is either a "null", "boolean", "object", "array", "number", "string", or "integer". MUST be a string or an array of strings with unique elements. (OPTIONAL)
     - `uniqueItems`: Parameter validation requiring the items included in the user-provided array be unique. MUST be a boolean. (OPTIONAL)
+    - `writeOnly`: Indicates that the value of the parameter is sensitive and cannot be viewed once set or updated. MUST be a boolean. (OPTIONAL)
 
 For more information on the supported parameter properties, visit the [JSON Schema documentation](https://json-schema.org/)
 
@@ -483,8 +484,8 @@ The structure of a parameters section looks like the section below.
       "then": <json-schema>,
       "title": <string>,
       "type": <string> | [ <string> ],
-      "uniqueItems": boolean
-
+      "uniqueItems": <boolean>,
+      "writeOnly": <boolean>
     },
     "required": [ <string> ]
   }
