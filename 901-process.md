@@ -3,26 +3,35 @@ title: Standardization Process
 weight: 901
 ---
 
-# Appendix A: Preliminary Release Process
+# Appendix A: The Process of Developing the Specification
 
-While CNAB has not officially been assigned to a standards body, it is good practice to put in place a provisional process for indicating the status, stability, and reliability of the specification.
+This process governs the motion of a specification from rough draft through full standardization. A document is termed a _deliverable_ as it passes through various phases from _pre-draft deliverable_ to _accepted deliverable_, at which point it becomes a final specification.
 
 ## Versioning
 
-Specifications shall each track their own versions. A specification will call out a target version (such as 1.0), and then also include its phase (such as Working Draft, see below) to indicate progress towards the target version.
+Specifications shall each track their own versions. A specification will call out a target version (such as 1.0), and then also include its phase (such as Pre-Draft, see below) to indicate progress towards the target version.
 
-The CNAB Core specification shall therefore be formally referenced as _Cloud Native Application Bundle Core 1.0.0_. The phase of the process MAY be appended as a stability marker: _Cloud Native Application Bundle Core 1.0.0-WD_. It MAY be abbreviated to _CNAB1_.
+For example, one of the specifications in this repository is the CNAB Core specification. The CNAB Core specification should be formally referenced as _Cloud Native Application Bundle Core 1.0.0_. The phase of the process MAY be appended as a stability marker: _Cloud Native Application Bundle Core 1.0.0-Draft_. It MAY be abbreviated to _CNAB1_ or _CNAB1-Draft_.
 
-## Process
+Other specifications must follow the same nomenclature.
 
-The provisional process is outlined here, and is derived from the [W3C Process](https://www.w3.org/2017/Process-20170301/)
+## Development Process
 
 The specification will proceed through the following phases:
 
-- *Working Draft (WD)*: During this phase, the specification is open for review. During this phase, major (breaking) changes may be made.
-- *Candidate Recommendation (CR)*: This phase indicates that a final review is immanent. During this phase, minor (non-breaking) changes may be made, and major changes will be considered if they present an immanent problem with the specification.
-- *Recommendation (REC)*: This phase indicates that the specification is stable, and the present version is no longer open for changes to the conformance of the specification
-  - W3C [class 1 and 2 changes](https://www.w3.org/2017/Process-20170301/#correction-classes) are allowed on a recommendation.
-  - W3C class 3 and 4 changes can be addressed in a _minor version update_.
+- *Pre-Draft (PD):* Any working group participant or contributor may submit a proposed initial draft document as a candidate for this working group. The Working Group Chair may designate such a submission as a Pre-Draft Document.
+- *Draft (Draft):* A Pre-Draft may be approved by the working group, in which case it becomes an official draft under the auspices of the CNAB specification working group. The working group will continue to revise the draft until it is in a state the group sees as fit for standardization.
+- *Working Group Approval (GA):* When the working group believes a draft fit for standardization, the group formally approves the draft and submits it for final approval.
+- *Final Approval (AD):* The Executive Director (or a named proxy) may grant Final Approval to a draft with Working Group Approval. At this point, the work is now designated an Approved Deliverable and is no longer a draft.
+- *Publication:* When Final Approval is granted, the Approved Deliverable is made publicly available under the terms of the Open Web Foundation 1.0 license.
+- *Submission to Other Standards Bodies:* With the approval of the Working Group, the Executive Director may submit an Approved Deliverable to another standards body in collaboration with the JDF.
 
-And [errata section](https://www.w3.org/2017/Process-20170301/#rec-modify) may be added to a specification as an appendix, as a location for tracking clarifications and changes.
+Documents that have reached AD are considered complete. Errata may be captured in a separate section of the document, but the document itself is not changed except to correct typographical and formatting errors where necessary.
+
+When the content of a document needs changes that cannot be captured as errata, a new _version_ of the specification must be created, and must proceed through the stages outlined above.
+
+## Changes
+
+An earlier "provisional" process was outlined here, based on W3's model. That provisional process has now been replaced with the process described herein.
+
+Anything previously marked "Working Draft" is now considered to be a Draft, as they have been accepted for work by the working group.
