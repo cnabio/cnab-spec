@@ -18,5 +18,6 @@ weight: 001
     - [Credential Sets](802-credential-sets.md)
     - [Repositories](803-repositories.md)
     - [Well known custom actions](804-well-known-custom-actions.md)
+    - [Disconnected Scenarios](805-airgap.md)
 6. Process Documentation
     - [Specification Process](901-process.md)
