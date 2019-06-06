@@ -336,7 +336,7 @@ Parameter specifications consist of name/value pairs. The name is fixed, but the
 {
   "parameters": {
     "backend_port": {
-      "apply-to": [
+      "applyTo": [
         "install",
         "action1",
         "action2"
@@ -366,7 +366,7 @@ Parameter specifications consist of name/value pairs. The name is fixed, but the
     - `additionalProperties`: Parameter validation requiring that any additional properties in the user-provided object conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `allOf`: Parameter validation requiring that the user-provided value match ALL of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
     - `anyOf`: Parameter validation requiring that the user-provided value match ANY of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
-    - `apply-to`: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
+    - `applyTo`: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
     - `const`: Parameter validation requiring that the user-provided value matches exactly the specified const. MAY be of any type, including null. (OPTIONAL)
     - `contains`: Parameter validation requiring at least one item included in the user-provided array conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `contentEncoding`: Indicates that the user-provided content should interpreted as binary data and decoded using the encoding named by this property. MUST be a string in accordance with [RFC2045, Sec 6.1](https://json-schema.org/latest/json-schema-validation.html#RFC2045). (OPTIONAL)
@@ -434,7 +434,7 @@ The structure of a parameters section looks like the section below.
       "additionalProperties": <json-schema>,
       "allOf": [ <json-schema> ],
       "anyOf": [ <json-schema> ],
-      "apply-to": [ <string> ],
+      "applyTo": [ <string> ],
       "const": <any-value>,
       "contains": <json-schema>,
       "contentEncoding": <string>,

@@ -263,7 +263,7 @@
                         }
                     }
                 },
-                "apply-to":{                    
+                "applyTo":{                    
                     "description": "An optional exhaustive list of actions handling this parameter",
                     "type":"array",
                     "items": {
