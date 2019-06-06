@@ -108,13 +108,15 @@ If the `destination` field contains a key named `env`, values MUST be passed int
 ```json
 {
   "parameters": {
-    "greeting": {
-      "default": "hello",
-      "description": "this will be in $GREETING",
-      "destination": {
-        "env": "GREETING"
-      },
-      "type": "string"
+    "fields" : {
+      "greeting": {
+        "default": "hello",
+        "description": "this will be in $GREETING",
+        "destination": {
+          "env": "GREETING"
+        },
+        "type": "string"
+      }
     }
   }
 }
@@ -136,13 +138,15 @@ In the case where the `destination` object has a `path` field, the CNAB runtime 
 ```json
 {
   "parameters": {
-    "greeting": {
-      "default": "hello",
-      "description": "this will be in $GREETING",
-      "destination": {
-        "path": "/var/run/greeting.txt"
-      },
-      "type": "string"
+    "fields" : {
+      "greeting": {
+        "default": "hello",
+        "description": "this will be in $GREETING",
+        "destination": {
+          "path": "/var/run/greeting.txt"
+        },
+        "type": "string"
+      }
     }
   }
 }
@@ -216,15 +220,17 @@ For this example CNAB bundle:
   ],
   "name": "helloworld",
   "parameters": {
-    "backend_port": {
-      "default": 80,
-      "destination": {
-        "env": "BACKEND_PORT"
-      },
-      "maximum": 10240,
-      "description": "The port that the back-end will listen on",
-      "minimum": 10,
-      "type": "integer"
+    "fields" : {
+      "backend_port": {
+        "default": 80,
+        "destination": {
+          "env": "BACKEND_PORT"
+        },
+        "maximum": 10240,
+        "description": "The port that the back-end will listen on",
+        "minimum": 10,
+        "type": "integer"
+      }
     }
   },
   "schemaVersion": "v1.0.0-WD",
