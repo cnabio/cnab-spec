@@ -243,6 +243,11 @@
                 "description": {
                     "description": "A user-friendly description of this credential",
                     "type": "string"
+                },
+                "required": {
+                    "description": "Indicates whether this credential must be supplied. By default, credentials are optional.",
+                    "type": "boolean",
+                    "default": false
                 }
             }
         },
