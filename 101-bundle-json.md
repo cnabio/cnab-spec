@@ -381,7 +381,7 @@ Parameter specifications consist of name/value pairs. The name is fixed, but the
       - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
       - `destination`: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
         - `env`: The name of an environment variable
-        - `path`: The fully qualified path to a file that will be created
+        - `path`: The fully qualified path to a file that will be created. Specified path MUST NOT be a subpath of /cnab/app/outputs.
       - `else`: Parameter validation requiring that the user-provided value match the specified schema. Only matches if the user-provided value does NOT match the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
       - `enum`: Parameter validation requiring that the user-provided value is one of the specified items in the specified array. MUST be a non-empty array of unique elements that can be of any type. (OPTIONAL)
       - `examples`: Sample JSON values associated with a particular schema. MUST be an array. (OPTIONAL)
@@ -646,7 +646,7 @@ What about parameters such as database passwords used by the application? Proper
 
 - The `credentials` container is a map of human-friendly credential names to a description of where the invocation image expects to find them.
   - The name key MUST be human-readable
-    - `path` describes the _absolute path within the invocation image_ where the invocation image expects to find the credential
+    - `path` describes the _absolute path within the invocation image_ where the invocation image expects to find the credential. Specified path MUST NOT be a subpath of /cnab/app/outputs.
     - `env` contains _the name of an environment variable_ that the invocation image expects to have available when executing the CNAB `run` tool (covered in the next section).
     - `description` contains a user-friendly description of the credential.
     - `required` indicates whether this credential MUST be supplied. By default, it is `false`, which means the credential is optional. When `true`, a runtime MUST fail if the credential is not provided.
@@ -816,7 +816,7 @@ Output specifications are flat (not tree-like), consisting of name/value pairs. 
     - `multipleOf`: Output validation requiring that the resulting number be wholly divisible by the number specified. MUST be a number strictly greater than zero. (OPTIONAL)
     - `not`: Output validation requiring that the resulting value NOT match the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `oneOf`: Output validation requiring that the resulting value match ONE of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
-    - `path`: The fully qualified path to a file that will be created (REQUIRED)
+    - `path`: The fully qualified path to a file that will be created (REQUIRED). The path specified MUST be a subpath of /cnab/app/outputs.
     - `patternProperties`: The set of matching properties and schemas for their values included in an object type output. MUST be an object where each named property is a regular expression with a JSON schema as the value. (OPTIONAL)
     - `pattern`: Output validation requiring that the resulting string match the regular expression specified. MUST be a string representation of a valid ECMA 262 regular expression. (OPTIONAL)
     - `properties`: The set of named properties and schemas for their values included in an object type output. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
