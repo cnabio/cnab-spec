@@ -6,7 +6,7 @@
     "type": "object",
     "properties": {
         "schemaVersion": {
-            "description": "The version of the CNAB specification. This should always be the integer 1 for this schema version.",
+            "description": "The version of the CNAB specification. This should always be the string 'v1' for this schema version.",
             "type": "string"
         },
         "name":{
