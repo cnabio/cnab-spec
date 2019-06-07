@@ -622,6 +622,7 @@ What about parameters such as database passwords used by the application? Proper
         "path": "/home/.kube/config"
     },
     "image_token": {
+        "required": true,
         "env": "AZ_IMAGE_TOKEN"
     },
     "hostkey": {
@@ -636,6 +637,7 @@ What about parameters such as database passwords used by the application? Proper
     - `path` describes the _absolute path within the invocation image_ where the invocation image expects to find the credential
     - `env` contains _the name of an environment variable_ that the invocation image expects to have available when executing the CNAB `run` tool (covered in the next section).
     - `description` contains a user-friendly description of the credential.
+    - `required` indicates whether this credential MUST be supplied. By default, it is `false`, which means the credential is optional. When `true`, a runtime MUST fail if the credential is not provided.
 
 When _both a path and an env_ are specified, _only one is REQUIRED_ (properties are disjunctive). To require two presentations of the same material, two separate entries MUST be made.
 
