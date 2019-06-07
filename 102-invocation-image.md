@@ -6,7 +6,7 @@ weight: 102
 # The Invocation Images
 
 The `invocationImages` section of a `bundle.json` MUST contain at least one image (the invocation image). This image MUST be formatted according to the specification laid out in the present document.
-The appropriate invocation image is selected using the current driver.
+The appropriate invocation image is selected by the CNAB runtime.
 
 When a bundle is executed, the invocation image will be retrieved (if necessary) and started. Credential, parameter and image map data is passed to it, and then its `run` tool is executed. (See [The Bundle Runtime](103-bundle-runtime.md) for details).
 

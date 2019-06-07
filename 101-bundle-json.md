@@ -251,7 +251,7 @@ The following fields are informational pieces of metadata designed to convey add
 
 ## Invocation Images
 
-The `invocationImages` section describes the images that contains the bootstrapping for the image. The appropriate invocation image is selected using the current driver.
+The `invocationImages` section describes the images that are responsible for bootstrapping the installation. The appropriate invocation image is selected by the CNAB runtime, typically by considering the runtime requirements of the bundle. For example, both a Windows and a Linux version of the invocation image may be included in the list. It is up to the CNAB runtime to determine which one to use. If no sufficient image is found, the CNAB runtime MUST emit an error and stop processing.
 
 A CNAB bundle MUST have at least one invocation image.
 
@@ -266,8 +266,6 @@ A CNAB bundle MUST have at least one invocation image.
 ```
 
 The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
-
-> [Duffle](https://github.com/deis/duffle), the reference implementation of a CNAB installer, introduces a layer of user-customizable drivers which are type-aware. Images MAY be delegated to drivers for installation.
 
 The `image` field MUST give a path-like or URI-like representation of the location of the image. It is REQUIRED. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
