@@ -91,15 +91,17 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
     }
   },
   "parameters": {
-    "backend_port": {
-      "default": 80,
-      "destination": {
-        "env": "BACKEND_PORT"
-      },
-      "maximum": 10240,
-      "description": "The port that the back-end will listen on",
-      "minimum": 10,
-      "type": "integer"
+    "fields": {
+      "backend_port": {
+        "default": 80,
+        "destination": {
+          "env": "BACKEND_PORT"
+        },
+        "maximum": 10240,
+        "description": "The port that the back-end will listen on",
+        "minimum": 10,
+        "type": "integer"
+      }
     }
   },
   "schemaVersion": "v1.0.0-WD",
@@ -112,7 +114,7 @@ Source: [101.01-bundle.json](examples/101.01-bundle.json)
 The canonical JSON version of the above is:
 
 ```json
-{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"clientCert":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","path":"/cnab/app/outputs/clientCert","sensitive":true,"type":"string"},"hostName":{"applyTo":["install"],"description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname","type":"string"},"port":{"path":"/cnab/app/outputs/port","type":"integer"}},"parameters":{"backend_port":{"default":80,"description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"},"maximum":10240,"minimum":10,"type":"integer"}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"clientCert":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","path":"/cnab/app/outputs/clientCert","sensitive":true,"type":"string"},"hostName":{"applyTo":["install"],"description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname","type":"string"},"port":{"path":"/cnab/app/outputs/port","type":"integer"}},"parameters":{"fields":{"backend_port":{"default":80,"description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"},"maximum":10240,"minimum":10,"type":"integer"}}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
 And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
@@ -179,15 +181,17 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
     }
   },
   "parameters": {
-    "backend_port": {
-      "default": 80,
-      "description": "The port that the backend will listen on",
-      "destination": {
-        "path": "/path/to/backend_port"
-      },
-      "maximum": 10240,
-      "minimum": 10,
-      "type": "integer"
+    "fields" : {
+      "backend_port": {
+        "default": 80,
+        "description": "The port that the backend will listen on",
+        "destination": {
+          "path": "/path/to/backend_port"
+        },
+        "maximum": 10240,
+        "minimum": 10,
+        "type": "integer"
+      }
     }
   },
   "schemaVersion": "v1.0.0-WD",
@@ -333,83 +337,86 @@ Parameter specifications consist of name/value pairs. The name is fixed, but the
 ```json
 {
   "parameters": {
-    "backend_port": {
-      "applyTo": [
-        "install",
-        "action1",
-        "action2"
-      ],
-      "default": 80,
-      "description": "The port that the backend will listen on",
-      "destination": {
-        "env": "MY_ENV_VAR",
-        "path": "/my/destination/path"
-      },
-      "maximum": 10240,
-      "minimum": 10,
-      "type": "integer"
-    }
-  }
+    "fields" : {
+      "backend_port": {
+        "applyTo": [
+          "install",
+          "action1",
+          "action2"
+        ],
+        "default": 80,
+        "description": "The port that the backend will listen on",
+        "destination": {
+          "env": "MY_ENV_VAR",
+          "path": "/my/destination/path"
+        },
+        "maximum": 10240,
+        "minimum": 10,
+        "type": "integer"
+      }
+    },
+    "required": ["backend_port"]
 }
 ```
 
-- `parameters`: name/value pairs describing a user-overridable parameter
-  - `required`: A list of required parameters. MUST be an array of strings.(OPTIONAL)
-  - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
+- `parameters`: A collection of parameter definitions and a list of those parameters that are required.
+  - `fields`: name/value pairs describing a user-overridable parameter:
+    - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields (REQUIRED):
-    - `$comment`: Reserved for comments from bundle authors to readers or maintainers of the bundle. This MUST be a string (OPTIONAL)
-    - `$id`: A URI for the schema resolved against the base URI of its parent schema. MUST be a uri-reference string in accordance with [RFC3986](https://tools.ietf.org/html/rfc3986) (OPTIONAL)
-    - `$ref`: A URI reference used to resolve a schema located elsewhere. This MUST be a uri-reference string in accordance with [RFC3986](https://tools.ietf.org/html/rfc3986) (OPTIONAL)
-    - `additionalItems`: Parameter validation requiring that any additional items included in a user-provided array must conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
-    - `additionalProperties`: Parameter validation requiring that any additional properties in the user-provided object conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
-    - `allOf`: Parameter validation requiring that the user-provided value match ALL of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
-    - `anyOf`: Parameter validation requiring that the user-provided value match ANY of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
-    - `applyTo`: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
-    - `const`: Parameter validation requiring that the user-provided value matches exactly the specified const. MAY be of any type, including null. (OPTIONAL)
-    - `contains`: Parameter validation requiring at least one item included in the user-provided array conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
-    - `contentEncoding`: Indicates that the user-provided content should interpreted as binary data and decoded using the encoding named by this property. MUST be a string in accordance with [RFC2045, Sec 6.1](https://json-schema.org/latest/json-schema-validation.html#RFC2045). (OPTIONAL)
-    - `contentMediaType`: MIME type indicating the media type of the user-provided content. MUST be a string in accordance with [RFC2046](https://json-schema.org/latest/json-schema-validation.html#RFC2046). (OPTIONAL)
-    - `default`: A default JSON value associated with a particular schema. RECOMMENDED that a default value be valid against the associated schema. (OPTIONAL)
-    - `definitions`: Provides a standardized location for bundle authors to inline re-usable JSON Schemas into a more general schema. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
-    - `dependencies`: Specifies rules that are evaluated if the parameter type is an object and contains a certain property. MUST be an object where each named dependency is either an array of unique strings or a JSON schema. (OPTIONAL)
-    - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
-    - `destination`: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
-      - `env`: The name of an environment variable
-      - `path`: The fully qualified path to a file that will be created
-    - `else`: Parameter validation requiring that the user-provided value match the specified schema. Only matches if the user-provided value does NOT match the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
-    - `enum`: Parameter validation requiring that the user-provided value is one of the specified items in the specified array. MUST be a non-empty array of unique elements that can be of any type. (OPTIONAL)
-    - `examples`: Sample JSON values associated with a particular schema. MUST be an array. (OPTIONAL)
-    - `exclusiveMaximum`: Parameter validation requiring that the user-provided number be less than the number specified. MUST be a number. (OPTIONAL)
-    - `exclusiveMinimum`: Parameter validation requiring that the user-provided number be greater than the number specified. MUST be a number. (OPTIONAL)
-    - `format`: Parameter validation requiring that the user-provided value adhere to the specified format. MUST be a string. (OPTIONAL)
-    - `if`: Provides a method to conditionally validate user-provided values against a schema. MUST be a JSON schema. (OPTIONAL)
-    - `items`: Parameter validation requiring the items included in a user-provided array must conform to the specified schema(s). MUST be either a JSON schema or an array of JSON schemas. (OPTIONAL)
-    - `maxItems`: Parameter validation requiring the length of the user-provided array be less than or equal to the number specified. MUST be a non-negative number. (OPTIONAL)
-    - `maxLength`: Parameter validation requiring that the length of the user-provided string be less than or equal to the number specified. MUST be a non-negative integer. (OPTIONAL)
-    - `maxProperties`: Parameter validation requiring the number of properties included in the user-provided object be less than or equal to the specified number. MUST be a non-negative integer. (OPTIONAL)
-    - `maximum`: Parameter validation requiring that the user-provided number be less than or equal to the number specified. MUST be a number. (OPTIONAL)
-    - `minItems`: Parameter validation requiring the length of the user-provided array be greater than or equal to the number specified. MUST be a non-negative number. (OPTIONAL)
-    - `minLength`: Parameter validation requiring that the length of the user-provided string be greater than or equal to the number specified. MUST be a non-negative integer. (OPTIONAL)
-    - `minProperties`: Parameter validation requiring the number of properties included in the user-provided object be greater than or equal to the specified number. MUST be a non-negative integer. (OPTIONAL)
-    - `minimum`: Parameter validation requiring that the user-provided number be greater than or equal to the number specified. MUST be a number. (OPTIONAL)
-    - `multipleOf`: Parameter validation requiring that the user-provided number be wholly divisible by the number specified. MUST be a number strictly greater than zero. (OPTIONAL)
-    - `not`: Parameter validation requiring that the user-provided value NOT match the specified schema. MUST be a JSON schema. (OPTIONAL)
-    - `oneOf`: Parameter validation requiring that the user-provided value match ONE of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
-    - `patternProperties`: The set of matching properties and schemas for their values included in an object type parameter. MUST be an object where each named property is a regular expression with a JSON schema as the value. (OPTIONAL)
-    - `pattern`: Parameter validation requiring that the user-provided string match the regular expression specified. MUST be a string representation of a valid ECMA 262 regular expression. (OPTIONAL)
-    - `properties`: The set of named properties and schemas for their values included in an object type parameter. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
-    - `propertyNames`: Parameter validation requiring that each property name in an object match the specified schema. MUST be a JSON schema. (OPTIONAL)
-    - `readOnly`: Indicates that the value of the parameter cannot be modified. MUST be a boolean. (OPTIONAL)
-    - `required`: Parameter validation requiring the properties named in the user-provided object include the specified list of properties. MUST be an array of strings. (OPTIONAL)
-    - `then`: Parameter validation requiring that the user-provided value match the specified schema. Only matches if the user-provided value matches the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
-    - `title`: Short, human-readable descriptive name for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
-    - `type`: Parameter validation requiring that the user-provided value is either a "null", "boolean", "object", "array", "number", "string", or "integer". MUST be a string or an array of strings with unique elements. (OPTIONAL)
-    - `uniqueItems`: Parameter validation requiring the items included in the user-provided array be unique. MUST be a boolean. (OPTIONAL)
-    - `writeOnly`: Indicates that the value of the parameter is sensitive and cannot be viewed once set or updated. MUST be a boolean. (OPTIONAL)
+      - `$comment`: Reserved for comments from bundle authors to readers or maintainers of the bundle. This MUST be a string (OPTIONAL)
+      - `$id`: A URI for the schema resolved against the base URI of its parent schema. MUST be a uri-reference string in accordance with [RFC3986](https://tools.ietf.org/html/rfc3986) (OPTIONAL)
+      - `$ref`: A URI reference used to resolve a schema located elsewhere. This MUST be a uri-reference string in accordance with [RFC3986](https://tools.ietf.org/html/rfc3986) (OPTIONAL)
+      - `additionalItems`: Parameter validation requiring that any additional items included in a user-provided array must conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
+      - `additionalProperties`: Parameter validation requiring that any additional properties in the user-provided object conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
+      - `allOf`: Parameter validation requiring that the user-provided value match ALL of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
+      - `anyOf`: Parameter validation requiring that the user-provided value match ANY of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
+      - `applyTo`: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
+      - `const`: Parameter validation requiring that the user-provided value matches exactly the specified const. MAY be of any type, including null. (OPTIONAL)
+      - `contains`: Parameter validation requiring at least one item included in the user-provided array conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
+      - `contentEncoding`: Indicates that the user-provided content should interpreted as binary data and decoded using the encoding named by this property. MUST be a string in accordance with [RFC2045, Sec 6.1](https://json-schema.org/latest/json-schema-validation.html#RFC2045). (OPTIONAL)
+      - `contentMediaType`: MIME type indicating the media type of the user-provided content. MUST be a string in accordance with [RFC2046](https://json-schema.org/latest/json-schema-validation.html#RFC2046). (OPTIONAL)
+      - `default`: A default JSON value associated with a particular schema. RECOMMENDED that a default value be valid against the associated schema. (OPTIONAL)
+      - `definitions`: Provides a standardized location for bundle authors to inline re-usable JSON Schemas into a more general schema. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
+      - `dependencies`: Specifies rules that are evaluated if the parameter type is an object and contains a certain property. MUST be an object where each named dependency is either an array of unique strings or a JSON schema. (OPTIONAL)
+      - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
+      - `destination`: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
+        - `env`: The name of an environment variable
+        - `path`: The fully qualified path to a file that will be created
+      - `else`: Parameter validation requiring that the user-provided value match the specified schema. Only matches if the user-provided value does NOT match the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
+      - `enum`: Parameter validation requiring that the user-provided value is one of the specified items in the specified array. MUST be a non-empty array of unique elements that can be of any type. (OPTIONAL)
+      - `examples`: Sample JSON values associated with a particular schema. MUST be an array. (OPTIONAL)
+      - `exclusiveMaximum`: Parameter validation requiring that the user-provided number be less than the number specified. MUST be a number. (OPTIONAL)
+      - `exclusiveMinimum`: Parameter validation requiring that the user-provided number be greater than the number specified. MUST be a number. (OPTIONAL)
+      - `format`: Parameter validation requiring that the user-provided value adhere to the specified format. MUST be a string. (OPTIONAL)
+      - `if`: Provides a method to conditionally validate user-provided values against a schema. MUST be a JSON schema. (OPTIONAL)
+      - `items`: Parameter validation requiring the items included in a user-provided array must conform to the specified schema(s). MUST be either a JSON schema or an array of JSON schemas. (OPTIONAL)
+      - `maxItems`: Parameter validation requiring the length of the user-provided array be less than or equal to the number specified. MUST be a non-negative number. (OPTIONAL)
+      - `maxLength`: Parameter validation requiring that the length of the user-provided string be less than or equal to the number specified. MUST be a non-negative integer. (OPTIONAL)
+      - `maxProperties`: Parameter validation requiring the number of properties included in the user-provided object be less than or equal to the specified number. MUST be a non-negative integer. (OPTIONAL)
+      - `maximum`: Parameter validation requiring that the user-provided number be less than or equal to the number specified. MUST be a number. (OPTIONAL)
+      - `minItems`: Parameter validation requiring the length of the user-provided array be greater than or equal to the number specified. MUST be a non-negative number. (OPTIONAL)
+      - `minLength`: Parameter validation requiring that the length of the user-provided string be greater than or equal to the number specified. MUST be a non-negative integer. (OPTIONAL)
+      - `minProperties`: Parameter validation requiring the number of properties included in the user-provided object be greater than or equal to the specified number. MUST be a non-negative integer. (OPTIONAL)
+      - `minimum`: Parameter validation requiring that the user-provided number be greater than or equal to the number specified. MUST be a number. (OPTIONAL)
+      - `multipleOf`: Parameter validation requiring that the user-provided number be wholly divisible by the number specified. MUST be a number strictly greater than zero. (OPTIONAL)
+      - `not`: Parameter validation requiring that the user-provided value NOT match the specified schema. MUST be a JSON schema. (OPTIONAL)
+      - `oneOf`: Parameter validation requiring that the user-provided value match ONE of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
+      - `patternProperties`: The set of matching properties and schemas for their values included in an object type parameter. MUST be an object where each named property is a regular expression with a JSON schema as the value. (OPTIONAL)
+      - `pattern`: Parameter validation requiring that the user-provided string match the regular expression specified. MUST be a string representation of a valid ECMA 262 regular expression. (OPTIONAL)
+      - `properties`: The set of named properties and schemas for their values included in an object type parameter. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
+      - `propertyNames`: Parameter validation requiring that each property name in an object match the specified schema. MUST be a JSON schema. (OPTIONAL)
+      - `readOnly`: Indicates that the value of the parameter cannot be modified. MUST be a boolean. (OPTIONAL)
+      - `required`: Parameter validation requiring the properties named in the user-provided object include the specified list of properties. MUST be an array of strings. (OPTIONAL)
+      - `then`: Parameter validation requiring that the user-provided value match the specified schema. Only matches if the user-provided value matches the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
+      - `title`: Short, human-readable descriptive name for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
+      - `type`: Parameter validation requiring that the user-provided value is either a "null", "boolean", "object", "array", "number", "string", or "integer". MUST be a string or an array of strings with unique elements. (OPTIONAL)
+      - `uniqueItems`: Parameter validation requiring the items included in the user-provided array be unique. MUST be a boolean. (OPTIONAL)
+      - `writeOnly`: Indicates that the value of the parameter is sensitive and cannot be viewed once set or updated. MUST be a boolean. (OPTIONAL)
+  - `required`: A list of required parameters. MUST be an array of strings.(OPTIONAL)
 
 For more information on the supported parameter properties, visit the [JSON Schema documentation](https://json-schema.org/)
 
-Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
+Parameter names (the keys in `fields`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
 
 Evaluation of the validation keywords should conform to the applicable sections of [Section 6 of the JSONSchema specification](https://tools.ietf.org/html/draft-handrews-json-schema-validation-01#section-6).
 
@@ -424,66 +431,68 @@ The structure of a parameters section looks like the section below.
 ```
 {
   "parameters": {
-    "<parameter-name>": {
-      "$comment": <string>,
-      "$id": <uri-reference>,
-      "$ref": <uri-reference>,
-      "additionalItems": <json-schema>,
-      "additionalProperties": <json-schema>,
-      "allOf": [ <json-schema> ],
-      "anyOf": [ <json-schema> ],
-      "applyTo": [ <string> ],
-      "const": <any-value>,
-      "contains": <json-schema>,
-      "contentEncoding": <string>,
-      "contentMediaType": <string>,
-      "default": <any-value>,
-      "definitions": {
-        "<definition-name>": <json-schema>
-      },
-      "dependencies": {
-        "<first-property-name>": <json-schema>,
-        "<second-property-name>": [ <string> ]
-      },
-      "description": <string>,
-      "destination": {
-        "env": <string>,
-        "path": <string>
-      },
-      "else": <json-schema>,
-      "enum": [ <any-value> ],
-      "examples": [ <any-value> ],
-      "exclusiveMaximum": <number>,
-      "exclusiveMinimum": <number>,
-      "format": <string>,
-      "if": <json-schema>,
-      "items": <json-schema> | [ <json-schema> ],
-      "maxItems": <integer>,
-      "maxLength": <integer>,
-      "maxProperties": <integer>,
-      "maximum": <number>,
-      "minItems": <integer>,
-      "minLength": <integer>,
-      "minProperties": <integer>,
-      "minimum": <integer>,
-      "multipleOf": <number>,
-      "not": <json-schema>,
-      "oneOf": [ <json-schema> ],
-      "pattern": <string>,
-      "patternProperties": {
-        "<regular-expression-for-property-name>": <json-schema>
-      },
-      "properties": {
-        "<property-name>": <json-schema>
-      },
-      "propertyNames": <json-schema>,
-      "readOnly": <boolean>,
-      "required": [ <string> ],
-      "then": <json-schema>,
-      "title": <string>,
-      "type": <string> | [ <string> ],
-      "uniqueItems": <boolean>,
-      "writeOnly": <boolean>
+    "fields" : {
+      "<parameter-name>": {
+        "$comment": <string>,
+        "$id": <uri-reference>,
+        "$ref": <uri-reference>,
+        "additionalItems": <json-schema>,
+        "additionalProperties": <json-schema>,
+        "allOf": [ <json-schema> ],
+        "anyOf": [ <json-schema> ],
+        "applyTo": [ <string> ],
+        "const": <any-value>,
+        "contains": <json-schema>,
+        "contentEncoding": <string>,
+        "contentMediaType": <string>,
+        "default": <any-value>,
+        "definitions": {
+          "<definition-name>": <json-schema>
+        },
+        "dependencies": {
+          "<first-property-name>": <json-schema>,
+          "<second-property-name>": [ <string> ]
+        },
+        "description": <string>,
+        "destination": {
+          "env": <string>,
+          "path": <string>
+        },
+        "else": <json-schema>,
+        "enum": [ <any-value> ],
+        "examples": [ <any-value> ],
+        "exclusiveMaximum": <number>,
+        "exclusiveMinimum": <number>,
+        "format": <string>,
+        "if": <json-schema>,
+        "items": <json-schema> | [ <json-schema> ],
+        "maxItems": <integer>,
+        "maxLength": <integer>,
+        "maxProperties": <integer>,
+        "maximum": <number>,
+        "minItems": <integer>,
+        "minLength": <integer>,
+        "minProperties": <integer>,
+        "minimum": <integer>,
+        "multipleOf": <number>,
+        "not": <json-schema>,
+        "oneOf": [ <json-schema> ],
+        "pattern": <string>,
+        "patternProperties": {
+          "<regular-expression-for-property-name>": <json-schema>
+        },
+        "properties": {
+          "<property-name>": <json-schema>
+        },
+        "propertyNames": <json-schema>,
+        "readOnly": <boolean>,
+        "required": [ <string> ],
+        "then": <json-schema>,
+        "title": <string>,
+        "type": <string> | [ <string> ],
+        "uniqueItems": <boolean>,
+        "writeOnly": <boolean>
+      }
     },
     "required": [ <string> ]
   }
@@ -501,71 +510,74 @@ Check out the [JSON Schema specification](https://json-schema.org/) for more exa
 ```json
 {
   "parameters": {
-    "address": {
-      "destination": {
-        "path": "/tmp/address.adr"
-      },
-      "properties": {
-        "country_name": {
-          "type": "string"
+    "fields" : {
+      "address": {
+        "destination": {
+          "path": "/tmp/address.adr"
         },
-        "extended_street_address": {
-          "type": "string"
+        "properties": {
+          "country_name": {
+            "type": "string"
+          },
+          "extended_street_address": {
+            "type": "string"
+          },
+          "locality": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "street_address": {
+            "type": "string"
+          }
         },
-        "locality": {
-          "type": "string"
-        },
-        "postal_code": {
-          "type": "string"
-        },
-        "region": {
-          "type": "string"
-        },
-        "street_address": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "country_name",
-        "locality",
-        "postal_code",
-        "region",
-        "street_address"
-      ],
-      "type": "object"
-    },
-    "email": {
-      "format": "idn-email",
-      "type": "string"
-    },
-    "greetings": {
-      "default": [
-        "Hello"
-      ],
-      "description": "a list of greetings",
-      "destination": {
-        "env": "GREETINGS"
-      },
-      "items": {
-        "examples": [
-          "Bonjour",
-          "Aloha",
-          "こんにちは"
+        "required": [
+          "country_name",
+          "locality",
+          "postal_code",
+          "region",
+          "street_address"
         ],
+        "type": "object"
+      },
+      "email": {
+        "format": "idn-email",
         "type": "string"
       },
-      "title": "Greetings for new users",
-      "type": "array"
-    },
-    "image": {
-      "contentEncoding": "base64",
-      "contentMediaType": "image/jpeg",
-      "destination": {
-        "path": "/tmp/user.jpg"
+      "greetings": {
+        "default": [
+          "Hello"
+        ],
+        "description": "a list of greetings",
+        "destination": {
+          "env": "GREETINGS"
+        },
+        "items": {
+          "examples": [
+            "Bonjour",
+            "Aloha",
+            "こんにちは"
+          ],
+          "type": "string"
+        },
+        "title": "Greetings for new users",
+        "type": "array"
       },
-      "type": "string"
+      "image": {
+        "contentEncoding": "base64",
+        "contentMediaType": "image/jpeg",
+        "destination": {
+          "path": "/tmp/user.jpg"
+        },
+        "type": "string"
+      }
     }
-  }
+  },
+  "required" : [ "address" ]
 }
 ```
 
@@ -576,21 +588,23 @@ When resolving destinations, there are two ways a particular parameter value MAY
 ```json
 {
   "parameters": {
-    "config": {
-      "default": "",
-      "description": "this will be located in a file",
-      "destination": {
-        "path": "/opt/example-parameters/config.txt"
+    "fields" : {
+      "config": {
+        "default": "",
+        "description": "this will be located in a file",
+        "destination": {
+          "path": "/opt/example-parameters/config.txt"
+        },
+        "type": "string"
       },
-      "type": "string"
-    },
-    "greeting": {
-      "default": "hello",
-      "description": "this will be in $GREETING",
-      "destination": {
-        "env": "GREETING"
-      },
-      "type": "string"
+      "greeting": {
+        "default": "hello",
+        "description": "this will be in $GREETING",
+        "destination": {
+          "env": "GREETING"
+        },
+        "type": "string"
+      }
     }
   }
 }

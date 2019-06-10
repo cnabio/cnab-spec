@@ -59,15 +59,17 @@
     }
   },
   "parameters": {
-    "backend_port": {
-      "default": 80,
-      "description": "The port that the backend will listen on",
-      "destination": {
-        "path": "/path/to/backend_port"
-      },
-      "maximum": 10240,
-      "minimum": 10,
-      "type": "integer"
+    "fields" : {
+      "backend_port": {
+        "default": 80,
+        "description": "The port that the backend will listen on",
+        "destination": {
+          "path": "/path/to/backend_port"
+        },
+        "maximum": 10240,
+        "minimum": 10,
+        "type": "integer"
+      }
     }
   },
   "schemaVersion": "v1.0.0-WD",
