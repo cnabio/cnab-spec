@@ -102,6 +102,12 @@
         "custom":{
             "$comment": "reserved for custom extensions"
         },
+        "definitions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "http://json-schema.org/draft-07/schema#"
+          }
+        },
         "parameters":{
             "description": "Parameters that can be injected into the invocation image",
             "type": "object",
@@ -109,15 +115,11 @@
                 "fields" : {
                     "type": "object",
                     "additionalProperties": {
-                        "allOf": [
-                            { "$ref":  "#/definitions/parameter" },
-                            { "$ref":  "http://json-schema.org/draft-07/schema#" }
-                        ]
+                        "$ref":  "#/definitions/parameter"
                     }
                 },
                 "required": { "$ref": "http://json-schema.org/draft-07/schema#/properties/required" }
             }
-           
         },
         "outputs":{
             "description": "Values that are produced by executing the invocation image",
@@ -244,7 +246,6 @@
                     "description": "The environment variable name, such as MY_VALUE, into which the credential will be placed",
                     "type": "string"
                 },
-                
                 "description": {
                     "description": "A user-friendly description of this credential",
                     "type": "string"
@@ -260,6 +261,11 @@
             "description": "A parameter that can be passed into the invocation image",
             "type": "object",
             "properties": {
+                "definition": {
+                  "type": "string",
+                  "description": "The name of a definition that describes the schema structure of this parameter"
+                },
+                "description": { "$ref": "http://json-schema.org/draft-07/schema#/properties/description" },
                 "destination": {
                     "type": "object",
                     "properties": {
@@ -274,7 +280,7 @@
                         }
                     }
                 },
-                "applyTo":{                    
+                "applyTo":{
                     "description": "An optional exhaustive list of actions handling this parameter",
                     "type":"array",
                     "items": {
@@ -282,13 +288,13 @@
                     }
                 }
             },
-            "required": ["type", "destination"]
+            "required": ["definition", "destination"]
         },
         "output": {
             "description": "A value that is produced by running an invocation image",
             "type": "object",
             "properties": {
-                "applyTo":{                    
+                "applyTo":{
                     "description": "An optional exhaustive list of actions producing this output",
                     "type":"array",
                     "items": {
@@ -300,7 +306,6 @@
                     "type": "string",
                     "pattern": "^\/cnab\/app\/outputs\/.+$"
                 }
-                
             },
             "required": ["type", "path"]
         }

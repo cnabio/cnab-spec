@@ -14,6 +14,14 @@
       "iconType": "PNG"
     }
   },
+  "definitions": {
+    "http_port": {
+      "default": 80,
+      "maximum": 10240,
+      "minimum": 10,
+      "type": "integer"
+    }
+  },
   "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
   "images": {
     "my-microservice": {
@@ -38,35 +46,34 @@
   ],
   "name": "helloworld",
   "outputs": {
-    "clientCert" : {
-      "contentEncoding" : "base64",
-      "contentMediaType" : "application/x-x509-user-cert",
-      "path" : "/cnab/app/outputs/clientCert",
-      "sensitive" : true,
-      "type" : "string"
+    "clientCert": {
+      "contentEncoding": "base64",
+      "contentMediaType": "application/x-x509-user-cert",
+      "path": "/cnab/app/outputs/clientCert",
+      "sensitive": true,
+      "type": "string"
     },
-    "hostName" : {
-        "applyTo" : ["install"],
-        "description" : "the hostname produced installing the bundle",
-        "path" : "/cnab/app/outputs/hostname",
-        "type" : "string"
-     },
-    "port" : {
-      "path" : "/cnab/app/outputs/port",
-      "type" : "integer"
+    "hostName": {
+      "applyTo": [
+        "install"
+      ],
+      "description": "the hostname produced installing the bundle",
+      "path": "/cnab/app/outputs/hostname",
+      "type": "string"
+    },
+    "port": {
+      "path": "/cnab/app/outputs/port",
+      "type": "integer"
     }
   },
   "parameters": {
-    "fields" : {
+    "fields": {
       "backend_port": {
-        "default": 80,
+        "definition": "http_port",
         "description": "The port that the back-end will listen on",
         "destination": {
           "env": "BACKEND_PORT"
-        },
-        "maximum": 10240,
-        "minimum": 10,
-        "type": "integer"
+        }
       }
     }
   },

@@ -11,6 +11,14 @@
       "path": "/home/.kube/config"
     }
   },
+  "definitions": {
+    "http_port": {
+      "default": 80,
+      "maximum": 10240,
+      "minimum": 10,
+      "type": "integer"
+    }
+  },
   "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
   "images": {
     "my-microservice": {
@@ -36,15 +44,14 @@
   ],
   "name": "helloworld",
   "parameters": {
-    "backend_port": {
-      "default": 80,
-      "description": "The port that the back-end will listen on",
-      "destination": {
-        "env": "BACKEND_PORT"
-      },
-      "maximum": 10240,
-      "minimum": 10,
-      "type": "integer"
+    "fields": {
+      "backend_port": {
+        "definition": "http_port",
+        "description": "The port that the back-end will listen on",
+        "destination": {
+          "env": "BACKEND_PORT"
+        }
+      }
     }
   },
   "schemaVersion": "v1.0.0-WD",
