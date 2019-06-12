@@ -816,7 +816,7 @@ Output specifications are flat (not tree-like), consisting of name/value pairs. 
     - `multipleOf`: Output validation requiring that the resulting number be wholly divisible by the number specified. MUST be a number strictly greater than zero. (OPTIONAL)
     - `not`: Output validation requiring that the resulting value NOT match the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `oneOf`: Output validation requiring that the resulting value match ONE of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
-    - `path`: The fully qualified path to a file that will be created (REQUIRED). The path specified MUST be a _strict_ subpath of `/cnab/app/outputs` and MUST be unique for this output.
+    - `path`: The fully qualified path to a file that will be created (REQUIRED). The path specified MUST be a _strict_ subpath of `/cnab/app/outputs` and MUST be distinct from the paths for all other outputs in this bundle.
     - `patternProperties`: The set of matching properties and schemas for their values included in an object type output. MUST be an object where each named property is a regular expression with a JSON schema as the value. (OPTIONAL)
     - `pattern`: Output validation requiring that the resulting string match the regular expression specified. MUST be a string representation of a valid ECMA 262 regular expression. (OPTIONAL)
     - `properties`: The set of named properties and schemas for their values included in an object type output. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
