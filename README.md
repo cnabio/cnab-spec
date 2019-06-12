@@ -20,6 +20,7 @@ Cloud Native Application Bundles (CNAB) are a package format specification that 
   1. [Credential Sets](802-credential-sets.md)
   1. [Repositories](803-repositories.md)
   1. [Well known custom actions](804-well-known-custom-actions.md)
+  1. [Disconnected Scenarios](805-airgap.md)
 - Chapter 9: Appendix
   1. [Appendix A: Preliminary Release Process](901-process.md)
 
