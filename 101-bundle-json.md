@@ -381,7 +381,7 @@ Parameter specifications consist of name/value pairs. The name is fixed, but the
       - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
       - `destination`: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
         - `env`: The name of an environment variable
-        - `path`: The fully qualified path to a file that will be created. Specified path MUST NOT be a subpath of /cnab/app/outputs.
+        - `path`: The fully qualified path to a file that will be created. Specified path MUST NOT be a subpath of `/cnab/app/outputs`.
       - `else`: Parameter validation requiring that the user-provided value match the specified schema. Only matches if the user-provided value does NOT match the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
       - `enum`: Parameter validation requiring that the user-provided value is one of the specified items in the specified array. MUST be a non-empty array of unique elements that can be of any type. (OPTIONAL)
       - `examples`: Sample JSON values associated with a particular schema. MUST be an array. (OPTIONAL)
