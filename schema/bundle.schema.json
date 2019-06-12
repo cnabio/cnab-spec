@@ -237,7 +237,8 @@
             "properties": {
                 "path":{
                     "description": "The path inside of the invocation image where credentials will be mounted",
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "^(?!\/cnab\/app\/outputs)\/.+$"
                 },
                 "env":{
                     "description": "The environment variable name, such as MY_VALUE, into which the credential will be placed",
@@ -264,7 +265,8 @@
                     "properties": {
                         "path":{
                             "description": "The path inside of the invocation image where parameter data is mounted",
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^(?!\/cnab\/app\/outputs)\/.+$"
                         },
                         "env":{
                             "description": "The environment variable name, such as MY_VALUE, in which the parameter value is stored",
@@ -295,7 +297,8 @@
                 },
                 "path":{
                     "description": "The path inside of the invocation image where output will be written",
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "^\/cnab\/app\/outputs\/.+$"
                 }
                 
             },
