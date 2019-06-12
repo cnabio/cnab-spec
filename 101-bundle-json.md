@@ -52,13 +52,13 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
   "images": {
     "my-microservice": {
       "description": "my microservice",
-      "digest": "sha256:aaaaaaaaaaaa...",
+      "contentDigest": "sha256:aaaaaaaaaaaa...",
       "image": "technosophos/microservice:1.2.3"
     }
   },
   "invocationImages": [
     {
-      "digest": "sha256:aaaaaaa...",
+      "contentDigest": "sha256:aaaaaaa...",
       "image": "technosophos/helloworld:0.1.0",
       "imageType": "docker"
     }
@@ -114,7 +114,7 @@ Source: [101.01-bundle.json](examples/101.01-bundle.json)
 The canonical JSON version of the above is:
 
 ```json
-{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","digest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"digest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"clientCert":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","path":"/cnab/app/outputs/clientCert","sensitive":true,"type":"string"},"hostName":{"applyTo":["install"],"description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname","type":"string"},"port":{"path":"/cnab/app/outputs/port","type":"integer"}},"parameters":{"fields":{"backend_port":{"default":80,"description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"},"maximum":10240,"minimum":10,"type":"integer"}}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"description":"my microservice","contentDigest":"sha256:aaaaaaaaaaaa...","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"contentDigest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"clientCert":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","path":"/cnab/app/outputs/clientCert","sensitive":true,"type":"string"},"hostName":{"applyTo":["install"],"description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname","type":"string"},"port":{"path":"/cnab/app/outputs/port","type":"integer"}},"parameters":{"fields":{"backend_port":{"default":80,"description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"},"maximum":10240,"minimum":10,"type":"integer"}}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
 And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
@@ -137,7 +137,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
   "images": {
     "my-microservice": {
       "description": "helloworld microservice",
-      "digest": "sha256:bbbbbbbbbbbb...",
+      "contentDigest": "sha256:bbbbbbbbbbbb...",
       "image": "technosophos/helloworld:0.1.2",
       "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
       "platform": {
@@ -149,7 +149,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
   },
   "invocationImages": [
     {
-      "digest": "sha256:aaaaaaaaaaaa...",
+      "contentDigest": "sha256:aaaaaaaaaaaa...",
       "image": "technosophos/helloworld:1.2.3",
       "imageType": "docker",
       "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
@@ -262,7 +262,7 @@ A CNAB bundle MUST have at least one invocation image.
 ```json
 "invocationImages": [
     {
-        "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
+        "contentDigest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
         "image": "technosophos/helloworld:0.1.0",
         "imageType": "docker"
     }
@@ -273,7 +273,7 @@ The `imageType` field MUST describe the format of the image. The list of formats
 
 The `image` field MUST give a path-like or URI-like representation of the location of the image. It is REQUIRED. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
-The `digest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.) If this field is omitted, a runtime is not obligated to validate the image.
+The `contentDigest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the contentDigest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums.) If this field is omitted, a runtime is not obligated to validate the image. During bundle development, it may be ideal to omit the contentDigest field and/or skip validation. Once a bundle is ready to be transmitted as a thick or thin bundle, it must have a contentDigest field.
 
 The following OPTIONAL fields MAY be attached to an invocation image:
 
@@ -298,14 +298,14 @@ The following illustrates an `images` section:
             "imageType": "docker",
             "image": "example.com/gabrtv/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
             "originalImage": "example.com/opendeis/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "digest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
+            "contentDigest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
         },
         "backend": {
             "description": "backend component image",
             "imageType": "docker",
             "image": "example.com/gabrtv/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
             "originalImage": "example.com/opendeis/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
-            "digest": "sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686"
+            "contentDigest": "sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686"
         }
     }
   }
@@ -319,7 +319,7 @@ Fields:
   - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
   - `image`: The REQUIRED `image` field provides a valid reference for the image. Note that SHOULD be a CAS SHA, as in the example above, not a version tag.
   - `originalImage`: provides a valid reference for the image. Note that SHOULD be a CAS SHA, as in the example above, not a version tag. If the `originalImage` field is omitted, its value defaults to that of the `image` field.
-  - `digest`: MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the digest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images use checksums.)
+  - `contentDigest`: MUST contain a digest of the contents of the image, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the contentDigest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images use checksums.)
   - `size`: The image size in bytes
   - `platform`: The target platform, as an object with two fields:
     - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)

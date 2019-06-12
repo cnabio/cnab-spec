@@ -15,7 +15,7 @@
   "images": {
     "my-microservice": {
       "description": "helloworld microservice",
-      "digest": "sha256:bbbbbbbbbbbb...",
+      "contentDigest": "sha256:bbbbbbbbbbbb...",
       "image": "technosophos/helloworld:0.1.2",
       "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
       "platform": {
@@ -27,7 +27,7 @@
   },
   "invocationImages": [
     {
-      "digest": "sha256:aaaaaaaaaaaa...",
+      "contentDigest": "sha256:aaaaaaaaaaaa...",
       "image": "technosophos/helloworld:1.2.3",
       "imageType": "docker",
       "mediaType": "application/vnd.docker.distribution.manifest.v2+json",

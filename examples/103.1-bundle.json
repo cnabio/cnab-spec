@@ -17,12 +17,12 @@
       "description": "my microservice",
       "image": "technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
       "originalImage": "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-      "digest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
+      "contentDigest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
     }
   },
   "invocationImages": [
     {
-      "digest": "sha256:aaaaaaa...",
+      "contentDigest": "sha256:aaaaaaa...",
       "image": "technosophos/helloworld:0.1.0",
       "imageType": "docker"
     }
