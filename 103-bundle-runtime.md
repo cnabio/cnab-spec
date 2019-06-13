@@ -107,15 +107,20 @@ If the `destination` field contains a key named `env`, values MUST be passed int
 
 ```json
 {
+  "definitions": {
+    "greeting": {
+      "default": "hello",
+      "type": "string"
+    }
+  },
   "parameters": {
-    "fields" : {
+    "fields": {
       "greeting": {
-        "default": "hello",
+        "definition": "greeting",
         "description": "this will be in $GREETING",
         "destination": {
           "env": "GREETING"
-        },
-        "type": "string"
+        }
       }
     }
   }
@@ -137,15 +142,20 @@ In the case where the `destination` object has a `path` field, the CNAB runtime 
 
 ```json
 {
+  "definitions": {
+    "greeting": {
+      "default": "hello",
+      "type": "string"
+    }
+  },
   "parameters": {
-    "fields" : {
+    "fields": {
       "greeting": {
-        "default": "hello",
+        "definition": "greeting",
         "description": "this will be in $GREETING",
         "destination": {
           "path": "/var/run/greeting.txt"
-        },
-        "type": "string"
+        }
       }
     }
   }
@@ -160,7 +170,7 @@ If `destination` contains both a `path` and an `env`, the CNAB runtime MUST prov
 
 ### Validating parameters
 
-The validation of user-supplied values MUST happen outside of the CNAB bundle. Implementations of CNAB bundle tools MUST validate user-supplied values against the `parameters` section of a `bundle.json` before injecting them into the image. The outcome of successful validation MUST be the collection containing all parameters where either the user has supplied a value (that has been validated) or the `parameters` section of `bundles.json` contains a `default`.
+The validation of user-supplied values MUST happen outside of the CNAB bundle. Implementations of CNAB bundle tools MUST validate user-supplied parameter values against the named schema in the `definitions` section of a `bundle.json` before injecting them into the image. The outcome of successful validation MUST be the collection containing all parameters where either the user has supplied a value (that has been validated) or the name definition in the `definitions` section of `bundles.json` contains a `default`.
 
 The resulting calculated values are injected into the bundle before the bundle's `run` is executed (and also in such a way that the `run` has access to these variables.) This works analogously to `CNAB_ACTION` and `CNAB_INSTALLATION_NAME`.
 
@@ -195,6 +205,14 @@ For this example CNAB bundle:
       "path": "/home/.kube/config"
     }
   },
+  "definitions": {
+    "http_port": {
+      "default": 80,
+      "maximum": 10240,
+      "minimum": 10,
+      "type": "integer"
+    }
+  },
   "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
   "images": {
     "my-microservice": {
@@ -220,16 +238,13 @@ For this example CNAB bundle:
   ],
   "name": "helloworld",
   "parameters": {
-    "fields" : {
+    "fields": {
       "backend_port": {
-        "default": 80,
+        "definition": "http_port",
+        "description": "The port that the back-end will listen on",
         "destination": {
           "env": "BACKEND_PORT"
-        },
-        "maximum": 10240,
-        "description": "The port that the back-end will listen on",
-        "minimum": 10,
-        "type": "integer"
+        }
       }
     }
   },
