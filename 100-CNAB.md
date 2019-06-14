@@ -29,12 +29,12 @@ The canonical encoding of a bundle definition is a JSON-formatted file, which MU
 
 However, as a signed bundle definition represents an immutable bundle, all invocation images and images references must have a content digest.
 
-The bundle definition can be stored on its own, or as part of a _packaged archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md)).
+The bundle definition is mounted as a file within the image's runtime filesystem. Additionally, it can be stored on its own, or as part of a _packaged archive_, which is a CNAB bundle that includes the JSON file and exported images (including the [invocation image](102-invocation-image.md)).
 
 - A _thin bundle_ consists of just a bundle definition.
 - A _thick bundle_ consists of a packaged archive that contains both the bundle definition and an encoded representation of all of the invocation images and images.
 
-In either case, CNAB has the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file"). 
+In either case, CNAB has the same schema, and this spec refers to this file as the "bundle definition" (or occasionally "bundle file").
 
 When thin bundles are processed, the referenced content (such as invocation images and other images) are retrieved from their respective storage repositories and registries. A bundle is considered to be _well formed_ if its definition follows the CNAB schema and the images are in the correct formats. A bundle is considered _complete_ if it is packaged as a thick bundle, and all the components are present OR if it is packaged as a thin bundle and all of the references are resolvable. Completeness is thus in some cases contingent upon external factors such as network access.
 
@@ -48,7 +48,7 @@ The current distributed computing landscape involves a combination of executable
 
 A bundle is comprised of a bundle definition and at least one _invocation image_. The invocation image's job is to install zero or more components into the host environment. Such components MAY include (but are not limited to) containers, functions, VMs, IaaS and PaaS layers, and service frameworks.
 
-The invocation image contains a standardized filesystem layout where metadata and installation data is stored in predictable places. A _run tool_ is the executable entry point into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the invocation image. The invocation image is described in detail in [the invocation image definition](102-invocation-image.md).
+At run time, the invocation image contains a standardized filesystem layout where metadata, installation data, and the bundle definition are stored in predictable places. A _run tool_ is the executable entry point into a CNAB bundle. Parameterization and credentialing allow injection of configuration data into the invocation image. The invocation image is described in detail in [the invocation image definition](102-invocation-image.md).
 
 _Actions_ are sent to the `run` command via environment variables. Actions determine whether a bundle is to be installed, upgraded, downgraded, or uninstalled.
 
@@ -94,6 +94,7 @@ The process for standardization is described in an appendix:
 
 - The `bundle.cnab` is now the name of a signed `bundle.json`.
 - The `bundle.json` is now a stand-alone artifact, not part of the invocation image.
+- The `bundle.json` is now mounted in the invocation image at `/cnab/bundle.json`.
 - The initial draft of the spec included a `manifest.json`, a `ui.json` and a `parameters.json`. The `bundle.json` is now the only metadata file, containing what was formerly spread across those three.
 - The top-level `/cnab` directory was added to the bundle format due to conflicts with file hierarchy.
 - The signal handling method was discarded after early research showed its limitations. The replacement uses environment variables to trigger actions.

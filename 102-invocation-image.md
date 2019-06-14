@@ -18,6 +18,7 @@ An invocation image is composed of the following:
 
 - A file system hierarchy following a defined pattern (below)
 - A main entry point, called the _run tool_, which is an executable (often a script) responsible for translating action requests (`install`, `upgrade`,...) to a sequence of tasks
+- The bundle definition, which is useful for referencing images and other information at runtime.
 - Runtime metadata (Helm charts, Terraform templates, etc)
 - The material necessary for reproducing the invocation image (`Dockerfile` and `packer.json` are two examples)
 
@@ -29,6 +30,7 @@ The following exhibits the filesystem layout:
 
 ```yaml
 cnab/                  # REQUIRED top-level directory
+└── bundle.json        # REQUIRED
 └── build/
     │   └──Dockerfile​  # OPTIONAL
 └── app​                # REQUIRED
@@ -47,6 +49,7 @@ cnab/                  # REQUIRED top-level directory
 
 An invocation image MUST have a directory named `cnab` placed directly under the root of the file system hierarchy inside of an image.
 
+This directory MUST have the bundle definition at `bundle.json`.
 This directory MUST have a subdirectory named `app`.
 
 This directory MAY have any of the following:
@@ -111,7 +114,7 @@ The specification does not define what language(s) the tool must be written in, 
 #!/bin/sh
 
 action=$CNAB_ACTION
-name=$CNAB_INSTALLATION_NAME 
+name=$CNAB_INSTALLATION_NAME
 
 case $action in
     install)

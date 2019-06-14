@@ -26,6 +26,8 @@ A `bundle.json` is broken down into the following categories of information:
 - A list of outputs (name, type and location) that the application produces
 - A set of schema definitions used to validate user input
 
+The `bundle.json` is located at `/cnab/bundle.json` in the invocation image's runtime filesystem.
+
 The `bundle.json` is also known as a _thin bundle_. Bundles come in two formats: thick and thin. Read more about thick and thin bundles in the [bundle formats section](104-bundle-formats.md).
 
 For the rest of the documentation, by default we'll be referring to bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
