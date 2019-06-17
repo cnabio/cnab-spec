@@ -713,7 +713,7 @@ What about parameters such as database passwords used by the application? Proper
 
 One of `env` or `path` MUST be specified. (Both MAY be provided).
 
-If `env` is set, the value of the credential will be assigned to the given environment variable name. In the example in the previous section, `HOST_KEY` is set to `HOST_KEY`.
+If `env` is set, the value of the credential MUST be assigned to the given environment variable name. In the example in the previous section, `HOST_KEY` is set to `HOST_KEY`.
 
 If `path` is set, the value of the credential will be written into a file at the specified location on the invocation image's filesystem. This file name MUST NOT be present already on the invocation image's filesystem.
 
