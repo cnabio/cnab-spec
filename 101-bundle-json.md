@@ -711,7 +711,12 @@ What about parameters such as database passwords used by the application? Proper
     - `description` contains a user-friendly description of the credential.
     - `required` indicates whether this credential MUST be supplied. By default, it is `false`, which means the credential is optional. When `true`, a runtime MUST fail if the credential is not provided.
 
-When _both a path and an env_ are specified, _only one is REQUIRED_ (properties are disjunctive). To require two presentations of the same material, two separate entries MUST be made.
+One of `env` or `path` MUST be specified. (Both MAY be provided).
+
+If `env` is set, the value of the credential MUST be assigned to the given environment variable name. In the example in the previous section, `HOST_KEY` is set to `HOST_KEY`.
+
+If `path` is set, the value of the credential MUST be written into a file at the specified location on the invocation image's filesystem. This file name MUST NOT be present already on the invocation image's filesystem.
+
 
 ### Resolving Destination Conflicts in Environment Variables and Paths
 
