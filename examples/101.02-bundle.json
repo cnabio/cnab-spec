@@ -17,13 +17,27 @@
       "maximum": 10240,
       "minimum": 10,
       "type": "integer"
+    },
+    "port": {
+      "maximum": 65535,
+      "minimum": 1024,
+      "type": "integer"
+    },
+    "string": {
+      "type": "string"
+    },
+    "x509Certificate": {
+      "contentEncoding": "base64",
+      "contentMediaType": "application/x-x509-user-cert",
+      "type": "string",
+      "writeOnly": true
     }
   },
   "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
   "images": {
     "my-microservice": {
-      "description": "helloworld microservice",
       "contentDigest": "sha256:bbbbbbbbbbbb...",
+      "description": "helloworld microservice",
       "image": "technosophos/helloworld:0.1.2",
       "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
       "platform": {
@@ -48,24 +62,23 @@
   ],
   "name": "helloworld",
   "outputs": {
-    "clientCert": {
-      "contentEncoding": "base64",
-      "contentMediaType": "application/x-x509-user-cert",
-      "path": "/cnab/app/outputs/clientCert",
-      "sensitive": true,
-      "type": "string"
-    },
-    "hostName": {
-      "applyTo": [
-        "install"
-      ],
-      "description": "the hostname produced installing the bundle",
-      "path": "/cnab/app/outputs/hostname",
-      "type": "string"
-    },
-    "port": {
-      "path": "/cnab/app/outputs/port",
-      "type": "integer"
+    "fields": {
+      "clientCert": {
+        "definition": "x509Certificate",
+        "path": "/cnab/app/outputs/clientCert"
+      },
+      "hostName": {
+        "applyTo": [
+          "install"
+        ],
+        "definition": "string",
+        "description": "the hostname produced installing the bundle",
+        "path": "/cnab/app/outputs/hostname"
+      },
+      "port": {
+        "definition": "port",
+        "path": "/cnab/app/outputs/port"
+      }
     }
   },
   "parameters": {

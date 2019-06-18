@@ -125,13 +125,12 @@
             "description": "Values that are produced by executing the invocation image",
             "type": "object",
             "properties": {
-                "required": { "$ref": "http://json-schema.org/draft-07/schema#/properties/required" }
-            },
-            "additionalProperties": {
-                "allOf": [
-                    { "$ref":  "#/definitions/output" },
-                    { "$ref":  "http://json-schema.org/draft-07/schema#" }
-                ]
+                "fields": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref":  "#/definitions/output"
+                    }
+                }
             }
         }
     },
@@ -301,13 +300,18 @@
                         "type": "string"
                     }
                 },
+                "definition": {
+                  "type": "string",
+                  "description": "The name of a definition that describes the schema structure of this output"
+                },
+                "description": { "$ref": "http://json-schema.org/draft-07/schema#/properties/description" },
                 "path":{
                     "description": "The path inside of the invocation image where output will be written",
                     "type": "string",
                     "pattern": "^\/cnab\/app\/outputs\/.+$"
                 }
             },
-            "required": ["type", "path"]
+            "required": ["definition", "path"]
         }
     },
     "additionalProperties": false
