@@ -21,6 +21,9 @@ The run tool MUST observe standard conventions for executing, exiting, and writi
 - Exit codes: Exit code 0 is reserved for the case where the run tool exits with no errors. Non-zero exit codes are considered to be error states. These are interpreted according to [the Open Base Specification](http://pubs.opengroup.org/onlinepubs/9699919799//utilities/V3_chap02.html#tag_18_08_02)
 - The special output stream STDERR should be used to write error text
 
+### Bundle Definition
+The bundle definition is made accessible from inside the invocation image in order to allow the run tool to reference information in the file. The `bundle.json` MUST be mounted to `/cnab/bundle.json`.
+
 ### Injecting Data Into the Invocation Image
 
 CNAB allows injecting data into the invocation image in two ways:
