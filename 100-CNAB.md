@@ -98,6 +98,7 @@ The process for standardization is described in an appendix:
 - The initial draft of the spec included a `manifest.json`, a `ui.json` and a `parameters.json`. The `bundle.json` is now the only metadata file, containing what was formerly spread across those three.
 - The top-level `/cnab` directory was added to the bundle format due to conflicts with file hierarchy.
 - The signal handling method was discarded after early research showed its limitations. The replacement uses environment variables to trigger actions.
+- The `bundle.json` is now mounted in the invocation image at `/cnab/bundle.json`.
 - The generic action `run` has been replaced by specific actions: `install`, `uninstall`, `upgrade`.
 - The `status` action has been removed.
 - Registries, security, and claims have all be moved to separate specifications.
