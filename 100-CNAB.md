@@ -94,7 +94,6 @@ The process for standardization is described in an appendix:
 
 - The `bundle.cnab` is now the name of a signed `bundle.json`.
 - The `bundle.json` is now a stand-alone artifact, not part of the invocation image.
-- The `bundle.json` is now mounted in the invocation image at `/cnab/bundle.json`.
 - The initial draft of the spec included a `manifest.json`, a `ui.json` and a `parameters.json`. The `bundle.json` is now the only metadata file, containing what was formerly spread across those three.
 - The top-level `/cnab` directory was added to the bundle format due to conflicts with file hierarchy.
 - The signal handling method was discarded after early research showed its limitations. The replacement uses environment variables to trigger actions.
