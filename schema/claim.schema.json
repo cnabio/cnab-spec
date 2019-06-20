@@ -1,63 +1,77 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://cnab.io/v1/claims.schema.json",
-    "title": "CNAB Claims json schema",
-    "type": "object",
-    "properties": {
-        "name": {
-            "type": "string",
-            "description": "the name of the installation"
+  "$id": "http://cnab.io/v1/claims.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "result": {
+      "properties": {
+        "action": {
+          "description": "the name of the action. One of the built-ins (install, uninstall, upgrade) or a custom action.",
+          "type": "string"
         },
-        "revision": {
-            "type": "string",
-            "description": "the revision ID (ideally a ULID)"
+        "message": {
+          "description": "the last message from the invocation image or runtime",
+          "type": "string"
         },
-        "created": {
-            "type": "string",
-            "description": "The date created, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard"
-        },
-        "modified": {
-            "type": "string",
-            "description": "The date last modified, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard"
-        },
-        "bundle":{
-            "description": "The bundle descriptor",
-            "$ref": "http://cnab.io/v1/bundle.schema.json"
-        },
-        "result": {
-            "description": "The result of the last action",
-            "$ref": "#/definitions/result"
-
-        },
-        "parameters": {
-            "type": "object",
-            "description": "key/value pairs of parameter name to parameter value."
-        },
-        "custom": {
-            "$comment": "reserved for custom extensions"
-        },
-        "additionalProperties": false
-    },
-    "required": ["name", "revision", "created", "modified", "bundle"],
-    "definitions": {       
-        "result": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "description": "the last message from the invocation image or runtime"
-                },
-                "action": {
-                    "type": "string",
-                    "description": "the name of the action. One of the built-ins (install, uninstall, upgrade) or a custom action."
-                },
-                "status": {
-                    "type": "string",
-                    "descripton": "The status of the last action",
-                    "enum": ["success", "failure", "underay", "unknown"]
-                }
-            },
-            "required": ["action", "message", "status"]
+        "status": {
+          "descripton": "The status of the last action",
+          "enum": [
+            "failure",
+            "success",
+            "underay",
+            "unknown"
+          ],
+          "type": "string"
         }
+      },
+      "required": [
+        "action",
+        "message",
+        "status"
+      ],
+      "type": "object"
     }
+  },
+  "properties": {
+    "additionalProperties": false,
+    "bundle": {
+      "$ref": "http://cnab.io/v1/bundle.schema.json",
+      "description": "The bundle descriptor"
+    },
+    "created": {
+      "description": "The date created, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
+      "type": "string"
+    },
+    "custom": {
+      "$comment": "reserved for custom extensions"
+    },
+    "modified": {
+      "description": "The date last modified, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
+      "type": "string"
+    },
+    "name": {
+      "description": "the name of the installation",
+      "type": "string"
+    },
+    "parameters": {
+      "description": "key/value pairs of parameter name to parameter value.",
+      "type": "object"
+    },
+    "result": {
+      "$ref": "#/definitions/result",
+      "description": "The result of the last action"
+    },
+    "revision": {
+      "description": "the revision ID (ideally a ULID)",
+      "type": "string"
+    }
+  },
+  "required": [
+    "bundle",
+    "created",
+    "modified",
+    "name",
+    "revision"
+  ],
+  "title": "CNAB Claims json schema",
+  "type": "object"
 }

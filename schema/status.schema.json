@@ -1,45 +1,45 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://cnab.io/v1/status.schema.json",
-    "title": "CNAB Status json schema",
-    "type": "object",
-    "properties": {
-        "status": {
-            "type": "string",
-            "description": "string identifying the status of a component (Ready, Pending, Failed are well known values)"
+  "$id": "http://cnab.io/v1/status.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "component": {
+      "properties": {
+        "additionalProperties": true,
+        "components": {
+          "additionalProperties": {
+            "$ref": "#"
+          },
+          "type": "object"
         },
         "message": {
-            "type": "string",
-            "description": "details about the current status"
+          "description": "details about the current status",
+          "type": "string"
         },
-        "components": {
-            "type":"object",
-            "additionalProperties": {
-                "$ref": "#/definitions/component"
-            }	            
-        },
-        "additionalProperties": true
-    },
-    "definitions": {
-        "component":{
-            "type":"object",
-            "properties": {
-                "status": {
-                    "type": "string",
-                    "description": "string identifying the status of a component (Ready, Pending, Failed are well known values)"
-                },
-                "message": {
-                    "type": "string",
-                    "description": "details about the current status"
-                },
-                "components": {
-                    "type":"object",
-                    "additionalProperties": {
-                        "$ref": "#"
-                    }	            
-                },
-                "additionalProperties": true
-            }
+        "status": {
+          "description": "string identifying the status of a component (Ready, Pending, Failed are well known values)",
+          "type": "string"
         }
+      },
+      "type": "object"
     }
+  },
+  "properties": {
+    "additionalProperties": true,
+    "components": {
+      "additionalProperties": {
+        "$ref": "#/definitions/component"
+      },
+      "type": "object"
+    },
+    "message": {
+      "description": "details about the current status",
+      "type": "string"
+    },
+    "status": {
+      "description": "string identifying the status of a component (Ready, Pending, Failed are well known values)",
+      "type": "string"
+    }
+  },
+  "title": "CNAB Status json schema",
+  "type": "object"
 }

@@ -16,17 +16,17 @@ A CNAB indicates that it supports those actions by including them in its custom 
 
 ```json
 {
-    "status": "Failed",
-    "message": "Component front-end failed to deploy properly",
-    "components":{
-        "backend": {
-            "status": "Ready"
-        },
-        "front-end": {
-            "status": "Failed",
-            "message": "Failed to pull Docker image mginx:latest",
-        },
+  "components": {
+    "backend": {
+      "status": "Ready"
+    },
+    "front-end": {
+      "message": "Failed to pull Docker image mginx:latest",
+      "status": "Failed"
     }
+  },
+  "message": "Component front-end failed to deploy properly",
+  "status": "Failed"
 }
 ```
   - `status` is a value indicating the deployment status of a component or of the whole bundle. Well known values are `Failed`, `Ready`, `Pending`. An invocation image MAY use other custom-values, but tools must at least understand those values.
@@ -34,54 +34,53 @@ A CNAB indicates that it supports those actions by including them in its custom 
   - `components`: map of components/statuses allowing a more detailed status. A component can itself have subcomponent, to enable scenarios like aggregating statuses in CNABs composed of other CNABs. e.g.:
 ```json
 {
-    "status": "Ready",
-    "components": {
-        "gke": {
-            "status" : "Ready",
-            "components": {
-                "kube-api": {
-                    "status": "Ready"
-                },
-                "network": {
-                    "status": "Ready"
-                },
-                "scheduler": {
-                    "status": "Ready"
-                }
-            }
+  "components": {
+    "gke": {
+      "components": {
+        "kube-api": {
+          "status": "Ready"
         },
-        "wordpress": {
-            "status": "Ready"
+        "network": {
+          "status": "Ready"
+        },
+        "scheduler": {
+          "status": "Ready"
         }
+      },
+      "status": "Ready"
+    },
+    "wordpress": {
+      "status": "Ready"
     }
+  },
+  "status": "Ready"
 }
 ```
   - Additionaly to the fields defined above, an invocation image MAY add custom fields as they want. To avoid ambiguous naming, those fields names MAY be namespaced. An example of that could be a CNAB bundle deploying Kubernetes workloads and exposing scale details:
 ```json
 {
-    "status": "Pending",
-    "components":{
-        "backend": {
-            "status": "Ready",
-            "com.example.scale": {
-                "desired": 3,
-                "actual": 3,
-                "failed": 0,
-                "pending": 0
-            }
-        },
-        "front-end": {
-            "status": "Pending",
-            "com.example.scale": {
-                "desired": 3,
-                "actual": 2,
-                "failed": 0,
-                "pending": 1
-            }
-        },
+  "components": {
+    "backend": {
+      "com.example.scale": {
+        "actual": 3,
+        "desired": 3,
+        "failed": 0,
+        "pending": 0
+      },
+      "status": "Ready"
+    },
+    "front-end": {
+      "com.example.scale": {
+        "actual": 2,
+        "desired": 3,
+        "failed": 0,
+        "pending": 1
+      },
+      "status": "Pending"
     }
+  },
+  "status": "Pending"
 }
 ```
-
 
 Next section: [Standardization Process](901-process.md)

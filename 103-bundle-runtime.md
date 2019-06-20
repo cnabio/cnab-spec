@@ -219,10 +219,10 @@ For this example CNAB bundle:
   "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
   "images": {
     "my-microservice": {
+      "contentDigest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
       "description": "my microservice",
       "image": "technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-      "originalImage": "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-      "contentDigest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
+      "originalImage": "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
     }
   },
   "invocationImages": [
@@ -260,12 +260,12 @@ The `/cnab/app/image-map.json` file mounted in the invocation image will be:
 
 ```json
 {
-    "my-microservice": {
-        "description": "my microservice",
-        "image": "technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-        "originalImage": "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-        "contentDigest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
-    }
+  "my-microservice": {
+    "contentDigest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
+    "description": "my microservice",
+    "image": "technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
+    "originalImage": "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
+  }
 }
 ```
 

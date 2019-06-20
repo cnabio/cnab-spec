@@ -303,13 +303,15 @@ The `invocationImages` section describes the images that are responsible for boo
 A CNAB bundle MUST have at least one invocation image.
 
 ```json
-"invocationImages": [
+{
+  "invocationImages": [
     {
-        "contentDigest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-        "image": "technosophos/helloworld:0.1.0",
-        "imageType": "docker"
+      "contentDigest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
+      "image": "technosophos/helloworld:0.1.0",
+      "imageType": "docker"
     }
-]
+  ]
+}
 ```
 
 The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
@@ -335,21 +337,20 @@ The following illustrates an `images` section:
 
 ```json
 {
-"images": {
-        "frontend": { 
-            "description": "frontend component image",
-            "imageType": "docker",
-            "image": "example.com/gabrtv/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "originalImage": "example.com/opendeis/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-            "contentDigest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
-        },
-        "backend": {
-            "description": "backend component image",
-            "imageType": "docker",
-            "image": "example.com/gabrtv/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
-            "originalImage": "example.com/opendeis/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
-            "contentDigest": "sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686"
-        }
+  "images": {
+    "backend": {
+      "contentDigest": "sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
+      "description": "backend component image",
+      "image": "example.com/gabrtv/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
+      "imageType": "docker",
+      "originalImage": "example.com/opendeis/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686"
+    },
+    "frontend": {
+      "contentDigest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
+      "description": "frontend component image",
+      "image": "example.com/gabrtv/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
+      "imageType": "docker",
+      "originalImage": "example.com/opendeis/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
     }
   }
 }
@@ -618,8 +619,8 @@ Check out the [JSON Schema specification](https://json-schema.org/) for more exa
       "description": "a list of greetings",
       "items": {
         "examples": [
-          "Bonjour",
           "Aloha",
+          "Bonjour",
           "こんにちは"
         ],
         "type": "string"
@@ -635,13 +636,6 @@ Check out the [JSON Schema specification](https://json-schema.org/) for more exa
   },
   "parameters": {
     "fields": {
-      "workplace_address": {
-        "definition": "address",
-        "description": "the address of your workplace",
-        "destination": {
-          "path": "/tmp/address.adr"
-        }
-      },
       "email": {
         "definition": "email-address",
         "destination": {
@@ -658,6 +652,13 @@ Check out the [JSON Schema specification](https://json-schema.org/) for more exa
         "definition": "jpeg",
         "destination": {
           "path": "/tmp/user.jpg"
+        }
+      },
+      "workplace_address": {
+        "definition": "address",
+        "description": "the address of your workplace",
+        "destination": {
+          "path": "/tmp/address.adr"
         }
       }
     }
@@ -724,18 +725,20 @@ What about parameters such as database passwords used by the application? Proper
 > Note that the CNAB specification does not mandate specific security implementations on storage of either parameters or credentials. CNAB Runtimes ought to consider that both parameters and credentials may contain secret data, and OUGHT to secure both parameter and credential data in ways appropriate to the underlying platform. It is recommended that credentials are not persisted between actions, and that parameters _are_ persisted between actions.
 
 ```json
-"credentials": {
-    "kubeconfig": {
-        "path": "/home/.kube/config"
+{
+  "credentials": {
+    "hostkey": {
+      "env": "HOST_KEY",
+      "path": "/etc/hostkey.txt"
     },
     "image_token": {
-        "required": true,
-        "env": "AZ_IMAGE_TOKEN"
+      "env": "AZ_IMAGE_TOKEN",
+      "required": true
     },
-    "hostkey": {
-        "path": "/etc/hostkey.txt",
-        "env": "HOST_KEY"
+    "kubeconfig": {
+      "path": "/home/.kube/config"
     }
+  }
 }
 ```
 
@@ -775,19 +778,21 @@ Every implementation of a CNAB tool MUST support three built-in actions:
 Implementations MAY support user-defined additional actions as well. Such actions are exposed via the `bundle` definition file. An action definition contains an action _name_ followed by a description of that action:
 
 ```json
-"actions": {
-    "io.cnab.status":{
-        "modifies": false,
-        "description": "retrieves the status of an installation"
+{
+  "actions": {
+    "io.cnab.dry-run": {
+      "description": "prints what install would do with the given parameters values",
+      "modifies": false,
+      "stateless": true
     },
-    "io.cnab.migrate":{
-        "modifies": false
+    "io.cnab.migrate": {
+      "modifies": false
     },
-    "io.cnab.dry-run":{
-        "modifies": false,
-        "stateless": true,
-        "description": "prints what install would do with the given parameters values"
+    "io.cnab.status": {
+      "description": "retrieves the status of an installation",
+      "modifies": false
     }
+  }
 }
 ```
 
@@ -822,15 +827,15 @@ The `custom` object is used as follows:
 
 ```json
 {
-    "custom": {
-        "com.example.duffle-bag": {
-            "icon": "https://example.com/icon.png",
-            "iconType": "PNG"
-        },
-        "com.example.backup-preferences": {
-            "frequency": "daily"
-        }
+  "custom": {
+    "com.example.backup-preferences": {
+      "frequency": "daily"
+    },
+    "com.example.duffle-bag": {
+      "icon": "https://example.com/icon.png",
+      "iconType": "PNG"
     }
+  }
 }
 ```
 
@@ -838,9 +843,9 @@ The format is:
 
 ```json
 {
-    "custom": {
-        "EXTENSION NAME": "ARBITRARY JSON DATA"
-    }
+  "custom": {
+    "EXTENSION NAME": "ARBITRARY JSON DATA"
+  }
 }
 ```
 

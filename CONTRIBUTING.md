@@ -19,7 +19,7 @@ In addition, by making a contribution to specifications in this repository, you,
 Final specifications developed in this repository will be subject to the [Open Web Foundation Final Specification Agreement (“OWFa 1.0”)](http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-00).  OWFa 1.0 will be applied as follows:
 -	The maintainer will notify all contributors to a designated specification in writing via provided contact information of the start of a 30 day review period, after which the specification will be subject to the OWFa 1.0.
 -	During that 30 day period, contributors may provide written notice to the maintainer that the contributor is not making the forgoing commitment under OWFa 1.0 for the designated specification (“Exclusion”).
--	Upon the end of that 30 day notice period, those contributors who have not issued an Exclusion, on behalf of themselves, their employer, and its affiliates, will, without further action, be subject to the obligations set forth in the OWFa 1.0 for the designated specification.  
+-	Upon the end of that 30 day notice period, those contributors who have not issued an Exclusion, on behalf of themselves, their employer, and its affiliates, will, without further action, be subject to the obligations set forth in the OWFa 1.0 for the designated specification.
 
 ## Code of Conduct
 This project has adopted the [Microsoft Open Source Code of conduct](https://opensource.microsoft.com/codeofconduct/).
