@@ -7,32 +7,37 @@ weight: 101
 
 This section describes the format and function of the `bundle.json` document.
 
-The `bundle.json` file is a representation of bundle metadata. It MUST be represented as [Canonical JSON](http://wiki.laptop.org/go/Canonical_JSON). While Canonical JSON is parseable by any JSON parser, its serialized form is consistent. This is a necessity when comparing two textual representations of the same data (such as when hashing).
+## bundle.json MUST be Canonical JSON
+
+The `bundle.json` file is a representation of the bundle definition. It MUST be formatted as [Canonical JSON](http://wiki.laptop.org/go/Canonical_JSON).
+
+Canonical JSON is parseable by any JSON parser and is consistent. Being _consistent_ means that if you convert two copies of the same data to Canonical JSON, the two JSON strings will always be exactly equal. This allows you to compare bundle definitions for equality without parsing them; you can use any string equality approach (such as hashing) to decide if two `bundle.json` files represent the same bundle definition.
 
 > JSON data in this document has been formatted for readability using line breaks and indentation. This is not Canonical JSON. These examples were generated using the UNIX command `canonjson SOURCE.json | jq .` Where appropriate, the Canonical JSON text will also be provided. Small snippets of JSON may be shown in the order in which the fields are described (for clarity) rather than in Canonical JSON order.
 
+## Schema Overview and Examples
 A `bundle.json` is broken down into the following categories of information:
 
-- The schema version of the bundle, as a string with a `v` prefix. This schema is to be referenced as `v1` or `v1.0.0-WD`
-- The top-level package information (`name` and `version`)
-  - `name`: The bundle name, including namespacing. The namespace can have one or more elements separated by a dot (e.g. `acme.tunnels.wordpress`). The left most element of the namespace is the most general moving toward more specific elements on the right.
-  - `version`: Semantic version of the bundle
-  - `description`: Short description of the bundle
+- The schema version, as a string with a `v` prefix
+- Identifying metadata (name and bundle version)
+- Informational metadata (description, keywords, license, maintainers)
 - Information on the invocation images, as an array
-- A map of images included with this bundle, as a `component name` to `image definition` map
-- A specification of which parameters MAY be overridden, and a reference to a validation schema
-- A list of credentials (name and desired location) that the application needs
 - An OPTIONAL description of custom actions that this bundle implements
-- A list of outputs (name, type and location) that the application produces
-- A set of schema definitions used to validate user input
+- A map of images included with this bundle, as a `component name` to `image definition` map
+- A map of parameters that MAY be overridden (name to schema and desired location)
+- A map of credentials that the application needs (name to desired location)
+- A map of outputs that the application produces (name to schema and location)
+- A map of schema definitions used to validate user input (name to schema definition)
 
-The `bundle.json` is located at `/cnab/bundle.json` in the invocation image's runtime filesystem.
+### Thin vs Thick Bundles
 
-The `bundle.json` is also known as a _thin bundle_. Bundles come in two formats: thick and thin. Read more about thick and thin bundles in the [bundle formats section](104-bundle-formats.md).
+A bundle file can by _thin_ or _thick_, depending on how it describes its invocation and executable images. A thin bundle references where to find the images, but does not include them. A thick bundle includes the actual bits for the images. Read more about thick and thin bundles in the [bundle formats section](104-bundle-formats.md).
 
-For the rest of the documentation, by default we'll be referring to bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
+For the rest of the documentation, we'll be referring to bundles using the thin type by default, but when thick bundles become relevant we'll make note that we're talking about a thick bundle.
 
-The following is an example of a `bundle.json` for a bundled distributed as a _thin_ bundle:
+#### Thin Bundle Example
+
+The following is an example of a `bundle.json` for a bundled distributed as a thin bundle:
 
 ```json
 {
@@ -140,7 +145,9 @@ The canonical JSON version of the above is:
 {"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"definitions":{"http_port":{"default":80,"maximum":10240,"minimum":10,"type":"integer"},"port":{"maximum":65535,"minimum":1024,"type":"integer"},"string":{"type":"string"},"x509Certificate":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","type":"string","writeOnly":true}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"contentDigest":"sha256:aaaaaaaaaaaa...","description":"my microservice","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"contentDigest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"fields":{"clientCert":{"definition":"x509Certificate","path":"/cnab/app/outputs/clientCert"},"hostName":{"applyTo":["install"],"definition":"string","description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname"},"port":{"definition":"port","path":"/cnab/app/outputs/port"}}},"parameters":{"fields":{"backend_port":{"definition":"http_port","description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"}}}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
-And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
+#### Thick Bundle Example
+
+And here is how a thick bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
 
 ```json
 {
@@ -244,25 +251,32 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
 
 Source: [101.02-bundle.json](examples/101.02-bundle.json)
 
-In descriptions below, fields marked REQUIRED MUST be present in any conformant bundle descriptor, while fields not thusly marked are considered optional.
+## Required vs Optional
+
+In descriptions below, fields marked REQUIRED MUST be present in any conformant bundle description, while fields not thusly marked are considered OPTIONAL.
 
 ## Dotted Names
 
-Within this specification, certain user-supplied names SHOULD be expressed in the form of a _dotted name_, which is defined herein as a name composed by concatenating name components (Unicode letters and the dash (`-`) character) together, separated by dot (`.`) characters. Whitespace characters are not allowed within names, nor is there a defined escape sequence for the `.` character.
+Within this specification, certain user-supplied names SHOULD be expressed in the form of a _dotted name_. A dotted name is composed of name components concatenated together by dot characters. Whitespace characters are not allowed within names; there is no escape sequence for the dot character. A string MUST have at least one dot to be considered a dotted name.
+
+```
+UnicodeLetter = any unicode codepoint with a General Category of Lu, Ll, Lt, Lm, or Lo (a General Major Category of Letter)
+NameComponent := ( UnicodeLetter | "-" )+
+DottedName := NameComponent "." ( NameComponent | DottedName )
+```
 
 Dotted names are used to encourage name spacing and reduce the likelihood of naming collisions.
 
-Dotted names SHOULD follow the reverse-DNS pattern used by [Java, C#, and other languages](https://en.wikipedia.org/wiki/Reverse_domain_name_notation).
-
-CNAB tools MUST NOT treat these strings as domain names or domain components, as this specification allows characters that are not legal in DNS addresses.
+Dotted names SHOULD follow the reverse-DNS pattern used by [Java, C#, and other languages](https://en.wikipedia.org/wiki/Reverse_domain_name_notation). However, CNAB tools MUST NOT treat these strings as domain names or domain components, as this specification allows characters that are not legal in DNS addresses.
 
 Examples:
 
 - `com.example.myapp.port`
 - `org.example.action.status`
 - `example.foo` (This format MAY be used, but the reverse DNS format is preferred)
+- `𝕔𝕠𝕞.𝕖𝕩𝕒𝕞𝕡𝕝𝕖.𝕞𝕪𝕒𝕡𝕡.𝕡𝕠𝕣𝕥`
+- `snʇɐʇs.uoıʇɔɐ.ǝʃdɯɐxǝ.ƃɹo`
 
-A string MUST have at least one dot to be considered a _dotted name_.
 
 ## Schema Version
 
@@ -270,7 +284,7 @@ Every `bundle.json` MUST have a `schemaVersion` element.
 
 The schema version must reference the version of the schema used for this document. It follows the [SemVer v2 specification](https://semver.org/). The following pre-release markers are recognized:
 
-- `WD` indicates that the document references a working draft of the specification, and is not considered stable.
+- `WD` indicates that the document references a working draft of the specification and is not considered stable.
 - `CR` indicates that the document references a candidate recommendation. Stability is not assured.
 
 The current schema version is `v1.0.0-WD`, which is considered unstable.
@@ -279,7 +293,7 @@ The current schema version is `v1.0.0-WD`, which is considered unstable.
 
 The `name` and `version` fields are used to identify the CNAB bundle. Both fields are REQUIRED.
 
-- `name` MUST contain only characters from the Unicode graph characters
+- `name` MUST contain only characters from the Unicode code points with a basic type of `Graphic` (includes: spaces, letters, numbers, punctuation, symbols).
 - `version` MUST be a [SemVer2](https://semver.org) string
 
 Fields that do not match this specification SHOULD cause failures.
@@ -373,7 +387,7 @@ The image map data is made available to the invocation image at runtime. This al
 
 ## Definitions
 
-The `definitions` section of the `bundle.json` defines set of JSONSchema definitions outlining how bundle configuration should be validated by a runtime.
+The `definitions` section of the `bundle.json` defines set of JSONSchema definitions outlining how bundle configuration SHOULD be validated by a runtime.
 
 Definitions have no utility on their own. They enable the runtime to validate parameters and outputs when used in combination with those features. Examples
 of how to use `definitions` along with `parameters` and `outputs` can be seen in the [Parameters](#parameters) and [Outputs](#outputs) sections below.
@@ -426,13 +440,12 @@ of how to use `definitions` along with `parameters` and `outputs` can be seen in
     - `uniqueItems`: Parameter validation requiring the items included in the user-provided array be unique. MUST be a boolean. (OPTIONAL)
     - `writeOnly`: Indicates that the value of the parameter is sensitive and cannot be viewed once set or updated. MUST be a boolean. (OPTIONAL)
 
-For more information on the supported definition properties, visit the [JSON Schema documentation](https://json-schema.org/)
-
-Evaluation of the validation keywords should conform to the applicable sections of [Section 6 of the JSONSchema specification](https://tools.ietf.org/html/draft-handrews-json-schema-validation-01#section-6).
+For more information on the supported definition properties, visit the [JSON Schema documentation](https://json-schema.org/).
+Evaluation of the validation keywords SHOULD conform to the applicable sections of [Section 6 of the JSONSchema specification](https://tools.ietf.org/html/draft-handrews-json-schema-validation-01#section-6).
 
 ## Parameters
 
-The `parameters` and `definitions` sections of the `bundle.json` define which parameters a user (person installing a CNAB bundle) MAY configure on an invocation image and how those parameters should be validated by a runtime. Parameters represent information about the application configuration, and may be persisted by the runtime.
+The `parameters` and `definitions` sections of the `bundle.json` define which parameters a user (person installing a CNAB bundle) MAY configure on an invocation image and how those parameters SHOULD be validated by a runtime. Parameters represent information about the application configuration and MAY be persisted by the runtime.
 
 Parameter specifications consist of name/value pairs. The name is fixed, but the value MAY be overridden by the user. The parameter definition includes a specification of how to constrain the values submitted by the user.
 
@@ -481,7 +494,7 @@ Parameter specifications consist of name/value pairs. The name is fixed, but the
         - `path`: The fully qualified path to a file that will be created. Specified path MUST NOT be a subpath of `/cnab/app/outputs`.
   - `required`: A list of required parameters. MUST be an array of strings.(OPTIONAL)
 
-Parameter names (the keys in `fields`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
+Parameter names (the keys in `fields`) SHOULD conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
 
 > The term _parameters_ indicates the present specification of what can be provided to a bundle. The term _values_ is frequently used to indicate the user-supplied values which are tested against the parameter definitions.
 
@@ -907,10 +920,11 @@ Output specifications are flat (not tree-like), consisting of name/value pairs. 
       - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
       - `path`: The fully qualified path to a file that will be created (REQUIRED). The path specified MUST be a _strict_ subpath of `/cnab/app/outputs` and MUST be distinct from the paths for all other outputs in this bundle.
 
-An invocation image should write outputs to a file specified by the `path` attribute for each output. A bundle runtime can then extract values from the specified path and present them to a user.
-All outputs that apply to a specified action are considered to be required. If an output is missing at the end of an action, the runtime should report this condition as an error to the user.
-A runtime can leverage appropriate [in-memory](https://docs.docker.com/v17.09/engine/admin/volumes/tmpfs/#choosing-the-tmpfs-or-mount-flag) volume mounted at the `path` location for storing these outputs.
+An invocation image SHOULD write outputs to a file specified by the `path` attribute for each output. A bundle runtime can then extract values from the specified path and present them to a user.
+All outputs that apply to a specified action are considered to be required. If an output is missing at the end of an action, the runtime SHOULD report this condition as an error to the user.
+A runtime can leverage an appropriate [in-memory](https://docs.docker.com/v17.09/engine/admin/volumes/tmpfs/#choosing-the-tmpfs-or-mount-flag) volume mounted at the `path` location for storing these outputs.
 
-A runtime may validate outputs based on schema references by the definition field.
+For more information on the supported output properties, visit the [JSON Schema documentation](https://json-schema.org/)
+A runtime MAY validate outputs based on the schema referenced by the definition field.
 
 Next section: [The invocation image definition](102-invocation-image.md)
