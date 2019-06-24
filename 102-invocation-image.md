@@ -18,7 +18,6 @@ An invocation image is composed of the following:
 
 - A file system hierarchy following a defined pattern (below)
 - A main entry point, called the _run tool_, which is an executable (often a script) responsible for translating action requests (`install`, `upgrade`,...) to a sequence of tasks
-- The bundle definition, which is useful for referencing images and other information at runtime.
 - Runtime metadata (Helm charts, Terraform templates, etc)
 - The material necessary for reproducing the invocation image (`Dockerfile` and `packer.json` are two examples)
 
@@ -30,7 +29,6 @@ The following exhibits the filesystem layout:
 
 ```yaml
 cnab/                  # REQUIRED top-level directory
-└── bundle.json        # REQUIRED
 └── build/
     │   └──Dockerfile​  # OPTIONAL
 └── app​                # REQUIRED
@@ -47,12 +45,9 @@ cnab/                  # REQUIRED top-level directory
 
 ### The `/cnab` Directory
 
-An invocation image MUST have a directory named `cnab` placed directly under the root of the file system hierarchy inside of an image.
+An invocation image MUST have a directory named `cnab` placed directly under the root of the file system hierarchy inside of an image. This directory MUST have a subdirectory named `app`.
 
-This directory MUST have the bundle definition at `bundle.json`.
-This directory MUST have a subdirectory named `app`.
-
-This directory MAY have any of the following:
+This `cnab` directory MAY have any of the following:
 
 - `build/`: A directory containing files used in the construction of this image
     - `Dockerfile`: A valid Dockerfile used for constructing this image
@@ -92,7 +87,6 @@ Example:
 FROM ubuntu:latest
 
 COPY ./Dockerfile /cnab/Dockerfile
-COPY ./bundle.json /cnab/manifest.json
 COPY ./parameters.json /cnab/parameters.json
 
 RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
