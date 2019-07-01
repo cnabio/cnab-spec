@@ -10,6 +10,8 @@ events.on("exec", (e, p) => {
 events.on("check_suite:requested", runSuite);
 events.on("check_suite:rerequested", runSuite);
 events.on("check_run:rerequested", runSuite);
+events.on("issue_comment:created", handleIssueComment);
+events.on("issue_comment:edited", handleIssueComment);
 
 // Functions/Helpers
 
@@ -45,6 +47,25 @@ function runValidation(e, p) {
   return notificationWrap(validate(e, p), note)
 }
 
+// handleIssueComment handles an issue_comment event, parsing the comment
+// text and determining whether or not to trigger a corresponding action
+function handleIssueComment(e, p) {
+  if (e.payload) {
+    payload = JSON.parse(e.payload);
+
+    // Extract the comment body and trim whitespace
+    comment = payload.body.comment.body.trim();
+
+    // Here we determine if a comment should provoke an action
+    switch(comment) {
+    case "/brig run":
+      return runSuite(e, p);
+    default:
+      console.log(`No applicable action found for comment: ${comment}`);
+    }
+  }
+}
+
 // A GitHub Check Suite notification
 class Notification {
   constructor(name, e, p) {
@@ -68,7 +89,7 @@ class Notification {
   // Send a new notification, and return a Promise<result>.
   run() {
     this.count++
-    var j = new Job(`${ this.name }-${ this.count }`, "deis/brigade-github-check-run:latest");
+    var j = new Job(`${ this.name }-${ this.count }`, "brigadecore/brigade-github-check-run:v0.1.0");
     j.env = {
       CHECK_CONCLUSION: this.conclusion,
       CHECK_NAME: this.name,
