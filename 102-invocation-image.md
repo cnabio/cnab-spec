@@ -30,16 +30,16 @@ The following exhibits the filesystem layout:
 ```yaml
 cnab/                  # REQUIRED top-level directory
 └── build/
-    │   └──Dockerfile​  # OPTIONAL
-└── app​                # REQUIRED
-    ├── run​            # REQUIRED: This is the main entrypoint, and MUST be executable
-    ├── charts​         # Example: Helm charts might go here
-    │   └── azure-voting-app​
-    │       ├── Chart.yaml​
-    │       ├── templates​​
+    │   └──Dockerfile           # OPTIONAL
+└── app                         # REQUIRED
+    ├── run                     # REQUIRED: This is the main entrypoint, and MUST be executable
+    ├── charts                  # Example: Helm charts might go here
+    │   └── azure-voting-app
+    │       ├── Chart.yaml
+    │       ├── templates
     │       │   └── ...
-    │       └── values.yaml​
-    └── sfmesh​         # Example: Service Fabric definitions might go here
+    │       └── values.yaml
+    └── sfmesh                  # Example: Service Fabric definitions might go here
         └── sfmesh-deploy.json
 ```
 
@@ -50,10 +50,10 @@ An invocation image MUST have a directory named `cnab` placed directly under the
 This `cnab` directory MAY have any of the following:
 
 - `build/`: A directory containing files used in the construction of this image
-    - `Dockerfile`: A valid Dockerfile used for constructing this image
-    - Files for the form `Dockerfile.$INFO`, where `$INFO` is a further specification of that Dockerfile (e.g. `Dockerfile.arm64`)
-    - `packer.json`: A valid Packer configuration file
-    - Other build-related files
+  - `Dockerfile`: A valid Dockerfile used for constructing this image
+  - Files for the form `Dockerfile.$INFO`, where `$INFO` is a further specification of that Dockerfile (e.g. `Dockerfile.arm64`)
+  - `packer.json`: A valid Packer configuration file
+  - Other build-related files
 - `README.txt` or `README.md`: A text file containing information about this bundle
 - `LICENSE`: A text file containing the license(s) for this image
 
@@ -70,8 +70,8 @@ The contents beneath `/cnab/app/SUBDIRECTORY` are undefined by the spec. `run` i
 The directory `/cnab/build` MAY be present within the CNAB hierarchy. This directory houses files used in the construction of the invocation image, and are provided to make it easier to rebuild the image during rewrite operations. If a `Dockerfile` was used to build the image, a `Dockerfile` SHOULD be included. Other files MAY be included.
 
 Examples:
-    - `packer.json`
-    - `Dockerfile.arm32`
+- `packer.json`
+- `Dockerfile.arm32`
 
 #### Dockerfiles for Constructing Invocation Images
 

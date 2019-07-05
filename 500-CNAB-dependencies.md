@@ -15,13 +15,13 @@ This specification, the CNAB Dependencies specification, is not part of the CNAB
 
 One way for a bundle author to manage the complexity of a large bundle and reuse
 common logic is to create bundles for discrete components, such as managing
-a database as a service on a cloud platform, and then use that bundle as a 
+a database as a service on a cloud platform, and then use that bundle as a
 dependency.
 
-This specification defines [dependencies metadata](#dependencies-metadata) in the 
+This specification defines [dependencies metadata](#dependencies-metadata) in the
 bundle.json for specifying dependencies but does not dictate that the metadata is
-specifically used at a particular time, or how the dependency graph is resolved. 
-Each tool may choose to use the information differently, for example [porter](https://porter.sh) resolves dependencies when the bundle is built, but another tool could 
+specifically used at a particular time, or how the dependency graph is resolved.
+Each tool may choose to use the information differently, for example [porter](https://porter.sh) resolves dependencies when the bundle is built, but another tool could
 use this information at runtime.
 
 There are two cases for how a bundle may need to depend upon another bundle:
@@ -35,18 +35,18 @@ The bundle depends on a specific named bundle that is known in advance.
 
 ```json
 {
-    "name": "wordpress",
-    "dependencies": [
-        {
-            "requires":{
-                "bundle": "azure/mysql",
-                "version": {
-                    "range": "5.7.x",
-                    "prereleases": "true"
-                }
-            }
+  "dependencies": [
+    {
+      "requires": {
+        "bundle": "azure/mysql",
+        "version": {
+          "prereleases": "true",
+          "range": "5.7.x"
         }
-    ]
+      }
+    }
+  ],
+  "name": "wordpress"
 }
 ```
 
@@ -66,12 +66,12 @@ The `requires` object defines the criteria for the dependent bundle:
 * `bundle`: A reference to a bundle in the format REGISTRY/NAME.
 * `version`: A set of criteria applied to the bundle version when selecting an
     acceptable version of the bundle.
-    * `ranges`: An array of allowed version ranges. 
-    
-        Versions are specified using semver, with or without a leading "v". 
-        An `x` in the place of the minor or patch place can be used to specify 
-        a wildcard. Ranges can be specified by separating the two versions with 
-        a dash, the dash must be surrounded by spaces in order to disambiguate 
+    * `ranges`: An array of allowed version ranges.
+
+        Versions are specified using semver, with or without a leading "v".
+        An `x` in the place of the minor or patch place can be used to specify
+        a wildcard. Ranges can be specified by separating the two versions with
+        a dash, the dash must be surrounded by spaces in order to disambiguate
         from prerelease tags.
 
         Below are some example ranges:

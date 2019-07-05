@@ -56,31 +56,31 @@ The CNAB claim is defined as a JSON document. The specification currently does n
 
 ```json
 {
+  "bundle": {
+    "credentials": {},
+    "images": {},
+    "invocationImages": [
+      {
+        "image": "technosophos/demo2:0.2.0",
+        "imageType": "docker"
+      }
+    ],
     "name": "technosophos.hellohelm",
-    "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29",
-    "created": "2018-08-30T20:39:55.549002887-06:00",
-    "modified": "2018-08-30T20:39:59.611068556-06:00",
-    "bundle": {
-      "schemaVersion": "v1.0.0-WD",
-      "name": "technosophos.hellohelm",
-      "version": "0.1.0",
-      "invocationImages": [
-        {
-          "imageType": "docker",
-          "image": "technosophos/demo2:0.2.0"
-        }
-      ],
-      "images": {},
-      "parameters": {},
-      "credentials": {}
-    },
-    "result": {
-      "message": "",
-      "action": "install",
-      "status": "success"
-    },
-    "parameters": {}
-  }
+    "parameters": {},
+    "schemaVersion": "v1.0.0-WD",
+    "version": "0.1.0"
+  },
+  "created": "2018-08-30T20:39:55.549002887-06:00",
+  "modified": "2018-08-30T20:39:59.611068556-06:00",
+  "name": "technosophos.hellohelm",
+  "parameters": {},
+  "result": {
+    "action": "install",
+    "message": "",
+    "status": "success"
+  },
+  "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
+}
 ```
 
 - name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
@@ -172,20 +172,20 @@ If both commands exit with code `0`, then the resulting claim will look like thi
 
 ```json
 {
-    "name": "technosophos.my_first_install",
-    "revision": "01CN530TF9Q095VTRYP1M8797C",
-    "bundle": {
-        "uri": "hub.docker.com/technosophos/example_cnab",
-        "name": "technosophos.example_cnab",
-        "version": "0.1.0"
-    },
-    "created": "TIMESTAMP",
-    "modified": "TIMESTAMP",
-    "result": {
-        "message": "yay!",    // From STDOUT (echo)
-        "action": "install",  // Determined by the action
-        "status": "success"   // if exit code == 0, success, else failure
-    }
+  "bundle": {
+    "name": "technosophos.example_cnab",
+    "uri": "hub.docker.com/technosophos/example_cnab",
+    "version": "0.1.0"
+  },
+  "created": "TIMESTAMP",
+  "modified": "TIMESTAMP",
+  "name": "technosophos.my_first_install",
+  "result": {
+    "message": "yay!",    // From STDOUT (echo)
+    "action": "install",  // Determined by the action
+    "status": "success"   // if exit code == 0, success, else failure
+  },
+  "revision": "01CN530TF9Q095VTRYP1M8797C"
 }
 ```
 

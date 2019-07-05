@@ -1,318 +1,341 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://cnab.io/v1/bundle.schema.json",
-    "title": "CNAB1 Bundle Descriptor",
-    "description": "Cloud Native Application - Core version 1 - Bundle Descriptor",
-    "type": "object",
-    "properties": {
-        "schemaVersion": {
-            "description": "The version of the CNAB specification. This should always be the string 'v1' for this schema version.",
-            "type": "string"
+  "$id": "http://cnab.io/v1/bundle.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "definitions": {
+    "credential": {
+      "description": "Credential defines a particular credential, and where it should be placed in the invocation image",
+      "properties": {
+        "description": {
+          "description": "A user-friendly description of this credential",
+          "type": "string"
         },
-        "name":{
-            "description": "The name of this bundle",
-            "type": "string"
+        "env": {
+          "description": "The environment variable name, such as MY_VALUE, into which the credential will be placed",
+          "type": "string"
         },
-        "version":{
-            "description": "A SemVer2 version for this bundle",
-            "type": "string",
-            "pattern": "v?([0-9]+)(\\.[0-9]+)?(\\.[0-9]+)?(-([0-9A-Za-z\\-]+(\\.[0-9A-Za-z\\-]+)*))?(\\+([0-9A-Za-z\\-]+(\\.[0-9A-Za-z\\-]+)*))?"
+        "path": {
+          "description": "The path inside of the invocation image where credentials will be mounted",
+          "pattern": "^(?!/cnab/app/outputs)/.+$",
+          "type": "string"
         },
-        "description":{
-            "description": "A description of this bundle, intended for users",
-            "type": "string"
-        },
-        "keywords":{
-            "description": "A list of keywords describing the bundle, intended for users",
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "maintainers":{
-            "description": "A list of parties responsible for this bundle, with contact info",
-            "type": "array",
-            "items": {
-                "description": "An object that describes a maintainer",
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "description": "Name of party reponsible for this bundle",
-                        "type": "string"
-                    },
-                    "email":{
-                        "description": "Email address of responsible party",
-                        "type": "string"
-                    },
-                    "url":{
-                        "description": "URL of the responsible party, perhaps containing additional contact info",
-                        "type": "string"
-                    }
-                },
-                "required": ["name"]
-            }
-        },
-        "license":{
-            "description": "The SPDX license code or proprietary license name for this bundle",
-            "type": "string"
-        },
-        "invocationImages":{
-            "description": "The array of invocation image definitions for this bundle",
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/invocationImage"
-            }
-        },
-        "images":{
-            "description": "Images that are used by this bundle",
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/image"
-            }
-        },
-        "credentials":{
-            "description":"Credentials to be injected into the invocation image",
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/credential"
-            }
-        },
-        "actions":{
-            "description": "Custom actions that can be triggered on this bundle, action name should be namespaced and use reverse DNS notation",
-            "type": "object",
-            "additionalProperties": {
-                "type": "object",
-                "properties": {
-                    "modifies": {
-                        "description": "Must be set to true if the action can change any resource managed by this bundle",
-                        "type": "boolean"
-                    },
-                    "description": {
-                        "description": "A description of the purpose of this action",
-                        "type": "string"
-                    },
-                    "stateless":{
-                        "description": "Indicates that the action is purely informational, that credentials are not required, and that the runtime should not keep track of its invocation",
-                        "type": "boolean",
-                        "default": "false"
-                    }
-                }
-            }
-        },
-        "custom":{
-            "$comment": "reserved for custom extensions"
-        },
-        "definitions": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "http://json-schema.org/draft-07/schema#"
-          }
-        },
-        "parameters":{
-            "description": "Parameters that can be injected into the invocation image",
-            "type": "object",
-            "properties": {
-                "fields" : {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref":  "#/definitions/parameter"
-                    }
-                },
-                "required": { "$ref": "http://json-schema.org/draft-07/schema#/properties/required" }
-            }
-        },
-        "outputs":{
-            "description": "Values that are produced by executing the invocation image",
-            "type": "object",
-            "properties": {
-                "fields": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref":  "#/definitions/output"
-                    }
-                }
-            }
+        "required": {
+          "default": false,
+          "description": "Indicates whether this credential must be supplied. By default, credentials are optional.",
+          "type": "boolean"
         }
+      },
+      "type": "object"
     },
-    "required": [ "name", "version", "invocationImages", "schemaVersion"],
-    "definitions": {
-        "invocationImage": {
-            "description": "A bootstrapping image for the CNAB bundle.",
-            "type": "object",
-            "properties": {
-                "image":{
-                    "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
-                    "type": "string"
-                },
-                "originalImage":{
-                    "description": "A resolvable reference to the original image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image. If this is not specified, the value is assumed to be that of the image field",
-                    "type": "string"
-                },
-                "imageType":{
-                    "description": "The type of image. If this is not specified, 'oci' is assumed",
-                    "type": "string",
-                    "default": "oci"
-                },
-                "contentDigest":{
-                    "description": "A cryptographic hash digest of the contents of the image that can be used to validate the image. This may be interpreted differently based on imageType",
-                    "type": "string"
-                },
-                "size": {
-                    "description": "The image size in bytes",
-                    "type":"integer"
-                },
-                "platform":{
-                    "description": "The target platform",
-                    "type": "object",
-                    "properties": {
-                        "architecture": {
-                            "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
-                            "type": "string"
-                        },
-                        "os": {
-                            "description": "The operating system of the image (linux, windows, darwin,...)",
-                            "type": "string"
-                        }
-                    }
-                },
-                "mediaType":{
-                    "description": "The media type of the image",
-                    "type": "string"
-                }
-            },
-            "required": ["image"]
+    "image": {
+      "description": "An application image for this CNAB bundle",
+      "properties": {
+        "contentDigest": {
+          "description": "A cryptographic hash digest of the contents of the image that can be used to validate the image. This may be interpreted differently based on imageType",
+          "type": "string"
+        },
+        "description": {
+          "description": "A description of the purpose of this image",
+          "type": "string"
         },
         "image": {
-            "description": "An application image for this CNAB bundle",
-            "type": "object",
-            "properties": {
-                "description": {
-                    "description": "A description of the purpose of this image",
-                    "type": "string"
-                },
-                "image":{
-                    "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
-                    "type": "string"
-                },
-                "originalImage":{
-                    "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image. If this is not specified, the value is assumed to be that of the image field",
-                    "type": "string"
-                },
-                "imageType":{
-                    "description": "The type of image. If this is not specified, 'oci' is assumed",
-                    "type": "string",
-                    "default": "oci"
-                },
-                "contentDigest":{
-                    "description": "A cryptographic hash digest of the contents of the image that can be used to validate the image. This may be interpreted differently based on imageType",
-                    "type": "string"
-                },
-                "size": {
-                    "description": "The image size in bytes",
-                    "type":"integer"
-                },
-                "platform":{
-                    "description": "The target platform",
-                    "type": "object",
-                    "properties": {
-                        "architecture": {
-                            "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
-                            "type": "string"
-                        },
-                        "os": {
-                            "description": "The operating system of the image (linux, windows, darwin,...)",
-                            "type": "string"
-                        }
-                    }
-                },
-                "mediaType":{
-                    "description": "The media type of the image",
-                    "type": "string"
-                }
-            },
-            "required": ["image"]
+          "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
+          "type": "string"
         },
-        "credential": {
-            "description": "Credential defines a particular credential, and where it should be placed in the invocation image",
-            "type": "object",
-            "properties": {
-                "path":{
-                    "description": "The path inside of the invocation image where credentials will be mounted",
-                    "type": "string",
-                    "pattern": "^(?!\/cnab\/app\/outputs)\/.+$"
-                },
-                "env":{
-                    "description": "The environment variable name, such as MY_VALUE, into which the credential will be placed",
-                    "type": "string"
-                },
-                "description": {
-                    "description": "A user-friendly description of this credential",
-                    "type": "string"
-                },
-                "required": {
-                    "description": "Indicates whether this credential must be supplied. By default, credentials are optional.",
-                    "type": "boolean",
-                    "default": false
-                }
+        "imageType": {
+          "default": "oci",
+          "description": "The type of image. If this is not specified, 'oci' is assumed",
+          "type": "string"
+        },
+        "mediaType": {
+          "description": "The media type of the image",
+          "type": "string"
+        },
+        "originalImage": {
+          "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image. If this is not specified, the value is assumed to be that of the image field",
+          "type": "string"
+        },
+        "platform": {
+          "description": "The target platform",
+          "properties": {
+            "architecture": {
+              "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
+              "type": "string"
+            },
+            "os": {
+              "description": "The operating system of the image (linux, windows, darwin,...)",
+              "type": "string"
             }
+          },
+          "type": "object"
         },
-        "parameter": {
-            "description": "A parameter that can be passed into the invocation image",
-            "type": "object",
-            "properties": {
-                "definition": {
-                  "type": "string",
-                  "description": "The name of a definition that describes the schema structure of this parameter"
-                },
-                "description": { "$ref": "http://json-schema.org/draft-07/schema#/properties/description" },
-                "destination": {
-                    "type": "object",
-                    "properties": {
-                        "path":{
-                            "description": "The path inside of the invocation image where parameter data is mounted",
-                            "type": "string",
-                            "pattern": "^(?!\/cnab\/app\/outputs)\/.+$"
-                        },
-                        "env":{
-                            "description": "The environment variable name, such as MY_VALUE, in which the parameter value is stored",
-                            "type": "string"
-                        }
-                    }
-                },
-                "applyTo":{
-                    "description": "An optional exhaustive list of actions handling this parameter",
-                    "type":"array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            },
-            "required": ["definition", "destination"]
-        },
-        "output": {
-            "description": "A value that is produced by running an invocation image",
-            "type": "object",
-            "properties": {
-                "applyTo":{
-                    "description": "An optional exhaustive list of actions producing this output",
-                    "type":"array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "definition": {
-                  "type": "string",
-                  "description": "The name of a definition that describes the schema structure of this output"
-                },
-                "description": { "$ref": "http://json-schema.org/draft-07/schema#/properties/description" },
-                "path":{
-                    "description": "The path inside of the invocation image where output will be written",
-                    "type": "string",
-                    "pattern": "^\/cnab\/app\/outputs\/.+$"
-                }
-            },
-            "required": ["definition", "path"]
+        "size": {
+          "description": "The image size in bytes",
+          "type": "integer"
         }
+      },
+      "required": [
+        "image"
+      ],
+      "type": "object"
     },
-    "additionalProperties": false
+    "invocationImage": {
+      "description": "A bootstrapping image for the CNAB bundle.",
+      "properties": {
+        "contentDigest": {
+          "description": "A cryptographic hash digest of the contents of the image that can be used to validate the image. This may be interpreted differently based on imageType",
+          "type": "string"
+        },
+        "image": {
+          "description": "A resolvable reference to the image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image",
+          "type": "string"
+        },
+        "imageType": {
+          "default": "oci",
+          "description": "The type of image. If this is not specified, 'oci' is assumed",
+          "type": "string"
+        },
+        "mediaType": {
+          "description": "The media type of the image",
+          "type": "string"
+        },
+        "originalImage": {
+          "description": "A resolvable reference to the original image. This may be interpreted differently based on imageType, but the default is to treat this as an OCI image. If this is not specified, the value is assumed to be that of the image field",
+          "type": "string"
+        },
+        "platform": {
+          "description": "The target platform",
+          "properties": {
+            "architecture": {
+              "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
+              "type": "string"
+            },
+            "os": {
+              "description": "The operating system of the image (linux, windows, darwin,...)",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "size": {
+          "description": "The image size in bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "image"
+      ],
+      "type": "object"
+    },
+    "output": {
+      "description": "A value that is produced by running an invocation image",
+      "properties": {
+        "applyTo": {
+          "description": "An optional exhaustive list of actions producing this output",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "definition": {
+          "description": "The name of a definition that describes the schema structure of this output",
+          "type": "string"
+        },
+        "description": {
+          "$ref": "http://json-schema.org/draft-07/schema#/properties/description"
+        },
+        "path": {
+          "description": "The path inside of the invocation image where output will be written",
+          "pattern": "^/cnab/app/outputs/.+$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "definition",
+        "path"
+      ],
+      "type": "object"
+    },
+    "parameter": {
+      "description": "A parameter that can be passed into the invocation image",
+      "properties": {
+        "applyTo": {
+          "description": "An optional exhaustive list of actions handling this parameter",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "definition": {
+          "description": "The name of a definition that describes the schema structure of this parameter",
+          "type": "string"
+        },
+        "description": {
+          "$ref": "http://json-schema.org/draft-07/schema#/properties/description"
+        },
+        "destination": {
+          "properties": {
+            "env": {
+              "description": "The environment variable name, such as MY_VALUE, in which the parameter value is stored",
+              "type": "string"
+            },
+            "path": {
+              "description": "The path inside of the invocation image where parameter data is mounted",
+              "pattern": "^(?!/cnab/app/outputs)/.+$",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "definition",
+        "destination"
+      ],
+      "type": "object"
+    }
+  },
+  "description": "Cloud Native Application - Core version 1 - Bundle Descriptor",
+  "properties": {
+    "actions": {
+      "additionalProperties": {
+        "properties": {
+          "description": {
+            "description": "A description of the purpose of this action",
+            "type": "string"
+          },
+          "modifies": {
+            "description": "Must be set to true if the action can change any resource managed by this bundle",
+            "type": "boolean"
+          },
+          "stateless": {
+            "default": "false",
+            "description": "Indicates that the action is purely informational, that credentials are not required, and that the runtime should not keep track of its invocation",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "description": "Custom actions that can be triggered on this bundle, action name should be namespaced and use reverse DNS notation",
+      "type": "object"
+    },
+    "credentials": {
+      "additionalProperties": {
+        "$ref": "#/definitions/credential"
+      },
+      "description": "Credentials to be injected into the invocation image",
+      "type": "object"
+    },
+    "custom": {
+      "$comment": "reserved for custom extensions"
+    },
+    "definitions": {
+      "additionalProperties": {
+        "$ref": "http://json-schema.org/draft-07/schema#"
+      },
+      "type": "object"
+    },
+    "description": {
+      "description": "A description of this bundle, intended for users",
+      "type": "string"
+    },
+    "images": {
+      "additionalProperties": {
+        "$ref": "#/definitions/image"
+      },
+      "description": "Images that are used by this bundle",
+      "type": "object"
+    },
+    "invocationImages": {
+      "description": "The array of invocation image definitions for this bundle",
+      "items": {
+        "$ref": "#/definitions/invocationImage"
+      },
+      "type": "array"
+    },
+    "keywords": {
+      "description": "A list of keywords describing the bundle, intended for users",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "license": {
+      "description": "The SPDX license code or proprietary license name for this bundle",
+      "type": "string"
+    },
+    "maintainers": {
+      "description": "A list of parties responsible for this bundle, with contact info",
+      "items": {
+        "description": "An object that describes a maintainer",
+        "properties": {
+          "email": {
+            "description": "Email address of responsible party",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of party reponsible for this bundle",
+            "type": "string"
+          },
+          "url": {
+            "description": "URL of the responsible party, perhaps containing additional contact info",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "name": {
+      "description": "The name of this bundle",
+      "type": "string"
+    },
+    "outputs": {
+      "description": "Values that are produced by executing the invocation image",
+      "properties": {
+        "fields": {
+          "additionalProperties": {
+            "$ref": "#/definitions/output"
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "parameters": {
+      "description": "Parameters that can be injected into the invocation image",
+      "properties": {
+        "fields": {
+          "additionalProperties": {
+            "$ref": "#/definitions/parameter"
+          },
+          "type": "object"
+        },
+        "required": {
+          "$ref": "http://json-schema.org/draft-07/schema#/properties/required"
+        }
+      },
+      "type": "object"
+    },
+    "schemaVersion": {
+      "description": "The version of the CNAB specification. This should always be the string 'v1' for this schema version.",
+      "type": "string"
+    },
+    "version": {
+      "description": "A SemVer2 version for this bundle",
+      "pattern": "v?([0-9]+)(\\.[0-9]+)?(\\.[0-9]+)?(-([0-9A-Za-z\\-]+(\\.[0-9A-Za-z\\-]+)*))?(\\+([0-9A-Za-z\\-]+(\\.[0-9A-Za-z\\-]+)*))?",
+      "type": "string"
+    }
+  },
+  "required": [
+    "invocationImages",
+    "name",
+    "schemaVersion",
+    "version"
+  ],
+  "title": "CNAB1 Bundle Descriptor",
+  "type": "object"
 }

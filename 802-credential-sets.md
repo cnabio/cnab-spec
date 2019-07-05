@@ -13,18 +13,18 @@ In the bundle descriptor, credentials are declared like this:
 
 ```json
 {
-    "credentials": {
-        "kubeconfig": {
-            "path": "/home/.kube/config",
-        },
-        "image_token": {
-            "env": "AZ_IMAGE_TOKEN",
-        },
-        "hostkey": {
-            "path": "/etc/hostkey.txt",
-            "env": "HOST_KEY"
-        }
+  "credentials": {
+    "hostkey": {
+      "env": "HOST_KEY",
+      "path": "/etc/hostkey.txt"
+    },
+    "image_token": {
+      "env": "AZ_IMAGE_TOKEN"
+    },
+    "kubeconfig": {
+      "path": "/home/.kube/config"
     }
+  }
 }
 ```
 
