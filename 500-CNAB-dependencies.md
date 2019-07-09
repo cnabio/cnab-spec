@@ -35,17 +35,20 @@ The bundle depends on a specific named bundle that is known in advance.
 
 ```json
 {
-  "dependencies": [
-    {
-      "requires": {
-        "bundle": "azure/mysql",
-        "version": {
-          "prereleases": "true",
-          "range": "5.7.x"
+  "dependencies": {
+      "requires": [
+        {
+          "bundle": "somecloud/blob-storage"
+        },
+        {
+          "bundle": "somecloud/mysql",
+          "version": {
+            "prereleases": true,
+            "ranges": ["5.7.x"]
+          }
         }
-      }
-    }
-  ],
+      ]
+  },
   "name": "wordpress"
 }
 ```
@@ -56,12 +59,12 @@ This section is a placeholder and will be completed in a follow-up pull request.
 
 ## Dependencies Metadata
 
-This specification introduces a `dependencies` array in the bundle.json
+This specification introduces a `dependencies` object in the bundle.json
 that defines metadata necessary to specify a dependency.
 
 ### requires
 
-The `requires` object defines the criteria for the dependent bundle:
+The `requires` array defines the criteria for the dependent bundle:
 
 * `bundle`: A reference to a bundle in the format REGISTRY/NAME.
 * `version`: A set of criteria applied to the bundle version when selecting an
