@@ -66,6 +66,7 @@ The CNAB claim is defined as a JSON document. The specification currently does n
       }
     ],
     "name": "technosophos.hellohelm",
+    "outputs": {},
     "parameters": {},
     "schemaVersion": "v1.0.0-WD",
     "version": "0.1.0"
@@ -73,6 +74,7 @@ The CNAB claim is defined as a JSON document. The specification currently does n
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "modified": "2018-08-30T20:39:59.611068556-06:00",
   "name": "technosophos.hellohelm",
+  "outputs": {},
   "parameters": {},
   "result": {
     "action": "install",
@@ -83,20 +85,21 @@ The CNAB claim is defined as a JSON document. The specification currently does n
 }
 ```
 
-- name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
-- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
-- bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md)
+- bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
 - created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
-- updated: A timestamp indicating the last time this release claim was modified
+- modified: A timestamp indicating the last time this release claim was modified.
+- name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
+- outputs: Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons.
+- parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons.
 - result: The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
-  - message: A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
   - action: Indicates the action that the current bundle is in. This may be any of the built-in actions (`install`, `upgrade`, `uninstall`) as well as any custom actions as defined in the bundle descriptor. The special name `unknown` MAY be used in the case where the CNAB Runtime cannot determine the action name of a claim.
+  - message: A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
   - status: Indicates the status of the last phase transition. Valid statuses are:
-    - success: completed successfully
     - failure: failed before completion
     - underway: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
     - unknown: the state is unknown. This is an error condition.
-- parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons.
+    - success: completed successfully
+- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
 
 > Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action.
 
@@ -120,6 +123,60 @@ The parameter data stored in a claim data is _the resolved key/value pairs_ that
   - Valid user-supplied values are presented
   - Default values are supplied for all parameters where `default` is provided and no user-supplied value overrides this
 
+### Outputs
+
+The output data saves the contents of each output file at the end of the action. The data is a map from output name as defined in the bundle to the content of the file located at the path defined for that output.
+
+Below, you can see an example of a claim for a bundle that included a single output file, `clientCert`. The value in the claim's output data is the contents of `/cnab/app/outputs/clientCert` at the end of the `install` action.
+
+```json
+{
+  "bundle": {
+    "credentials": {},
+    "definitions": {
+      "x509Certificate": {
+         "contentEncoding": "base64",
+         "contentMediaType": "application/x-x509-user-cert",
+         "type": "string",
+         "writeOnly": true
+      }
+    },
+    "images": {},
+    "invocationImages": [
+      {
+        "image": "technosophos/demo2:0.2.0",
+        "imageType": "docker"
+      }
+    ],
+    "name": "technosophos.hellohelm",
+    "outputs": {
+      "fields": {
+        "clientCert": {
+          "definition": "x509Certificate",
+          "path": "/cnab/app/outputs/clientCert"
+        }
+      }
+    },
+    "parameters": {},
+    "schemaVersion": "v1.0.0-WD",
+    "version": "0.1.0"
+  },
+  "created": "2018-08-30T20:39:55.549002887-06:00",
+  "modified": "2018-08-30T20:39:59.611068556-06:00",
+  "name": "technosophos.hellohelm",
+  "outputs": {
+    "clientCert": "-----BEGIN CERTIFICATE-----\nMIIDBzCCAe+gAwIBAgIJAL2nOwEePOPvMA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV\nBAMMD3d3dy5leGFtcGxlLmNvbTAeFw0xOTA3MTUxNjQwMzdaFw0yOTA3MTIxNjQw\nMzdaMBoxGDAWBgNVBAMMD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB\nBQADggEPADCCAQoCggEBAJ7779ImmmvEt+ywP8GjfpzgM57n1WZ26fBTVy+ZibiH\nhKCJuzU5vynu5M0eYCufRFQ7LG/xet1GvpBIch0U6ilZVnNDrsNUtQ03Hpen144g\nli5ldPh5Sm88ibDbi4yEIgti2JBKIuVE+iEdkIejF8DZps008TbLLoENM1VpHpUT\nCIJY657t+Xhz9GOhp1w3bVoKEoF/6psvc6IFHK8bUMq+4003VGDZe2BMlgazZPHc\n3o5CqNviajnRoo9QnLUH1qOljNMR+mkewNOkL2PRGvkCuHJrEk0qmUU7lX3iVN1J\nC7y1fax53ePXajLD+5/sQNeszVg1cIIUlXBy2Bx/F7UCAwEAAaNQME4wHQYDVR0O\nBBYEFAZ1+cZNMujQhCrtCRKfPm+NLDg0MB8GA1UdIwQYMBaAFAZ1+cZNMujQhCrt\nCRKfPm+NLDg0MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAAuyyYER\nT5+E+KuFbDL/COmxRWZhF/u7wIW9cC2o5LlKCUp5rRQfAVRNJlqasldM/G4Bg/uQ\n5khSYe2XNe2C3iajVkR2RlqXBvCdQuCtudhZVd4jSGWi/yI7Ub2/HyOTjZ5eG82o\nF6e3pNRCQwTw0y0orQmdh0s+UmHEVjIe8PfbdRymfeQO70EXTxncBJ5elZx8s0E9\nTPPdbl2knZmKJhwnZFKCaa4DmDA6CDa2GPz+2++DQl1rCIB3mIcxpg6wSdMA6C6l\nnBJBX5Wnxckldp8G0FNXTa1DYqjPZ5U84tkh46pFSLsbSse45xNhrMPeZDWlgHsp\nWfK01YbCWioNVGk=\n-----END CERTIFICATE-----"
+  },
+  "parameters": {},
+  "result": {
+    "action": "install",
+    "message": "",
+    "status": "success"
+  },
+  "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
+}
+```
+
 ### How is the Claim Used
 
 The claim is used to inform any CNAB tooling about how to address a particular installation. For example, given the claim record, a package manager that implements CNAB should be able to:
@@ -133,6 +190,7 @@ The claim is used to inform any CNAB tooling about how to address a particular i
 - Given an installation's name, mark the claim as deleted.
   - This is accompanied by running the `uninstall` path in the bundle
   - XXX: Do we want to allow the implementing system to remove the claim from its database (e.g. helm delete --purge) or remain silent on this matter?
+- Given an installation's name, return the contents of the outputs.
 
 To satisfy these requirements, implementations of a CNAB package manager are expected to be able to store and retrieve state information. However, note that nothing in the CNAB specification tells _how or where_ this state information is to be stored. It is _not a requirement_ to store that state information inside of the invocation image. (In fact, this is discouraged.)
 
