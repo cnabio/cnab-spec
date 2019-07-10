@@ -31,11 +31,13 @@ There are two cases for how a bundle may need to depend upon another bundle:
 
 ## Depend on a named bundle
 
-The bundle depends on a specific named bundle that is known in advance.
+The bundle depends on a specific named bundle that is known in advance. It is 
+stored in the custom extensions section of the bundle.
 
 ```json
 {
-  "dependencies": {
+  "custom": {
+    "dependencies": {
       "requires": [
         {
           "bundle": "somecloud/blob-storage"
@@ -48,6 +50,7 @@ The bundle depends on a specific named bundle that is known in advance.
           }
         }
       ]
+    },
   },
   "name": "wordpress"
 }
