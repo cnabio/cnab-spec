@@ -27,3 +27,10 @@ for json in $(ls -1 examples/*-status.json); do
   echo "Testing json '$json' against schema '$schema'"
   ajv test -s $schema -d $json --valid -r schema/bundle.schema.json
 done
+
+# Test all of the relocation mapping files against the relocation mapping schema.
+for json in $(ls -1 examples/*-relocation-mapping.json); do
+  schema="schema/relocation-mapping.schema.json"
+  echo "Testing json '$json' against schema '$schema'"
+  ajv test -s $schema -d $json --valid
+done

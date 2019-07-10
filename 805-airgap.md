@@ -52,11 +52,13 @@ Archiving a CNAB and its images at a point of time as a CNAB Thick Bundle
 provides protection against modification or deletion of images and also provides a central location for code
 auditing and digital forensics of all code and references used in the CNAB.
 
-## Relocation
+## Image Relocation
 
-When the images of a CNAB are placed in a private registry, the bundle needs to be modified so that invocation
-images are downloaded from the private registry before execution and so that the invocation
-images are aware of the original and new values of image references.
+When the images of a CNAB are _relocated_ to (that is, stored in), a private registry, the images should be loaded from the private registry when they are run.
+This ensures that CNAB operations can function properly even if the original image repositories are unavailable.
 
-The `invocationImages` and `images` sections of `bundle.json` are modified so that the `image` fields contain
-the new image references and the original image references are stored in the `originalImage` fields. 
+The runtime uses the relocated reference of the invocation image so that the image is loaded from the private registry.
+
+A [relocation mapping](103-bundle-runtime.md#relocation-mapping) is mounted so that the invocation
+image is aware of the original and new values of image references and can replace the original image references with their relocated counterparts.
+Thus the images referenced by the CNAB are also loaded from the private registry.

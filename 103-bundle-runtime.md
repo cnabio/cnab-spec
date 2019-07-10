@@ -172,7 +172,7 @@ A `path` MUST be absolute. But in the event that a CNAB runtime receives a relat
 
 If `destination` contains both a `path` and an `env`, the CNAB runtime MUST provide both.
 
-### Validating parameters
+### Validating Parameters
 
 The validation of user-supplied values MUST happen outside of the CNAB bundle. Implementations of CNAB bundle tools MUST validate user-supplied parameter values against the named schema in the `definitions` section of a `bundle.json` before injecting them into the image. The outcome of successful validation MUST be the collection containing all parameters where either the user has supplied a value (that has been validated) or the name definition in the `definitions` section of `bundles.json` contains a `default`.
 
@@ -190,84 +190,24 @@ Credentials MAY be supplied as files on the file system. In such cases, the foll
 - If a file's permissions or metadata is incorrect, the run tool MAY try to remediate (e.g. run `chmod`), or MAY cause a fatal error
 - The run tool MAY modify credential files. Consequently, any runtime implementation MUST ensure that credentials changed inside of the invocation image will not result in modifications to the source.
 
-## <a name="image-map">Image maps</a>
+## <a name="relocation-mapping">Image Relocation</a>
 
-At runtime the `image` section of the CNAB is mounted in file `/cnab/app/image-map.json`.
-For this example CNAB bundle:
+Images referenced by a CNAB bundle MAY be relocated, for example by copying them to a private registry. A _relocation mapping_ is a JSON map
+of original image references to relocated image references. The purpose of a relocation mapping is to enable an invocation image to substitute relocated image references for their original values.
 
-```json
-{
-  "credentials": {
-    "hostkey": {
-      "env": "HOST_KEY",
-      "path": "/etc/hostkey.txt"
-    },
-    "image_token": {
-      "env": "AZ_IMAGE_TOKEN"
-    },
-    "kubeconfig": {
-      "path": "/home/.kube/config"
-    }
-  },
-  "definitions": {
-    "http_port": {
-      "default": 80,
-      "maximum": 10240,
-      "minimum": 10,
-      "type": "integer"
-    }
-  },
-  "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
-  "images": {
-    "my-microservice": {
-      "contentDigest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-      "description": "my microservice",
-      "image": "technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-      "originalImage": "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
-    }
-  },
-  "invocationImages": [
-    {
-      "contentDigest": "sha256:aaaaaaa...",
-      "image": "technosophos/helloworld:0.1.0",
-      "imageType": "docker"
-    }
-  ],
-  "maintainers": [
-    {
-      "email": "technosophos@gmail.com",
-      "name": "Matt Butcher",
-      "url": "https://example.com"
-    }
-  ],
-  "name": "helloworld",
-  "parameters": {
-    "fields": {
-      "backend_port": {
-        "definition": "http_port",
-        "description": "The port that the back-end will listen on",
-        "destination": {
-          "env": "BACKEND_PORT"
-        }
-      }
-    }
-  },
-  "schemaVersion": "v1.0.0-WD",
-  "version": "0.1.2"
-}
-```
+The relocation mapping MUST include in its keys all the image references defined by the CNAB bundle.
 
-The `/cnab/app/image-map.json` file mounted in the invocation image will be:
+Any image references defined by a CNAB bundle which are semantically equivalent MUST be included as separate entries in the map and MUST map to values which are semantically equivalent to each other. For example, "ubuntu" and "library/ubuntu" are semantically equivalent. On the other hand, image references which differ only by tag and/or digest are not semantically equivalent (even though they _could_ refer to the same image).
+
+At runtime a relocation mapping MAY be mounted in the invocation image's container as file `/cnab/app/relocation-mapping.json`. If the file is not mounted, this indicates that images have not been relocated.
+
+For example, if a CNAB bundle with an image `technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687` and an invocation image `technosophos/helloworld:0.1.0` is relocated to a private registry `my.registry`, a mapping like the following would be mounted as the file `/cnab/app/relocation-mapping.json`:
 
 ```json
 {
-  "my-microservice": {
-    "contentDigest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-    "description": "my microservice",
-    "image": "technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-    "originalImage": "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
-  }
+ "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687": "my.registry/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
+ "technosophos/helloworld:0.1.0": "my.registry/helloworld:0.1.0"
 }
 ```
 
-The run tool MAY use this file to modify its behavior. For example, a run tool MAY replace default image references with the references provided in this file or MAY substitute image references having a value of an `originalImage` field of this file with the value of the corresponding `image` field of this file.
+The run tool MAY use this file to modify its behavior. For example, a run tool MAY substitute image references using the mapping in this file.
