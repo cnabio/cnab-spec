@@ -185,7 +185,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
       "description": "helloworld microservice",
       "image": "technosophos/helloworld:0.1.2",
       "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-      "platform": {
+      "labels": {
         "architecture": "amd64",
         "os": "linux"
       },
@@ -198,7 +198,7 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
       "image": "technosophos/helloworld:1.2.3",
       "imageType": "docker",
       "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-      "platform": {
+      "labels": {
         "architecture": "amd64",
         "os": "linux"
       },
@@ -324,9 +324,7 @@ The `contentDigest` field MUST contain a digest, in [OCI format](https://github.
 The following OPTIONAL fields MAY be attached to an invocation image:
 
 - `size`: The image size in bytes. Implementations SHOULD verify this when a bundle is packaged as a _thick_ bundle, and MAY verify it when the image is part of a thin bundle.
-- `platform`: The target platform, as an object with two fields:
-  - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
-  - `os`: The operating system of the image
+- `labels`: Key/value pairs that used to specify identifying attributes of invocation images
 - `mediaType`: The media type of the image
 
 ## The Image Map
@@ -362,9 +360,7 @@ Fields:
   - `image`: The REQUIRED `image` field provides a valid reference for the image. Note that SHOULD be a CAS SHA, as in the example above, not a version tag.
   - `contentDigest`: MUST contain a digest of the contents of the image, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the contentDigest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images use checksums.)
   - `size`: The image size in bytes
-  - `platform`: The target platform, as an object with two fields:
-    - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
-    - `os`: The operating system of the image
+  - `labels`: Key/value pairs that used to specify identifying attributes of images:
   - `mediaType`: The media type of the image
 
 ## Definitions
