@@ -224,7 +224,9 @@
       "type": "object"
     },
     "custom": {
-      "$comment": "reserved for custom extensions"
+      "$comment": "reserved for custom extensions",
+      "type": "object",
+      "additionalProperties": true
     },
     "definitions": {
       "additionalProperties": {
@@ -316,6 +318,11 @@
         }
       },
       "type": "object"
+    },
+    "requiredExtensions": {
+      "description": "A collection of extensions required for this bundle. Key/value pairs of an identifier and a schema URI.",
+      "type": "object",
+      "additionalProperties": {"type": "string"}
     },
     "schemaVersion": {
       "description": "The version of the CNAB specification. This should always be the string 'v1' for this schema version.",
