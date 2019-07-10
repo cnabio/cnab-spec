@@ -327,7 +327,6 @@ The following OPTIONAL fields MAY be attached to an invocation image:
   - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
   - `os`: The operating system of the image
 - `mediaType`: The media type of the image
-- `originalImage`: provides a path-like or URI-like representation of the original location of the image. If the `originalImage` field is omitted, as in the example above, its value defaults to that of the `image` field.
 
 ## The Image Map
 
@@ -342,15 +341,13 @@ The following illustrates an `images` section:
       "contentDigest": "sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
       "description": "backend component image",
       "image": "example.com/gabrtv/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
-      "imageType": "docker",
-      "originalImage": "example.com/opendeis/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686"
+      "imageType": "docker"
     },
     "frontend": {
       "contentDigest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
       "description": "frontend component image",
       "image": "example.com/gabrtv/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-      "imageType": "docker",
-      "originalImage": "example.com/opendeis/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685"
+      "imageType": "docker"
     }
   }
 }
@@ -362,15 +359,12 @@ Fields:
   - `description`: The description field provides additional context of the purpose of the image.
   - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
   - `image`: The REQUIRED `image` field provides a valid reference for the image. Note that SHOULD be a CAS SHA, as in the example above, not a version tag.
-  - `originalImage`: provides a valid reference for the image. Note that SHOULD be a CAS SHA, as in the example above, not a version tag. If the `originalImage` field is omitted, its value defaults to that of the `image` field.
   - `contentDigest`: MUST contain a digest of the contents of the image, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the contentDigest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images use checksums.)
   - `size`: The image size in bytes
   - `platform`: The target platform, as an object with two fields:
     - `architecture`: The architecture of the image (`i386`, `amd64`, `arm32`...)
     - `os`: The operating system of the image
   - `mediaType`: The media type of the image
-
-The image map data is made available to the invocation image at runtime. This allows invocation images to perform various substitutions during installation (for example, moving images to different storage mechanisms or registries, and renaming appropriately). See [Image map](103-bundle-runtime.md#image-map) for more details.
 
 ## Definitions
 
