@@ -233,7 +233,8 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
         "description": "The port that the backend will listen on",
         "destination": {
           "path": "/path/to/backend_port"
-        }
+        },
+        "immutable" : true
       }
     }
   },
@@ -480,6 +481,7 @@ Parameter specifications consist of name/value pairs. The name is fixed, but the
       - `destination`: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
         - `env`: The name of an environment variable
         - `path`: The fully qualified path to a file that will be created. Specified path MUST NOT be a subpath of `/cnab/app/outputs`.
+      - `immutable`: an immutable parameter may only be set at installation. The value of the parameter cannot be changed. MUST be a boolean. Default value is false. (OPTIONAL).
   - `required`: A list of required parameters. MUST be an array of strings.(OPTIONAL)
 
 Parameter names (the keys in `fields`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
@@ -559,7 +561,8 @@ The structure of a `parameters` and `definitions` section looks like the section
         "destination": {
           "env": <string>,
           "path": <string>
-        }
+        },
+        "immutable" : <boolean>
       }
     },
     "required": [ <string> ]

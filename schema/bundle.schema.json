@@ -186,6 +186,11 @@
             }
           },
           "type": "object"
+        },
+        "immutable": {
+          "description": "A flag indicating if the parameter value can be changed once it is set",
+          "type" : "boolean",
+          "default": false
         }
       },
       "required": [

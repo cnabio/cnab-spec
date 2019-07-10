@@ -138,6 +138,7 @@ The parameter value is evaluated thus:
 - If the parameter is marked `required` and a value is not supplied, the CNAB Runtime MUST produce an error and discontinue action.
 - If the CNAB runtime does not provide a value, but `default` is set, then the default value MUST be used.
 - If no value is provided and `default` is unset, the runtime MUST set the value to an empty string (""), regardless of type.
+- If an immutable parameter value is specified at any time after _install_, the CNAB Runtime MUST produce an error and discontinue action.
 
 > Setting the value of other types to a default value based on type, e.g. Boolean to `false` or integer to `0`, is considered _incorrect behavior_. Setting the value to `null`, `nil`, or a related character string is also considered incorrect.
 
