@@ -1,5 +1,5 @@
 {
-    "$id": "http://cnab.io/v1/dependencies.schema.json",
+    "$id": "https://cnab.io/specs/v1/dependencies.schema.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "CNAB Dependencies JSON Schema",
     "definitions": {
