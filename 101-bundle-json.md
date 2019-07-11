@@ -856,7 +856,7 @@ The fields are defined as follows:
 
 Some extensions MAY be required by a bundle and operations involving that bundle MUST fail if the runtime does not support that bundle. In this case, a bundle author MUST use the `requiredExtensions` object to define those extensions that are necessary for installing the bundle. The `requiredExtensions` object should contain a collection of key/value pairs. The key MUST be the `EXTENSION NAME` and the value MUST be a well known JSON Schema reference that can be used to validate the JSON data contained in the `custom` object.
 
-A runtime MUST validate that it supports any defined custom actions before performing any operation. However, bundles SHOULD be installable by runtimes that do not understand the extensions if they are NOT identified in the `requiredExtensions` field.  
+A runtime SHOULD check that it supports any required custom actions before performing any operation. However, bundles SHOULD be installable by runtimes that do not support extensions that are NOT identified in the `requiredExtensions` field.  
 
 See [101.03-bundle.json](examples/101.03-bundle.json) for a complete example.
 
