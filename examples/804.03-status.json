@@ -1,0 +1,23 @@
+{
+  "components": {
+    "backend": {
+      "com.example.scale": {
+        "actual": 3,
+        "desired": 3,
+        "failed": 0,
+        "pending": 0
+      },
+      "status": "Ready"
+    },
+    "front-end": {
+      "com.example.scale": {
+        "actual": 2,
+        "desired": 3,
+        "failed": 0,
+        "pending": 1
+      },
+      "status": "Pending"
+    }
+  },
+  "status": "Pending"
+}

@@ -201,7 +201,7 @@ Any image references defined by a CNAB bundle which are semantically equivalent 
 
 At runtime a relocation mapping MAY be mounted in the invocation image's container as file `/cnab/app/relocation-mapping.json`. If the file is not mounted, this indicates that images have not been relocated.
 
-For example, if a CNAB bundle with an image `technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687` and an invocation image `technosophos/helloworld:0.1.0` is relocated to a private registry `my.registry`, a mapping like the following would be mounted as the file `/cnab/app/relocation-mapping.json`:
+For example, if a CNAB bundle with an image `gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687` and an invocation image `technosophos/helloworld:0.1.0` is relocated to a private registry `my.registry`, a mapping like the following would be mounted as the file `/cnab/app/relocation-mapping.json`:
 
 ```json
 {
@@ -209,5 +209,6 @@ For example, if a CNAB bundle with an image `technosophos/microservice@sha256:cc
  "technosophos/helloworld:0.1.0": "my.registry/helloworld:0.1.0"
 }
 ```
+Source: [103.01-relocation-mapping.json](examples/103.01-relocation-mapping.json)
 
 The run tool MAY use this file to modify its behavior. For example, a run tool MAY substitute image references using the mapping in this file.

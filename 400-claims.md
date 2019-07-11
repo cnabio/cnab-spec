@@ -82,6 +82,7 @@ The CNAB claim is defined as a JSON document. The specification currently does n
   "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
 }
 ```
+Source: [400.01-claim.json](examples/400.01-claim.json)
 
 - name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
 - revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.

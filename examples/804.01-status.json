@@ -1,0 +1,13 @@
+{
+  "components": {
+    "backend": {
+      "status": "Ready"
+    },
+    "front-end": {
+      "message": "Failed to pull Docker image mginx:latest",
+      "status": "Failed"
+    }
+  },
+  "message": "Component front-end failed to deploy properly",
+  "status": "Failed"
+}

@@ -1,0 +1,22 @@
+{
+  "components": {
+    "gke": {
+      "components": {
+        "kube-api": {
+          "status": "Ready"
+        },
+        "network": {
+          "status": "Ready"
+        },
+        "scheduler": {
+          "status": "Ready"
+        }
+      },
+      "status": "Ready"
+    },
+    "wordpress": {
+      "status": "Ready"
+    }
+  },
+  "status": "Ready"
+}
