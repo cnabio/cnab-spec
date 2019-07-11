@@ -320,8 +320,8 @@
       "type": "object"
     },
     "requiredExtensions": {
-      "description": "A collection of extensions required for this bundle. Key/value pairs of an identifier and a schema URL.",
-      "type": "object",
+      "description": "A collection of extensions required for this bundle.",
+      "type": "array",
       "additionalProperties": {"type": "string"}
     },
     "schemaVersion": {

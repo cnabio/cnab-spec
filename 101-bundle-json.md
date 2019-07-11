@@ -854,7 +854,7 @@ The fields are defined as follows:
 
 ### Required Extensions
 
-Some extensions MAY be required by a bundle and operations involving that bundle MUST fail if the runtime does not support that bundle. In this case, a bundle author MUST use the `requiredExtensions` object to define those extensions that are necessary for installing the bundle. The `requiredExtensions` object should contain a collection of key/value pairs. The key MUST be the `EXTENSION NAME` and the value MUST be a well known JSON Schema reference that can be used to validate the JSON data contained in the `custom` object.
+Some extensions MAY be required by a bundle and operations involving that bundle MUST fail if the runtime does not support that bundle. In this case, a bundle author MUST use the `requiredExtensions` array to define those extensions that are necessary for installing the bundle. The `requiredExtensions` object should contain the `EXTENSION NAME` defined in the `custom` object for any extensions that are required for bundle operations.
 
 A runtime SHOULD check that it supports any required custom actions before performing any operation. However, bundles SHOULD be installable by runtimes that do not support extensions that are NOT identified in the `requiredExtensions` field.  
 
@@ -874,7 +874,7 @@ A runtime SHOULD check that it supports any required custom actions before perfo
       "icon": "https://example.com/icon.png",
       "iconType": "PNG"
     },
-    "dependencies": [
+    "io.cnab.dependencies": [
       {
         "requires": {
           "bundle": "azure/mysql",
@@ -962,9 +962,9 @@ A runtime SHOULD check that it supports any required custom actions before perfo
       }
     }
   },
-  "requiredExtensions": {
-    "dependencies": "cnab.io/specs/depenencies.schema.json"
-  },
+  "requiredExtensions": [
+    "io.cnab.dependencies"
+  ],
   "schemaVersion": "v1.0.0-WD",
   "version": "0.1.2"
 }
