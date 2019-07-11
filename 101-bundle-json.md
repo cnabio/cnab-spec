@@ -560,68 +560,7 @@ The structure of a `parameters` and `definitions` section looks like the section
 }
 ```
 
-```json
-{
-  "credentials": {
-    "hostkey": {
-      "env": "HOST_KEY",
-      "path": "/etc/hostkey.txt"
-    },
-    "image_token": {
-      "env": "AZ_IMAGE_TOKEN"
-    },
-    "kubeconfig": {
-      "path": "/home/.kube/config"
-    }
-  },
-  "definitions": {
-    "http_port": {
-      "default": 80,
-      "maximum": 10240,
-      "minimum": 10,
-      "type": "integer"
-    }
-  },
-  "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
-  "images": {
-    "my-microservice": {
-      "contentDigest": "sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
-      "description": "my microservice",
-      "image": "technosophos/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687"
-    }
-  },
-  "invocationImages": [
-    {
-      "contentDigest": "sha256:aaaaaaa...",
-      "image": "technosophos/helloworld:0.1.0",
-      "imageType": "docker"
-    }
-  ],
-  "maintainers": [
-    {
-      "email": "technosophos@gmail.com",
-      "name": "Matt Butcher",
-      "url": "https://example.com"
-    }
-  ],
-  "name": "helloworld",
-  "parameters": {
-    "fields": {
-      "backend_port": {
-        "definition": "http_port",
-        "description": "The port that the back-end will listen on",
-        "destination": {
-          "env": "BACKEND_PORT"
-        }
-      }
-    }
-  },
-  "schemaVersion": "v1.0.0-WD",
-  "version": "0.1.2"
-}
-```
-
-Source: [103-bundle-runtime.md](103-bundle-runtime.md)
+See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters are injected into the invocation image.
 
 ### Examples
 
