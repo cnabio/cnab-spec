@@ -38,18 +38,17 @@ stored in the custom extensions section of the bundle.
 {
   "custom": {
     "dependencies": {
-      "requires": [
-        {
+      "requires": {
+        "storage": {
           "bundle": "somecloud/blob-storage"
         },
-        {
+        "mysql": {
           "bundle": "somecloud/mysql",
           "version": {
             "prereleases": true,
             "ranges": ["5.7.x"]
           }
         }
-      ]
     },
   },
   "name": "wordpress"
@@ -67,7 +66,8 @@ that defines metadata necessary to specify a dependency.
 
 ### requires
 
-The `requires` array defines the criteria for the dependent bundle:
+The `requires` map defines the criteria for the dependent bundle. The key for
+each dependency is a way for the bundle to reference the dependency.
 
 * `bundle`: A reference to a bundle in the format REGISTRY/NAME.
 * `version`: A set of criteria applied to the bundle version when selecting an

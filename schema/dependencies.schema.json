@@ -4,12 +4,14 @@
     "title": "CNAB Dependencies JSON Schema",
     "definitions": {
         "requires": {
-            "type": "array",
-            "description": "Defines the criteria for the dependent bundle.",
-            "items": {
-                "$ref": "#/definitions/dependency"
+            "type": "object",
+            "description": "Defines the criteria for the dependent bundle. The key for each dependency is a way for the bundle to reference the dependency",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/definitions/dependency"
+                }
             },
-            "minItems": 1
+            "minProperties": 1
         },
         "dependency": {
             "type": "object",
