@@ -13,7 +13,7 @@
       "icon": "https://example.com/icon.png",
       "iconType": "PNG"
     },
-    "dependencies": [
+    "io.cnab.dependencies": [
       {
         "requires": {
           "bundle": "azure/mysql",
@@ -101,9 +101,9 @@
       }
     }
   },
-  "requiredExtensions": {
-    "dependencies": "cnab.io/specs/depenencies.schema.json"
-  },
+  "requiredExtensions": [
+    "io.cnab.dependencies"
+  ],
   "schemaVersion": "v1.0.0-WD",
   "version": "0.1.2"
 }
