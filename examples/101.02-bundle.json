@@ -40,7 +40,7 @@
       "description": "helloworld microservice",
       "image": "technosophos/helloworld:0.1.2",
       "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-      "platform": {
+      "labels": {
         "architecture": "amd64",
         "os": "linux"
       },
@@ -53,7 +53,7 @@
       "image": "technosophos/helloworld:1.2.3",
       "imageType": "docker",
       "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-      "platform": {
+      "labels": {
         "architecture": "amd64",
         "os": "linux"
       },

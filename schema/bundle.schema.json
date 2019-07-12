@@ -47,23 +47,14 @@
           "description": "The type of image. If this is not specified, 'oci' is assumed",
           "type": "string"
         },
+        "labels": {
+          "description": "Key/value pairs that used to specify identifying attributes of images",
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        },
         "mediaType": {
           "description": "The media type of the image",
           "type": "string"
-        },
-        "platform": {
-          "description": "The target platform",
-          "properties": {
-            "architecture": {
-              "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
-              "type": "string"
-            },
-            "os": {
-              "description": "The operating system of the image (linux, windows, darwin,...)",
-              "type": "string"
-            }
-          },
-          "type": "object"
         },
         "size": {
           "description": "The image size in bytes",
@@ -91,23 +82,14 @@
           "description": "The type of image. If this is not specified, 'oci' is assumed",
           "type": "string"
         },
+        "labels": {
+          "description": "Key/value pairs that used to specify identifying attributes of invocation images",
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        },
         "mediaType": {
           "description": "The media type of the image",
           "type": "string"
-        },
-        "platform": {
-          "description": "The target platform",
-          "properties": {
-            "architecture": {
-              "description": "The architecture of the image (i386, amd64, arm32, arm64,...)",
-              "type": "string"
-            },
-            "os": {
-              "description": "The operating system of the image (linux, windows, darwin,...)",
-              "type": "string"
-            }
-          },
-          "type": "object"
         },
         "size": {
           "description": "The image size in bytes",
