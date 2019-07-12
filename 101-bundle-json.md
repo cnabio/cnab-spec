@@ -131,7 +131,6 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
   "version": "0.1.2"
 }
 ```
-
 Source: [101.01-bundle.json](examples/101.01-bundle.json)
 
 The canonical JSON version of the above is:
@@ -242,7 +241,6 @@ And here is how a "thick" bundle looks. Notice how the `invocationImage` and `im
   "version": "1.0.0"
 }
 ```
-
 Source: [101.02-bundle.json](examples/101.02-bundle.json)
 
 In descriptions below, fields marked REQUIRED MUST be present in any conformant bundle descriptor, while fields not thusly marked are considered optional.
