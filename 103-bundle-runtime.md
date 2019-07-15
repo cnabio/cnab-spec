@@ -11,7 +11,7 @@ The [Invocation Image definition](102-invocation-image.md) specifies the layout 
 
 ## The Run Tool (Main Entry Point)
 
-The main entry point of a CNAB bundle MUST be located at `/cnab/app/run`. When a compliant CNAB runtime executes a bundle, it MUST execute the `/cnab/app/run` tool. In addition, images used as invocation images SHOULD also default to running `/cnab/app/run`. For example, a `Dockerfile`'s `exec` array MUST point to this entry point.
+The main entry point of a CNAB bundle MUST be located at `/cnab/app/run`. When a compliant CNAB runtime executes a bundle, it MUST execute the `/cnab/app/run` tool. In addition, images used as invocation images SHOULD also default to running `/cnab/app/run`. For example, a `Dockerfile`'s `exec` array SHOULD point to this entry point.
 
 > A fixed location for the `run` tool is mandated because not all image formats provide an equivalent method for starting an application. A client implementation of CNAB MAY access the image and directly execute the path `/cnab/app/run`. It is also permissible, given tooling constraints, to set the default entry point to a different path.
 
