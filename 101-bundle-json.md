@@ -856,7 +856,7 @@ The fields are defined as follows:
 
 Some extensions defined in the `custom` object of a bundle MAY be required in order for a runtime to perform any action on the bundle. A bundle author MUST use the `requiredExtensions` array to define those extensions that are required. The `requiredExtensions` array SHOULD contain the `EXTENSION NAME` defined in the `custom` object for each extension that is required.
 
-A runtime SHOULD check that it supports any required custom actions before performing any operation. However, bundles SHOULD be installable by runtimes that do not support extensions that are NOT identified in the `requiredExtensions` field.  
+A runtime MUST check that it supports any required extensions before performing any action on the bundle. If the runtime does not support the required extension(s), it MAY proceed with the action or fail, however it MUST notify the user that it does not support the required extension(s). Runtimes that do not support extensions that are NOT identified in the `requiredExtensions` field of a bundle SHOULD perform actions on the bundle. 
 
 ```json
 {
