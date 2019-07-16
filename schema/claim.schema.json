@@ -52,6 +52,10 @@
       "description": "the name of the installation",
       "type": "string"
     },
+    "outputs": {
+      "description": "key/value pairs of output name to output value.",
+      "type": "object"
+    },
     "parameters": {
       "description": "key/value pairs of parameter name to parameter value.",
       "type": "object"
