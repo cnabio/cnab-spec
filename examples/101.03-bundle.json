@@ -77,9 +77,7 @@
         "path": "/cnab/app/outputs/clientCert"
       },
       "hostName": {
-        "applyTo": [
-          "install"
-        ],
+        "applyTo": ["install"],
         "definition": "string",
         "description": "the hostname produced installing the bundle",
         "path": "/cnab/app/outputs/hostname"
@@ -91,19 +89,15 @@
     }
   },
   "parameters": {
-    "fields": {
-      "backend_port": {
-        "definition": "http_port",
-        "description": "The port that the back-end will listen on",
-        "destination": {
-          "env": "BACKEND_PORT"
-        }
+    "backend_port": {
+      "definition": "http_port",
+      "description": "The port that the back-end will listen on",
+      "destination": {
+        "env": "BACKEND_PORT"
       }
     }
   },
-  "requiredExtensions": [
-    "io.cnab.dependencies"
-  ],
+  "requiredExtensions": ["io.cnab.dependencies"],
   "schemaVersion": "v1.0.0-WD",
   "version": "0.1.2"
 }

@@ -158,6 +158,11 @@
           "description": "A flag indicating if the parameter value can be changed once it is set",
           "type": "boolean",
           "default": false
+        },
+        "required": {
+          "default": false,
+          "description": "Indicates whether this parameter must be supplied. By default, parameters are optional.",
+          "type": "boolean"
         }
       },
       "required": ["definition", "destination"],
@@ -275,18 +280,10 @@
       "type": "object"
     },
     "parameters": {
-      "description": "Parameters that can be injected into the invocation image",
-      "properties": {
-        "fields": {
-          "additionalProperties": {
-            "$ref": "#/definitions/parameter"
-          },
-          "type": "object"
-        },
-        "required": {
-          "$ref": "http://json-schema.org/draft-07/schema#/properties/required"
-        }
+      "additionalProperties": {
+        "$ref": "#/definitions/parameter"
       },
+      "description": "Parameters that can be injected into the invocation image",
       "type": "object"
     },
     "requiredExtensions": {
