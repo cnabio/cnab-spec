@@ -26,7 +26,7 @@ A `bundle.json` is broken down into the following categories of information:
 - A list of outputs (name, type and location) that the application produces
 - A set of schema definitions used to validate user input
 
-The `bundle.json` is located at `/cnab/bundle.json` in the invocation image's runtime filesystem.
+The bundle definition is [made accessible](103-bundle-runtime.md#bundle-definition) from inside the invocation image in order to allow the run tool to reference information in the file. The bundle.json MUST be mounted to /cnab/bundle.json.
 
 The `bundle.json` is also known as a _thin bundle_. Bundles come in two formats: thick and thin. Read more about thick and thin bundles in the [bundle formats section](104-bundle-formats.md).
 
@@ -850,7 +850,7 @@ The fields are defined as follows:
 
 Some extensions defined in the `custom` object of a bundle MAY be required in order for a runtime to perform any action on the bundle. A bundle author MUST use the `requiredExtensions` array to define those extensions that are required. The `requiredExtensions` array SHOULD contain the `EXTENSION NAME` defined in the `custom` object for each extension that is required.
 
-A runtime MUST check that it supports any required extensions before performing any action on the bundle. If the runtime does not support the required extension(s), it MAY proceed with the action or fail, however it MUST notify the user that it does not support the required extension(s). Runtimes that do not support extensions that are NOT identified in the `requiredExtensions` field of a bundle SHOULD perform actions on the bundle. 
+A runtime MUST check that it supports any required extensions before performing any action on the bundle. If the runtime does not support the required extension(s), it MAY proceed with the action or fail, however it MUST notify the user that it does not support the required extension(s). Runtimes that do not support extensions that are NOT identified in the `requiredExtensions` field of a bundle SHOULD perform actions on the bundle.
 
 ```json
 {
@@ -970,7 +970,7 @@ Source: [101.03-bundle.json](examples/101.03-bundle.json)
 
 The `outputs` section of the `bundle.json` defines which outputs an application will produce during the course of executing a bundle. Outputs are expected to be written to one or more files on the file system of the invocation image. The location of this file MUST be provided in the output definition.
 
-Output specifications are flat (not tree-like), consisting of name/value pairs. The output definition includes a destination the output will be written to, along with a definition to help validate their contents. 
+Output specifications are flat (not tree-like), consisting of name/value pairs. The output definition includes a destination the output will be written to, along with a definition to help validate their contents.
 
 ```json
 {
