@@ -247,21 +247,21 @@ In descriptions below, fields marked REQUIRED MUST be present in any conformant 
 
 ## Dotted Names
 
-Within this specification, certain user-supplied names SHOULD be expressed in the form of a _dotted name_, which is defined herein as a name composed by concatenating name components (Unicode letters and the dash (`-`) character) together, separated by dot (`.`) characters. Whitespace characters are not allowed within names, nor is there a defined escape sequence for the `.` character.
+Within this specification, certain user-supplied names SHOULD be expressed in the form of a _dotted name_, which is defined herein as a name composed by concatenating name components together, separated by dot (`.`) characters. Name components contain only Unicode characters with the General Category of Letter (L) and the dash (`-`) character. Whitespace characters are not allowed within names, and there is no escape sequence for the dot character.
+A string MUST have at least one dot to be considered a _dotted name_.
 
 Dotted names are used to encourage name spacing and reduce the likelihood of naming collisions.
 
 Dotted names SHOULD follow the reverse-DNS pattern used by [Java, C#, and other languages](https://en.wikipedia.org/wiki/Reverse_domain_name_notation).
-
 CNAB tools MUST NOT treat these strings as domain names or domain components, as this specification allows characters that are not legal in DNS addresses.
 
 Examples:
 
 - `com.example.myapp.port`
 - `org.example.action.status`
+- `𝕔𝕠𝕞.𝕖𝕩𝕒𝕞𝕡𝕝𝕖.𝕞𝕪𝕒𝕡𝕡.𝕡𝕠𝕣𝕥`
+- `snʇɐʇs.uoıʇɔɐ.ǝʃdɯɐxǝ.ƃɹo`
 - `example.foo` (This format MAY be used, but the reverse DNS format is preferred)
-
-A string MUST have at least one dot to be considered a _dotted name_.
 
 ## Schema Version
 
@@ -277,11 +277,12 @@ The current schema version is `v1.0.0-WD`, which is considered unstable.
 ## Name and Version: Identifying Metadata
 
 The `name` and `version` fields are used to identify the CNAB bundle. Both fields are REQUIRED.
+Fields that do not match this specification SHOULD cause failures.
 
-- `name` MUST contain only characters from the Unicode graph characters
+- `name` MUST contain only characters from the [Unicode graphic characters](http://www.unicode.org/glossary/#graphic_character)
 - `version` MUST be a [SemVer2](https://semver.org) string
 
-Fields that do not match this specification SHOULD cause failures.
+The Unicode graphic character set allowed for `name` includes letters, numbers, punctuation, symbols, and spaces; it does not include newlines or tabs.
 
 ## Informational Metadata
 
