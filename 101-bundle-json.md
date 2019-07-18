@@ -26,7 +26,7 @@ A `bundle.json` is broken down into the following categories of information:
 - A list of outputs (name, type and location) that the application produces
 - A set of schema definitions used to validate user input
 
-The bundle definition is [made accessible](103-bundle-runtime.md#bundle-definition) from inside the invocation image in order to allow the run tool to reference information in the file. The bundle.json MUST be mounted to /cnab/bundle.json.
+The bundle definition is made accessible from inside the invocation image in order to allow the run tool to reference information in the file. The bundle.json MUST be mounted to /cnab/bundle.json.
 
 The `bundle.json` is also known as a _thin bundle_. Bundles come in two formats: thick and thin. Read more about thick and thin bundles in the [bundle formats section](104-bundle-formats.md).
 
