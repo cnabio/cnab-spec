@@ -68,13 +68,13 @@ Invocation images allow limited configuration, as defined in two places in the b
 - Invocation Image: The image that contains the bootstrapping and installation logic for the bundle
 - Registry: A storage and retrieval service for CNAB objects.
 
-Also, when referencing tooling, we use the following terms:
+Also, when referencing tooling, the following terms are used:
 
 - `CNAB runtime` or `runtime`: A program capable of reading a CNAB bundle and executing it
 - `CNAB builder` or `builder`: A program that can assemble a CNAB bundle
 - `bundle tooling`: Programs or tooling that generate CNAB bundle contents
 
-Individual tools may meet more than one of the definitions above, but we have chosen to separate them in order to offer guidance such as:
+Individual tools may meet more than one of the definitions above, they have been separated in order to offer guidance such as:
 
 > A runtime MUST support the 'install', 'upgrade', and 'uninstall' actions, while bundle tooling MAY choose not to implement 'upgrade'.
 

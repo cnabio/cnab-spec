@@ -30,7 +30,7 @@ The `bundle.json` is located at `/cnab/bundle.json` in the invocation image's ru
 
 The `bundle.json` is also known as a _thin bundle_. Bundles come in two formats: thick and thin. Read more about thick and thin bundles in the [bundle formats section](104-bundle-formats.md).
 
-For the rest of the documentation, by default we'll be referring to bundles using the "thin" type, but when "thick" bundles become relevant we'll make note that it's a "thick" bundle type.
+The examples given in this documentation predominantly use thin bundles. Examples of thick bundles will be noted as such.
 
 The following is an example of a `bundle.json` for a bundled distributed as a _thin_ bundle:
 
@@ -139,7 +139,7 @@ The canonical JSON version of the above is:
 {"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"definitions":{"http_port":{"default":80,"maximum":10240,"minimum":10,"type":"integer"},"port":{"maximum":65535,"minimum":1024,"type":"integer"},"string":{"type":"string"},"x509Certificate":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","type":"string","writeOnly":true}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"contentDigest":"sha256:aaaaaaaaaaaa...","description":"my microservice","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"contentDigest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"fields":{"clientCert":{"definition":"x509Certificate","path":"/cnab/app/outputs/clientCert"},"hostName":{"applyTo":["install"],"definition":"string","description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname"},"port":{"definition":"port","path":"/cnab/app/outputs/port"}}},"parameters":{"fields":{"backend_port":{"definition":"http_port","description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"}}}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
-And here is how a "thick" bundle looks. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
+What follows is an example of a thick bundle. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
 
 ```json
 {
