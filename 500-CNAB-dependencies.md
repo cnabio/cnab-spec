@@ -64,6 +64,9 @@ This section is a placeholder and will be completed in a follow-up pull request.
 This specification introduces a `dependencies` object in the bundle.json
 that defines metadata necessary to specify a dependency.
 
+The entry `dependencies` in the custom extension map, `custom`, is reserved and
+MUST only be used for this CNAB Dependencies Specification.
+
 ### requires
 
 The `requires` map defines the criteria for the dependent bundle. The key for
