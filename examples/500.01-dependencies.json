@@ -1,0 +1,22 @@
+{
+    "requires": {
+        "blob": {
+            "bundle": "somecloud/blob-storage"
+        },
+        "mongo": {
+            "bundle": "somecloud/mongo",
+            "version":{
+                "prereleases": true
+            }
+        },
+        "mysql": {
+            "bundle": "somecloud/mysql",
+            "version": {
+                "prereleases": true,
+                "ranges": [
+                    "5.7.x"
+                ]
+            }
+        }
+    }
+}

@@ -31,21 +31,26 @@ There are two cases for how a bundle may need to depend upon another bundle:
 
 ## Depend on a named bundle
 
-The bundle depends on a specific named bundle that is known in advance.
+The bundle depends on a specific named bundle that is known in advance. It is 
+stored in the custom extensions section of the bundle.
 
 ```json
 {
-  "dependencies": [
-    {
+  "custom": {
+    "dependencies": {
       "requires": {
-        "bundle": "azure/mysql",
-        "version": {
-          "prereleases": "true",
-          "range": "5.7.x"
+        "storage": {
+          "bundle": "somecloud/blob-storage"
+        },
+        "mysql": {
+          "bundle": "somecloud/mysql",
+          "version": {
+            "prereleases": true,
+            "ranges": ["5.7.x"]
+          }
         }
-      }
-    }
-  ],
+    },
+  },
   "name": "wordpress"
 }
 ```
@@ -56,12 +61,16 @@ This section is a placeholder and will be completed in a follow-up pull request.
 
 ## Dependencies Metadata
 
-This specification introduces a `dependencies` array in the bundle.json
+This specification introduces a `dependencies` object in the bundle.json
 that defines metadata necessary to specify a dependency.
+
+The entry `dependencies` in the custom extension map, `custom`, is reserved and
+MUST only be used for this CNAB Dependencies Specification.
 
 ### requires
 
-The `requires` object defines the criteria for the dependent bundle:
+The `requires` map defines the criteria for the dependent bundle. The key for
+each dependency is a way for the bundle to reference the dependency.
 
 * `bundle`: A reference to a bundle in the format REGISTRY/NAME.
 * `version`: A set of criteria applied to the bundle version when selecting an

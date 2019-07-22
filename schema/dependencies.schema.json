@@ -1,0 +1,62 @@
+{
+    "$id": "https://cnab.io/specs/v1/dependencies.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "CNAB Dependencies JSON Schema",
+    "definitions": {
+        "requires": {
+            "type": "object",
+            "description": "Defines the criteria for the dependent bundle. The key for each dependency is a way for the bundle to reference the dependency",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/definitions/dependency"
+                }
+            },
+            "minProperties": 1
+        },
+        "dependency": {
+            "type": "object",
+            "properties": {
+                "bundle": {
+                    "type": "string",
+                    "description": "A reference to a bundle in the format REGISTRY/NAME."
+                },
+                "version": {
+                    "$ref": "#/definitions/version"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "bundle"
+            ]
+        },
+        "version": {
+            "type": "object",
+            "description": "A set of criteria applied to the bundle version when selecting an acceptable version of the bundle.",
+            "properties": {
+                "ranges": {
+                    "type": "array",
+                    "description": "An array of allowed version ranges. Versions are specified using semver, with or without a leading 'v'. An x in the place of the minor or patch place can be used to specify a wildcard. Ranges can be specified by separating the two versions with a dash, the dash must be surrounded by spaces in order to disambiguate from prerelease tags.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "minItems": 1
+                },
+                "prereleases": {
+                    "type": "boolean",
+                    "description": "Specifies if prerelease versions of the bundle are allowed.",
+                    "default": false
+                }
+            },
+            "additionalProperties": false,
+            "minProperties": 1
+        }
+    },
+    "type": "object",
+    "properties": {
+        "requires": {
+            "$ref": "#/definitions/requires"
+        }
+    },
+    "additionalProperties": false,
+    "minProperties": 1
+}
