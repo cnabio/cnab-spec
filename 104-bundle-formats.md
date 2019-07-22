@@ -5,13 +5,13 @@ weight: 104
 
 # Bundle Formats
 
-This section of the specification addresses how bundles are to be represented. The CNAB Core specification defines two representations ("thick" and "thin"), and any CNAB compliant bundle MUST be representable in both formats. CNAB runtimes MUST support thin bundles, and SHOULD support thick bundles. Various other CNAB tools MAY support only one or the other. For example, a bundle builder could support generating thick bundles, but not thin bundles, and yet still meet the requirements of the specification.
+This section of the specification addresses how bundles are to be represented. The CNAB Core specification defines two representations (thick and thin), and any CNAB compliant bundle MUST be representable in both formats. CNAB runtimes MUST support thin bundles, and SHOULD support thick bundles. Various other CNAB tools MAY support only one or the other. For example, a bundle builder could support generating thick bundles, but not thin bundles, and yet still meet the requirements of the specification.
 
 Thick bundles do impose a slightly heavier burden on the runtime, and thus the specification allows that some runtimes might have pragmatic reasons for not supporting a thick bundle. Such runtimes MUST produce an error when given a thick bundle.
 
 ## Thick and Thin Bundles
 
-The thick and thin bundle formats refer to how much information must be transmitted in a package. Due to the nature of cloud technologies, it is sometimes possible (and desirable) to move a small artifact that references other external artifacts. In other cases, it is desirable to have one large self-contained artifact that depends on no external artifacts. CNAB represents the former as a _thin bundle_ and the later as a _thick bundle_.
+The thick and thin bundle formats refer to how much information must be transmitted in a package. Due to the nature of cloud technologies, it is sometimes possible (and desirable) to move a small artifact that references other external artifacts. In other cases, it is desirable to have one large self-contained artifact that depends on no external artifacts. CNAB represents the former as a thin bundle and the later as a thick bundle.
 
 A thin bundle contains only one object: The bundle descriptor. Thus, the format for a thin bundle is a JSON file.
 
