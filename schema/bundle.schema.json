@@ -61,7 +61,7 @@
           "type": "integer"
         }
       },
-      "required": ["image"],
+      "required": ["image", "contentDigest"],
       "type": "object"
     },
     "invocationImage": {
