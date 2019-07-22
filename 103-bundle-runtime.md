@@ -22,6 +22,7 @@ The run tool MUST observe standard conventions for executing, exiting, and writi
 - The special output stream STDERR should be used to write error text
 
 ### Bundle Definition
+
 The bundle definition is made accessible from inside the invocation image in order to allow the run tool to reference information in the file. The `bundle.json` MUST be mounted to `/cnab/bundle.json`.
 
 ### Injecting Data Into the Invocation Image
@@ -117,13 +118,11 @@ If the `destination` field contains a key named `env`, values MUST be passed int
     }
   },
   "parameters": {
-    "fields": {
-      "greeting": {
-        "definition": "greeting",
-        "description": "this will be in $GREETING",
-        "destination": {
-          "env": "GREETING"
-        }
+    "greeting": {
+      "definition": "greeting",
+      "description": "this will be in $GREETING",
+      "destination": {
+        "env": "GREETING"
       }
     }
   }
@@ -153,13 +152,11 @@ In the case where the `destination` object has a `path` field, the CNAB runtime 
     }
   },
   "parameters": {
-    "fields": {
-      "greeting": {
-        "definition": "greeting",
-        "description": "this will be in $GREETING",
-        "destination": {
-          "path": "/var/run/greeting.txt"
-        }
+    "greeting": {
+      "definition": "greeting",
+      "description": "this will be in $GREETING",
+      "destination": {
+        "path": "/var/run/greeting.txt"
       }
     }
   }
@@ -205,10 +202,11 @@ For example, if a CNAB bundle with an image `gabrtv/microservice@sha256:cca460af
 
 ```json
 {
- "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687": "my.registry/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
- "technosophos/helloworld:0.1.0": "my.registry/helloworld:0.1.0"
+  "gabrtv/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687": "my.registry/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687",
+  "technosophos/helloworld:0.1.0": "my.registry/helloworld:0.1.0"
 }
 ```
+
 Source: [103.01-relocation-mapping.json](examples/103.01-relocation-mapping.json)
 
 The run tool MAY use this file to modify its behavior. For example, a run tool MAY substitute image references using the mapping in this file.

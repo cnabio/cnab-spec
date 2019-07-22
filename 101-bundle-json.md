@@ -103,9 +103,7 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
         "path": "/cnab/app/outputs/clientCert"
       },
       "hostName": {
-        "applyTo": [
-          "install"
-        ],
+        "applyTo": ["install"],
         "definition": "string",
         "description": "the hostname produced installing the bundle",
         "path": "/cnab/app/outputs/hostname"
@@ -117,13 +115,11 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
     }
   },
   "parameters": {
-    "fields": {
-      "backend_port": {
-        "definition": "http_port",
-        "description": "The port that the back-end will listen on",
-        "destination": {
-          "env": "BACKEND_PORT"
-        }
+    "backend_port": {
+      "definition": "http_port",
+      "description": "The port that the back-end will listen on",
+      "destination": {
+        "env": "BACKEND_PORT"
       }
     }
   },
@@ -131,12 +127,14 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
   "version": "0.1.2"
 }
 ```
+
 Source: [101.01-bundle.json](examples/101.01-bundle.json)
 
 The canonical JSON version of the above is:
 
+<!-- prettier-ignore -->
 ```json
-{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"definitions":{"http_port":{"default":80,"maximum":10240,"minimum":10,"type":"integer"},"port":{"maximum":65535,"minimum":1024,"type":"integer"},"string":{"type":"string"},"x509Certificate":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","type":"string","writeOnly":true}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"contentDigest":"sha256:aaaaaaaaaaaa...","description":"my microservice","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"contentDigest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"fields":{"clientCert":{"definition":"x509Certificate","path":"/cnab/app/outputs/clientCert"},"hostName":{"applyTo":["install"],"definition":"string","description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname"},"port":{"definition":"port","path":"/cnab/app/outputs/port"}}},"parameters":{"fields":{"backend_port":{"definition":"http_port","description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"}}}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"definitions":{"http_port":{"default":80,"maximum":10240,"minimum":10,"type":"integer"},"port":{"maximum":65535,"minimum":1024,"type":"integer"},"string":{"type":"string"},"x509Certificate":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","type":"string","writeOnly":true}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"contentDigest":"sha256:aaaaaaaaaaaa...","description":"my microservice","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"contentDigest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"fields":{"clientCert":{"definition":"x509Certificate","path":"/cnab/app/outputs/clientCert"},"hostName":{"applyTo":["install"],"definition":"string","description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname"},"port":{"definition":"port","path":"/cnab/app/outputs/port"}}},"parameters":{"backend_port":{"definition":"http_port","description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"}}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
 What follows is an example of a thick bundle. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
@@ -212,9 +210,7 @@ What follows is an example of a thick bundle. Notice how the `invocationImage` a
         "path": "/cnab/app/outputs/clientCert"
       },
       "hostName": {
-        "applyTo": [
-          "install"
-        ],
+        "applyTo": ["install"],
         "definition": "string",
         "description": "the hostname produced installing the bundle",
         "path": "/cnab/app/outputs/hostname"
@@ -226,21 +222,20 @@ What follows is an example of a thick bundle. Notice how the `invocationImage` a
     }
   },
   "parameters": {
-    "fields": {
-      "backend_port": {
-        "definition": "http_port",
-        "description": "The port that the backend will listen on",
-        "destination": {
-          "path": "/path/to/backend_port"
-        },
-        "immutable" : true
-      }
+    "backend_port": {
+      "definition": "http_port",
+      "description": "The port that the backend will listen on",
+      "destination": {
+        "path": "/path/to/backend_port"
+      },
+      "immutable": true
     }
   },
   "schemaVersion": "v1.0.0-WD",
   "version": "1.0.0"
 }
 ```
+
 Source: [101.02-bundle.json](examples/101.02-bundle.json)
 
 In descriptions below, fields marked REQUIRED MUST be present in any conformant bundle descriptor, while fields not thusly marked are considered optional.
@@ -438,42 +433,33 @@ Parameter specifications consist of name/value pairs. The name is fixed, but the
     }
   },
   "parameters": {
-    "fields": {
-      "backend_port": {
-        "applyTo": [
-          "install",
-          "action1",
-          "action2"
-        ],
-        "definition": "http_port",
-        "description": "The port that the backend will listen on",
-        "destination": {
-          "env": "MY_ENV_VAR",
-          "path": "/my/destination/path"
-        }
-      }
-    },
-    "required": [
-      "backend_port"
-    ]
+    "backend_port": {
+      "applyTo": ["install", "action1", "action2"],
+      "definition": "http_port",
+      "description": "The port that the backend will listen on",
+      "destination": {
+        "env": "MY_ENV_VAR",
+        "path": "/my/destination/path"
+      },
+      "required": true
+    }
   }
 }
 ```
 
-- `parameters`: A collection of parameter definitions and a list of those parameters that are required.
-  - `fields`: name/value pairs describing a user-overridable parameter:
-    - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
+- `parameters`: Name/value pairs describing a user-overridable parameter.
+  - `<name>`: The name of the parameter. In the example above, this is `backend_port`. This
     is mapped to a value definition, which contains the following fields (REQUIRED):
-      - `applyTo`: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
-      - `definition`: The name of a definition schema that is used to validate user-input for this parameter. (REQUIRED)
-      - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
-      - `destination`: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
-        - `env`: The name of an environment variable
-        - `path`: The fully qualified path to a file that will be created. Specified path MUST NOT be a subpath of `/cnab/app/outputs`.
-      - `immutable`: an immutable parameter may only be set at installation. The value of the parameter cannot be changed. MUST be a boolean. Default value is false. (OPTIONAL).
-  - `required`: A list of required parameters. MUST be an array of strings.(OPTIONAL)
+    - `applyTo`: restricts this parameter to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
+    - `definition`: The name of a definition schema that is used to validate user-input for this parameter. (REQUIRED)
+    - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
+    - `destination`: Indicates where (in the invocation image) the parameter is to be written (REQUIRED)
+      - `env`: The name of an environment variable
+      - `path`: The fully qualified path to a file that will be created. Specified path MUST NOT be a subpath of `/cnab/app/outputs`.
+    - `immutable`: an immutable parameter may only be set at installation. The value of the parameter cannot be changed. MUST be a boolean. Default value is false. (OPTIONAL).
+    - `required`: indicates whether this parameter MUST be supplied. By default it is `false`, which means the parameter is optional. When `true`, a runtime MUST fail if the parameter is not provided for any action to which the parameter applies.
 
-Parameter names (the keys in `fields`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
+Parameter names (the keys in `parameters`) ought to conform to the [Open Group Base Specification Issue 6, Section 8.1, paragraph 4](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html) definition of environment variable names with one exception: parameter names MAY begin with a digit (approximately `[A-Z0-9_]+`).
 
 > The term _parameters_ indicates the present specification of what can be provided to a bundle. The term _values_ is frequently used to indicate the user-supplied values which are tested against the parameter definitions.
 
@@ -542,19 +528,17 @@ The structure of a `parameters` and `definitions` section looks like the section
     }
   },
   "parameters": {
-    "fields" : {
-      "<parameter-name>": {
-        "applyTo": [ <string> ],
-        "definition": <definition-name>,
-        "description": <string>,
-        "destination": {
-          "env": <string>,
-          "path": <string>
-        },
-        "immutable" : <boolean>
-      }
-    },
-    "required": [ <string> ]
+    "<parameter-name>": {
+      "applyTo": [ <string> ],
+      "definition": <definition-name>,
+      "description": <string>,
+      "destination": {
+        "env": <string>,
+        "path": <string>
+      },
+      "immutable" : <boolean>,
+      "required" : <boolean>
+    }
   }
 }
 ```
@@ -605,16 +589,10 @@ Check out the [JSON Schema specification](https://json-schema.org/) for more exa
       "type": "string"
     },
     "greetings": {
-      "default": [
-        "Hello"
-      ],
+      "default": ["Hello"],
       "description": "a list of greetings",
       "items": {
-        "examples": [
-          "Aloha",
-          "Bonjour",
-          "こんにちは"
-        ],
+        "examples": ["Aloha", "Bonjour", "こんにちは"],
         "type": "string"
       },
       "title": "Greetings for new users",
@@ -627,37 +605,33 @@ Check out the [JSON Schema specification](https://json-schema.org/) for more exa
     }
   },
   "parameters": {
-    "fields": {
-      "email": {
-        "definition": "email-address",
-        "destination": {
-          "env": "EMAIL"
-        }
-      },
-      "greetings": {
-        "definition": "greetings",
-        "destination": {
-          "env": "GREETINGS"
-        }
-      },
-      "profile_picture": {
-        "definition": "jpeg",
-        "destination": {
-          "path": "/tmp/user.jpg"
-        }
-      },
-      "workplace_address": {
-        "definition": "address",
-        "description": "the address of your workplace",
-        "destination": {
-          "path": "/tmp/address.adr"
-        }
+    "email": {
+      "definition": "email-address",
+      "destination": {
+        "env": "EMAIL"
       }
+    },
+    "greetings": {
+      "definition": "greetings",
+      "destination": {
+        "env": "GREETINGS"
+      }
+    },
+    "profile_picture": {
+      "definition": "jpeg",
+      "destination": {
+        "path": "/tmp/user.jpg"
+      }
+    },
+    "workplace_address": {
+      "definition": "address",
+      "description": "the address of your workplace",
+      "destination": {
+        "path": "/tmp/address.adr"
+      },
+      "required": true
     }
-  },
-  "required": [
-    "workplace_address"
-  ]
+  }
 }
 ```
 
@@ -678,20 +652,18 @@ When resolving destinations, there are two ways a particular parameter value MAY
     }
   },
   "parameters": {
-    "fields": {
-      "config": {
-        "definition": "configuration",
-        "description": "this will be located in a file",
-        "destination": {
-          "path": "/opt/example-parameters/config.txt"
-        }
-      },
-      "greeting": {
-        "definition": "greeting",
-        "description": "this will be in $GREETING",
-        "destination": {
-          "env": "GREETING"
-        }
+    "config": {
+      "definition": "configuration",
+      "description": "this will be located in a file",
+      "destination": {
+        "path": "/opt/example-parameters/config.txt"
+      }
+    },
+    "greeting": {
+      "definition": "greeting",
+      "description": "this will be in $GREETING",
+      "destination": {
+        "env": "GREETING"
       }
     }
   }
@@ -739,14 +711,13 @@ What about parameters such as database passwords used by the application? Proper
     - `path` describes the _absolute path within the invocation image_ where the invocation image expects to find the credential. Specified path MUST NOT be a subpath of `/cnab/app/outputs`.
     - `env` contains _the name of an environment variable_ that the invocation image expects to have available when executing the CNAB `run` tool (covered in the next section).
     - `description` contains a user-friendly description of the credential.
-    - `required` indicates whether this credential MUST be supplied. By default, it is `false`, which means the credential is optional. When `true`, a runtime MUST fail if the credential is not provided.
+    - `required` indicates whether this credential MUST be supplied. By default it is `false`, which means the credential is optional. When `true`, a runtime MUST fail if the credential is not provided.
 
 One of `env` or `path` MUST be specified. (Both MAY be provided).
 
 If `env` is set, the value of the credential MUST be assigned to the given environment variable name. In the example in the previous section, `HOST_KEY` is set to `HOST_KEY`.
 
 If `path` is set, the value of the credential MUST be written into a file at the specified location on the invocation image's filesystem. This file name MUST NOT be present already on the invocation image's filesystem.
-
 
 ### Resolving Destination Conflicts in Environment Variables and Paths
 
@@ -757,7 +728,7 @@ Parameters and credentials may specify environment variables or paths as destina
 - Implementations MUST NOT override a credential value with a parameter value
 - Implementations SHOULD NOT allow any parameter or credential to declare an environment variable with the prefix `CNAB_`
 - Implementations MUST NOT allow a parameter or credential to override any environment variable with the `CNAB_` prefix
-    - The `CNAB_` variables are defined in the [Bundle Runtime Description](./103-bundle-runtime.md) of this specification
+  - The `CNAB_` variables are defined in the [Bundle Runtime Description](./103-bundle-runtime.md) of this specification
 
 ## Custom Actions
 
@@ -851,7 +822,7 @@ The fields are defined as follows:
 
 Some extensions defined in the `custom` object of a bundle MAY be required in order for a runtime to perform any action on the bundle. A bundle author MUST use the `requiredExtensions` array to define those extensions that are required. The `requiredExtensions` array SHOULD contain the `EXTENSION NAME` defined in the `custom` object for each extension that is required.
 
-A runtime MUST check that it supports any required extensions before performing any action on the bundle. If the runtime does not support the required extension(s), it MAY proceed with the action or fail, however it MUST notify the user that it does not support the required extension(s). Runtimes that do not support extensions that are NOT identified in the `requiredExtensions` field of a bundle SHOULD perform actions on the bundle. 
+A runtime MUST check that it supports any required extensions before performing any action on the bundle. If the runtime does not support the required extension(s), it MAY proceed with the action or fail, however it MUST notify the user that it does not support the required extension(s). Runtimes that do not support extensions that are NOT identified in the `requiredExtensions` field of a bundle SHOULD perform actions on the bundle.
 
 ```json
 {
@@ -933,9 +904,7 @@ A runtime MUST check that it supports any required extensions before performing 
         "path": "/cnab/app/outputs/clientCert"
       },
       "hostName": {
-        "applyTo": [
-          "install"
-        ],
+        "applyTo": ["install"],
         "definition": "string",
         "description": "the hostname produced installing the bundle",
         "path": "/cnab/app/outputs/hostname"
@@ -947,19 +916,15 @@ A runtime MUST check that it supports any required extensions before performing 
     }
   },
   "parameters": {
-    "fields": {
-      "backend_port": {
-        "definition": "http_port",
-        "description": "The port that the back-end will listen on",
-        "destination": {
-          "env": "BACKEND_PORT"
-        }
+    "backend_port": {
+      "definition": "http_port",
+      "description": "The port that the back-end will listen on",
+      "destination": {
+        "env": "BACKEND_PORT"
       }
     }
   },
-  "requiredExtensions": [
-    "io.cnab.dependencies"
-  ],
+  "requiredExtensions": ["io.cnab.dependencies"],
   "schemaVersion": "v1.0.0-WD",
   "version": "0.1.2"
 }
@@ -971,7 +936,7 @@ Source: [101.03-bundle.json](examples/101.03-bundle.json)
 
 The `outputs` section of the `bundle.json` defines which outputs an application will produce during the course of executing a bundle. Outputs are expected to be written to one or more files on the file system of the invocation image. The location of this file MUST be provided in the output definition.
 
-Output specifications are flat (not tree-like), consisting of name/value pairs. The output definition includes a destination the output will be written to, along with a definition to help validate their contents. 
+Output specifications are flat (not tree-like), consisting of name/value pairs. The output definition includes a destination the output will be written to, along with a definition to help validate their contents.
 
 ```json
 {
@@ -994,10 +959,7 @@ Output specifications are flat (not tree-like), consisting of name/value pairs. 
   "outputs": {
     "fields": {
       "clientCert": {
-        "applyTo": [
-          "install",
-          "action2"
-        ],
+        "applyTo": ["install", "action2"],
         "definition": "x509Certificate",
         "path": "/cnab/app/outputs/clientCert"
       },
