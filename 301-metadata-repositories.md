@@ -3,7 +3,7 @@ title: CNAB Security: Metadata repositories
 weight: 301
 ---
 
-# Cloud Native Application Bundles Security (CNAB-Sec): Metadata repositories 1.0 WD
+# Cloud Native Application Bundles Security (CNAB-Sec): Metadata repositories 1.0.0 WD
 
 * [Metadata repositories](#metadata-repositories)
 * [Minimum viable product (MVP)](#minimum-viable-product-mvp)

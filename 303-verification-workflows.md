@@ -3,7 +3,7 @@ title: CNAB Security: Verification workflows
 weight: 303
 ---
 
-# Cloud Native Application Bundles Security (CNAB-Sec): Verification workflows 1.0 WD
+# Cloud Native Application Bundles Security (CNAB-Sec): Verification workflows 1.0.0 WD
 
 - [Verification workflows](#verification-workflows)
 
