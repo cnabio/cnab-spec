@@ -85,8 +85,7 @@
       "description": "The port that the backend will listen on",
       "destination": {
         "path": "/path/to/backend_port"
-      },
-      "immutable": true
+      }
     }
   },
   "schemaVersion": "v1.0.0-WD",
