@@ -132,35 +132,39 @@ Below, you can see an example of a claim for a bundle that included a single out
 
 ```json
 {
-  "bundle": {
-    "credentials": {},
-    "definitions": {
-      "x509Certificate": {
-         "contentEncoding": "base64",
-         "contentMediaType": "application/x-x509-user-cert",
-         "type": "string",
-         "writeOnly": true
-      }
+  "bundle": { 
+    "credentials":{ 
+
     },
-    "images": {},
-    "invocationImages": [
-      {
-        "image": "technosophos/demo2:0.2.0",
-        "imageType": "docker"
-      }
-    ],
-    "name": "technosophos.hellohelm",
-    "outputs": {
-      "fields": {
-        "clientCert": {
-          "definition": "x509Certificate",
-          "path": "/cnab/app/outputs/clientCert"
+    "definitions":{ 
+        "x509Certificate":{ 
+          "contentEncoding":"base64",
+          "contentMediaType":"application/x-x509-user-cert",
+          "type":"string",
+          "writeOnly":true
         }
-      }
     },
-    "parameters": {},
-    "schemaVersion": "v1.0.0-WD",
-    "version": "0.1.0"
+    "images":{ 
+
+    },
+    "invocationImages":[ 
+        { 
+          "image":"technosophos/demo2:0.2.0",
+          "imageType":"docker"
+        }
+    ],
+    "name":"technosophos.hellohelm",
+    "outputs":{ 
+        "clientCert":{ 
+          "definition":"x509Certificate",
+          "path":"/cnab/app/outputs/clientCert"
+        }
+    },
+    "parameters":{ 
+
+    },
+    "schemaVersion":"v1.0.0-WD",
+    "version":"0.1.0"
   },
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "modified": "2018-08-30T20:39:59.611068556-06:00",

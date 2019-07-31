@@ -62,21 +62,21 @@
   ],
   "name": "helloworld",
   "outputs": {
-    "fields": {
-      "clientCert": {
-        "definition": "x509Certificate",
-        "path": "/cnab/app/outputs/clientCert"
-      },
-      "hostName": {
-        "applyTo": ["install"],
-        "definition": "string",
-        "description": "the hostname produced installing the bundle",
-        "path": "/cnab/app/outputs/hostname"
-      },
-      "port": {
-        "definition": "port",
-        "path": "/cnab/app/outputs/port"
-      }
+    "clientCert": {
+      "definition": "x509Certificate",
+      "path": "/cnab/app/outputs/clientCert"
+    },
+    "hostName": {
+      "applyTo": [
+        "install"
+      ],
+      "definition": "string",
+      "description": "the hostname produced installing the bundle",
+      "path": "/cnab/app/outputs/hostname"
+    },
+    "port": {
+      "definition": "port",
+      "path": "/cnab/app/outputs/port"
     }
   },
   "parameters": {

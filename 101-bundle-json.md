@@ -35,96 +35,96 @@ The examples given in this documentation predominantly use thin bundles. Example
 The following is an example of a `bundle.json` for a bundled distributed as a _thin_ bundle:
 
 ```json
-{
-  "credentials": {
-    "hostkey": {
-      "env": "HOST_KEY",
-      "path": "/etc/hostkey.txt"
-    }
-  },
-  "custom": {
-    "com.example.backup-preferences": {
-      "frequency": "daily"
-    },
-    "com.example.duffle-bag": {
-      "icon": "https://example.com/icon.png",
-      "iconType": "PNG"
-    }
-  },
-  "definitions": {
-    "http_port": {
-      "default": 80,
-      "maximum": 10240,
-      "minimum": 10,
-      "type": "integer"
-    },
-    "port": {
-      "maximum": 65535,
-      "minimum": 1024,
-      "type": "integer"
-    },
-    "string": {
-      "type": "string"
-    },
-    "x509Certificate": {
-      "contentEncoding": "base64",
-      "contentMediaType": "application/x-x509-user-cert",
-      "type": "string",
-      "writeOnly": true
-    }
-  },
-  "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
-  "images": {
-    "my-microservice": {
-      "contentDigest": "sha256:aaaaaaaaaaaa...",
-      "description": "my microservice",
-      "image": "technosophos/microservice:1.2.3"
-    }
-  },
-  "invocationImages": [
-    {
-      "contentDigest": "sha256:aaaaaaa...",
-      "image": "technosophos/helloworld:0.1.0",
-      "imageType": "docker"
-    }
-  ],
-  "maintainers": [
-    {
-      "email": "matt.butcher@microsoft.com",
-      "name": "Matt Butcher",
-      "url": "https://example.com"
-    }
-  ],
-  "name": "helloworld",
-  "outputs": {
-    "fields": {
-      "clientCert": {
-        "definition": "x509Certificate",
-        "path": "/cnab/app/outputs/clientCert"
-      },
-      "hostName": {
-        "applyTo": ["install"],
-        "definition": "string",
-        "description": "the hostname produced installing the bundle",
-        "path": "/cnab/app/outputs/hostname"
-      },
-      "port": {
-        "definition": "port",
-        "path": "/cnab/app/outputs/port"
+{ 
+   "credentials":{ 
+      "hostkey":{ 
+         "env":"HOST_KEY",
+         "path":"/etc/hostkey.txt"
       }
-    }
-  },
-  "parameters": {
-    "backend_port": {
-      "definition": "http_port",
-      "description": "The port that the back-end will listen on",
-      "destination": {
-        "env": "BACKEND_PORT"
+   },
+   "custom":{ 
+      "com.example.backup-preferences":{ 
+         "frequency":"daily"
+      },
+      "com.example.duffle-bag":{ 
+         "icon":"https://example.com/icon.png",
+         "iconType":"PNG"
       }
-    }
-  },
-  "schemaVersion": "v1.0.0-WD",
-  "version": "0.1.2"
+   },
+   "definitions":{ 
+      "http_port":{ 
+         "default":80,
+         "maximum":10240,
+         "minimum":10,
+         "type":"integer"
+      },
+      "port":{ 
+         "maximum":65535,
+         "minimum":1024,
+         "type":"integer"
+      },
+      "string":{ 
+         "type":"string"
+      },
+      "x509Certificate":{ 
+         "contentEncoding":"base64",
+         "contentMediaType":"application/x-x509-user-cert",
+         "type":"string",
+         "writeOnly":true
+      }
+   },
+   "description":"An example 'thin' helloworld Cloud-Native Application Bundle",
+   "images":{ 
+      "my-microservice":{ 
+         "contentDigest":"sha256:aaaaaaaaaaaa...",
+         "description":"my microservice",
+         "image":"technosophos/microservice:1.2.3"
+      }
+   },
+   "invocationImages":[ 
+      { 
+         "contentDigest":"sha256:aaaaaaa...",
+         "image":"technosophos/helloworld:0.1.0",
+         "imageType":"docker"
+      }
+   ],
+   "maintainers":[ 
+      { 
+         "email":"matt.butcher@microsoft.com",
+         "name":"Matt Butcher",
+         "url":"https://example.com"
+      }
+   ],
+   "name":"helloworld",
+   "outputs":{ 
+      "clientCert":{ 
+         "definition":"x509Certificate",
+         "path":"/cnab/app/outputs/clientCert"
+      },
+      "hostName":{ 
+         "applyTo":[ 
+            "install"
+         ],
+         "definition":"string",
+         "description":"the hostname produced installing the bundle",
+         "path":"/cnab/app/outputs/hostname"
+      },
+      "port":{ 
+         "definition":"port",
+         "path":"/cnab/app/outputs/port"
+      }
+   },
+   "parameters":{ 
+      "backend_port":{ 
+         "definition":"http_port",
+         "description":"The port that the back-end will listen on",
+         "destination":{ 
+            "env":"BACKEND_PORT"
+         }
+      }
+   },
+   "schemaVersion":"v1.0.0-WD",
+   "version":"0.1.2"
 }
 ```
 
@@ -134,105 +134,106 @@ The canonical JSON version of the above is:
 
 <!-- prettier-ignore -->
 ```json
-{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"definitions":{"http_port":{"default":80,"maximum":10240,"minimum":10,"type":"integer"},"port":{"maximum":65535,"minimum":1024,"type":"integer"},"string":{"type":"string"},"x509Certificate":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","type":"string","writeOnly":true}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"contentDigest":"sha256:aaaaaaaaaaaa...","description":"my microservice","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"contentDigest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"fields":{"clientCert":{"definition":"x509Certificate","path":"/cnab/app/outputs/clientCert"},"hostName":{"applyTo":["install"],"definition":"string","description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname"},"port":{"definition":"port","path":"/cnab/app/outputs/port"}}},"parameters":{"backend_port":{"definition":"http_port","description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"}}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"definitions":{"http_port":{"default":80,"maximum":10240,"minimum":10,"type":"integer"},"port":{"maximum":65535,"minimum":1024,"type":"integer"},"string":{"type":"string"},"x509Certificate":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","type":"string","writeOnly":true}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"contentDigest":"sha256:aaaaaaaaaaaa...","description":"my microservice","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"contentDigest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"clientCert":{"definition":"x509Certificate","path":"/cnab/app/outputs/clientCert"},"hostName":{"applyTo":["install"],"definition":"string","description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname"},"port":{"definition":"port","path":"/cnab/app/outputs/port"}},"parameters":{"backend_port":{"definition":"http_port","description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"}}},"schemaVersion":"v1.0.0-WD","version":"0.1.2"}
 ```
 
 What follows is an example of a thick bundle. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
 
 ```json
-{
-  "credentials": {
-    "hostkey": {
-      "env": "HOST_KEY",
-      "path": "/etc/hostkey.txt"
-    },
-    "image_token": {
-      "env": "AZ_IMAGE_TOKEN"
-    },
-    "kubeconfig": {
-      "path": "/home/.kube/config"
-    }
-  },
-  "definitions": {
-    "http_port": {
-      "default": 80,
-      "maximum": 10240,
-      "minimum": 10,
-      "type": "integer"
-    },
-    "port": {
-      "maximum": 65535,
-      "minimum": 1024,
-      "type": "integer"
-    },
-    "string": {
-      "type": "string"
-    },
-    "x509Certificate": {
-      "contentEncoding": "base64",
-      "contentMediaType": "application/x-x509-user-cert",
-      "type": "string",
-      "writeOnly": true
-    }
-  },
-  "description": "An example 'thick' helloworld Cloud-Native Application Bundle",
-  "images": {
-    "my-microservice": {
-      "contentDigest": "sha256:bbbbbbbbbbbb...",
-      "description": "helloworld microservice",
-      "image": "technosophos/helloworld:0.1.2",
-      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-      "labels": {
-        "architecture": "amd64",
-        "os": "linux"
+{ 
+   "credentials":{ 
+      "hostkey":{ 
+         "env":"HOST_KEY",
+         "path":"/etc/hostkey.txt"
       },
-      "size": 1337
-    }
-  },
-  "invocationImages": [
-    {
-      "contentDigest": "sha256:aaaaaaaaaaaa...",
-      "image": "technosophos/helloworld:1.2.3",
-      "imageType": "docker",
-      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-      "labels": {
-        "architecture": "amd64",
-        "os": "linux"
+      "image_token":{ 
+         "env":"AZ_IMAGE_TOKEN"
       },
-      "size": 1337
-    }
-  ],
-  "name": "helloworld",
-  "outputs": {
-    "fields": {
-      "clientCert": {
-        "definition": "x509Certificate",
-        "path": "/cnab/app/outputs/clientCert"
-      },
-      "hostName": {
-        "applyTo": ["install"],
-        "definition": "string",
-        "description": "the hostname produced installing the bundle",
-        "path": "/cnab/app/outputs/hostname"
-      },
-      "port": {
-        "definition": "port",
-        "path": "/cnab/app/outputs/port"
+      "kubeconfig":{ 
+         "path":"/home/.kube/config"
       }
-    }
-  },
-  "parameters": {
-    "backend_port": {
-      "definition": "http_port",
-      "description": "The port that the backend will listen on",
-      "destination": {
-        "path": "/path/to/backend_port"
+   },
+   "definitions":{ 
+      "http_port":{ 
+         "default":80,
+         "maximum":10240,
+         "minimum":10,
+         "type":"integer"
+      },
+      "port":{ 
+         "maximum":65535,
+         "minimum":1024,
+         "type":"integer"
+      },
+      "string":{ 
+         "type":"string"
+      },
+      "x509Certificate":{ 
+         "contentEncoding":"base64",
+         "contentMediaType":"application/x-x509-user-cert",
+         "type":"string",
+         "writeOnly":true
       }
-    }
-  },
-  "schemaVersion": "v1.0.0-WD",
-  "version": "1.0.0"
+   },
+   "description":"An example 'thick' helloworld Cloud-Native Application Bundle",
+   "images":{ 
+      "my-microservice":{ 
+         "contentDigest":"sha256:bbbbbbbbbbbb...",
+         "description":"helloworld microservice",
+         "image":"technosophos/helloworld:0.1.2",
+         "mediaType":"application/vnd.docker.distribution.manifest.v2+json",
+         "labels":{ 
+            "architecture":"amd64",
+            "os":"linux"
+         },
+         "size":1337
+      }
+   },
+   "invocationImages":[ 
+      { 
+         "contentDigest":"sha256:aaaaaaaaaaaa...",
+         "image":"technosophos/helloworld:1.2.3",
+         "imageType":"docker",
+         "mediaType":"application/vnd.docker.distribution.manifest.v2+json",
+         "labels":{ 
+            "architecture":"amd64",
+            "os":"linux"
+         },
+         "size":1337
+      }
+   ],
+   "name":"helloworld",
+   "outputs":{ 
+      "clientCert":{ 
+         "definition":"x509Certificate",
+         "path":"/cnab/app/outputs/clientCert"
+      },
+      "hostName":{ 
+         "applyTo":[ 
+            "install"
+         ],
+         "definition":"string",
+         "description":"the hostname produced installing the bundle",
+         "path":"/cnab/app/outputs/hostname"
+      },
+      "port":{ 
+         "definition":"port",
+         "path":"/cnab/app/outputs/port"
+      }
+   },
+   "parameters":{ 
+      "backend_port":{ 
+         "definition":"http_port",
+         "description":"The port that the backend will listen on",
+         "destination":{ 
+            "path":"/path/to/backend_port"
+         }
+      }
+   },
+   "schemaVersion":"v1.0.0-WD",
+   "version":"1.0.0"
 }
+
 ```
 
 Source: [101.02-bundle.json](examples/101.02-bundle.json)
@@ -822,108 +823,110 @@ Some extensions defined in the `custom` object of a bundle MAY be required in or
 A runtime MUST check that it supports any required extensions before performing any action on the bundle. If the runtime does not support the required extension(s), it MAY proceed with the action or fail, however it MUST notify the user that it does not support the required extension(s). Runtimes that do not support extensions that are NOT identified in the `requiredExtensions` field of a bundle SHOULD perform actions on the bundle.
 
 ```json
-{
-  "credentials": {
-    "hostkey": {
-      "env": "HOST_KEY",
-      "path": "/etc/hostkey.txt"
-    }
-  },
-  "custom": {
-    "com.example.backup-preferences": {
-      "frequency": "daily"
-    },
-    "com.example.duffle-bag": {
-      "icon": "https://example.com/icon.png",
-      "iconType": "PNG"
-    },
-    "io.cnab.dependencies": [
-      {
-        "requires": {
-          "bundle": "azure/mysql",
-          "version": {
-            "prereleases": "true",
-            "range": "5.7.x"
-          }
-        }
+{ 
+   "credentials":{ 
+      "hostkey":{ 
+         "env":"HOST_KEY",
+         "path":"/etc/hostkey.txt"
       }
-    ]
-  },
-  "definitions": {
-    "http_port": {
-      "default": 80,
-      "maximum": 10240,
-      "minimum": 10,
-      "type": "integer"
-    },
-    "port": {
-      "maximum": 65535,
-      "minimum": 1024,
-      "type": "integer"
-    },
-    "string": {
-      "type": "string"
-    },
-    "x509Certificate": {
-      "contentEncoding": "base64",
-      "contentMediaType": "application/x-x509-user-cert",
-      "type": "string",
-      "writeOnly": true
-    }
-  },
-  "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
-  "images": {
-    "my-microservice": {
-      "contentDigest": "sha256:aaaaaaaaaaaa...",
-      "description": "my microservice",
-      "image": "technosophos/microservice:1.2.3"
-    }
-  },
-  "invocationImages": [
-    {
-      "contentDigest": "sha256:aaaaaaa...",
-      "image": "technosophos/helloworld:0.1.0",
-      "imageType": "docker"
-    }
-  ],
-  "maintainers": [
-    {
-      "email": "matt.butcher@microsoft.com",
-      "name": "Matt Butcher",
-      "url": "https://example.com"
-    }
-  ],
-  "name": "helloworld",
-  "outputs": {
-    "fields": {
-      "clientCert": {
-        "definition": "x509Certificate",
-        "path": "/cnab/app/outputs/clientCert"
+   },
+   "custom":{ 
+      "com.example.backup-preferences":{ 
+         "frequency":"daily"
       },
-      "hostName": {
-        "applyTo": ["install"],
-        "definition": "string",
-        "description": "the hostname produced installing the bundle",
-        "path": "/cnab/app/outputs/hostname"
+      "com.example.duffle-bag":{ 
+         "icon":"https://example.com/icon.png",
+         "iconType":"PNG"
       },
-      "port": {
-        "definition": "port",
-        "path": "/cnab/app/outputs/port"
+      "io.cnab.dependencies":[ 
+         { 
+            "requires":{ 
+               "bundle":"azure/mysql",
+               "version":{ 
+                  "prereleases":"true",
+                  "range":"5.7.x"
+               }
+            }
+         }
+      ]
+   },
+   "definitions":{ 
+      "http_port":{ 
+         "default":80,
+         "maximum":10240,
+         "minimum":10,
+         "type":"integer"
+      },
+      "port":{ 
+         "maximum":65535,
+         "minimum":1024,
+         "type":"integer"
+      },
+      "string":{ 
+         "type":"string"
+      },
+      "x509Certificate":{ 
+         "contentEncoding":"base64",
+         "contentMediaType":"application/x-x509-user-cert",
+         "type":"string",
+         "writeOnly":true
       }
-    }
-  },
-  "parameters": {
-    "backend_port": {
-      "definition": "http_port",
-      "description": "The port that the back-end will listen on",
-      "destination": {
-        "env": "BACKEND_PORT"
+   },
+   "description":"An example 'thin' helloworld Cloud-Native Application Bundle",
+   "images":{ 
+      "my-microservice":{ 
+         "contentDigest":"sha256:aaaaaaaaaaaa...",
+         "description":"my microservice",
+         "image":"technosophos/microservice:1.2.3"
       }
-    }
-  },
-  "requiredExtensions": ["io.cnab.dependencies"],
-  "schemaVersion": "v1.0.0-WD",
-  "version": "0.1.2"
+   },
+   "invocationImages":[ 
+      { 
+         "contentDigest":"sha256:aaaaaaa...",
+         "image":"technosophos/helloworld:0.1.0",
+         "imageType":"docker"
+      }
+   ],
+   "maintainers":[ 
+      { 
+         "email":"matt.butcher@microsoft.com",
+         "name":"Matt Butcher",
+         "url":"https://example.com"
+      }
+   ],
+   "name":"helloworld",
+   "outputs":{ 
+      "clientCert":{ 
+         "definition":"x509Certificate",
+         "path":"/cnab/app/outputs/clientCert"
+      },
+      "hostName":{ 
+         "applyTo":[ 
+            "install"
+         ],
+         "definition":"string",
+         "description":"the hostname produced installing the bundle",
+         "path":"/cnab/app/outputs/hostname"
+      },
+      "port":{ 
+         "definition":"port",
+         "path":"/cnab/app/outputs/port"
+      }
+   },
+   "parameters":{ 
+      "backend_port":{ 
+         "definition":"http_port",
+         "description":"The port that the back-end will listen on",
+         "destination":{ 
+            "env":"BACKEND_PORT"
+         }
+      }
+   },
+   "requiredExtensions":[ 
+      "io.cnab.dependencies"
+   ],
+   "schemaVersion":"v1.0.0-WD",
+   "version":"0.1.2"
 }
 ```
 
@@ -936,50 +939,51 @@ The `outputs` section of the `bundle.json` defines which outputs an application 
 Output specifications are flat (not tree-like), consisting of name/value pairs. The output definition includes a destination the output will be written to, along with a definition to help validate their contents.
 
 ```json
-{
-  "definitions": {
-    "port": {
-      "maximum": 65535,
-      "minimum": 1024,
-      "type": "integer"
-    },
-    "string": {
-      "type": "string"
-    },
-    "x509Certificate": {
-      "contentEncoding": "base64",
-      "contentMediaType": "application/x-x509-user-cert",
-      "type": "string",
-      "writeOnly": true
-    }
-  },
-  "outputs": {
-    "fields": {
-      "clientCert": {
-        "applyTo": ["install", "action2"],
-        "definition": "x509Certificate",
-        "path": "/cnab/app/outputs/clientCert"
+{ 
+   "definitions":{ 
+      "port":{ 
+         "maximum":65535,
+         "minimum":1024,
+         "type":"integer"
       },
-      "hostName": {
-        "definition": "string",
-        "path": "/cnab/app/outputs/hostname"
+      "string":{ 
+         "type":"string"
       },
-      "port": {
-        "definition": "port",
-        "path": "/cnab/app/outputs/port"
+      "x509Certificate":{ 
+         "contentEncoding":"base64",
+         "contentMediaType":"application/x-x509-user-cert",
+         "type":"string",
+         "writeOnly":true
       }
-    }
-  }
+   },
+   "outputs":{ 
+      "clientCert":{ 
+         "applyTo":[ 
+            "install",
+            "action2"
+         ],
+         "definition":"x509Certificate",
+         "path":"/cnab/app/outputs/clientCert"
+      },
+      "hostName":{ 
+         "definition":"string",
+         "path":"/cnab/app/outputs/hostname"
+      },
+      "port":{ 
+         "definition":"port",
+         "path":"/cnab/app/outputs/port"
+      }
+   }
 }
+
 ```
 
-- `outputs`: name/value pairs describing an application output
-  - `fields`: name/value pairs describing outputs:
-    - `<name>`: The name of the output. In the example above, this is `clientCert`, `hostName`, and `port`. This is mapped to a value definition, which contains the following fields (REQUIRED):
-      - `applyTo`: restricts this output to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
-      - `definition`: The name of a definition schema that is used to validate the output content. (REQUIRED)
-      - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
-      - `path`: The fully qualified path to a file that will be created (REQUIRED). The path specified MUST be a _strict_ subpath of `/cnab/app/outputs` and MUST be distinct from the paths for all other outputs in this bundle.
+- `outputs`: name/value pairs describing an application output.
+  - `<name>`: The name of the output. In the example above, this is `clientCert`, `hostName`, and `port`. This is mapped to a value definition, which contains the following fields (REQUIRED):
+    - `applyTo`: restricts this output to a given list of actions. If empty or missing, applies to all actions (OPTIONAL)
+    - `definition`: The name of a definition schema that is used to validate the output content. (REQUIRED)
+    - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
+    - `path`: The fully qualified path to a file that will be created (REQUIRED). The path specified MUST be a _strict_ subpath of `/cnab/app/outputs` and MUST be distinct from the paths for all other outputs in this bundle.
 
 An invocation image should write outputs to a file specified by the `path` attribute for each output. A bundle runtime can then extract values from the specified path and present them to a user.
 All outputs that apply to a specified action are considered to be required. If an output is missing at the end of an action, the runtime should report this condition as an error to the user.

@@ -50,7 +50,9 @@
         "labels": {
           "description": "Key/value pairs that used to specify identifying attributes of images",
           "type": "object",
-          "additionalProperties": { "type": "string" }
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "mediaType": {
           "description": "The media type of the image",
@@ -61,7 +63,9 @@
           "type": "integer"
         }
       },
-      "required": ["image"],
+      "required": [
+        "image"
+      ],
       "type": "object"
     },
     "invocationImage": {
@@ -83,7 +87,9 @@
         "labels": {
           "description": "Key/value pairs that used to specify identifying attributes of invocation images",
           "type": "object",
-          "additionalProperties": { "type": "string" }
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "mediaType": {
           "description": "The media type of the image",
@@ -94,7 +100,9 @@
           "type": "integer"
         }
       },
-      "required": ["image"],
+      "required": [
+        "image"
+      ],
       "type": "object"
     },
     "output": {
@@ -120,7 +128,10 @@
           "type": "string"
         }
       },
-      "required": ["definition", "path"],
+      "required": [
+        "definition",
+        "path"
+      ],
       "type": "object"
     },
     "parameter": {
@@ -160,7 +171,10 @@
           "type": "boolean"
         }
       },
-      "required": ["definition", "destination"],
+      "required": [
+        "definition",
+        "destination"
+      ],
       "type": "object"
     }
   },
@@ -253,7 +267,9 @@
             "type": "string"
           }
         },
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "type": "object"
       },
       "type": "array"
@@ -263,15 +279,10 @@
       "type": "string"
     },
     "outputs": {
-      "description": "Values that are produced by executing the invocation image",
-      "properties": {
-        "fields": {
-          "additionalProperties": {
-            "$ref": "#/definitions/output"
-          },
-          "type": "object"
-        }
+      "additionalProperties": {
+        "$ref": "#/definitions/output"
       },
+      "description": "Values that are produced by executing the invocation image",
       "type": "object"
     },
     "parameters": {
@@ -284,7 +295,9 @@
     "requiredExtensions": {
       "description": "A collection of extensions required for this bundle.",
       "type": "array",
-      "additionalProperties": { "type": "string" }
+      "additionalProperties": {
+        "type": "string"
+      }
     },
     "schemaVersion": {
       "description": "The version of the CNAB specification. This should always be the string 'v1' for this schema version.",
@@ -296,7 +309,12 @@
       "type": "string"
     }
   },
-  "required": ["invocationImages", "name", "schemaVersion", "version"],
+  "required": [
+    "invocationImages",
+    "name",
+    "schemaVersion",
+    "version"
+  ],
   "title": "CNAB1 Bundle Descriptor",
   "type": "object"
 }

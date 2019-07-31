@@ -71,21 +71,21 @@
   ],
   "name": "helloworld",
   "outputs": {
-    "fields": {
-      "clientCert": {
-        "definition": "x509Certificate",
-        "path": "/cnab/app/outputs/clientCert"
-      },
-      "hostName": {
-        "applyTo": ["install"],
-        "definition": "string",
-        "description": "the hostname produced installing the bundle",
-        "path": "/cnab/app/outputs/hostname"
-      },
-      "port": {
-        "definition": "port",
-        "path": "/cnab/app/outputs/port"
-      }
+    "clientCert": {
+      "definition": "x509Certificate",
+      "path": "/cnab/app/outputs/clientCert"
+    },
+    "hostName": {
+      "applyTo": [
+        "install"
+      ],
+      "definition": "string",
+      "description": "the hostname produced installing the bundle",
+      "path": "/cnab/app/outputs/hostname"
+    },
+    "port": {
+      "definition": "port",
+      "path": "/cnab/app/outputs/port"
     }
   },
   "parameters": {
@@ -97,7 +97,9 @@
       }
     }
   },
-  "requiredExtensions": ["io.cnab.dependencies"],
+  "requiredExtensions": [
+    "io.cnab.dependencies"
+  ],
   "schemaVersion": "v1.0.0-WD",
   "version": "0.1.2"
 }
