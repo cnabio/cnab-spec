@@ -13,7 +13,7 @@
           "type": "string"
         },
         "status": {
-          "descripton": "The status of the last action",
+          "description": "The status of the last action",
           "enum": [
             "failure",
             "success",
