@@ -17,7 +17,7 @@
           "enum": [
             "failure",
             "success",
-            "underay",
+            "underway",
             "unknown"
           ],
           "type": "string"
