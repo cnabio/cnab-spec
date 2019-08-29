@@ -72,6 +72,7 @@ The CNAB claim is defined as a JSON document. The specification currently does n
     "version": "0.1.0"
   },
   "created": "2018-08-30T20:39:55.549002887-06:00",
+  "custom": {},
   "modified": "2018-08-30T20:39:59.611068556-06:00",
   "name": "technosophos.hellohelm",
   "outputs": {},
@@ -88,6 +89,7 @@ Source: [400.01-claim.json](examples/400.01-claim.json)
 
 - bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
 - created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
+- custom: A section for custom extension data applicable to a given runtime.
 - modified: A timestamp indicating the last time this release claim was modified.
 - name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
 - outputs: Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons.
