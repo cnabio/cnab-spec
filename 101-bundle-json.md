@@ -377,7 +377,7 @@ of how to use `definitions` along with `parameters` and `outputs` can be seen in
     - `contains`: Parameter validation requiring at least one item included in the user-provided array conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `contentEncoding`: Indicates that the user-provided content should interpreted as binary data and decoded using the encoding named by this property. MUST be a string in accordance with [RFC2045, Sec 6.1](https://json-schema.org/latest/json-schema-validation.html#RFC2045). (OPTIONAL)
     - `contentMediaType`: MIME type indicating the media type of the user-provided content. MUST be a string in accordance with [RFC2046](https://json-schema.org/latest/json-schema-validation.html#RFC2046). (OPTIONAL)
-    - `default`: A default JSON value associated with a particular schema. RECOMMENDED that a default value be valid against the associated schema. (OPTIONAL)
+    - `default`: A default JSON value associated with a particular schema. RECOMMENDED that a default value be valid against the associated schema. Numeric values MUST be integers.(OPTIONAL)
     - `definitions`: Provides a standardized location for bundle authors to inline re-usable JSON Schemas into a more general schema. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
     - `dependencies`: Specifies rules that are evaluated if the parameter type is an object and contains a certain property. MUST be an object where each named dependency is either an array of unique strings or a JSON schema. (OPTIONAL)
     - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
