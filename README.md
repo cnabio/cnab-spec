@@ -39,10 +39,6 @@ The specification is licensed under [OWF Contributor License Agreement 1.0 - Cop
   * https://zoom.us/j/653255416
   * [Meeting notes and Agenda](https://aka.ms/cnab/meeting).
 
-### Mailing List
-- Send emails to: [dev@opencontainers.org](mailto:dev@opencontainers.org)
-- To subscribe see: https://groups.google.com/a/opencontainers.org/forum/#!forum/dev
-
 ### Slack Channel
 #cnab Slack channel for related discussion in
 [CNCF's Slack workspace](https://slack.cncf.io/).
