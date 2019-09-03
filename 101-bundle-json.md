@@ -362,7 +362,7 @@ Fields:
 The `definitions` section of the `bundle.json` defines set of JSONSchema definitions outlining how bundle configuration should be validated by a runtime.
 
 Definitions have no utility on their own. They enable the runtime to validate parameters and outputs when used in combination with those features. Examples
-of how to use `definitions` along with `parameters` and `outputs` can be seen in the [Parameters](#parameters) and [Outputs](#outputs) sections below.
+of how to use `definitions` along with `parameters` and `outputs` can be seen in the [Parameters](#parameters) and [Outputs](#outputs) sections below. A `definition` must conform to both JSON Schema and Canonical JSON, therefore only `integer` numeric types are supported.
 
 - `definitions`: A collection of JSONSchema definitions used to validate user-input.
   - `<name>`: The name of the definition.
@@ -377,27 +377,27 @@ of how to use `definitions` along with `parameters` and `outputs` can be seen in
     - `contains`: Parameter validation requiring at least one item included in the user-provided array conform to the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `contentEncoding`: Indicates that the user-provided content should interpreted as binary data and decoded using the encoding named by this property. MUST be a string in accordance with [RFC2045, Sec 6.1](https://json-schema.org/latest/json-schema-validation.html#RFC2045). (OPTIONAL)
     - `contentMediaType`: MIME type indicating the media type of the user-provided content. MUST be a string in accordance with [RFC2046](https://json-schema.org/latest/json-schema-validation.html#RFC2046). (OPTIONAL)
-    - `default`: A default JSON value associated with a particular schema. RECOMMENDED that a default value be valid against the associated schema. (OPTIONAL)
+    - `default`: A default JSON value associated with a particular schema. RECOMMENDED that a default value be valid against the associated schema. Numeric values MUST be integers.(OPTIONAL)
     - `definitions`: Provides a standardized location for bundle authors to inline re-usable JSON Schemas into a more general schema. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
     - `dependencies`: Specifies rules that are evaluated if the parameter type is an object and contains a certain property. MUST be an object where each named dependency is either an array of unique strings or a JSON schema. (OPTIONAL)
     - `description`: Descriptive text for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
     - `else`: Parameter validation requiring that the user-provided value match the specified schema. Only matches if the user-provided value does NOT match the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
     - `enum`: Parameter validation requiring that the user-provided value is one of the specified items in the specified array. MUST be a non-empty array of unique elements that can be of any type. (OPTIONAL)
     - `examples`: Sample JSON values associated with a particular schema. MUST be an array. (OPTIONAL)
-    - `exclusiveMaximum`: Parameter validation requiring that the user-provided number be less than the number specified. MUST be a number. (OPTIONAL)
-    - `exclusiveMinimum`: Parameter validation requiring that the user-provided number be greater than the number specified. MUST be a number. (OPTIONAL)
+    - `exclusiveMaximum`: Parameter validation requiring that the user-provided integer be less than the integer specified. MUST be an integer. (OPTIONAL)
+    - `exclusiveMinimum`: Parameter validation requiring that the user-provided integer be greater than the integer specified. MUST be an integer. (OPTIONAL)
     - `format`: Parameter validation requiring that the user-provided value adhere to the specified format. MUST be a string. (OPTIONAL)
     - `if`: Provides a method to conditionally validate user-provided values against a schema. MUST be a JSON schema. (OPTIONAL)
     - `items`: Parameter validation requiring the items included in a user-provided array must conform to the specified schema(s). MUST be either a JSON schema or an array of JSON schemas. (OPTIONAL)
     - `maxItems`: Parameter validation requiring the length of the user-provided array be less than or equal to the number specified. MUST be a non-negative number. (OPTIONAL)
     - `maxLength`: Parameter validation requiring that the length of the user-provided string be less than or equal to the number specified. MUST be a non-negative integer. (OPTIONAL)
     - `maxProperties`: Parameter validation requiring the number of properties included in the user-provided object be less than or equal to the specified number. MUST be a non-negative integer. (OPTIONAL)
-    - `maximum`: Parameter validation requiring that the user-provided number be less than or equal to the number specified. MUST be a number. (OPTIONAL)
-    - `minItems`: Parameter validation requiring the length of the user-provided array be greater than or equal to the number specified. MUST be a non-negative number. (OPTIONAL)
+    - `maximum`: Parameter validation requiring that the user-provided number be less than or equal to the integer specified. MUST be an integer. (OPTIONAL)
+    - `minItems`: Parameter validation requiring the length of the user-provided array be greater than or equal to the number specified. MUST be a non-negative integer. (OPTIONAL)
     - `minLength`: Parameter validation requiring that the length of the user-provided string be greater than or equal to the number specified. MUST be a non-negative integer. (OPTIONAL)
     - `minProperties`: Parameter validation requiring the number of properties included in the user-provided object be greater than or equal to the specified number. MUST be a non-negative integer. (OPTIONAL)
-    - `minimum`: Parameter validation requiring that the user-provided number be greater than or equal to the number specified. MUST be a number. (OPTIONAL)
-    - `multipleOf`: Parameter validation requiring that the user-provided number be wholly divisible by the number specified. MUST be a number strictly greater than zero. (OPTIONAL)
+    - `minimum`: Parameter validation requiring that the user-provided number be greater than or equal to the integer specified. MUST be an integer. (OPTIONAL)
+    - `multipleOf`: Parameter validation requiring that the user-provided number be wholly divisible by the integer specified. MUST be an integer strictly greater than zero. (OPTIONAL)
     - `not`: Parameter validation requiring that the user-provided value NOT match the specified schema. MUST be a JSON schema. (OPTIONAL)
     - `oneOf`: Parameter validation requiring that the user-provided value match ONE of the specified schemas. MUST be a non-empty array of JSON schemas. (OPTIONAL)
     - `patternProperties`: The set of matching properties and schemas for their values included in an object type parameter. MUST be an object where each named property is a regular expression with a JSON schema as the value. (OPTIONAL)
@@ -408,11 +408,11 @@ of how to use `definitions` along with `parameters` and `outputs` can be seen in
     - `required`: Parameter validation requiring the properties named in the user-provided object include the specified list of properties. MUST be an array of strings. (OPTIONAL)
     - `then`: Parameter validation requiring that the user-provided value match the specified schema. Only matches if the user-provided value matches the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
     - `title`: Short, human-readable descriptive name for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
-    - `type`: Parameter validation requiring that the user-provided value is either a "null", "boolean", "object", "array", "number", "string", or "integer". MUST be a string or an array of strings with unique elements. (OPTIONAL)
+    - `type`: Parameter validation requiring that the user-provided value is either a "null", "boolean", "object", "array", "string", or "integer". MUST be a string or an array of strings with unique elements. If you need to represent another numeric type, upscale to an integer or use a string type and convert within your bundle. (OPTIONAL)
     - `uniqueItems`: Parameter validation requiring the items included in the user-provided array be unique. MUST be a boolean. (OPTIONAL)
     - `writeOnly`: Indicates that the value of the parameter is sensitive and cannot be viewed once set or updated. MUST be a boolean. (OPTIONAL)
 
-For more information on the supported definition properties, visit the [JSON Schema documentation](https://json-schema.org/)
+For more information on the supported definition properties, review the the [definitions JSON schema](schema/definitions.bundle.json)
 
 Evaluation of the validation keywords should conform to the applicable sections of [Section 6 of the JSONSchema specification](https://tools.ietf.org/html/draft-handrews-json-schema-validation-01#section-6).
 
