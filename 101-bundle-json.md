@@ -769,8 +769,9 @@ Each action is accompanied by a description, which contains the following fields
 
 The `modifies` field MUST be set to `true` if any resource that is managed by the bundle is changed in any way. The `modifies` field assists CNAB implementations in tracking history of changes over time. An implementation of CNAB MAY use this information when describing history or managing releases.
 
-The `stateless` field indicates that the runtime bypass credentials validation (the user MAY or MAY NOT pass any credentials), and will not keep track of this action. Primary intent is to allow invocation bundles to provide dry-run or detailed help functionalities.
-Stateless actions can be invoked on a non-existing installation.
+The `stateless` field indicates that the runtime will bypass credentials requirements (the user MAY or MAY NOT pass any credentials), and will not keep track of this action. If credentials are supplied, the runtime SHOULD pass the credentials to the invocation image (as in stateful actions). An invocation image MAY exit with an error if the necessary credentials are not supplied. However, the runtime MUST NOT fail to invoke the invocation image because of missing credentials.
+
+The primary intention of a `stateless` action is to allow invocation bundles to provide dry-run or detailed help functionalities. Stateless actions can be invoked on a non-existing installation. In this case, the `name` passed to the runtime need not exist, and MUST not result in the creation of a name record. Runtimes MAY ignore `name` if supplied.
 
 An invocation image _ought_ to handle all custom targets declared in the `actions` section. An invocation image SHOULD NOT handle actions that are not included by the default list (`install`, `upgrade`, `uninstall`) and the custom actions section.
 
