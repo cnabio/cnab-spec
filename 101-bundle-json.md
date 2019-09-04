@@ -410,7 +410,7 @@ of how to use `definitions` along with `parameters` and `outputs` can be seen in
     - `title`: Short, human-readable descriptive name for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
     - `type`: Parameter validation requiring that the user-provided value is either a "null", "boolean", "object", "array", "string", or "integer". MUST be a string or an array of strings with unique elements. If you need to represent another numeric type, upscale to an integer or use a string type and convert within your bundle. (OPTIONAL)
     - `uniqueItems`: Parameter validation requiring the items included in the user-provided array be unique. MUST be a boolean. (OPTIONAL)
-    - `writeOnly`: Indicates that the value of the parameter is sensitive and cannot be viewed once set or updated. MUST be a boolean. (OPTIONAL)
+    - `writeOnly`: Indicates that the value of the parameter is sensitive and MUST NOT be written to insecure locations such as log files or user-facing output. MUST be a boolean. (OPTIONAL)
 
 For more information on the supported definition properties, review the the [definitions JSON schema](schema/definitions.bundle.json)
 
