@@ -293,7 +293,7 @@ The following fields are informational pieces of metadata designed to convey add
 
 ## Invocation Images
 
-The `invocationImages` section describes the images that are responsible for bootstrapping the installation. The appropriate invocation image is selected by the CNAB runtime, typically by considering the runtime requirements of the bundle. For example, both a Windows and a Linux version of the invocation image may be included in the list. It is up to the CNAB runtime to determine which one to use. If no sufficient image is found, the CNAB runtime MUST emit an error and stop processing.
+The `invocationImages` section describes the images that are responsible for bootstrapping the installation. The appropriate invocation image is selected by the CNAB runtime, typically by considering the runtime requirements of the bundle. For example, both a Windows and a Linux version of the invocation image may be included in the list. It is up to the CNAB runtime to determine which one to use. If no sufficient image is found, the CNAB runtime MUST emit an error and stop processing. If multiple images match the criterion set by the user, the runtime MUST execute only one, and MUST execute the first match as determined by the order of the `invocationImages` list.
 
 A CNAB bundle MUST have at least one invocation image.
 
