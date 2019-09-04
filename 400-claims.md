@@ -256,6 +256,17 @@ If both commands exit with code `0`, then the resulting claim will look like thi
 
 Tools that implement claims MAY then present `result` info to end users to show the result of running an invocation image.
 
-## Credentials and Claims
+## Credentials, Parameters, and Claims
+
+The claims specification makes two assumptions about security:
+
+- Claims are safe for writing sensitive information
+- Claims are not a means for proxying identity
+
+Parameters may contain sensitive information, such as database passwords. And this specification assumes that storing such information (un-redacted) can be done securely. However, the precise security mechanisms applied at the storage layer are beyond the scope of this specification.
+
+Parameter values MUST be stored in claims. Implementations of the claims spec MUST NOT provide methods to block certain parameters from having their values written to the claim.
+
+Credentials, on the other hand, are proxies for user identity, including potentially both authentication information and authorization information. Claims are not intended to provide a proxy for identity. In other words, a claim record should allow two users with identical permissions the ability to install the same configuration, it should not provide a way for one user to _gain_ the permissions of another user.
 
 Credential data MUST NOT be stored in claims. Credentials are identity-specific, while claims are identity-neutral.
