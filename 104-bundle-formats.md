@@ -11,7 +11,7 @@ Thick bundles do impose a slightly heavier burden on the runtime, and thus the s
 
 ## Thick and Thin Bundles
 
-The thick and thin bundle formats refer to how much information must be transmitted in a package. Due to the nature of cloud technologies, it is sometimes possible (and desirable) to move a small artifact that references other external artifacts. In other cases, it is desirable to have one large self-contained artifact that depends on no external artifacts. CNAB represents the former as a thin bundle and the later as a thick bundle.
+The thick and thin bundle formats refer to how much information must be transmitted in a package. Due to the nature of cloud technologies, it is sometimes possible (and desirable) to have a small artifact that references other external artifacts. In other cases, it is desirable to have one large self-contained artifact that depends on no external artifacts. CNAB represents the former as a thin bundle and the later as a thick bundle.
 
 A thin bundle contains only one object: The bundle descriptor. Thus, the format for a thin bundle is a JSON file.
 
