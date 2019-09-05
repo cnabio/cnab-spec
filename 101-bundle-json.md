@@ -986,7 +986,7 @@ Output specifications are flat (not tree-like), consisting of name/value pairs. 
     - `path`: The fully qualified path to a file that will be created (REQUIRED). The path specified MUST be a _strict_ subpath of `/cnab/app/outputs` and MUST be distinct from the paths for all other outputs in this bundle.
 
 An invocation image should write outputs to a file specified by the `path` attribute for each output. A bundle runtime can then extract values from the specified path and present them to a user.
-All outputs that apply to a specified action are considered to be required. If an output is missing at the end of an action, the runtime should report this condition as an error to the user.
+All outputs that apply to a specified action are considered to be required. If an output is missing at the end of an action, and a default is defined, the runtime should write the default to the file specified by the `path` attribute. Otherwise the runtime should report the missing output as an error to the user.
 A runtime can leverage appropriate [in-memory](https://docs.docker.com/v17.09/engine/admin/volumes/tmpfs/#choosing-the-tmpfs-or-mount-flag) volume mounted at the `path` location for storing these outputs.
 
 A runtime may validate outputs based on schema references by the definition field.
