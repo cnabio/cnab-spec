@@ -404,7 +404,7 @@ of how to use `definitions` along with `parameters` and `outputs` can be seen in
     - `pattern`: Parameter validation requiring that the user-provided string match the regular expression specified. MUST be a string representation of a valid ECMA 262 regular expression. (OPTIONAL)
     - `properties`: The set of named properties and schemas for their values included in an object type parameter. MUST be an object where each named property contains a JSON schema. (OPTIONAL)
     - `propertyNames`: Parameter validation requiring that each property name in an object match the specified schema. MUST be a JSON schema. (OPTIONAL)
-    - `readOnly`: Indicates that the value of the parameter cannot be modified. MUST be a boolean. (OPTIONAL)
+    - `readOnly`: Parameter annotation indicating that the value of the parameter cannot be modified after the initial install. Runtimes SHOULD display a warning or similar output when the parameter's setting is being ignored for subsequent actions. MUST be a boolean. (OPTIONAL)
     - `required`: Parameter validation requiring the properties named in the user-provided object include the specified list of properties. MUST be an array of strings. (OPTIONAL)
     - `then`: Parameter validation requiring that the user-provided value match the specified schema. Only matches if the user-provided value matches the schema provided in the `if` property. MUST be a JSON schema. (OPTIONAL)
     - `title`: Short, human-readable descriptive name for the field. Can be used to decorate a user interface. MUST be a string. (OPTIONAL)
