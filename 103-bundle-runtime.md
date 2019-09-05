@@ -166,7 +166,7 @@ In the case where the `destination` object has a `path` field, the CNAB runtime 
 
 In the example above, the CNAB runtime creates a file at `/var/run/greeting.txt` whose content (if not overridden) is `hello`. If an empty string is provided as the parameter value, the file must still be created.
 
-A `path` MUST be absolute. But in the event that a CNAB runtime receives a relative path, it MUST treat the file as if it were the root path were prepended. Thus `var/run/greeting.txt` is treated (on Linux/UNIX) as `/var/run/greeting.txt`. In the cases where operating system pathing types differ, a CNAB runtime MAY freely translate between absolute pathing structures. `c:\foo.txt`, when passed to a Linux/UNIX system, MAY be translated to `/foo.txt`. In this way, multiple invocation images may share parameters regardless of the underlying OS.
+A `path` MUST be absolute. But in the event that a CNAB runtime receives a relative path, it MUST treat the file as if the root path were prepended. Thus `var/run/greeting.txt` is treated (on Linux/UNIX) as `/var/run/greeting.txt`. In the cases where operating system pathing types differ, a CNAB runtime MAY freely translate between absolute pathing structures. `c:\foo.txt`, when passed to a Linux/UNIX system, MAY be translated to `/foo.txt`. In this way, multiple invocation images may share parameters regardless of the underlying OS.
 
 If `destination` contains both a `path` and an `env`, the CNAB runtime MUST provide both.
 
