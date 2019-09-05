@@ -136,6 +136,7 @@ The parameter value is evaluated thus:
 - If the CNAB runtime provides a value, that value MAY be sanitized, then validated (as described below), then injected as the parameter value. In the event that sanitization or validation fail, the runtime SHOULD return an error and discontinue the action.
 - If the parameter is marked `required` and a value is not supplied, the CNAB Runtime MUST produce an error and discontinue action.
 - If the CNAB runtime does not provide a value, but `default` is set, then the default value MUST be used.
+- If the parameter is marked `required` and `default` is set, then the requirement is satisfied by the runtime-provided default.
 - If no value is provided and `default` is unset, the runtime MUST set the value to an empty string (""), regardless of type.
 - Values are encoded as JSON strings.
 
