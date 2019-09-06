@@ -11,7 +11,7 @@ This process governs the motion of a specification from rough draft through full
 
 Specifications shall each track their own versions. A specification will call out a target version (such as 1.0), and then also include its phase (such as Pre-Draft, see below) to indicate progress towards the target version.
 
-For example, one of the specifications in this repository is the CNAB Core specification. The CNAB Core specification should be formally referenced as _Cloud Native Application Bundle Core 1.0.0_. The phase of the process MAY be appended as a stability marker: _Cloud Native Application Bundle Core 1.0.0-Draft_. It MAY be abbreviated to _CNAB1_ or _CNAB1-Draft_.
+For example, one of the specifications in this repository is the CNAB Core specification. The CNAB Core specification should be formally referenced as _Cloud Native Application Bundle Core 1.0.0_. The phase of the process MAY be appended as a stability marker: _Cloud Native Application Bundle Core 1.0.0-FA_. It MAY be abbreviated to _CNAB1_ or _CNAB1-FA_.
 
 Other specifications must follow the same nomenclature.
 
