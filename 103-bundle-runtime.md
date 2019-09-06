@@ -97,7 +97,7 @@ An implementation of a CNAB runtime MUST support sending the following actions t
 - `upgrade`
 - `uninstall`
 
-Invocation images SHOULD implement `install` and `uninstall`. If one of these REQUIRED actions is not implemented, an invocation image MUST NOT generate an error (though it MAY generate a warning). Implementations MAY map the same underlying operations to multiple actions (example: `install` and `upgrade` MAY perform the same action).
+Invocation images SHOULD implement `install` and `uninstall`. If one of these REQUIRED actions is not implemented, an invocation image MUST NOT generate an error (though it MAY generate a warning). Implementations MAY map the same underlying operations to multiple actions (example: `install` and `upgrade` MAY perform the same action). The runtime MUST NOT perform a [bundle version](101-bundle-json.md#name-and-version-identifying-metadata) comparison when executing an action against an existing installation but the invocation image MAY return an error if the version transition is not supported.
 
 In addition to the default actions, CNAB runtimes MAY support custom actions (as defined in [the bundle definition](101-bundle-json.md)). Any invocation image whose accompanying bundle definition specifies custom actions SHOULD implement those custom actions. A CNAB runtime MAY exit with an error if a custom action is declared in the bundle definition, but cannot be executed by the invocation image.
 
