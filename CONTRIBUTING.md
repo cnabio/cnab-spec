@@ -16,7 +16,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 
 ## Specifications subject to the Open Web Foundation Agreements.
 In addition, by making a contribution to specifications in this repository, you, on behalf of yourself, your employer, and its affiliates, are making those contributions subject to the obligations set forth in the [OWF Contributor License Agreement 1.0 - Copyright and Patent](http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owf-contributor-license-agreement-1-0---copyright-and-patent).  
-Final specifications developed in this repository will be subject to the [Open Web Foundation Final Specification Agreement (“OWFa 1.0”)](http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-00).  OWFa 1.0 will be applied as follows:
+Final specifications developed in this repository will be subject to the [Open Web Foundation Final Specification Agreement (“OWFa 1.0”)](http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0).  OWFa 1.0 will be applied as follows:
 -	The maintainer will notify all contributors to a designated specification in writing via provided contact information of the start of a 30 day review period, after which the specification will be subject to the OWFa 1.0.
 -	During that 30 day period, contributors may provide written notice to the maintainer that the contributor is not making the forgoing commitment under OWFa 1.0 for the designated specification (“Exclusion”).
 -	Upon the end of that 30 day notice period, those contributors who have not issued an Exclusion, on behalf of themselves, their employer, and its affiliates, will, without further action, be subject to the obligations set forth in the OWFa 1.0 for the designated specification.
