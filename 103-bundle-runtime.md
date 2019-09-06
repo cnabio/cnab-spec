@@ -103,6 +103,8 @@ In addition to the default actions, CNAB runtimes MAY support custom actions (as
 
 A bundle MUST exit with an error if the action is executed, but fails to run to completion. A CNAB runtime MUST issue an error if a bundle issues an error. And an error MUST NOT be issued if one of the three built-in actions is requested, but not present in the bundle. Errors are reserved for cases where something has gone wrong.
 
+In the event of an an error, the installation state MUST be considered as undefined. A subsequent execution of the same action or another action MAY resolve the installation state (example: a failed `install` action MAY be fixed by executing the `upgrade` action, a failed `upgrade` action MAY be fixed by executing the `upgrade` action again). A subsequent execution of the `uninstall` action SHOULD resolve the installation state.
+
 ## Setting Parameter Values
 
 A CNAB `bundle.json` file MAY specify zero or more parameters whose values MAY be specified by a user.
