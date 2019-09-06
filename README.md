@@ -4,9 +4,9 @@
 
 Cloud Native Application Bundles (CNAB) are a package format specification that describes a technology for bundling, installing, and managing distributed applications, that are by design, cloud agnostic.
 
-## Specification Freeze for 1.0
-The CNAB community is preparing for a 1.0 release of the specification. In order to ensure the concepts in the specification are effectual, the [reference implementation](https://github.com/deislabs/duffle) is working to support all 1.0 core concepts before the release.
-For this reason, we are freezing the `100`'s section and postponing all major changes to after the release. The intent is to discover bug fixes through implementation and incorporate only those changes during the freeze period.
+## CNAB Core 1.0 GA
+
+The CNAB Working Group has approved the CNAB Core 1.0 specification. This specification is now pending approval from the CNAB Foundation executive committee, after which it will be finalized as CNAB Core 1.0 (AD). For more information on the approval process, see [the process documentation](901-process.md). Further changes to CNAB Core will be considered for CNAB Core 1.1.
 
 ## Table of Contents
 
@@ -58,11 +58,10 @@ An implementation IS NOT compliant if it fails to satisfy one or more of the MUS
 
 ## Document Naming Conventions
 
-During the draft period of the specification, the documents are named according to the following convention:
-
-- `000-099` contains front matter
-- `100`-`799` contain the specification proper
-  - The first digit is the chapter number
-  - The following two digits are the section numbers
-- `800`-`899` is reserved for non-normative content (examples, patterns, best practices)
-- `900`-`999` is reserved for appendices
+- The CNAB Core specification is contained in the 1xx documents.
+- The CNAB Registry specification is contained in the 2xx documents.
+- The CNAB Security specification reserves 3xx level documents.
+- The Claims specification reserves 4xx documents.
+- The CNAB Dependencies specification uses 5xx documents.
+- The 8xx-level documents are reserved for non-normative guidance.
+- The 9xx-level documents are reserved for process documents.
