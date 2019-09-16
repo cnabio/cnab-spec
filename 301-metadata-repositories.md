@@ -15,19 +15,19 @@ The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, REC
 
 ## Metadata repositories
 
-A _metadata repository_ is a service that hosts TUF and / or in-toto metadata about bundles and / or images. A metadata repository is conceptually distinct from an [_image registry_](https://github.com/opencontainers/distribution-spec), which hosts bundles or images themselves.
+A _metadata repository_ is a service that hosts TUF and / or in-toto metadata about bundles and / or images. The repository is conceptually distinct from a [CNAB registry_](200-CNAB-registries.md), which hosts bundles and / or images themselves.
 
-How TUF and in-toto metadata should be designed for a metadata repository depends on which purpose it serves. A metadata repository may be _private_ for internal consumption, or _public_. Authentication to private metadata repositories are out of the scope of this document.
+How TUF and in-toto metadata should be designed for a metadata repository depends on which purpose it serves. The repository may be _private_ for internal consumption, or _public_. Authentication to private metadata repositories are out of the scope of this document.
 
 ### Example metadata repository
 
-This subsection discusses how an organization (e.g., `example.com/example-org/*`) MAY setup a metadata repository that hosts metadata about bundles and / or images developed and / or maintained by different _projects_, groups of developers. This metadata repository MAY be private or public.
+This subsection discusses how an organization (e.g., `example.com/example-org/*`) MAY setup a metadata repository that hosts metadata about bundles and / or images developed and / or maintained by different _projects_, groups of developers. This repository MAY be private or public.
 
 ![Figure 1: The suggested metadata repository for bundles and / or images developed and / or maintained by different projects, or groups of developers](img/example-metadata-repository.png)
 
 Figure 1 illustrates this suggested metadata repository, which we discuss using a top-down, outside-in approach.
 
-The four-top level TUF `root`, `timestamp`, `snapshot`, and `targets` roles SHOULD be controlled by the metadata repository _administrators_, who develop and maintain the metadata repository's hardware and software.
+The four-top level TUF `root`, `timestamp`, `snapshot`, and `targets` roles SHOULD be controlled by the repository _administrators_, who develop and maintain the repository's hardware and software.
 
 The `root` role distributes, revokes, and replaces the public keys for all four top-level roles. It SHOULD use _offline keys_, or signing keys kept off the Internet (e.g., on trusted hardware in cold storage). It SHOULD also use a threshold (m, n) of keys, where n is the number of repository administrators, and m is the number of quorum members that must agree on new `root` metadata. Its metadata SHOULD expire yearly, considering that an offline key ceremony is expensive in terms of time and resources.
 
@@ -39,16 +39,9 @@ Since metadata for both the `timestamp` and `snapshot` roles could be updated wh
 
 In order to achieve [gradual security](300-cnab-security.md#gradual-security) over time, it is RECOMMENDED to use the delegation model described in the rest of this subsection. Following the SHOULD recommendations, if either images or bundles are first signed using only TUF, then level 1a or 1b security is provided respectively. If both are signed using TUF, then level 2 security is provided. Building on top of that following the MAY recommendations, if either images or bundles are additionally signed using in-toto, then level 3a or 3b security is provided. Finally, if both are signed using TUF and in-toto, then level 4 security is provided.
 
-**TODO**: Update document to:
-1. Distinguish projects vs images or bundles.
-1. Discuss images instead of tags.
-1. Update the delegation model in the text to reflect the figure.
+Instead of signing bundles and images itself, the `targets` role SHOULD _delegate_ bundles and images to the `bundles` and `images` roles respectively. With a delegation, a _delegator_ binds a threshold of public keys, which belongs to a _delegatee_, to a _path pattern_, which specifies bundles or images (and in-toto metadata, if any) that the delegatee may be trusted with if the delegator has not signed for them.
 
-Instead of signing bundles and images itself, the `targets` role SHOULD _delegate_ different bundles and images to different _projects_, or groups of developers that produce them, within an organization. A delegation binds a threshold of public keys to a _path pattern_ that specifies all bundles or images (and in-toto metadata, if any) belonging to a project (e.g., `example.com/example-org/example-image*`).
-
-So, more concretely, the `targets` role SHOULD make a prioritized, terminating delegation of an image (e.g., `example.com/example-org/example-image*`) to the developers of that image (e.g., `example-image-developers`).
-
-Although we discuss only images going forward, exactly the same principles apply to bundles.
+So, more concretely, the `targets` role SHOULD make a prioritized, terminating delegation of all bundles (e.g., `bundles/*`) to the `bundles` role, and all images (e.g., `['example.com/example-org/*:*', 'images/*']`) to the `images` role. In the interest of space, we will discuss only bundles going forward, but note that exactly the same principles apply to images.
 
 The `targets` role SHOULD use a threshold (m, n) of offline keys, where n is the number of repository administrators, and m is the number of quorum members that must agree on new delegations. Its metadata SHOULD expire monthly, assuming that new images are typically registered in that time frame.
 
@@ -64,9 +57,19 @@ The following code listing is an example of this `targets` metadata:
       "roles": [
         {
           "keyids": [...],
-          "name": "example-image-developers",
+          "name": "bundles",
           "paths": [
-            "example.com/example-org/example-image*"
+            "bundles/*"
+          ],
+          "terminating": true,
+          "threshold": 1
+        },
+        {
+          "keyids": [...],
+          "name": "images",
+          "paths": [
+            "example.com/example-org/*:*",
+            "images/*"
           ],
           "terminating": true,
           "threshold": 1
@@ -78,6 +81,14 @@ The following code listing is an example of this `targets` metadata:
   }
 }
 ```
+
+**WIP START**
+
+Different bundles and images to different _projects_, or groups of developers that produce them, within an organization. A delegation binds a threshold of public keys to a _path pattern_ that specifies all bundles or images (and in-toto metadata, if any) belonging to a project (e.g., `example.com/example-org/example-image*`).
+
+So, more concretely, the `targets` role SHOULD make a prioritized, terminating delegation of an image (e.g., `example.com/example-org/example-image*`) to the developers of that image (e.g., `example-image-developers`).
+
+**WIP STOP**
 
 Similarly, the image developers (e.g., `example-image-developers`) SHOULD NOT sign images themselves, because this would prove to be too burdensome to do whenever a new tag is produced, especially at a high enough frequency. Instead, they SHOULD delegate all tags (e.g. `example.com/example-org/example-image:*`) to CI/CD automation (e.g., `example-image-automation`).
 
