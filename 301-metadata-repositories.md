@@ -6,7 +6,7 @@ weight: 301
 # Cloud Native Application Bundles Security (CNAB-Sec): Metadata repositories 1.0 WD
 
 * [Metadata repositories](#metadata-repositories)
-  * [Example metadata repository](#example-metadata-repository)
+  * [Example for multiple projects](#example-for-multiple-projects)
     * [Administrators](#administrators)
     * [Developers](#developers)
     * [Automation](#automation)
@@ -23,7 +23,7 @@ A _metadata repository_ is a service that hosts TUF and / or in-toto metadata ab
 
 How TUF and in-toto metadata should be designed for a metadata repository depends on which purpose it serves. The repository may be _private_ for internal consumption, or _public_. Authentication to private metadata repositories are out of the scope of this document.
 
-### Example metadata repository
+### Example for multiple projects
 
 This subsection discusses how an organization (e.g., `example.com/example-org/*`) MAY setup a metadata repository that hosts metadata about bundles and / or images developed and / or maintained by different _projects_, groups of developers. This repository MAY be private or public.
 
@@ -47,9 +47,9 @@ In order to achieve [gradual security](300-cnab-security.md#gradual-security) ov
 
 Instead of signing bundles and images itself, the `targets` role SHOULD _delegate_ bundles and images to the `bundles` and `images` roles respectively. With a delegation, a _delegator_ binds a threshold of public keys, which belongs to a _delegatee_, to a _path pattern_, which specifies bundles or images (and in-toto metadata, if any) that the delegatee may be trusted with if the delegator has not signed for them.
 
-More concretely, the `targets` role SHOULD make a prioritized, terminating delegation of all bundles (e.g., `['example.com/example-org/*:*', 'bundles/*']`) to the `bundles` role, and all images (e.g., `['example.com/example-org/*:*', 'images/*']`) to the `images` role. In the interest of space, we will discuss only bundles going forward, but note that exactly the same principles apply to images.
+More concretely, the `targets` role SHOULD make two backtracking delegations. First, it should delegate all bundles (e.g., `['example.com/example-org/*:*', 'bundles/*']`) to the `bundles` role. Second, it SHOULD delegate all images (e.g., `['example.com/example-org/*:*', 'images/*']`) to the `images` role. In the interest of space, we will discuss only bundles going forward, but note that exactly the same principles apply to images.
 
-The `targets` role SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on new `targets` metadata. Its metadata SHOULD expire yearly, considering that this information should rarely change.
+The `targets` role SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on new `targets` metadata. The keys between the `targets`, `images`, and `bundles` roles MAY all be shared. Its metadata SHOULD expire yearly, considering that this information should rarely change.
 
 The following code listing is an example of this `targets` metadata:
 
@@ -68,7 +68,7 @@ The following code listing is an example of this `targets` metadata:
             "example.com/example-org/*:*",
             "bundles/*"
           ],
-          "terminating": true,
+          "terminating": false,
           "threshold": m
         },
         {
@@ -78,7 +78,7 @@ The following code listing is an example of this `targets` metadata:
             "example.com/example-org/*:*",
             "images/*"
           ],
-          "terminating": true,
+          "terminating": false,
           "threshold": m
         }
       ]
@@ -89,11 +89,47 @@ The following code listing is an example of this `targets` metadata:
 }
 ```
 
-In turn, the `bundles` role SHOULD delegate all bundles first to the `claimed-bundles` role, and second to the `new-bundles` role. This role SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on new `bundles` metadata. The reasoning is more fully explained in [7, 9], but it can be summarized as follows.
+In turn, the `bundles` role SHOULD make two backtracking delegations. First, it SHOULD delegate all bundles to the `claimed-bundles` role. Second, it SHOULD delegate all bundles again, but to the `new-bundles` role. It SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on new `bundles` metadata. 
 
-Whenever a group of developers registers a new _project_ for a bundle (or an image), the `new-bundles` role SHOULD immediately delegate this new project to its developers, so that its bundles (or images) are immediately available to end-users. However, in order to be able to immediately delegate new bundles, the `new-bundles` role SHOULD use a threshold of (1, 1) online keys. This means that new bundles can be tampered with in the event of a repository compromise [6-10].
+The following code listing is an example of the `bundles` metadata:
 
-Therefore, administrators SHOULD occasionally move new bundles from the `new-bundles` to the `claimed-bundles` role. They SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on the authenticity of public keys for new bundles. The details for how this SHOULD be done is out of the scope of this document, but has been documented extensively in [7, 9].
+```json
+{
+  "signatures": {...},
+  "signed": {
+    ...,
+    "delegations": {
+      "keys": {...},
+      "roles": [
+        {
+          "keyids": [...],
+          "name": "claimed-bundles",
+          "paths": [
+            "*",
+          ],
+          "terminating": false,
+          "threshold": m
+        },
+        {
+          "keyids": [...],
+          "name": "new-bundles",
+          "paths": [
+            "*",
+          ],
+          "terminating": false,
+          "threshold": 1
+        }
+      ]
+    },
+    "targets": {}
+    ...,
+  }
+}
+```
+
+The reasoning is more fully explained in [7, 9], but it can be summarized as follows. Whenever a group of developers registers a new _project_ for a bundle (or an image), the `new-bundles` role SHOULD immediately make a terminating delegation of this new project to its developers, so that its bundles (or images) are immediately available to end-users. However, in order to be able to immediately delegate new bundles, the `new-bundles` role SHOULD use a threshold of (1, 1) online keys. This means that new bundles can be tampered with in the event of a repository compromise [6-10].
+
+Therefore, administrators SHOULD occasionally move the terminating delegations of new bundles from the `new-bundles` to the `claimed-bundles` role. They SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on the authenticity of public keys for new bundles. The details for how this SHOULD be done is out of the scope of this document, but has been documented extensively in [7, 9].
 
 The metadata for both the `new-bundles` and `claimed-bundles` roles SHOULD expire on a monthly basis, assuming that new bundles are claimed in that time frame.
 
@@ -109,24 +145,15 @@ The following code listing is an example of the `new-bundles` / `claimed-bundles
       "roles": [
         {
           "keyids": [...],
-          "name": "claimed-bundles",
+          "name": "bundle1-developers",
           "paths": [
-            "example.com/example-org/*:*",
-            "bundles/*"
+            "example.com/example-org/bundle1:*",
+            "bundles/bundles1/*"
           ],
           "terminating": true,
           "threshold": m
         },
-        {
-          "keyids": [...],
-          "name": "new-bundles",
-          "paths": [
-            "example.com/example-org/*:*",
-            "bundles/*"
-          ],
-          "terminating": true,
-          "threshold": 1
-        }
+        ...
       ]
     },
     "targets": {}
@@ -137,7 +164,9 @@ The following code listing is an example of the `new-bundles` / `claimed-bundles
 
 #### Developers
 
-Regardless of whether the `claimed-bundles` or `new-bundles` role has delegated a bundle (e.g., `["example.com/example-org/bundle1:*", "bundles/bundle1/*"]`) to its developers, the developers (e.g., `bundle1-developers`) SHOULD NOT sign the bundle themselves, because this would prove to be too burdensome to do whenever a new version of the bundle is produced, especially at a high enough frequency. Instead, they SHOULD delegate all versions of the bundle (e.g. `example.com/example-org/bundle1:*`) to CI/CD automation (e.g., `bundle1-automation`).
+> **TODO**: consider the much easier case of developers who want to start by first signing bundles / images using TUF but not in-toto. They can move to both later.
+
+Regardless of whether the `claimed-bundles` or `new-bundles` role has delegated a bundle (e.g., `["example.com/example-org/bundle1:*", "bundles/bundle1/*"]`) to its developers, the developers (e.g., `bundle1-developers`) MAY not sign the bundle themselves, because this would prove to be too burdensome to do whenever a new version of the bundle is produced, especially at a high enough frequency. Instead, they MAY delegate all versions of the bundle (e.g. `example.com/example-org/bundle1:*`) to CI/CD automation (e.g., `bundle1-automation`).
 
 If end-to-end authenticity and integrity of the bundle is desired, the developers MAY also sign targets metadata about the in-toto root layout for this bundle, as well as the public keys used to verify this root layout. The developers MAY also delegate the signing of in-toto link metadata  about the bundle (e.g., `bundles/bundle1/in-toto-metadata/*/*.link`) to the automation.
 
@@ -260,7 +289,7 @@ As discussed in the previous subsections, metadata delineated in red (denoting o
 
 #### Security analysis
 
-[**TODO**: Similar to analyses in [7, 9].]
+> **TODO**: Assuming that the delegations are correctly prioritized and terminating, the security analysis for this metadata repository should be similar to those in [7, 9].
 
 ## References
 
