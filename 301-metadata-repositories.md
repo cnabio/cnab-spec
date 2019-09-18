@@ -47,7 +47,7 @@ In order to achieve [gradual security](300-cnab-security.md#gradual-security) ov
 
 Instead of signing bundles and images itself, the `targets` role SHOULD _delegate_ bundles and images to the `bundles` and `images` roles respectively. With a delegation, a _delegator_ binds a threshold of public keys, which belongs to a _delegatee_, to a _path pattern_, which specifies bundles or images (and in-toto metadata, if any) that the delegatee may be trusted with if the delegator has not signed for them.
 
-More concretely, the `targets` role SHOULD make a prioritized, terminating delegation of all bundles (e.g., `bundles/*`) to the `bundles` role, and all images (e.g., `['example.com/example-org/*:*', 'images/*']`) to the `images` role. In the interest of space, we will discuss only bundles going forward, but note that exactly the same principles apply to images.
+More concretely, the `targets` role SHOULD make a prioritized, terminating delegation of all bundles (e.g., `['example.com/example-org/*:*', 'bundles/*']`) to the `bundles` role, and all images (e.g., `['example.com/example-org/*:*', 'images/*']`) to the `images` role. In the interest of space, we will discuss only bundles going forward, but note that exactly the same principles apply to images.
 
 The `targets` role SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on new `targets` metadata. Its metadata SHOULD expire yearly, considering that this information should rarely change.
 
@@ -65,10 +65,11 @@ The following code listing is an example of this `targets` metadata:
           "keyids": [...],
           "name": "bundles",
           "paths": [
+            "example.com/example-org/*:*",
             "bundles/*"
           ],
           "terminating": true,
-          "threshold": 1
+          "threshold": m
         },
         {
           "keyids": [...],
@@ -76,6 +77,52 @@ The following code listing is an example of this `targets` metadata:
           "paths": [
             "example.com/example-org/*:*",
             "images/*"
+          ],
+          "terminating": true,
+          "threshold": m
+        }
+      ]
+    },
+    "targets": {}
+    ...,
+  }
+}
+```
+
+In turn, the `bundles` role SHOULD delegate all bundles first to the `claimed-bundles` role, and second to the `new-bundles` role. This role SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on new `bundles` metadata. The reasoning is more fully explained in [7, 9], but it can be summarized as follows.
+
+Whenever a group of developers registers a new _project_ for a bundle (or an image), the `new-bundles` role SHOULD immediately delegate this new project to its developers, so that its bundles (or images) are immediately available to end-users. However, in order to be able to immediately delegate new bundles, the `new-bundles` role SHOULD use a threshold of (1, 1) online keys. This means that new bundles can be tampered with in the event of a repository compromise [6-10].
+
+Therefore, administrators SHOULD occasionally move new bundles from the `new-bundles` to the `claimed-bundles` role. They SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on the authenticity of public keys for new bundles. The details for how this SHOULD be done is out of the scope of this document, but has been documented extensively in [7, 9].
+
+The metadata for both the `new-bundles` and `claimed-bundles` roles SHOULD expire on a monthly basis, assuming that new bundles are claimed in that time frame.
+
+The following code listing is an example of the `new-bundles` / `claimed-bundles` metadata:
+
+```json
+{
+  "signatures": {...},
+  "signed": {
+    ...,
+    "delegations": {
+      "keys": {...},
+      "roles": [
+        {
+          "keyids": [...],
+          "name": "claimed-bundles",
+          "paths": [
+            "example.com/example-org/*:*",
+            "bundles/*"
+          ],
+          "terminating": true,
+          "threshold": m
+        },
+        {
+          "keyids": [...],
+          "name": "new-bundles",
+          "paths": [
+            "example.com/example-org/*:*",
+            "bundles/*"
           ],
           "terminating": true,
           "threshold": 1
@@ -87,14 +134,6 @@ The following code listing is an example of this `targets` metadata:
   }
 }
 ```
-
-In turn, the `bundles` role SHOULD delegate all bundles first to the `claimed-bundles` role, and second to the `new-bundles` role. The reasoning is more fully explained in [7, 9], but it can be summarized as follows.
-
-Whenever a group of developers registers a new _project_ for a bundle (or an image), the `new-bundles` role SHOULD immediately delegate this new project to its developers, so that its bundles (or images) are immediately available to end-users. However, in order to be able to immediately delegate new bundles, the `new-bundles` role SHOULD use online keys. This means that new bundles can be tampered with in the event of a repository compromise [6-10].
-
-Therefore, administrators SHOULD occasionally move new bundles from the `new-bundles` to the `claimed-bundles` role. They SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on the authenticity of public keys for new bundles. The details for how this SHOULD be done is out of the scope of this document, but has been documented extensively in [7, 9].
-
-[**TODO**: add example `new-bundles` / `claimed-bundles` metadata.]
 
 #### Developers
 
