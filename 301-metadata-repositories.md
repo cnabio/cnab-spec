@@ -19,15 +19,15 @@ The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, REC
 
 ## Metadata repositories
 
-A _metadata repository_ is a service that hosts TUF and / or in-toto metadata about bundles and / or images. The repository is conceptually distinct from a [CNAB registry](200-CNAB-registries.md), which hosts bundles and / or images themselves.
+A _metadata repository_ is a service that hosts TUF and/or in-toto metadata about bundles and/or images. The repository is conceptually distinct from a [CNAB registry](200-CNAB-registries.md), which hosts bundles and/or images themselves.
 
 How TUF and in-toto metadata should be designed for a metadata repository depends on which purpose it serves. The repository may be _private_ for internal consumption, or _public_. Authentication to private metadata repositories are out of the scope of this document.
 
 ### Example for multiple projects
 
-This subsection discusses how an organization (e.g., `example.com/example-org/*`) MAY setup a metadata repository that hosts metadata about bundles and / or images developed and / or maintained by different _projects_, groups of developers. This repository MAY be private or public.
+This subsection discusses how an organization (e.g., `example.com/example-org/*`) MAY setup a metadata repository that hosts metadata about bundles and/or images developed and/or maintained by different _projects_, groups of developers. This repository MAY be private or public.
 
-![Figure 1: The suggested metadata repository for bundles and / or images developed and / or maintained by different projects, or groups of developers](img/example-metadata-repository.png)
+![Figure 1: The suggested metadata repository for bundles and/or images developed and/or maintained by different projects, or groups of developers](img/example-metadata-repository.png)
 
 Figure 1 illustrates this suggested metadata repository, which we discuss using a top-down, outside-in approach.
 
@@ -39,9 +39,9 @@ The `root` role distributes, revokes, and replaces the public keys for all four 
 
 The `timestamp` role indicates concisely whether there is any new metadata, bundle, or image on the repository.
 
-The `snapshot` role prevents attackers from tampering with interdependencies between bundles and / or images.
+The `snapshot` role prevents attackers from tampering with interdependencies between bundles and/or images.
 
-Since metadata for both the `timestamp` and `snapshot` roles could be updated whenever a new bundle/ image is produced at any time, they MAY each use a threshold (1, 1) of _online keys_, or signing keys accessible on-demand by automation for the repository. In fact, they MAY even share the same online key. The metadata for each role MAY expire daily, since it is expected to be updated relatively frequently (e.g., whenever a developer pushes a new bundle / image, or a scheduled job runs to renew the metadata).
+Since metadata for both the `timestamp` and `snapshot` roles could be updated whenever a new bundle/ image is produced at any time, they MAY each use a threshold (1, 1) of _online keys_, or signing keys accessible on-demand by automation for the repository. In fact, they MAY even share the same online key. The metadata for each role MAY expire daily, since it is expected to be updated relatively frequently (e.g., whenever a developer pushes a new bundle/image, or a scheduled job runs to renew the metadata).
 
 In order to achieve [gradual security](300-cnab-security.md#gradual-security) over time, it is RECOMMENDED to use the delegation model described in the rest of this subsection. Following the SHOULD recommendations, if either images or bundles are first signed using only TUF, then level 1a or 1b security is provided respectively. If both are signed using TUF, then level 2 security is provided. Building on top of that, following the MAY recommendations, if either images or bundles are additionally signed using in-toto, then level 3a or 3b security is provided. Finally, if both are signed using TUF and in-toto, then level 4 security is provided.
 
@@ -133,7 +133,7 @@ Therefore, administrators SHOULD occasionally move the terminating delegations o
 
 The metadata for both the `new-bundles` and `claimed-bundles` roles SHOULD expire on a monthly basis, assuming that new bundles are claimed in that time frame.
 
-The following code listing is an example of the `new-bundles` / `claimed-bundles` metadata:
+The following code listing is an example of the `new-bundles`/`claimed-bundles` metadata:
 
 ```json
 {
@@ -164,7 +164,7 @@ The following code listing is an example of the `new-bundles` / `claimed-bundles
 
 #### Developers
 
-> **TODO**: consider the much easier case of developers who want to start by first signing bundles / images using TUF but not in-toto. They can move to both later.
+> **TODO**: consider the much easier case of developers who want to start by first signing bundles/images using TUF but not in-toto. They can move to both later.
 
 Regardless of whether the `claimed-bundles` or `new-bundles` role has delegated a bundle (e.g., `["example.com/example-org/bundle1:*", "bundles/bundle1/*"]`) to its developers, the developers (e.g., `bundle1-developers`) MAY not sign the bundle themselves, because this would prove to be too burdensome to do whenever a new version of the bundle is produced, especially at a high enough frequency. Instead, they MAY delegate all versions of the bundle (e.g. `example.com/example-org/bundle1:*`) to CI/CD automation (e.g., `bundle1-automation`).
 
