@@ -45,6 +45,10 @@ The specification is licensed under [OWF Contributor License Agreement 1.0 - Cop
 #cnab Slack channel for related discussion in
 [CNCF's Slack workspace](https://slack.cncf.io/).
 
+### Mailing List
+
+We operate a [mailing list](https://lists.jointdevelopment.org/g/CNAB-Main) via the Joint Development Foundation.
+
 ## Notational Conventions
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" are to be interpreted as described in [RFC 2119][rfc2119].
