@@ -68,7 +68,7 @@ The CNAB claim is defined as a JSON document. The specification currently does n
     "name": "technosophos.hellohelm",
     "outputs": {},
     "parameters": {},
-    "schemaVersion": "v1.0.0-WD",
+    "schemaVersion": "v1.0.0",
     "version": "0.1.0"
   },
   "created": "2018-08-30T20:39:55.549002887-06:00",
@@ -165,7 +165,7 @@ Below, you can see an example of a claim for a bundle that included a single out
     "parameters":{ 
 
     },
-    "schemaVersion":"v1.0.0-WD",
+    "schemaVersion":"v1.0.0",
     "version":"0.1.0"
   },
   "created": "2018-08-30T20:39:55.549002887-06:00",
