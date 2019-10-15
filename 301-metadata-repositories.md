@@ -6,10 +6,7 @@ weight: 301
 # Cloud Native Application Bundles Security (CNAB-Sec): Metadata repositories 1.0 WD
 
 * [Metadata repositories](#metadata-repositories)
-  * [Example for multiple projects](#example-for-multiple-projects)
-    * [Administrators](#administrators)
-    * [Developers](#developers)
-    * [Automation](#automation)
+  * [Minimum viable product (MVP)](#minimum-viable-product-mvp)
     * [Security analysis](#security-analysis)
 * [References](#references)
 
@@ -23,15 +20,13 @@ A _metadata repository_ is a service that hosts TUF and/or in-toto metadata abou
 
 How TUF and in-toto metadata should be designed for a metadata repository depends on which purpose it serves. The repository may be _private_ for internal consumption, or _public_. Authentication to private metadata repositories are out of the scope of this document.
 
-### Example for multiple projects
+### Minimum viable product (MVP)
 
 This subsection discusses how an organization (e.g., `example.com/example-org/*`) MAY setup a metadata repository that hosts metadata about bundles and/or images developed and/or maintained by different _projects_, groups of developers. This repository MAY be private or public.
 
 ![Figure 1: The suggested metadata repository for bundles and/or images developed and/or maintained by different projects, or groups of developers](img/example-metadata-repository.png)
 
 Figure 1 illustrates this suggested metadata repository, which we discuss using a top-down, outside-in approach.
-
-#### Administrators
 
 The four-top level TUF `root`, `timestamp`, `snapshot`, and `targets` roles SHOULD be controlled by the repository _administrators_, who develop and maintain the repository's hardware and software.
 
@@ -45,11 +40,6 @@ Since metadata for both the `timestamp` and `snapshot` roles could be updated wh
 
 In order to achieve [gradual security](300-cnab-security.md#gradual-security) over time, it is RECOMMENDED to use the delegation model described in the rest of this subsection. Following the SHOULD recommendations, if either images or bundles are first signed using only TUF, then level 1a or 1b security is provided respectively. If both are signed using TUF, then level 2 security is provided. Building on top of that, following the MAY recommendations, if either images or bundles are additionally signed using in-toto, then level 3a or 3b security is provided. Finally, if both are signed using TUF and in-toto, then level 4 security is provided.
 
-Instead of signing bundles and images itself, the `targets` role SHOULD _delegate_ bundles and images to the `bundles` and `images` roles respectively. With a delegation, a _delegator_ binds a threshold of public keys, which belongs to a _delegatee_, to a _path pattern_, which specifies bundles or images (and in-toto metadata, if any) that the delegatee may be trusted with if the delegator has not signed for them.
-
-More concretely, the `targets` role SHOULD make two backtracking delegations. First, it should delegate all bundles (e.g., `['example.com/example-org/*:*', 'bundles/*']`) to the `bundles` role. Second, it SHOULD delegate all images (e.g., `['example.com/example-org/*:*', 'images/*']`) to the `images` role. In the interest of space, we will discuss only bundles going forward, but note that exactly the same principles apply to images.
-
-The `targets` role SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on new `targets` metadata. The keys between the `targets`, `images`, and `bundles` roles MAY all be shared. Its metadata SHOULD expire yearly, considering that this information should rarely change.
 
 The following code listing is an example of this `targets` metadata:
 
@@ -58,142 +48,7 @@ The following code listing is an example of this `targets` metadata:
   "signatures": {...},
   "signed": {
     ...,
-    "delegations": {
-      "keys": {...},
-      "roles": [
-        {
-          "keyids": [...],
-          "name": "bundles",
-          "paths": [
-            "example.com/example-org/*:*",
-            "bundles/*"
-          ],
-          "terminating": false,
-          "threshold": m
-        },
-        {
-          "keyids": [...],
-          "name": "images",
-          "paths": [
-            "example.com/example-org/*:*",
-            "images/*"
-          ],
-          "terminating": false,
-          "threshold": m
-        }
-      ]
-    },
-    "targets": {}
-    ...,
-  }
-}
-```
-
-In turn, the `bundles` role SHOULD make two backtracking delegations. First, it SHOULD delegate all bundles to the `claimed-bundles` role. Second, it SHOULD delegate all bundles again, but to the `new-bundles` role. It SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on new `bundles` metadata. 
-
-The following code listing is an example of the `bundles` metadata:
-
-```json
-{
-  "signatures": {...},
-  "signed": {
-    ...,
-    "delegations": {
-      "keys": {...},
-      "roles": [
-        {
-          "keyids": [...],
-          "name": "claimed-bundles",
-          "paths": [
-            "*",
-          ],
-          "terminating": false,
-          "threshold": m
-        },
-        {
-          "keyids": [...],
-          "name": "new-bundles",
-          "paths": [
-            "*",
-          ],
-          "terminating": false,
-          "threshold": 1
-        }
-      ]
-    },
-    "targets": {}
-    ...,
-  }
-}
-```
-
-The reasoning is more fully explained in [7, 9], but it can be summarized as follows. Whenever a group of developers registers a new _project_ for a bundle (or an image), the `new-bundles` role SHOULD immediately make a terminating delegation of this new project to its developers, so that its bundles (or images) are immediately available to end-users. However, in order to be able to immediately delegate new bundles, the `new-bundles` role SHOULD use a threshold of (1, 1) online keys. This means that new bundles can be tampered with in the event of a repository compromise [6-10].
-
-Therefore, administrators SHOULD occasionally move the terminating delegations of new bundles from the `new-bundles` to the `claimed-bundles` role. They SHOULD use a threshold (m, n) of offline keys, where n is the number of administrators, and m is the number of quorum members that must agree on the authenticity of public keys for new bundles. The details for how this SHOULD be done is out of the scope of this document, but has been documented extensively in [7, 9].
-
-The metadata for both the `new-bundles` and `claimed-bundles` roles SHOULD expire on a monthly basis, assuming that new bundles are claimed in that time frame.
-
-The following code listing is an example of the `new-bundles`/`claimed-bundles` metadata:
-
-```json
-{
-  "signatures": {...},
-  "signed": {
-    ...,
-    "delegations": {
-      "keys": {...},
-      "roles": [
-        {
-          "keyids": [...],
-          "name": "bundle1-developers",
-          "paths": [
-            "example.com/example-org/bundle1:*",
-            "bundles/bundles1/*"
-          ],
-          "terminating": true,
-          "threshold": m
-        },
-        ...
-      ]
-    },
-    "targets": {}
-    ...,
-  }
-}
-```
-
-#### Developers
-
-> **TODO**: consider the much easier case of developers who want to start by first signing bundles/images using TUF but not in-toto. They can move to both later.
-
-Regardless of whether the `claimed-bundles` or `new-bundles` role has delegated a bundle (e.g., `["example.com/example-org/bundle1:*", "bundles/bundle1/*"]`) to its developers, the developers (e.g., `bundle1-developers`) MAY not sign the bundle themselves, because this would prove to be too burdensome to do whenever a new version of the bundle is produced, especially at a high enough frequency. Instead, they MAY delegate all versions of the bundle (e.g. `example.com/example-org/bundle1:*`) to CI/CD automation (e.g., `bundle1-automation`).
-
-If end-to-end authenticity and integrity of the bundle is desired, the developers MAY also sign targets metadata about the in-toto root layout for this bundle, as well as the public keys used to verify this root layout. The developers MAY also delegate the signing of in-toto link metadata  about the bundle (e.g., `bundles/bundle1/in-toto-metadata/*/*.link`) to the automation.
-
-The developers SHOULD  use a threshold (m, n) of offline keys, where n is the number of developers, and m is at least 1. Their metadata SHOULD expire yearly, assuming that developers join and leave relatively rarely.
-
-The following code listing is an example of the `bundle1-developers` metadata:
-
-```json
-{
-  "signatures": {...},
-  "signed": {
-    ...,
-    "delegations": {
-      "keys": {...},
-      "roles": [
-        {
-          "keyids": [...],
-          "name": "bundle1-automation",
-          "paths": [
-            "example.com/example-org/bundle1:*",
-            "bundles/bundle1/in-toto-metadata/*/*.link"
-          ],
-          "terminating": true,
-          "threshold": 1
-        }
-      ]
-    },
+    "delegations": {},
     "targets": {
       "bundles/bundle1/in-toto-metadata/root.layout": {
         "hashes": {
@@ -222,34 +77,7 @@ The following code listing is an example of the `bundle1-developers` metadata:
           "sha512": "e259f98b766537ed2893c1b1e25d171d8ab374702f29d0fbe3708b13a4456e153b29e36722f136bc963e4a85fa7581dfbbf40ebd3e1538227ec30874264ddd2b"
         },
         "length": 799
-      }
-    }
-    ...,
-  }
-}
-```
-
-Finally, the CI/CD automation (e.g., `bundle1-automation`) SHOULD sign targets metadata (e.g., cryptographic hashes and file sizes) for all available versions of the bundle.
-
-If end-to-end authenticity and integrity of bundles is desired, each version (e.g., `latest`) of the bundle MAY include custom targets metadata that refers to a complete set of in-toto link metadata (a.k.a. _links_) required to verify that bundle according to the root layout specified by its developers (e.g., `bundle1-developers`). In this case, the automation MAY also sign targets metadata about all links for all available versions of the bundle.
-
-For each bundle, there MAY be as many links as there are steps in the root layout. The exact setup of the root layout depends on the organization and the specific group of developers, and hence out of the scope of this document. However, as a working example, suppose that there are two steps in the root layout:
-
-1. In the `developer` step, developers MAY sign link metadata about all code and data required to build a bundle. They MAY use offline keys (e.g. [YubiKeys](https://github.com/DataDog/yubikey)) to sign this link. Finally, they MAY also check all of this code and data into a version control system (VCS).
-2. In the `builder` step, the CI/CD automation MAY sign link metadata about all of the code and data it received from this VCS about this bundle. It MAY also sign link metadata about the bundle it built using this code and data. (As part of [reproducible builds](https://reproducible-builds.org), which is out of the scope of this document, the root layout MAY require two different builders to agree on the same digest for the same bundle.) The automation MAY use online keys to sign this link. In fact, it MAY even share the same online key with the `timestamp` and `snapshot` roles.
-
-In order to prevent conflicts between links for different versions of a bundle, the complete set of link metadata for each bundle MAY be isolated in different directories. The simplest way to do this is to use a separate directory for each bundle that is named after the digest (e.g., SHA-256) for that bundle.
-
-Returning to the TUF targets metadata for the automation, it SHOULD use a threshold (1, 1) of online keys. In fact, it MAY even share the same online key with the `timestamp` and `snapshot` roles. Its metadata SHOULD expire weekly, assuming that new bundles are produced a few times a week.
-
-The following code listing is an example of the `bundle1-automation` metadata:
-
-```json
-{
-  "signatures": {...},
-  "signed": {
-    ...,
-    "targets": {
+      },
       "example.com/example-org/bundle1:latest": {
         "custom": {
           "in-toto": [
@@ -283,7 +111,22 @@ The following code listing is an example of the `bundle1-automation` metadata:
 }
 ```
 
-#### Automation
+Regardless of whether the `claimed-bundles` or `new-bundles` role has delegated a bundle (e.g., `["example.com/example-org/bundle1:*", "bundles/bundle1/*"]`) to its developers, the developers (e.g., `bundle1-developers`) MAY not sign the bundle themselves, because this would prove to be too burdensome to do whenever a new version of the bundle is produced, especially at a high enough frequency. Instead, they MAY delegate all versions of the bundle (e.g. `example.com/example-org/bundle1:*`) to CI/CD automation (e.g., `bundle1-automation`).
+
+If end-to-end authenticity and integrity of the bundle is desired, the developers MAY also sign targets metadata about the in-toto root layout for this bundle, as well as the public keys used to verify this root layout. The developers MAY also delegate the signing of in-toto link metadata  about the bundle (e.g., `bundles/bundle1/in-toto-metadata/*/*.link`) to the automation.
+
+The developers SHOULD  use a threshold (m, n) of offline keys, where n is the number of developers, and m is at least 1. Their metadata SHOULD expire yearly, assuming that developers join and leave relatively rarely.
+
+If end-to-end authenticity and integrity of bundles is desired, each version (e.g., `latest`) of the bundle MAY include custom targets metadata that refers to a complete set of in-toto link metadata (a.k.a. _links_) required to verify that bundle according to the root layout specified by its developers (e.g., `bundle1-developers`). In this case, the automation MAY also sign targets metadata about all links for all available versions of the bundle.
+
+For each bundle, there MAY be as many links as there are steps in the root layout. The exact setup of the root layout depends on the organization and the specific group of developers, and hence out of the scope of this document. However, as a working example, suppose that there are two steps in the root layout:
+
+1. In the `developer` step, developers MAY sign link metadata about all code and data required to build a bundle. They MAY use offline keys (e.g. [YubiKeys](https://github.com/DataDog/yubikey)) to sign this link. Finally, they MAY also check all of this code and data into a version control system (VCS).
+2. In the `builder` step, the CI/CD automation MAY sign link metadata about all of the code and data it received from this VCS about this bundle. It MAY also sign link metadata about the bundle it built using this code and data. (As part of [reproducible builds](https://reproducible-builds.org), which is out of the scope of this document, the root layout MAY require two different builders to agree on the same digest for the same bundle.) The automation MAY use online keys to sign this link. In fact, it MAY even share the same online key with the `timestamp` and `snapshot` roles.
+
+In order to prevent conflicts between links for different versions of a bundle, the complete set of link metadata for each bundle MAY be isolated in different directories. The simplest way to do this is to use a separate directory for each bundle that is named after the digest (e.g., SHA-256) for that bundle.
+
+Returning to the TUF targets metadata for the automation, it SHOULD use a threshold (1, 1) of online keys. In fact, it MAY even share the same online key with the `timestamp` and `snapshot` roles. Its metadata SHOULD expire weekly, assuming that new bundles are produced a few times a week.
 
 As discussed in the previous subsections, metadata delineated in red (denoting online keys) in Figure 1 MAY and SHOULD be signed using a threshold (1, 1) of _online keys. This includes, for example, the `bundle1-automation`, `new-images`, `new-bundles`, `snapshot`, and `timestamp` metadata. These online keys MAY be kept directly accessible by the metadata repository.
 
