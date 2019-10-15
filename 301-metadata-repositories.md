@@ -16,15 +16,19 @@ The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, REC
 
 ## Metadata repositories
 
-A _metadata repository_ is a service that hosts TUF and/or in-toto metadata about bundles and/or images. The repository is conceptually distinct from a [CNAB registry](200-CNAB-registries.md), which hosts bundles and/or images themselves. As such, the repository MAY be physically distinct from a CNAB registry, or not (e.g., bundles as well as TUF and/or in-toto metadata MAY live as [OCI Artifacts](https://stevelasker.blog/2019/08/25/oci-artifacts-and-a-view-of-the-future/) on a CNAB registry).
+A _metadata repository_ is a service that hosts The Update Framework (TUF) and in-toto metadata about bundles. As discussed in [300](300-CNAB-security.md), TUF adds signed metadata that provides authenticity and integrity of bundles between [CNAB registries](200-CNAB-registries.md) and users, whereas in-toto adds signed metadata that provides authenticity and integrity of bundles between developers and CNAB registries. By combining both types of signed metadata, we get end-to-end authenticity and integrity of bundles between developers and users.
 
-How TUF and in-toto metadata should be designed for a metadata repository depends on which purpose it serves. However, we discuss one [minimum viable product (MVP)](#minimum-viable-product-mvp) in the rest of this document. The repository may be _private_ for internal consumption, or _public_. Authentication to private metadata repositories are out of the scope of this document.
+Note that:
+* A metadata repository MAY be physically distinct from a CNAB registry, or not (e.g., bundles as well as TUF and/or in-toto metadata MAY live as [OCI Artifacts](https://stevelasker.blog/2019/08/25/oci-artifacts-and-a-view-of-the-future/) on a CNAB registry).
+* Both TUF and in-toto are frameworks that can be configured in a wide variety of ways to achieve varying degrees of security. However, we discuss one [minimum viable product (MVP)](#minimum-viable-product-mvp) in this document.
+* Although we discuss only the signing and verification of bundles, exactly the same principles apply to images.
+
 
 ### Minimum viable product (MVP)
 
-This subsection discusses how an organization (e.g., `example.com/example-org/*`) MAY setup a metadata repository that hosts metadata about bundles and/or images developed and/or maintained by different _projects_, groups of developers. This repository MAY be private or public.
+This subsection discusses how an organization (e.g., `example.com/example-org/*`) MAY setup a metadata repository that hosts metadata about bundles developed and/or maintained by different _projects_, groups of developers.
 
-![Figure 1: The suggested metadata repository for bundles and/or images developed and/or maintained by different projects, or groups of developers](img/example-metadata-repository.png)
+![Figure 1: An MVP metadata repository for a bundle](img/example-metadata-repository.png)
 
 Figure 1 illustrates this suggested metadata repository, which we discuss using a top-down, outside-in approach.
 
@@ -32,13 +36,13 @@ The four-top level TUF `root`, `timestamp`, `snapshot`, and `targets` roles SHOU
 
 The `root` role distributes, revokes, and replaces the public keys for all four top-level roles. It SHOULD use _offline keys_, or signing keys kept off the Internet (e.g., on trusted hardware in cold storage). It SHOULD also use a threshold (m, n) of keys, where n is the number of administrators, and m is the number of quorum members that must agree on new `root` metadata. Its metadata SHOULD expire yearly, considering that an offline key ceremony is expensive in terms of time and resources.
 
-The `timestamp` role indicates concisely whether there is any new metadata, bundle, or image on the repository.
+The `timestamp` role indicates concisely whether there is any new metadata or bundle on the repository.
 
-The `snapshot` role prevents attackers from tampering with interdependencies between bundles and/or images.
+The `snapshot` role prevents attackers from tampering with interdependencies between bundles.
 
-Since metadata for both the `timestamp` and `snapshot` roles could be updated whenever a new bundle/ image is produced at any time, they MAY each use a threshold (1, 1) of _online keys_, or signing keys accessible on-demand by automation for the repository. In fact, they MAY even share the same online key. The metadata for each role MAY expire daily, since it is expected to be updated relatively frequently (e.g., whenever a developer pushes a new bundle/image, or a scheduled job runs to renew the metadata).
+Since metadata for both the `timestamp` and `snapshot` roles could be updated whenever a new bundle is produced at any time, they MAY each use a threshold (1, 1) of _online keys_, or signing keys accessible on-demand by automation for the repository. In fact, they MAY even share the same online key. The metadata for each role MAY expire daily, since it is expected to be updated relatively frequently (e.g., whenever a developer pushes a new bundle, or a scheduled job runs to renew the metadata).
 
-In order to achieve [gradual security](300-cnab-security.md#gradual-security) over time, it is RECOMMENDED to use the delegation model described in the rest of this subsection. Following the SHOULD recommendations, if either images or bundles are first signed using only TUF, then level 1a or 1b security is provided respectively. If both are signed using TUF, then level 2 security is provided. Building on top of that, following the MAY recommendations, if either images or bundles are additionally signed using in-toto, then level 3a or 3b security is provided. Finally, if both are signed using TUF and in-toto, then level 4 security is provided.
+In order to achieve [gradual security](300-cnab-security.md#gradual-security) over time, it is RECOMMENDED to use the delegation model described in the rest of this subsection. Following the SHOULD recommendations, if bundles are first signed using only TUF, then level 1a or 1b security is provided respectively. If both are signed using TUF, then level 2 security is provided. Building on top of that, following the MAY recommendations, if bundles are additionally signed using in-toto, then level 3a or 3b security is provided. Finally, if both are signed using TUF and in-toto, then level 4 security is provided.
 
 
 The following code listing is an example of this `targets` metadata:
@@ -91,14 +95,14 @@ The following code listing is an example of this `targets` metadata:
         },
         "length": 7206
       },
-      "example-image/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/developer.87d52666.link": {
+      "example-image/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step1.87d52666.link": {
         "hashes": {
           "sha256": "0a33cbf67b70f315c0b7a83923bcef35308e986140169950e609e3be38585289",
           "sha512": "848188de9c1ec1d855ed88d62114f0d4f0f13df6fb5aae77716276a1240cefbe7cf03c1b664e43dc93c3438c82e88f3d910ab3d10d55bfc31a759b7997c4b6cb"
         },
         "length": 132251
       },
-      "example-image/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/builder.20585de1.link": {
+      "example-image/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step2.20585de1.link": {
         "hashes": {
           "sha256": "e5076f59e2096fb64deae6b13384575d3d63c1c4f7a42f48d0a238097a8823eb",
           "sha512": "7f8c1496abca669c3e8cdbfd315e2383bb4fc3386d06258d961a5fe059b2ea9afa410f9924462933ec3c6570f2c3744f13882f61394687bf9de1156e7c6c2357"
@@ -128,7 +132,7 @@ In order to prevent conflicts between links for different versions of a bundle, 
 
 Returning to the TUF targets metadata for the automation, it SHOULD use a threshold (1, 1) of online keys. In fact, it MAY even share the same online key with the `timestamp` and `snapshot` roles. Its metadata SHOULD expire weekly, assuming that new bundles are produced a few times a week.
 
-As discussed in the previous subsections, metadata delineated in red (denoting online keys) in Figure 1 MAY and SHOULD be signed using a threshold (1, 1) of _online keys. This includes, for example, the `bundle1-automation`, `new-images`, `new-bundles`, `snapshot`, and `timestamp` metadata. These online keys MAY be kept directly accessible by the metadata repository.
+As discussed in the previous subsections, metadata delineated in red (denoting online keys) in Figure 1 MAY and SHOULD be signed using a threshold (1, 1) of _online keys. This includes, for example, the `snapshot` and `timestamp` metadata. These online keys MAY be kept directly accessible by the metadata repository.
 
 #### Security analysis
 
