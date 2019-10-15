@@ -16,9 +16,9 @@ The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, REC
 
 ## Metadata repositories
 
-A _metadata repository_ is a service that hosts TUF and/or in-toto metadata about bundles and/or images. The repository is conceptually distinct from a [CNAB registry](200-CNAB-registries.md), which hosts bundles and/or images themselves.
+A _metadata repository_ is a service that hosts TUF and/or in-toto metadata about bundles and/or images. The repository is conceptually distinct from a [CNAB registry](200-CNAB-registries.md), which hosts bundles and/or images themselves. As such, the repository MAY be physically distinct from a CNAB registry, or not (e.g., bundles as well as TUF and/or in-toto metadata MAY live as [OCI Artifacts](https://stevelasker.blog/2019/08/25/oci-artifacts-and-a-view-of-the-future/) on a CNAB registry).
 
-How TUF and in-toto metadata should be designed for a metadata repository depends on which purpose it serves. The repository may be _private_ for internal consumption, or _public_. Authentication to private metadata repositories are out of the scope of this document.
+How TUF and in-toto metadata should be designed for a metadata repository depends on which purpose it serves. However, we discuss one [minimum viable product (MVP)](#minimum-viable-product-mvp) in the rest of this document. The repository may be _private_ for internal consumption, or _public_. Authentication to private metadata repositories are out of the scope of this document.
 
 ### Minimum viable product (MVP)
 
