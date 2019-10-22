@@ -27,6 +27,7 @@ Note that:
 This subsection discusses the simplest way that a _project_, or a group of developers, MAY set up a metadata repository for their bundle. Every bundle MAY use a separate metadata repository on the same server, even if two or more bundles are maintained by the same group of developers. (This is similar to how images are signed using [Docker Content Trust](https://docs.docker.com/engine/security/trust/content_trust/).) Figure 1 illustrates our simple metadata repository for a bundle.
 
 ![Figure 1: An MVP metadata repository for a bundle](img/example-metadata-repository.png)
+**Figure 1**: An MVP metadata repository for a bundle.
 
 A project SHOULD provide at least the TUF metadata for the four top-level roles: `root`, `timestamp`, `snapshot`, and `targets`.
 
@@ -130,6 +131,25 @@ The following code listing is an example of the `targets` metadata for a bundle:
 
 ## Security analysis of MVP
 
-**WIP: STOP READING HERE**
+Table 1 presents a summary of possible attacks given the key compromise of one or more TUF roles and in-toto functionaries. We assume that attackers can:
 
-For operational simplicity, projects MAY share `root` and `targets` keys across different metadata repositories for different bundles.
+1. Compromise any combination of keys as per any row in Table 1.
+1. Serve new TUF and in-toto metadata as well as bundles. This can be done either with a man-in-the-middle (MitM) attack, or by compromising the metadata repository and CNAB registry.
+
+| TUF role, or in-toto functionary                             | Freeze attacks                    | Mix-and- match attacks            | Rollback attacks | Malicious bundles |
+|--------------------------------------------------------------|-----------------------------------|-----------------------------------|------------------|----------------------------|
+| root (TUF)                                                   | Yes                               | Yes                               | Yes              | Yes                        |
+| timestamp + snapshot (TUF)                                   | Yes (limited by root, or targets) | Yes (limited by root, or targets) | No               | No                         |
+| timestamp + snapshot + targets (TUF)                         | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
+| timestamp + snapshot + targets (TUF) + root layout (in-toto) | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
+| timestamp + snapshot + targets (TUF) + step1 (in-toto)       | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
+| timestamp + snapshot + targets (TUF) + step2 (in-toto)       | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
+**Table 1**: The security attacks that are possible given the key compromise of one or more TUF role or in-toto functionary.
+
+As Table 1 suggests, a project SHOULD use offline keys to sign:
+
+1. The TUF `root` and `targets` metadata. (For operational simplicity, projects that share the same developers MAY share `root` and `targets` keys across different metadata repositories for different bundles.)
+2. The in-toto root layouts as well as their associated public keys.
+3. The in-toto link metadata for the first step that acts as the ultimate source of trust for a bundle (e.g., `step1` which might correspond to developers writing source code).
+
+All other keys MAY be kept safely online. Exact details are out of the scope of this document, but interested readers SHOULD consult [ITE-2](https://github.com/in-toto/ITE/pull/4) and [ITE-3](https://github.com/in-toto/ITE/pull/5).
