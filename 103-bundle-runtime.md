@@ -157,7 +157,7 @@ In the case where the `destination` object has a `path` field, the CNAB runtime 
   "parameters": {
     "greeting": {
       "definition": "greeting",
-      "description": "this will be in $GREETING",
+      "description": "this will be in /var/run/greeting.txt",
       "destination": {
         "path": "/var/run/greeting.txt"
       }
