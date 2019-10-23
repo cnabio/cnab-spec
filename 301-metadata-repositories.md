@@ -144,6 +144,7 @@ Table 1 presents a summary of possible attacks given the key compromise of one o
 | timestamp + snapshot + targets (TUF) + root layout (in-toto) | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
 | timestamp + snapshot + targets (TUF) + step1 (in-toto)       | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
 | timestamp + snapshot + targets (TUF) + step2 (in-toto)       | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
+
 **Table 1**: The security attacks that are possible given the key compromise of one or more TUF role or in-toto functionary.
 
 As Table 1 suggests, a project SHOULD use offline keys to sign:
