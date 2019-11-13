@@ -6,9 +6,13 @@ weight: 400
 # CNAB Claims 1.0 (CNAB-Claims1)
 *[Working Draft](901-process.md), Feb. 2019*
 
-This specification describes the CNAB Claims system. This is not part of the [CNAB Core](100-CNAB.md) specification, but is a specification describing how records of CNAB installations may be formatted for storage. Implementations of CNAB Core can meet the CNAB Core specification without implementing this specification.
+This specification describes the CNAB Claims system. This is not part of the [CNAB Core](100-CNAB.md) specification, but is a specification describing how records of CNAB installations may be formatted for storage. Implementations of CNAB Core can meet the CNAB Core specification without implementing this specification. Implementations that support claims MAY state that they comply with CNAB Claims 1.0-WD.
 
-A _claim_ (or _claim receipt_) is a record of a CNAB installation. This specification describes how the claim system works.
+A _claim_ (or _claim receipt_) is a record of a CNAB installation. This specification defines the format of a claim, and describes certain necessary behaviors of a system that implements claims.
+
+A _host environment_ is an environment, possibly shared between multiple CNAB runtimes, that provides persistence to a CNAB configuration. For example, a filesystem may contain a record of claims that two different CNAB clients share. Or a database may contain the environment that is shared by multiple tools at different locations in the network. Each of these is a CNAB host environment.
+
+The word _claim_ was chosen because it represents the relationship between a certain CNAB host environment and the resources that were created by a CNAB runtime in that host environment. In this sense, an environment takes responsibility for those resources if an only if it can _claim_ them.
 
 The claims system is designed to satisfy the requirements of the [Bundle Runtime specification](103-bundle-runtime.md) regarding the tracking `CNAB_REVISION` and `CNAB_LAST_REVISION`. It also provides a description of how the state of a bundle installation may be represented.
 
