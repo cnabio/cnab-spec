@@ -50,13 +50,11 @@ From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/cscope.rb
 
 The CNAB Claims specification does not define where or how records are stored, nor how these records MAY be used by CNAB tooling. However, this specification describes how a CNAB-based system MUST emit the record to an invocation image, and provides some guidance on maintaining integrity of the system.
 
-This is done so that implementors can standardize on a way of relating a release claim (the record of a release) to release operations like `install`, `upgrade`, or `uninstall`. This, in turn, is necessary if CNAB bundles are expected to be executable by different implementations.
+This is done so that implementors can standardize on a way of relating a release claim (the record of a release) to release actions like `install`, `upgrade`, or `uninstall`. This, in turn, is necessary if CNAB bundles are expected to be executable by different implementations. If CNAB runtimes implement this common claims system, then tools can share responsibility for managing CNAB applications. For example, one tool may perform actions, while another may provide a visualization dashboard.
 
 ### Anatomy of a Claim
 
-While implementors are not REQUIRED to implement claims, this is the standard format for claims-supporting systems.
-
-The CNAB claim is defined as a JSON document. The specification currently does not require that claims be formatted as Canonical JSON.
+The CNAB claim is defined as a JSON document. The specification currently does not require that claims be formatted as Canonical JSON. However, encoding a claim as Canonical JSON can be done without altering compliance with the present specification.
 
 ```json
 {
@@ -91,24 +89,26 @@ The CNAB claim is defined as a JSON document. The specification currently does n
 ```
 Source: [400.01-claim.json](examples/400.01-claim.json)
 
-- bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
-- created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
-- custom: A section for custom extension data applicable to a given runtime.
-- modified: A timestamp indicating the last time this release claim was modified.
-- name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
-- outputs: Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons.
-- parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons.
-- result: The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
-  - action: Indicates the action that the current bundle is in. This may be any of the built-in actions (`install`, `upgrade`, `uninstall`) as well as any custom actions as defined in the bundle descriptor. The special name `unknown` MAY be used in the case where the CNAB Runtime cannot determine the action name of a claim.
-  - message: A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
-  - status: Indicates the status of the last phase transition. Valid statuses are:
-    - failure: failed before completion
-    - underway: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
-    - unknown: the state is unknown. This is an error condition.
-    - success: completed successfully
-- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
+The fields above are defined as follows:
 
-> Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action.
+- `bundle` (REQUIRED): The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
+- `created` (OPTIONAL): A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
+- `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
+- `modified` (OPTIONAL): A timestamp indicating the last time this release claim was modified. The installation operation MAY set this to a timestamp that matches `created`. Any operation that changes the release SHOULD set this field to the time of the operation.
+- `name` (REQUIRED): The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `name` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
+- `outputs` (OPTIONAL): Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons. See the [Outputs](#outputs) section for details. If this field is not present, it may be assumed that no outputs were generated as a result of the operation.
+- `parameters` (OPTIONAL): Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons. However, there are some caveats. See the [Parameters](#parameters) section below for details.
+- `result` (REQUIRED): The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
+  - `action` (REQUIRED): Indicates the action that the current bundle is in. This may be any of the built-in actions (`install`, `upgrade`, `uninstall`) as well as any custom actions as defined in the bundle descriptor. The special name `unknown` MAY be used in the case where the CNAB Runtime cannot determine the action name of a claim.
+  - `message` (OPTIONAL): A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
+  - `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
+    - `failure`: failed before completion
+    - `underway`: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
+    - `unknown`: the state is unknown. This is an error condition.
+    - `success`: completed successfully
+- `revision` (REQUIRED): An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
+
+> Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action. Implementations of the claims specification are expected to retrieve the credential requirements from the `bundle` field.
 
 Timestamps in JSON are defined in the [ECMAScript specification](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-date-time-string-format), which matches the [ISO-8601 Extended Format](https://www.iso.org/iso-8601-date-and-time-format.html).
 
@@ -129,6 +129,8 @@ The parameter data stored in a claim data is _the resolved key/value pairs_ that
 - The output of this operation is a set of key/value pairs in which:
   - Valid user-supplied values are presented
   - Default values are supplied for all parameters where `default` is provided and no user-supplied value overrides this
+
+It is both optional and discretionary to provide values here. However, if no parameters are supplied, an implementation of this specification is free to interpret this absence as meaning that no parameters were provided during the named action.
 
 ### Outputs
 
@@ -187,6 +189,8 @@ Below, you can see an example of a claim for a bundle that included a single out
   "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
 }
 ```
+
+It is recommended, but not required, that all outputs are saved. However, security-sensitive details may be omitted if the implementation deems this desirable.
 
 ### How is the Claim Used
 
