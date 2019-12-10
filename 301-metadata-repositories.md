@@ -7,7 +7,7 @@ weight: 301
 
 * [Metadata repositories](#metadata-repositories)
 * [Minimum viable product (MVP)](#minimum-viable-product-mvp)
-* [Security analysis of MVP](#security-analysis-of-mvp)
+  * [Security analysis of MVP](#security-analysis-of-mvp)
 
 This document is a _normative_ part of [CNAB Security](300-CNAB-security.md).
 
@@ -19,12 +19,12 @@ A _metadata repository_ is a service that hosts The Update Framework (TUF) and i
 
 Note that:
 * A metadata repository MAY be physically distinct from a CNAB registry, or not (e.g., bundles as well as TUF and/or in-toto metadata MAY live as [OCI Artifacts](https://stevelasker.blog/2019/08/25/oci-artifacts-and-a-view-of-the-future/) on a CNAB registry).
-* Both TUF and in-toto are frameworks that can be configured in a wide variety of ways to achieve varying degrees of security. However, we discuss one [minimum viable product (MVP)](#minimum-viable-product-mvp) in this document.
+* Both TUF and in-toto are frameworks that can be configured in a wide variety of ways to achieve varying degrees of security. However, we discuss one [minimum viable product (MVP)](#minimum-viable-product-mvp), which has been optimized in particular for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1), in this document.
 * Although we discuss only the signing and verification of bundles, exactly the same principles apply to images.
 
 ## Minimum viable product (MVP)
 
-This subsection discusses the simplest way that a _project_, or a group of developers, MAY set up a metadata repository for their bundle. Every bundle MAY use a separate metadata repository on the same server, even if two or more bundles are maintained by the same group of developers. (This is similar to how images are signed using [Docker Content Trust](https://docs.docker.com/engine/security/trust/content_trust/).) Figure 1 illustrates our simple metadata repository for a bundle.
+This subsection discusses the simplest way that a _project_, or a group of developers, MAY set up a metadata repository for their bundle. Every bundle MAY use a separate metadata repository on the same server, even if two or more bundles are maintained by the same group of developers. (This is similar to how images are signed using [Docker Content Trust](https://docs.docker.com/engine/security/trust/content_trust/). As noted earlier, the MVP has been optimized for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1).) Figure 1 illustrates our simple metadata repository for a bundle.
 
 ![Figure 1: An MVP metadata repository for a bundle](img/example-metadata-repository.png)
 **Figure 1**: An MVP metadata repository for a bundle.
@@ -129,7 +129,7 @@ The following code listing is an example of the `targets` metadata for a bundle:
 }
 ```
 
-## Security analysis of MVP
+### Security analysis of MVP
 
 Table 1 presents a summary of possible attacks given the key compromise of one or more TUF roles and in-toto functionaries. We assume that attackers can:
 
@@ -154,3 +154,5 @@ As Table 1 suggests, a project SHOULD use offline keys to sign:
 3. The in-toto link metadata for the first step that acts as the ultimate source of trust for a bundle (e.g., `step1` which might correspond to developers writing source code).
 
 All other keys MAY be kept safely online. Exact details are out of the scope of this document, but interested readers SHOULD consult [ITE-2](https://github.com/in-toto/ITE/pull/4) and [ITE-3](https://github.com/in-toto/ITE/pull/5).
+
+We envision that the CNAB metadata repositories would be setup the way most Docker Content Trust repositories are setup: the `timestamp` and `snapshot` keys per bundle MAY be online and controlled by the metadata repository, whereas all other TUF and in-toto keys SHOULD be offline and controlled on private infrastructure owned by the bundle developers.
