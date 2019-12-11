@@ -89,7 +89,7 @@ The fields above are defined as follows:
 - `bundleReference` (OPTIONAL): A canonical reference to the bundle used in the last action. This bundle reference SHOULD be digested to identify a specific version of the referenced bundle.
 - `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
 - `modified` (OPTIONAL): A timestamp indicating the last time this release claim was modified. Executing the installation action MUST set this to a timestamp that matches `created`. Executing any modifying action (`upgrade`, `uninstall`, or a custom action with the property `"modifies": true`) MUST set this field to the time of the operation.
-- `name` (REQUIRED): The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `name` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
+- `installation` (REQUIRED): The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `installation` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
 - `outputs` (OPTIONAL): Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons. See the [Outputs](#outputs) section for details. If this field is not present, it may be assumed that no outputs were generated as a result of the operation.
 - `parameters` (OPTIONAL): Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons. However, there are some caveats. See the [Parameters](#parameters) section below for details.
 - `result` (REQUIRED): The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
@@ -167,8 +167,8 @@ Below, you can see an example of a claim for a bundle that included a single out
     "version":"0.1.0"
   },
   "created": "2018-08-30T20:39:55.549002887-06:00",
+  "installation": "technosophos.hellohelm",
   "modified": "2018-08-30T20:39:59.611068556-06:00",
-  "name": "technosophos.hellohelm",
   "outputs": {
     "clientCert": "-----BEGIN CERTIFICATE-----\nMIIDBzCCAe+gAwIBAgIJAL2nOwEePOPvMA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV\nBAMMD3d3dy5leGFtcGxlLmNvbTAeFw0xOTA3MTUxNjQwMzdaFw0yOTA3MTIxNjQw\nMzdaMBoxGDAWBgNVBAMMD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB\nBQADggEPADCCAQoCggEBAJ7779ImmmvEt+ywP8GjfpzgM57n1WZ26fBTVy+ZibiH\nhKCJuzU5vynu5M0eYCufRFQ7LG/xet1GvpBIch0U6ilZVnNDrsNUtQ03Hpen144g\nli5ldPh5Sm88ibDbi4yEIgti2JBKIuVE+iEdkIejF8DZps008TbLLoENM1VpHpUT\nCIJY657t+Xhz9GOhp1w3bVoKEoF/6psvc6IFHK8bUMq+4003VGDZe2BMlgazZPHc\n3o5CqNviajnRoo9QnLUH1qOljNMR+mkewNOkL2PRGvkCuHJrEk0qmUU7lX3iVN1J\nC7y1fax53ePXajLD+5/sQNeszVg1cIIUlXBy2Bx/F7UCAwEAAaNQME4wHQYDVR0O\nBBYEFAZ1+cZNMujQhCrtCRKfPm+NLDg0MB8GA1UdIwQYMBaAFAZ1+cZNMujQhCrt\nCRKfPm+NLDg0MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAAuyyYER\nT5+E+KuFbDL/COmxRWZhF/u7wIW9cC2o5LlKCUp5rRQfAVRNJlqasldM/G4Bg/uQ\n5khSYe2XNe2C3iajVkR2RlqXBvCdQuCtudhZVd4jSGWi/yI7Ub2/HyOTjZ5eG82o\nF6e3pNRCQwTw0y0orQmdh0s+UmHEVjIe8PfbdRymfeQO70EXTxncBJ5elZx8s0E9\nTPPdbl2knZmKJhwnZFKCaa4DmDA6CDa2GPz+2++DQl1rCIB3mIcxpg6wSdMA6C6l\nnBJBX5Wnxckldp8G0FNXTa1DYqjPZ5U84tkh46pFSLsbSse45xNhrMPeZDWlgHsp\nWfK01YbCWioNVGk=\n-----END CERTIFICATE-----"
   },
@@ -208,7 +208,7 @@ Compliant CNAB implementations MUST conform to this section.
 The claim is produced outside of the CNAB package. The following claim data is injected
 into the invocation container at runtime:
 
-- `$CNAB_INSTALLATION_NAME`: The value of `claim.name`.
+- `$CNAB_INSTALLATION_NAME`: The value of `claim.installation`.
 - `$CNAB_BUNDLE_NAME`: The name of the present bundle.
 - `$CNAB_ACTION`: The action to be performed (install, upgrade, ...)
 - `$CNAB_REVISION`: The ULID for the present revision. (On upgrade, this is the _new_ revision)
@@ -252,8 +252,8 @@ If both commands exit with code `0`, then the resulting claim will look like thi
     "version": "0.1.0"
   },
   "created": "TIMESTAMP",
+  "installation": "technosophos.my_first_install",
   "modified": "TIMESTAMP",
-  "name": "technosophos.my_first_install",
   "result": {
     "message": "yay!",    // From STDOUT (echo)
     "action": "install",  // Determined by the action
