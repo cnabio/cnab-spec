@@ -92,7 +92,7 @@ Source: [400.01-claim.json](examples/400.01-claim.json)
 The fields above are defined as follows:
 
 - `bundle` (REQUIRED): The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
-- `created` (OPTIONAL): A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
+- `created` (REQUIRED): A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
 - `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
 - `modified` (OPTIONAL): A timestamp indicating the last time this release claim was modified. Executing the installation action MAY set this to a timestamp that matches `created`. Executing any modifying action (`upgrade`, `uninstall`, or a custom action with the property `"modifies": true`) MUST set this field to the time of the operation.
 - `name` (REQUIRED): The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `name` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
