@@ -18,22 +18,6 @@ The claims system is designed to satisfy the requirements of the [Bundle Runtime
 
 This specification uses the terminology defined in [the CNAB Core specification](100-CNAB.md).
 
-## Concepts of Package Management
-
-A _package_ is a discrete data chunk that can be moved from location to location, and can be unpacked and installed onto a system. Typically, a package contains an application or application description. All package managers provide some explicit definition of a package and a package format.
-
-When a package is installed, the contents of a package are extracted and placed into the appropriate spaces on the target system, thus becoming an _installation_ (or _instance_) of the package.
-
-There are three core feature categories of a package manager system:
-
-- It can _install_ packages (initially put something onto a system)
-- It can _query_ installations (to see what is installed)
-- It can _upgrade_ and _delete_ packages (in other words, it can perform additional mutations on an existing installation)
-
-Package managers provide a wealth of other features, but the above are standard across all package managers. (For example, most package managers also provide a way to query what packages are available for installation.)
-
-This specification explains how CNAB records are generated such that continuity can be established across applications. In other words, this describes how CNAB bundles can be treated analogously to traditional packages.
-
 ## Managing State
 
 Fundamentally, package managers provide a state management layer to keep records of what was installed. For example, [homebrew](http://homebrew.sh), a popular macOS package manager, stores records for all installed software in `/usr/local/Cellar`. Helm, the package manager for Kubernetes, stores state records in Kubernetes ConfigMaps located in the system namespace. The Debian Apt system stores state in `/var/run`. In all of these cases, the stored state allows the package managing system to be able to answer (quickly) the question of whether a given package is installed.
