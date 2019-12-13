@@ -59,6 +59,7 @@ The CNAB claim is defined as a JSON document. The specification currently does n
     "schemaVersion": "v1.0.0",
     "version": "0.1.0"
   },
+  "bundleReference": "hub.example.com/my/bundle@sha256:eeeeeeeee...",
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "custom": {},
   "modified": "2018-08-30T20:39:59.611068556-06:00",
@@ -76,6 +77,7 @@ The CNAB claim is defined as a JSON document. The specification currently does n
 Source: [400.01-claim.json](examples/400.01-claim.json)
 
 - bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
+- bundleReference (OPTIONAL): A canonical reference to the bundle used in the last action. This bundle reference SHOULD be digested to identify a specific version of the referenced bundle.
 - created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
 - custom: A section for custom extension data applicable to a given runtime.
 - modified: A timestamp indicating the last time this release claim was modified.
