@@ -24,12 +24,12 @@ Note that:
 
 ## Minimum viable product (MVP)
 
-This subsection discusses the simplest way that a _project_, or a group of developers, MAY set up a metadata repository for their bundle. Every bundle MAY use a separate metadata repository on the same server, even if two or more bundles are maintained by the same group of developers. (This is similar to how images are signed using [Docker Content Trust](https://docs.docker.com/engine/security/trust/content_trust/). As noted earlier, the MVP has been optimized for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1).) Figure 1 illustrates our simple metadata repository for a bundle.
+This subsection discusses the simplest way that developers MAY set up a metadata repository for their bundle. Every bundle MAY use a separate metadata repository on the same server, even if two or more bundles are maintained by the same group of developers. (This is similar to how images are signed using [Docker Content Trust](https://docs.docker.com/engine/security/trust/content_trust/). As noted earlier, the MVP has been optimized for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1).) Figure 1 illustrates our simple metadata repository for a bundle.
 
 ![Figure 1: An MVP metadata repository for a bundle](img/example-metadata-repository.png)
 **Figure 1**: An MVP metadata repository for a bundle.
 
-A project SHOULD provide at least the TUF metadata for the four top-level roles: `root`, `timestamp`, `snapshot`, and `targets`.
+The metadata repository for a bundle SHOULD provide at least the TUF metadata for the four top-level roles: `root`, `timestamp`, `snapshot`, and `targets`.
 
 The `root` role distributes, revokes, and replaces the public keys for all four top-level roles. It SHOULD also use a [threshold](300-CNAB-security.md) (m, n) of [offline keys](300-CNAB-security.md), where n is the number of developers, and m is the number of quorum members that must agree on new `root` metadata. Its metadata SHOULD expire yearly, considering that an offline key ceremony is expensive in terms of time and resources.
 
@@ -54,7 +54,7 @@ In this case, the `targets` role SHOULD also include [custom targets metadata](3
 1. Each root layout lists all of the public keys needed to verify it.
 1. Each bundle lists all of the root layout and link metadata required to verify this bundle.
 
-A benefit of this approach is that different bundles MAY be associated with completely different root layouts with different keys, allowing projects to update upgrade their software supply chains without breaking old bundles that are still popular.
+A benefit of this approach is that different versions of bundles MAY be associated with completely different root layouts with different keys, allowing developers to update upgrade their software supply chains without breaking old bundles that are still popular.
 
 In order to prevent conflicts between link metadata for different versions of a bundle (because), the complete set of link metadata for each bundle MAY be isolated in different directories. The simplest way to do this is to use a separate directory to contain the in-toto link metadata for each bundle that is named after the digest (e.g., SHA-256) for that bundle.
 
@@ -147,9 +147,9 @@ Table 1 presents a summary of possible attacks given the key compromise of one o
 
 **Table 1**: The security attacks that are possible given the key compromise of one or more TUF role or in-toto functionary.
 
-As Table 1 suggests, a project SHOULD use offline keys to sign:
+As Table 1 suggests, bundle developers SHOULD use offline keys to sign:
 
-1. The TUF `root` and `targets` metadata. (For operational simplicity, projects that share the same developers MAY share `root` and `targets` keys across different metadata repositories for different bundles.)
+1. The TUF `root` and `targets` metadata. (For operational simplicity, bundles that share the same developers MAY share `root` and `targets` keys across different metadata repositories for these bundles.)
 2. The in-toto root layouts as well as their associated public keys.
 3. The in-toto link metadata for the first step that acts as the ultimate source of trust for a bundle (e.g., `step1` which might correspond to developers writing source code).
 
