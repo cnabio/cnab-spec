@@ -13,13 +13,13 @@ The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, REC
 
 ## Verification workflows
 
-This section describes the verification workflow that runtimes compliant with the CNAB Security Specifications MUST perform in order to verify the provenance and attestation of bundles. Regardless of [the bundle format][bundle-formats], the verification workflows is the same, with the signature of a thin bundle being the content digest of the `bundle.json` file, while the signature of a thick bundle being the content digest of the bundle archive.
+This section describes the verification workflow that runtimes compliant with the CNAB Security Specifications MUST perform in order to verify the provenance and attestation of bundles. Regardless of [the bundle format][bundle-formats], the verification workflow is the same, with the signature of a thin bundle being the content digest of the `bundle.json` file, while the signature of a thick bundle being the content digest of the bundle archive.
 
 End-users SHOULD see no difference in their experience, unless an attack is caught. In that case, the installation of the bundle in question MUST be denied, and users SHOULD see an error message indicating why the verification workflow failed.
 
 In order to download and verify a bundle, a compliant runtime MUST take the following steps:
 
-1. Use the [TUF workflow][tuf-workflow] to download trusted hashes about the desired bundle (e.g., `example.com/example-org/example-bundle:latest`) from the [metadata repository][metadata-repository].
+1. Use the [TUF workflow][tuf-workflow] to download trusted metadata about the desired bundle (e.g., `example.com/example-org/example-bundle:latest`) from the [metadata repository][metadata-repository].
 1. Download the (thin or thick) bundle itself. This operation can follow the [CNAB Registries Specification][registry-spec] for thin bundles and pull the bundle from an OCI registry, or use other protocols of obtaining it.
 1. Compare the observed hashes of the downloaded bundle to the trusted hashes. If they are not equal, the runtime MUST discard the downloaded bundle, report the error, and stop execution. Otherwise, go to the next step.
 1. If there is [associated in-toto metadata][metadata-repository] about the bundle, use the [TUF workflow][tuf-workflow] to download in-toto root layout, public keys for the root layout, and link metadata for the bundle, and go to the next step. Otherwise, halt, and return the verified bundle to the user.
