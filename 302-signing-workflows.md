@@ -19,13 +19,15 @@ This subsection documents how a signing workflow MAY typically work for an [MVP 
 
 When bundle developers set up an MVP metadata repository for the first time, they SHOULD use one of the [known implementations of CNAB-Sec](304-known-implementations) to set up at least a complete set of the `root`, `timestamp`, `snapshot`, and `targets` TUF metadata.
 
-There are two options for the TUF `timestamp` and `snapshot` roles. One is that the private keys for these roles MAY be generated automatically and managed by the MVP metadata repository, if it supports it, as is the default on [Docker Content Trust](https://docs.docker.com/engine/security/trust/trust_key_mng/). The other is that, just as with the `root` and `targets` roles, the private keys for the `timestamp` and `snapshot` roles MAY be generated and managed by the bundle developers.
+To do so, developers SHOULD begin by generating the private keys for the `root` and `targets` roles. There are two options for the `timestamp` and `snapshot` roles. One is that developers MAY also generate and manage their private keys. The other is that the metadata repository MAY automatically generate and manage their private keys, as is the default on [Docker Content Trust](https://docs.docker.com/engine/security/trust/trust_key_mng/).
 
-in-toto requires bundle developers to generate and sign the [root layout](https://github.com/in-toto/docs/blob/master/in-toto-spec.md#43-file-formats-layout) for their bundle, which is out of the scope of this document. However, the interested reader MAY consult the [in-toto demo](https://github.com/in-toto/demo) for an example of how to do so.
+After these private keys have been generated, developers SHOULD generate the initial set of the TUF metadata. The `root` metadata SHOULD list the public keys for all top-level roles, including itself. The `targets` metadata MAY list no bundles for the moment. Regardless of whether developers or the metadata repository manage the `timestamp` and `snapshot` keys, the `snapshot` metadata SHOULD point to this `targets` metadata file, and the `timestamp` metadata SHOULD point in turn to this `snapshot` metadata file.
+
+If developers wish to use in-toto to provide provenance for their bundles, then they SHOULD also generate and sign the [root layout](https://github.com/in-toto/docs/blob/master/in-toto-spec.md#43-file-formats-layout) for their bundle, which is out of the scope of this document. However, the interested reader MAY consult the [in-toto demo](https://github.com/in-toto/demo) for an example of how to do so.
 
 ### New or updated bundles (periodic task)
 
 Administrators SHOULD refresh the `timestamp` and `snapshot` metadata whenever developers or automation upload new metadata to the metadata repository.
 
-### Recovering from a key compromise (exception task)
+### Recovering from a key compromise (exceptional task)
 
