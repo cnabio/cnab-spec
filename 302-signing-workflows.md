@@ -21,7 +21,7 @@ When bundle developers set up an MVP metadata repository for the first time, the
 
 To do so, developers SHOULD begin by generating the private keys for the `root` and `targets` roles. There are two options for the `timestamp` and `snapshot` roles. One is that developers MAY also generate and manage their private keys. The other is that the metadata repository MAY automatically generate and manage their private keys, as is the default on [Docker Content Trust](https://docs.docker.com/engine/security/trust/trust_key_mng/).
 
-After these private keys have been generated, developers SHOULD generate the initial set of the TUF metadata. The `root` metadata SHOULD list the public keys for all top-level roles, including itself. The `targets` metadata MAY list no bundles for the moment. Regardless of whether developers or the metadata repository manage the `timestamp` and `snapshot` keys, the `snapshot` metadata SHOULD point to this `targets` metadata file, and the `timestamp` metadata SHOULD point in turn to this `snapshot` metadata file.
+After these private keys have been generated, developers SHOULD generate the initial set of the TUF metadata. The `targets` metadata MAY list no bundles for the moment. Regardless of whether developers or the metadata repository manage the `timestamp` and `snapshot` keys, the `snapshot` metadata SHOULD point to this `targets` metadata file, and the `timestamp` metadata SHOULD point in turn to this `snapshot` metadata file. Finally, the `root` metadata SHOULD list the public keys for all top-level roles, including itself.
 
 If developers wish to use in-toto to provide provenance for their bundles, then they SHOULD also generate and sign the [root layout](https://github.com/in-toto/docs/blob/master/in-toto-spec.md#43-file-formats-layout) for their bundle, which is out of the scope of this document. However, the interested reader MAY consult the [in-toto demo](https://github.com/in-toto/demo) for an example of how to do so.
 
@@ -35,3 +35,6 @@ Second, regardless of whether developers or the metadata repository holds these 
 
 ### Recovering from a key compromise (exceptional task)
 
+If the private key for the `timestamp`, `snapshot`, or `targets` role has been compromised, then developers SHOULD rotate their keys using the `root` metadata.
+
+If less than a threshold of the `root` keys have been compromised, then developers SHOULD use at least a threshold of the `root` keys to rotate its own keys. Otherwise, if more than a threshold of the `root` keys have been compromised, then it is safest for developers to sign new `root` metadata using no threshold of previous `root` keys, which will require end-users to update `root` metadata using a safe out-of-band mechanism.
