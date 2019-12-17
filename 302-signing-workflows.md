@@ -27,7 +27,11 @@ If developers wish to use in-toto to provide provenance for their bundles, then 
 
 ### New or updated bundles (periodic task)
 
-Administrators SHOULD refresh the `timestamp` and `snapshot` metadata whenever developers or automation upload new metadata to the metadata repository.
+Whenever developers wish to release a new version of a bundle, they SHOULD perform the following steps.
+
+First, they SHOULD sign new `targets` metadata that points to the new version of the bundle. If developers wish to use in-toto to provide provenance for their bundles, then, as discussed in [metadata repositories](301-metadata-repositories.md), they MAY also list in the custom targets metadata all of the root layout and link metadata required to verify this bundle.
+
+Second, regardless of whether developers or the metadata repository holds these signing keys, the `timestamp` and `snapshot` metadata SHOULD be updated to the point to the new bundle.
 
 ### Recovering from a key compromise (exceptional task)
 
