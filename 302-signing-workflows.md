@@ -17,9 +17,11 @@ This subsection documents how a signing workflow MAY typically work for an [MVP 
 
 ### Setup (one-time task)
 
-When bundle developers set up an MVP metadata repository for the first time, they SHOULD use a tool like [`signy`](https://github.com/engineerd/signy) to set up encrypted keys for the TUF `root` and `targets` roles. The encrypted keys for the TUF `timestamp` and `snapshot` roles MAY be generated automatically and managed by the MVP metadata repository, as is the default on [Docker Content Trust](https://docs.docker.com/engine/security/trust/trust_key_mng/).
+When bundle developers set up an MVP metadata repository for the first time, they SHOULD use one of the [known implementations of CNAB-Sec](304-known-implementations) to set up at least a complete set of the `root`, `timestamp`, `snapshot`, and `targets` TUF metadata.
 
-The generation of encrypted keys for the in-toto root layout and its associated functionaries as well as the root layout itself are out of the scope of this document as well as `signy`. However, the interested reader MAY consult the [in-toto demo](https://github.com/in-toto/demo) for an example of how to do so.
+There are two options for the TUF `timestamp` and `snapshot` roles. One is that the private keys for these roles MAY be generated automatically and managed by the MVP metadata repository, if it supports it, as is the default on [Docker Content Trust](https://docs.docker.com/engine/security/trust/trust_key_mng/). The other is that, just as with the `root` and `targets` roles, the private keys for the `timestamp` and `snapshot` roles MAY be generated and managed by the bundle developers.
+
+in-toto requires bundle developers to generate and sign the [root layout](https://github.com/in-toto/docs/blob/master/in-toto-spec.md#43-file-formats-layout) for their bundle, which is out of the scope of this document. However, the interested reader MAY consult the [in-toto demo](https://github.com/in-toto/demo) for an example of how to do so.
 
 ### New or updated bundles (periodic task)
 
