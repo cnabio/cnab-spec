@@ -24,7 +24,7 @@ Note that:
 
 ## Minimum viable product (MVP)
 
-This subsection discusses the simplest way that developers MAY set up a metadata repository for their bundle. Every bundle MAY use a separate metadata repository on the same server, even if two or more bundles are maintained by the same group of developers. (This is similar to how images are signed using [Docker Content Trust](https://docs.docker.com/engine/security/trust/content_trust/). As noted earlier, the MVP has been optimized for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1).) Figure 1 illustrates our simple metadata repository for a bundle.
+This subsection discusses the simplest way that developers MAY set up a metadata repository for their bundle. Every bundle MAY use a separate metadata repository on the same server, even if two or more bundles are maintained by the same group of developers. (This is similar to how images are signed using [Docker Content Trust](https://docs.docker.com/engine/security/trust/content_trust/). As noted earlier, the MVP has been optimized for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1). Nevertheless, note that developers MAY use _different_ servers to host metadata repositories for bundles. In [303](303-verification-workflows.md), we discuss how a bundle runtime MAY securely resolve different bundles from different metadata repositories on different servers.) Figure 1 illustrates our simple metadata repository for a bundle.
 
 ![Figure 1: An MVP metadata repository for a bundle](img/example-metadata-repository.png)
 **Figure 1**: An MVP metadata repository for a bundle.
