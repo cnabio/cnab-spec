@@ -19,7 +19,7 @@ End-users SHOULD see no difference in their experience, unless an attack is caug
 
 In order to download and verify a bundle, a compliant runtime MUST take the following steps:
 
-1. Use the [TUF workflow][tuf-workflow] to download trusted metadata about the desired bundle (e.g., `example.com/example-org/example-bundle:latest`) from the [metadata repository][metadata-repository].
+1. Use the [TUF workflow][tuf-workflow] to download trusted metadata about the desired bundle (e.g., `example.com/example-org/example-bundle:latest`) from the [metadata repository][metadata-repository]. A bundle runtime MUST use the rules outlined in [TAP 4](https://github.com/theupdateframework/taps/blob/master/tap4.md) to securely resolve bundles from different metadata repositories on different servers.
 1. Download the (thin or thick) bundle itself. This operation can follow the [CNAB Registries Specification][registry-spec] for thin bundles and pull the bundle from an OCI registry, or use other protocols of obtaining it.
 1. Compare the observed hashes of the downloaded bundle to the trusted hashes. If they are not equal, the runtime MUST discard the downloaded bundle, report the error, and stop execution. Otherwise, go to the next step.
 1. If there is [associated in-toto metadata][metadata-repository] about the bundle, use the [TUF workflow][tuf-workflow] to download in-toto root layout, public keys for the root layout, and link metadata for the bundle, and go to the next step. Otherwise, halt, and return the verified bundle to the user.
