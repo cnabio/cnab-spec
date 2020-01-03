@@ -27,6 +27,7 @@ In order to download and verify a bundle, a compliant runtime MUST take the foll
 
 Note that in-toto security guarantees depend on the public keys for the root layout being signed with offline keys in the TUF targets metadata.
 
-[tuf-workflow]: https://github.com/theupdateframework/specification/blob/master/tuf-spec.md#5-detailed-workflows
+[bundle-formats]: 104-bundle-formats.md
 [metadata-repository]: 301-metadata-repositories.md
 [registry-spec]: 200-CNAB-registries.md
+[tuf-workflow]: https://github.com/theupdateframework/specification/blob/master/tuf-spec.md#5-detailed-workflows
