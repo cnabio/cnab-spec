@@ -54,9 +54,9 @@ In this case, the `targets` role SHOULD also include [custom targets metadata](3
 1. Each root layout lists all of the public keys needed to verify it.
 1. Each bundle lists all of the root layout and link metadata required to verify this bundle.
 
-A benefit of this approach is that different versions of bundles MAY be associated with completely different root layouts with different keys, allowing developers to update upgrade their software supply chains without breaking old bundles that are still popular.
+A benefit of this approach is that different versions of bundles MAY be associated with completely different root layouts with different keys, allowing developers to update their software supply chains without breaking old bundles that are still popular.
 
-In order to prevent conflicts between link metadata for different versions of a bundle (because), the complete set of link metadata for each bundle MAY be isolated in different directories. The simplest way to do this is to use a separate directory to contain the in-toto link metadata for each bundle that is named after the digest (e.g., SHA-256) for that bundle.
+In order to prevent conflicts between link metadata for different versions of a bundle (because link metadata filenames are of the fixed form `$KEYID.$STEP.link`, which means that link metadata for different versions of a bundle will share the same base [basenames](https://en.wikipedia.org/wiki/Basename)), the complete set of link metadata for each bundle MAY be isolated in different directories. The simplest way to do this is to use a separate directory to contain the in-toto link metadata for each bundle that is named after the digest (e.g., SHA-256) for that bundle.
 
 The following code listing is an example of the `targets` metadata for a bundle:
 
@@ -155,4 +155,4 @@ As Table 1 suggests, bundle developers SHOULD use offline keys to sign:
 
 All other keys MAY be kept safely online. Exact details are out of the scope of this document, but interested readers SHOULD consult [ITE-2](https://github.com/in-toto/ITE/pull/4) and [ITE-3](https://github.com/in-toto/ITE/pull/5).
 
-We envision that the CNAB metadata repositories would be setup the way most Docker Content Trust repositories are setup: the `timestamp` and `snapshot` keys per bundle MAY be online and controlled by the metadata repository, whereas all other TUF and in-toto keys SHOULD be offline and controlled on private infrastructure owned by the bundle developers.
+We envision that the CNAB metadata repositories would be set up the way most Docker Content Trust repositories are set up: the `timestamp` and `snapshot` keys per bundle MAY be online and controlled by the metadata repository, whereas all other TUF and in-toto keys SHOULD be offline and controlled on private infrastructure owned by the bundle developers.
