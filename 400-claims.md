@@ -174,7 +174,7 @@ Below, you can see an example of a claim for a bundle that included a single out
 }
 ```
 
-### How is the Claim Used
+### How the Claim is Used
 
 The claim is used to inform any CNAB tooling about how to address a particular installation. For example, given the claim record, a package manager that implements CNAB should be able to:
 
@@ -195,6 +195,8 @@ To satisfy these requirements, implementations of a CNAB package manager are exp
 
 Compliant CNAB implementations MUST conform to this section.
 
+### Environment Variables
+
 The claim is produced outside of the CNAB package. The following claim data is injected
 into the invocation container at runtime:
 
@@ -202,10 +204,19 @@ into the invocation container at runtime:
 - `$CNAB_BUNDLE_NAME`: The name of the present bundle.
 - `$CNAB_ACTION`: The action to be performed (install, upgrade, ...)
 - `$CNAB_REVISION`: The ULID for the present release revision. (On upgrade, this is the _new_ revision)
+- `$CNAB_CLAIMS_VERSION`: The version of this specification (currently `CNAB-Claims-1.0-WD`)
 
 > Credential data, which is also injected into the invocation image, is _not_ managed by the claim system. Rules for injecting credentials are found in [the bundle runtime definition](103-bundle-runtime.md).
 
 Parameters declared with an `env` key in the `destination` object MUST have their values injected as environment variables according to the name specified. Likewise, files MUST be injected if `path` is set on `destination`.
+
+### Files
+
+The invocation image may benefit from accessing the claim. Consequently, a claim MUST be attached to the invocation image when the invocation image is started.
+
+The claim MUST be mounted at the path `/cnab/claim.json` inside of the bundle. The version of this claim that is to be mounted is the _version prior to this operation beginning_. In other words, when a bundle is installed, it creates the original installation claim. On the first upgrade, the claim describing the _installation_ is located at `/cnab/claim.json`. This allows the invocation image to inspect the former state and compare it to the desired new state.
+
+Note: Systems may be compliant with the core specification but not support the claims specification. If `$CNAB_CLAIMS_VERSION` is not present, a runtime SHOULD assume that the claims specification is not implemented. Bundle authors may therefore have to take care when relying upon `/cnab/claim.json`, accommodating the case where the runtime does not support claims.
 
 ## Calculating the Result
 
