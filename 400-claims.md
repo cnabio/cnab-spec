@@ -8,11 +8,15 @@ weight: 400
 
 This specification describes the CNAB Claims system. This is not part of the [CNAB Core](100-CNAB.md) specification, but is a specification describing how records of CNAB installations may be formatted for storage. Implementations of CNAB Core can meet the CNAB Core specification without implementing this specification. Implementations that support claims MAY state that they comply with CNAB Claims 1.0-WD.
 
-A _claim_ (or _claim receipt_) is a record of a CNAB installation. This specification defines the format of a claim, and describes certain necessary behaviors of a system that implements claims.
+In CNAB, an _installation_ is a particular installed instance of a CNAB bundle. For example, if a CNAB bundled named `myApp` is installed in two places, we say there are _two installations of `myApp`_.
+
+An installation MAY change over time, as a particular bundle is installed, then upgraded. In CNAB, each time a mutating (destructive) operation is performed (Such as `install`, `upgrade`, or custom operations that are not read-only), the claim gets a new _revision_. A revision is a unique identifier that identifies the combination of an _installation_ and a modification of that installation. For example, when a CNAB bundle is installed, the initial installation will have an initial revision ID. When that installation is upgraded, it will have a new revision ID. How revisions are used is outside of the scope of this document, but it is safe to assume that if a revision ID has changed, one or more artifacts owned by the installation has also been changed.
+
+A _claim_ (or _claim receipt_) is a record of a CNAB _installation_. This specification defines the format of a claim, and describes certain necessary behaviors of a system that implements claims.
 
 A _host environment_ is an environment, possibly shared between multiple CNAB runtimes, that provides persistence to a CNAB configuration. For example, a filesystem may contain a record of claims that two different CNAB clients share. Or a database may contain the environment that is shared by multiple tools at different locations in the network. Each of these is a CNAB host environment.
 
-The word _claim_ was chosen because it represents the relationship between a certain CNAB host environment and the resources that were created by a CNAB runtime in that host environment. In this sense, an environment takes responsibility for those resources if an only if it can _claim_ them.
+The word _claim_ was chosen because it represents the relationship between a certain CNAB host environment and the resources that were created by a CNAB runtime in that host environment. In this sense, an environment takes responsibility for those resources if an only if it can _claim_ them. A claim is an _external assertion of ownership_. That is, the claim itself is not "installed" into the host environment. It is stored separately, possibly in an entirely different location.
 
 The claims system is designed to satisfy the requirements of the [Bundle Runtime specification](103-bundle-runtime.md) regarding the tracking `CNAB_REVISION` and `CNAB_LAST_REVISION`. It also provides a description of how the state of a bundle installation may be represented.
 
@@ -21,6 +25,8 @@ This specification uses the terminology defined in [the CNAB Core specification]
 ## Managing State
 
 Fundamentally, package managers provide a state management layer to keep records of what was installed. For example, [homebrew](http://homebrew.sh), a popular macOS package manager, stores records for all installed software in `/usr/local/Cellar`. Helm, the package manager for Kubernetes, stores state records in Kubernetes ConfigMaps located in the system namespace. The Debian Apt system stores state in `/var/run`. In all of these cases, the stored state allows the package managing system to be able to answer (quickly) the question of whether a given package is installed.
+
+Example from Homebrew:
 
 ```console
 $ brew info cscope
@@ -34,7 +40,7 @@ From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/cscope.rb
 
 The CNAB Claims specification does not define where or how records are stored, nor how these records MAY be used by CNAB tooling. However, this specification describes how a CNAB-based system MUST emit the record to an invocation image, and provides some guidance on maintaining integrity of the system.
 
-This is done so that implementors can standardize on a way of relating a release claim (the record of a release) to release operations like `install`, `upgrade`, or `uninstall`. This, in turn, is necessary if CNAB bundles are expected to be executable by different implementations.
+This is done so that implementors can standardize on a way of relating an installation claim (the record of an installation) to operations like `install`, `upgrade`, or `uninstall`. This, in turn, is necessary if CNAB bundles are expected to be executable by different implementations.
 
 ### Anatomy of a Claim
 
@@ -78,9 +84,9 @@ Source: [400.01-claim.json](examples/400.01-claim.json)
 
 - bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
 - bundleReference (OPTIONAL): A canonical reference to the bundle used in the last action. This bundle reference SHOULD be digested to identify a specific version of the referenced bundle.
-- created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
+- created: A timestamp indicating when this claim was first created. This MUST not be changed after initial creation.
 - custom: A section for custom extension data applicable to a given runtime.
-- modified: A timestamp indicating the last time this release claim was modified.
+- modified: A timestamp indicating the last time this claim was modified.
 - name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
 - outputs: Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons.
 - parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons.
@@ -92,7 +98,7 @@ Source: [400.01-claim.json](examples/400.01-claim.json)
     - underway: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
     - unknown: the state is unknown. This is an error condition.
     - success: completed successfully
-- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
+- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the installation is modified. It MUST NOT change when a read-only operation is performed on an installation.
 
 > Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action.
 
@@ -203,7 +209,7 @@ into the invocation container at runtime:
 - `$CNAB_INSTALLATION_NAME`: The value of `claim.name`.
 - `$CNAB_BUNDLE_NAME`: The name of the present bundle.
 - `$CNAB_ACTION`: The action to be performed (install, upgrade, ...)
-- `$CNAB_REVISION`: The ULID for the present release revision. (On upgrade, this is the _new_ revision)
+- `$CNAB_REVISION`: The ULID for the present revision. (On upgrade, this is the _new_ revision)
 - `$CNAB_CLAIMS_VERSION`: The version of this specification (currently `CNAB-Claims-1.0-WD`)
 
 > Credential data, which is also injected into the invocation image, is _not_ managed by the claim system. Rules for injecting credentials are found in [the bundle runtime definition](103-bundle-runtime.md).
