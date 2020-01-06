@@ -214,9 +214,9 @@ Parameters declared with an `env` key in the `destination` object MUST have thei
 
 The invocation image may benefit from accessing the claim. Consequently, a claim MUST be attached to the invocation image when the invocation image is started.
 
-The claim MUST be mounted at the path `/cnab/claim.json` inside of the bundle. The version of this claim that is to be mounted is the _version prior to this operation beginning_. In other words, when a bundle is installed, it creates the original installation claim. On the first upgrade, the claim describe the _installation_ is located at `/cnab/claim.json`. This allows the invocation image to inspect the former state and compare it to the desired new state.
+The claim MUST be mounted at the path `/cnab/claim.json` inside of the bundle. The version of this claim that is to be mounted is the _version prior to this operation beginning_. In other words, when a bundle is installed, it creates the original installation claim. On the first upgrade, the claim describing the _installation_ is located at `/cnab/claim.json`. This allows the invocation image to inspect the former state and compare it to the desired new state.
 
-Note: Systems may be compliant to the core specification but not support the claims specification. If `$CNAB_CLAIMS_VERSION` is not present, a runtime SHOULD assume that the claims specification is not implemented. Bundle authors may therefore have to take care when relying upon `/cnab/claim.json`, accommodating the case where the runtime does not support claims.
+Note: Systems may be compliant with the core specification but not support the claims specification. If `$CNAB_CLAIMS_VERSION` is not present, a runtime SHOULD assume that the claims specification is not implemented. Bundle authors may therefore have to take care when relying upon `/cnab/claim.json`, accommodating the case where the runtime does not support claims.
 
 ## Calculating the Result
 
