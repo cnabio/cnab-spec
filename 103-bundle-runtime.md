@@ -30,7 +30,7 @@ The bundle definition is made accessible from inside the invocation image in ord
 CNAB allows injecting data into the invocation image in two ways:
 
 - Environment Variables: This is the preferred method. In this method, data is encoded as a string and placed into the the environment with an associated name.
-- Files: Additional files MAY be injected _at known points_ into the invocation image. In the current specification, only credentials MAY be injected this way.
+- Files: Additional files MAY be injected _at known points_ into the invocation image via credentials or parameters.
 
 The spec does not define or constrain any network interactions between the invocation image and external services or sources.
 
