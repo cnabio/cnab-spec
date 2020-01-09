@@ -48,7 +48,7 @@
       "description": "The date last modified, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
       "type": "string"
     },
-    "name": {
+    "installation": {
       "description": "the name of the installation",
       "type": "string"
     },
@@ -79,3 +79,4 @@
   "title": "CNAB Claims json schema",
   "type": "object"
 }
+

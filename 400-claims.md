@@ -68,8 +68,8 @@ The CNAB claim is defined as a JSON document. The specification currently does n
   "bundleReference": "hub.example.com/my/bundle@sha256:eeeeeeeee...",
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "custom": {},
+  "installation": "technosophos.hellohelm",
   "modified": "2018-08-30T20:39:59.611068556-06:00",
-  "name": "technosophos.hellohelm",
   "outputs": {},
   "parameters": {},
   "result": {
