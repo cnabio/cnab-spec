@@ -74,46 +74,6 @@ The CNAB claim is defined as a JSON document. The specification currently does n
 ```
 Source: [400.01-claim.json](examples/400.01-claim.json)
 
-<<<<<<< HEAD
-- bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
-- bundleReference (OPTIONAL): A canonical reference to the bundle used in the last action. This bundle reference SHOULD be digested to identify a specific version of the referenced bundle.
-- created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
-- custom: A section for custom extension data applicable to a given runtime.
-- modified: A timestamp indicating the last time this release claim was modified.
-- name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
-- outputs: Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons.
-- parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons.
-- result: The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
-  - action: Indicates the action that the current bundle is in. This may be any of the built-in actions (`install`, `upgrade`, `uninstall`) as well as any custom actions as defined in the bundle descriptor. The special name `unknown` MAY be used in the case where the CNAB Runtime cannot determine the action name of a claim.
-  - message: A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
-  - status: Indicates the status of the last phase transition. Valid statuses are:
-    - failure: failed before completion
-    - underway: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
-    - unknown: the state is unknown. This is an error condition.
-    - success: completed successfully
-- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
-
-> Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action.
-||||||| merged common ancestors
-- bundle: The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
-- created: A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
-- custom: A section for custom extension data applicable to a given runtime.
-- modified: A timestamp indicating the last time this release claim was modified.
-- name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
-- outputs: Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons.
-- parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons.
-- result: The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
-  - action: Indicates the action that the current bundle is in. This may be any of the built-in actions (`install`, `upgrade`, `uninstall`) as well as any custom actions as defined in the bundle descriptor. The special name `unknown` MAY be used in the case where the CNAB Runtime cannot determine the action name of a claim.
-  - message: A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
-  - status: Indicates the status of the last phase transition. Valid statuses are:
-    - failure: failed before completion
-    - underway: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
-    - unknown: the state is unknown. This is an error condition.
-    - success: completed successfully
-- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
-
-> Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action.
-=======
 The fields above are defined as follows:
 
 - `bundle` (REQUIRED): The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
@@ -134,7 +94,6 @@ The fields above are defined as follows:
 - `revision` (REQUIRED): An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
 
 > Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action. Implementations of the claims specification are expected to retrieve the credential requirements from the `bundle` field.
->>>>>>> fix: formalize the field definitions on the Claims spec.
 
 Timestamps in JSON are defined in the [ECMAScript specification](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-date-time-string-format), which matches the [ISO-8601 Extended Format](https://www.iso.org/iso-8601-date-and-time-format.html).
 
@@ -216,15 +175,9 @@ Below, you can see an example of a claim for a bundle that included a single out
 }
 ```
 
-<<<<<<< HEAD
-### How the Claim is Used
-||||||| merged common ancestors
-### How is the Claim Used
-=======
 It is recommended, but not required, that all outputs are saved. However, security-sensitive details may be omitted if the implementation deems this desirable.
 
-### How is the Claim Used
->>>>>>> fix: formalize the field definitions on the Claims spec.
+### How the Claim is Used
 
 The claim is used to inform any CNAB tooling about how to address a particular installation. For example, given the claim record, a package manager that implements CNAB should be able to:
 
