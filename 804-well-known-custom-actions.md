@@ -84,4 +84,4 @@ A CNAB indicates that it supports those actions by including them in its custom 
     ```
     Source: [804.03-status.json](examples/804.03-status.json)
 
-Next section: [Standardization Process](901-process.md)
+Next section: [Disconnected Scenarios](805-airgap.md)
