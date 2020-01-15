@@ -145,7 +145,7 @@ Table 1 presents a summary of possible attacks given the key compromise of one o
 | timestamp + snapshot + targets (TUF) + step1 (in-toto)       | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
 | timestamp + snapshot + targets (TUF) + step2 (in-toto)       | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
 
-**Table 1**: The security attacks that are possible given the key compromise of one or more TUF role or in-toto functionary.
+**Table 1**: The security attacks that are possible given the key compromise of one or more TUF role or in-toto functionary. Columns marked "Yes" indicate that the specified attack is possible _given_ the compromise of _all_ of the specified keys, whereas columns marked "No" indicate that they are not.
 
 As Table 1 suggests, bundle developers SHOULD use offline keys to sign:
 
