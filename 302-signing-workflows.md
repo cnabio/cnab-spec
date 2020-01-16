@@ -13,7 +13,7 @@ The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, REC
 
 ## Signing workflow for the minimum viable product (MVP)
 
-This subsection documents how a signing workflow MAY typically work for an [MVP metadata repository](301-metadata-repositories.md).
+This subsection documents how a signing workflow MAY typically work for an [MVP metadata repository](301-metadata-repositories.md). To reiterate, this document is normative, and while a CNAB-Sec-compliant implementation may borrow ideas from here, it MAY also choose to implement different signing workflows, especially for security models different from those described in the MVP.
 
 ### Setup (one-time task)
 
