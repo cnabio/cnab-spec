@@ -40,8 +40,10 @@ That name can be used to reference the credential from tooling. Consequently, to
 
 Duffle, for example, maps local credentials to bundle credentials by _credential sets_. Here is an example:
 
-```json
+```yaml
 name: test_credentials
+created: 2020-01-20T06:00:00.00000-06:00
+modified: 2020-01-28T12:30:00.11193-06:00
 credentials:
 - name: kubeconfig
   source:
@@ -61,6 +63,8 @@ This credential set tells the client application (`duffle`) to map CNAB bundle c
 - When a bundle requests `hostkey`, the local environment variable `$HOSTKEY` will be dereferenced, and its value injected into the container's `HOST_KEY` variable as well as the container's filesystem path `/etc/hostkey.txt`.
 
 Similar tooling could choose to load the values by name from a database, vault, or file.
+
+The created and modified timestamps are in [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format.
 
 ## Credential Injection
 
