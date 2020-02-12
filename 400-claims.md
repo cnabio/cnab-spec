@@ -12,11 +12,11 @@ In CNAB, an _installation_ is a particular installed instance of a CNAB bundle. 
 
 An installation MAY change over time, as a particular bundle is installed, then upgraded. In CNAB, each time a mutating (destructive) operation is performed (Such as `install`, `upgrade`, or custom operations that are not read-only), the claim gets a new _revision_. A revision is a unique identifier that identifies the combination of an _installation_ and a modification of that installation. For example, when a CNAB bundle is installed, the initial installation will have an initial revision ID. When that installation is upgraded, it will have a new revision ID. How revisions are used is outside of the scope of this document, but it is safe to assume that if a revision ID has changed, one or more artifacts owned by the installation has also been changed.
 
-A _claim_ (or _claim receipt_) is a record of a CNAB _installation_. This specification defines the format of a claim, and describes certain necessary behaviors of a system that implements claims.
+A _claim_ is a record of a CNAB _installation_. This specification defines the format of a claim, and describes certain necessary behaviors of a system that implements claims.
 
 A _host environment_ is an environment, possibly shared between multiple CNAB runtimes, that provides persistence to a CNAB configuration. For example, a filesystem may contain a record of claims that two different CNAB clients share. Or a database may contain the environment that is shared by multiple tools at different locations in the network. Each of these is a CNAB host environment.
 
-The word _claim_ was chosen because it represents the relationship between a certain CNAB host environment and the resources that were created by a CNAB runtime in that host environment. In this sense, an environment takes responsibility for those resources if an only if it can _claim_ them. A claim is an _external assertion of ownership_. That is, the claim itself is not "installed" into the host environment. It is stored separately, possibly in an entirely different location.
+The word _claim_ was chosen because it represents the relationship between a certain CNAB host environment and the resources that were created by a CNAB runtime in that host environment. In this sense, an environment takes responsibility for those resources if and only if it can _claim_ them. A claim is an _external assertion of ownership_. That is, the claim itself is not "installed" into the host environment. It is stored separately, possibly in an entirely different location.
 
 The claims system is designed to satisfy the requirements of the [Bundle Runtime specification](103-bundle-runtime.md) regarding the tracking `CNAB_REVISION` and `CNAB_LAST_REVISION`. It also provides a description of how the state of a bundle installation may be represented.
 
@@ -86,7 +86,7 @@ Source: [400.01-claim.json](examples/400.01-claim.json)
 - bundleReference (OPTIONAL): A canonical reference to the bundle used in the last action. This bundle reference SHOULD be digested to identify a specific version of the referenced bundle.
 - created: A timestamp indicating when this claim was first created. This MUST not be changed after initial creation.
 - custom: A section for custom extension data applicable to a given runtime.
-- modified: A timestamp indicating the last time this claim was modified.
+- modified: A timestamp indicating the last time this claim was modified. This MUST be updated each time the claim is modified.
 - name: The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_.
 - outputs: Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons.
 - parameters: Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons.
@@ -98,7 +98,7 @@ Source: [400.01-claim.json](examples/400.01-claim.json)
     - underway: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
     - unknown: the state is unknown. This is an error condition.
     - success: completed successfully
-- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the installation is modified. It MUST NOT change when a read-only operation is performed on an installation.
+- revision: An [ULID](https://github.com/ulid/spec) that MUST change each time the installation is modified. It MUST NOT change when a [non-modifying operation](https://github.com/cnabio/cnab-spec/blob/master/101-bundle-json.md#custom-actions) is performed on an installation.
 
 > Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action.
 
