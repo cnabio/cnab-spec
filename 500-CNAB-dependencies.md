@@ -4,7 +4,7 @@ weight: 500
 ---
 
 # CNAB Dependencies 1.0
-Working Draft, April. 2019
+Draft, April. 2019
 
 This specification describes how bundles can define dependencies on other
 bundles.

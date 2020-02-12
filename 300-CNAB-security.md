@@ -3,7 +3,8 @@ title: Bundle Security
 weight: 300
 ---
 
-# Cloud Native Application Bundles Security (CNAB-Sec) 1.0.0 WD
+# Cloud Native Application Bundles Security (CNAB-Sec) 1.0.0
+Draft, Feb. 2020
 
 * [Introduction](#introduction)
 * [Roadmap](#roadmap)
