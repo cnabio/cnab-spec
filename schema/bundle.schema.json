@@ -187,6 +187,10 @@
             "description": "A description of the purpose of this action",
             "type": "string"
           },
+          "display": {
+            "description": "A human-readable name for thiis action",
+            "type": "string"
+          },
           "modifies": {
             "description": "Must be set to true if the action can change any resource managed by this bundle",
             "type": "boolean"
