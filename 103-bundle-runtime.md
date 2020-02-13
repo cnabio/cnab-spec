@@ -140,7 +140,7 @@ The parameter value is evaluated thus:
 - If the CNAB runtime does not provide a value, but `default` is set, then the default value MUST be used.
 - If the parameter is marked `required` and `default` is set, then the requirement is satisfied by the runtime-provided default.
 - If no value is provided and `default` is unset, the runtime MUST set the value to an empty string (""), regardless of type.
-- When serializing non-string environment variable values, types SHOULD be converted to their [JSON equivalent type](https://www.json.org/json-en.html) and expressed in string format. For example, boolean `true` (or `True` or `TRUE`) SHOULD be expressed as `"true"` and the object `{foo: 23}` SHOULD be expressed as `"{\"foo\": 23}"`.
+- Non-string values SHOULD be converted to [JSON text](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). For example, boolean `true` (or `True` or `TRUE`) SHOULD be expressed as `true` and the object `{foo: 23}` SHOULD be expressed as `{"foo":23}`. String values SHOULD NOT be converted to JSON text.
 - The resolved content of the environment variable SHOULD use UTF-8 character encoding.
 
 > Setting the value of other types to a default value based on type, e.g. Boolean to `false` or integer to `0`, is considered _incorrect behavior_. Setting the value to `null`, `nil`, or a related character string is also considered incorrect.
