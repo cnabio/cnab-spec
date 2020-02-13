@@ -20,7 +20,7 @@ function validate(e, project) {
   validator.streamLogs = true;
 
   validator.tasks = [
-    "apk add --update make",
+    "apk add --update make curl jq",
     "cd /src",
     "make validate-local",
   ];
