@@ -8,7 +8,7 @@ weight: 400
 
 This specification describes the CNAB Claims system. This is not part of the [CNAB Core](100-CNAB.md) specification, but is a specification describing how records of CNAB installations may be formatted for storage. Implementations of CNAB Core can meet the CNAB Core specification without implementing this specification. Implementations that support claims MAY state that they comply with CNAB Claims 1.0-WD.
 
-In CNAB, an _installation_ is a particular installed instance of a CNAB bundle. For example, if a CNAB bundled named `myApp` is installed in two places, we say there are _two installations of `myApp`_.
+In CNAB, an _installation_ is a particular installed instance of a CNAB bundle. For example, if a bundle named `myApp` is installed in two places, we say there are _two installations of `myApp`_.
 
 An installation MAY change over time, as a particular bundle is installed, then upgraded. In CNAB, each time a mutating (destructive) operation is performed (Such as `install`, `upgrade`, or custom operations that are not read-only), the claim gets a new _revision_. A revision is a unique identifier that identifies the combination of an _installation_ and a modification of that installation. For example, when a CNAB bundle is installed, the initial installation will have an initial revision ID. When that installation is upgraded, it will have a new revision ID. How revisions are used is outside of the scope of this document, but it is safe to assume that if a revision ID has changed, one or more artifacts owned by the installation has also been changed.
 
