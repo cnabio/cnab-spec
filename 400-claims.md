@@ -86,8 +86,9 @@ The fields above are defined as follows:
 
 - `bundle` (REQUIRED): The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
 - `created` (OPTIONAL): A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
+- `bundleReference` (OPTIONAL): A canonical reference to the bundle used in the last action. This bundle reference SHOULD be digested to identify a specific version of the referenced bundle.
 - `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
-- `modified` (OPTIONAL): A timestamp indicating the last time this release claim was modified. Executing the installation action MAY set this to a timestamp that matches `created`. Executing any modifying action (`upgrade`, `uninstall`, or a custom action with the property `"modifies": true`) MUST set this field to the time of the operation.
+- `modified` (OPTIONAL): A timestamp indicating the last time this release claim was modified. Executing the installation action MUST set this to a timestamp that matches `created`. Executing any modifying action (`upgrade`, `uninstall`, or a custom action with the property `"modifies": true`) MUST set this field to the time of the operation.
 - `name` (REQUIRED): The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `name` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
 - `outputs` (OPTIONAL): Key/value pairs that were created by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons. See the [Outputs](#outputs) section for details. If this field is not present, it may be assumed that no outputs were generated as a result of the operation.
 - `parameters` (OPTIONAL): Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons. However, there are some caveats. See the [Parameters](#parameters) section below for details.
@@ -96,7 +97,7 @@ The fields above are defined as follows:
   - `message` (OPTIONAL): A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
   - `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
     - `failure`: failed before completion
-    - `underway`: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided.
+    - `underway`: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided. When used, `underway` should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failure` or `success`.
     - `unknown`: the state is unknown. This is an error condition.
     - `success`: completed successfully
 - `revision` (REQUIRED): An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
