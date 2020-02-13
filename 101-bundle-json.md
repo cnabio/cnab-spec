@@ -749,7 +749,7 @@ Implementations MAY support user-defined additional actions as well. Such action
       "stateless": true
     },
     "io.cnab.migrate": {
-      "display": "Migratte",
+      "display": "Migrate",
       "modifies": false
     },
     "io.cnab.status": {

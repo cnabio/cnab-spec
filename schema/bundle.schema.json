@@ -188,7 +188,7 @@
             "type": "string"
           },
           "display": {
-            "description": "A human-readable name for thiis action",
+            "description": "A human-readable name for this action",
             "type": "string"
           },
           "modifies": {
