@@ -16,7 +16,6 @@
         },
         "path": {
           "description": "The path inside of the invocation image where credentials will be mounted",
-          "pattern": "^(?!/cnab/app/outputs)/.+$",
           "type": "string"
         },
         "required": {
@@ -159,7 +158,6 @@
             },
             "path": {
               "description": "The path inside of the invocation image where parameter data is mounted",
-              "pattern": "^(?!/cnab/app/outputs)/.+$",
               "type": "string"
             }
           },
