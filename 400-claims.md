@@ -97,7 +97,7 @@ The fields above are defined as follows:
   - `message` (OPTIONAL): A human-readable string that communicates the outcome. Error messages MAY be included in `failure` conditions.
   - `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
     - `failure`: failed before completion
-    - `underway`: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `underway` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided. When used, `underway` should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failure` or `success`.
+    - `pending`: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `pending` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided. When used, `pending` should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failure` or `success`.
     - `unknown`: the state is unknown. This is an error condition.
     - `success`: completed successfully
 - `revision` (REQUIRED): An [ULID](https://github.com/ulid/spec) that MUST change each time the release is modified.
@@ -257,7 +257,7 @@ If both commands exit with code `0`, then the resulting claim will look like thi
   "result": {
     "message": "yay!",    // From STDOUT (echo)
     "action": "install",  // Determined by the action
-    "status": "success"   // success (exit == 0), failure (exit > 0), or underway (connection terminated before exit code was received)
+    "status": "success"   // success (exit == 0), failure (exit > 0), or pending (connection terminated before exit code was received)
   },
   "revision": "01CN530TF9Q095VTRYP1M8797C"
 }
