@@ -140,11 +140,12 @@ The parameter value is evaluated thus:
 - If the CNAB runtime does not provide a value, but `default` is set, then the default value MUST be used.
 - If the parameter is marked `required` and `default` is set, then the requirement is satisfied by the runtime-provided default.
 - If no value is provided and `default` is unset, the runtime MUST set the value to an empty string (""), regardless of type.
-- Values are encoded as JSON strings.
+- Non-string values SHOULD be converted to [JSON text](https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). For example, boolean `true` (or `True` or `TRUE`) SHOULD be expressed as `true` and the object `{foo: 23}` SHOULD be expressed as `{"foo":23}`. String values SHOULD NOT be converted to JSON text.
+- The resolved content of the environment variable SHOULD use UTF-8 character encoding.
 
 > Setting the value of other types to a default value based on type, e.g. Boolean to `false` or integer to `0`, is considered _incorrect behavior_. Setting the value to `null`, `nil`, or a related character string is also considered incorrect.
 
-In the case where the `destination` object has a `path` field, the CNAB runtime MUST create a file at that path. The file MUST have sufficient permissions that the effective user ID of the image can read the contents of the file. And the contents of the file MUST be the parameter value (calculated according to the rules above).
+In the case where the `destination` object has a `path` field, the CNAB runtime MUST create a file at that path. The file MUST have sufficient permissions that the effective user ID of the image can read the contents of the file. The file's character encoding SHOULD be UTF-8 and new lines SHOULD be LF (line feed). And the contents of the file MUST be the parameter value (calculated according to the rules above).
 
 ```json
 {
