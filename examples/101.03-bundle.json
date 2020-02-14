@@ -52,13 +52,13 @@
     "my-microservice": {
       "contentDigest": "sha256:aaaaaaaaaaaa...",
       "description": "my microservice",
-      "image": "technosophos/microservice:1.2.3"
+      "image": "example/microservice:1.2.3"
     }
   },
   "invocationImages": [
     {
       "contentDigest": "sha256:aaaaaaa...",
-      "image": "technosophos/helloworld:0.1.0",
+      "image": "example/helloworld:0.1.0",
       "imageType": "docker"
     }
   ],

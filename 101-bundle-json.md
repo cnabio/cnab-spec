@@ -78,13 +78,13 @@ The following is an example of a `bundle.json` for a bundled distributed as a _t
       "my-microservice":{ 
          "contentDigest":"sha256:aaaaaaaaaaaa...",
          "description":"my microservice",
-         "image":"technosophos/microservice:1.2.3"
+         "image":"example/microservice:1.2.3"
       }
    },
    "invocationImages":[ 
       { 
          "contentDigest":"sha256:aaaaaaa...",
-         "image":"technosophos/helloworld:0.1.0",
+         "image":"example/helloworld:0.1.0",
          "imageType":"docker"
       }
    ],
@@ -134,7 +134,7 @@ The canonical JSON version of the above is:
 
 <!-- prettier-ignore -->
 ```json
-{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"definitions":{"http_port":{"default":80,"maximum":10240,"minimum":10,"type":"integer"},"port":{"maximum":65535,"minimum":1024,"type":"integer"},"string":{"type":"string"},"x509Certificate":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","type":"string","writeOnly":true}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"contentDigest":"sha256:aaaaaaaaaaaa...","description":"my microservice","image":"technosophos/microservice:1.2.3"}},"invocationImages":[{"contentDigest":"sha256:aaaaaaa...","image":"technosophos/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"clientCert":{"definition":"x509Certificate","path":"/cnab/app/outputs/clientCert"},"hostName":{"applyTo":["install"],"definition":"string","description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname"},"port":{"definition":"port","path":"/cnab/app/outputs/port"}},"parameters":{"backend_port":{"definition":"http_port","description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"}}},"schemaVersion":"v1.0.0","version":"0.1.2"}
+{"credentials":{"hostkey":{"env":"HOST_KEY","path":"/etc/hostkey.txt"}},"custom":{"com.example.backup-preferences":{"frequency":"daily"},"com.example.duffle-bag":{"icon":"https://example.com/icon.png","iconType":"PNG"}},"definitions":{"http_port":{"default":80,"maximum":10240,"minimum":10,"type":"integer"},"port":{"maximum":65535,"minimum":1024,"type":"integer"},"string":{"type":"string"},"x509Certificate":{"contentEncoding":"base64","contentMediaType":"application/x-x509-user-cert","type":"string","writeOnly":true}},"description":"An example 'thin' helloworld Cloud-Native Application Bundle","images":{"my-microservice":{"contentDigest":"sha256:aaaaaaaaaaaa...","description":"my microservice","image":"example/microservice:1.2.3"}},"invocationImages":[{"contentDigest":"sha256:aaaaaaa...","image":"example/helloworld:0.1.0","imageType":"docker"}],"maintainers":[{"email":"matt.butcher@microsoft.com","name":"Matt Butcher","url":"https://example.com"}],"name":"helloworld","outputs":{"clientCert":{"definition":"x509Certificate","path":"/cnab/app/outputs/clientCert"},"hostName":{"applyTo":["install"],"definition":"string","description":"the hostname produced installing the bundle","path":"/cnab/app/outputs/hostname"},"port":{"definition":"port","path":"/cnab/app/outputs/port"}},"parameters":{"backend_port":{"definition":"http_port","description":"The port that the back-end will listen on","destination":{"env":"BACKEND_PORT"}}},"schemaVersion":"v1.0.0","version":"0.1.2"}
 ```
 
 What follows is an example of a thick bundle. Notice how the `invocationImage` and `images` fields reference the underlying docker image manifest (`application/vnd.docker.distribution.manifest.v2+json`), which in turn references the underlying images:
@@ -180,7 +180,7 @@ What follows is an example of a thick bundle. Notice how the `invocationImage` a
       "my-microservice":{ 
          "contentDigest":"sha256:bbbbbbbbbbbb...",
          "description":"helloworld microservice",
-         "image":"technosophos/helloworld:0.1.2",
+         "image":"example/helloworld:0.1.2",
          "mediaType":"application/vnd.docker.distribution.manifest.v2+json",
          "labels":{ 
             "architecture":"amd64",
@@ -192,7 +192,7 @@ What follows is an example of a thick bundle. Notice how the `invocationImage` a
    "invocationImages":[ 
       { 
          "contentDigest":"sha256:aaaaaaaaaaaa...",
-         "image":"technosophos/helloworld:1.2.3",
+         "image":"example/helloworld:1.2.3",
          "imageType":"docker",
          "mediaType":"application/vnd.docker.distribution.manifest.v2+json",
          "labels":{ 
@@ -303,7 +303,7 @@ A CNAB bundle MUST have at least one invocation image.
   "invocationImages": [
     {
       "contentDigest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
-      "image": "technosophos/helloworld:0.1.0",
+      "image": "example/helloworld:0.1.0",
       "imageType": "docker"
     }
   ]
@@ -334,13 +334,13 @@ The following illustrates an `images` section:
     "backend": {
       "contentDigest": "sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
       "description": "backend component image",
-      "image": "example.com/gabrtv/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
+      "image": "example.com/example/vote-backend@sha256:bca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120686",
       "imageType": "docker"
     },
     "frontend": {
       "contentDigest": "sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
       "description": "frontend component image",
-      "image": "example.com/gabrtv/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
+      "image": "example.com/example/vote-frontend@sha256:aca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120685",
       "imageType": "docker"
     }
   }
@@ -879,13 +879,13 @@ A runtime MUST check that it supports any required extensions before performing 
       "my-microservice":{ 
          "contentDigest":"sha256:aaaaaaaaaaaa...",
          "description":"my microservice",
-         "image":"technosophos/microservice:1.2.3"
+         "image":"example/microservice:1.2.3"
       }
    },
    "invocationImages":[ 
       { 
          "contentDigest":"sha256:aaaaaaa...",
-         "image":"technosophos/helloworld:0.1.0",
+         "image":"example/helloworld:0.1.0",
          "imageType":"docker"
       }
    ],
