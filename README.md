@@ -74,3 +74,5 @@ An implementation IS NOT compliant if it fails to satisfy one or more of the MUS
 - The CNAB Dependencies specification uses 5xx documents.
 - The 8xx-level documents are reserved for non-normative guidance.
 - The 9xx-level documents are reserved for process documents.
+
+The top-level description of each specification is found in the `x00` sections (e.g. 100 is the top of the CNAB Core specification, while 200 is the top of the CNAB Registry specification). Specifications may be broken down into subsections, which are numbered incrementally according to their section. Thus, the CNAB Core specification has a 100 (top-level) with four subsections (101, 102, 103, and 104). The 8XX section is entirely composed of non-normative documents, and each 8XX document stands alone.

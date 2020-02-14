@@ -3,7 +3,7 @@ title: CNAB Security: Signing workflows
 weight: 302
 ---
 
-# Cloud Native Application Bundles Security (CNAB-Sec): Signing workflows 1.0.0 WD
+# Signing Workflows
 
 * [Signing workflow for the minimum viable product (MVP)](#signing-workflow-for-the-minimum-viable-product-mvp)
 

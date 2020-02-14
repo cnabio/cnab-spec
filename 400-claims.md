@@ -4,7 +4,7 @@ weight: 400
 ---
 
 # CNAB Claims 1.0 (CNAB-Claims1)
-*[Working Draft](901-process.md), Feb. 2019*
+Draft, Feb. 2020
 
 This specification describes the CNAB Claims system. This is not part of the [CNAB Core](100-CNAB.md) specification, but is a specification describing how records of CNAB installations may be formatted for storage. Implementations of CNAB Core can meet the CNAB Core specification without implementing this specification. Implementations that support claims MAY state that they comply with CNAB Claims 1.0-WD.
 
