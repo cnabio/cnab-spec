@@ -23,6 +23,7 @@ Note that:
 * A metadata repository MAY be physically distinct from a CNAB registry, or not (e.g., bundles as well as TUF and/or in-toto metadata MAY live as [OCI Artifacts](https://stevelasker.blog/2019/08/25/oci-artifacts-and-a-view-of-the-future/) on a CNAB registry).
 * Both TUF and in-toto are frameworks that can be configured in a wide variety of ways to achieve varying degrees of security. However, we discuss one [minimum viable product (MVP)](#minimum-viable-product-mvp), which has been optimized in particular for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1), in this document.
 * Although we discuss only the signing and verification of bundles, exactly the same principles apply to images.
+* Trust for different metadata repositories with different roots of trust can be established out-of-band using an approach like [TAP 4](https://github.com/theupdateframework/taps/blob/master/tap4.md). For example, a bundle runtime could be shipped with known good copies of TUF `root` metadata for different repositories, or there could even be a meta metadata repository that distributes these `root` metadata. How to establish whether a `root` metadata file is trustworthy is out of the scope of this document.
 
 ## Minimum viable product (MVP)
 
