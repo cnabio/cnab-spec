@@ -1,5 +1,5 @@
 {
-  "$id": "http://cnab.io/v1/claims.schema.json",
+  "$id": "https://cnab.io/v1/claims.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "result": {
@@ -34,7 +34,7 @@
   "properties": {
     "additionalProperties": false,
     "bundle": {
-      "$ref": "http://cnab.io/v1/bundle.schema.json",
+      "$ref": "https://cnab.io/v1/bundle.schema.json",
       "description": "The bundle descriptor"
     },
     "created": {

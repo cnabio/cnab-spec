@@ -1,5 +1,5 @@
 {
-  "$id": "http://cnab.io/v1/bundle.schema.json",
+  "$id": "https://cnab.io/v1/bundle.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
   "definitions": {
@@ -216,7 +216,7 @@
     },
     "definitions": {
       "additionalProperties": {
-        "$ref": "http://cnab.io/v1/definitions.schema.json"
+        "$ref": "https://cnab.io/v1/definitions.schema.json"
       },
       "type": "object"
     },
