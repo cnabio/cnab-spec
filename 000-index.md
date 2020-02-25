@@ -5,7 +5,7 @@ weight: 001
 
 # CNAB Specifications
 
-1. [Cloud Native Application Bundle Core 1.0.0 (CNAB1)](100-CNAB.md)
+1. [Cloud Native Application Bundle Core 1.0.1 (CNAB1)](100-CNAB.md)
     - [The bundle.json File](101-bundle-json.md)
     - [The Invocation Image Format](102-invocation-image.md)
     - [The Bundle Runtime](103-bundle-runtime.md)
