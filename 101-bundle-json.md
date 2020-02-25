@@ -767,7 +767,7 @@ The above declares three actions: `io.cnab.status`, `io.cnab.migrate` and `io.cn
 
 Each action is accompanied by a description, which contains the following fields:
 
-- `title`: The human-readable name of the operation. If omitted, tools MAY use the value of the `actions` key (e.g. `io.cnab.dry-run`). User agents that display the title SHOULD disambiguate if two or more actions have the same `title` value.
+- `title`: The human-readable name of the operation. If omitted, tools MAY use the value of the `actions` key (e.g. `io.cnab.dry-run`). User agents that display the title SHOULD disambiguate if two or more actions have the same `title` value (OPTIONAL).
 - `modifies`: Indicates whether the given action will _modify resources_ in any way. If not provided, it will be assumed `false`.
 - `description`: A human readable description of the action (OPTIONAL)
 - `stateless`: The action does not act on a claim, and does not require credentials. This is useful for exposing dry-run actions, printing documentation, etc. (OPTIONAL)
