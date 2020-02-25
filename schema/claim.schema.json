@@ -17,7 +17,7 @@
           "enum": [
             "failure",
             "success",
-            "underway",
+            "pending",
             "unknown"
           ],
           "type": "string"
@@ -79,4 +79,3 @@
   "title": "CNAB Claims json schema",
   "type": "object"
 }
-
