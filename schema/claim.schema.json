@@ -73,7 +73,7 @@
     "bundle",
     "created",
     "modified",
-    "name",
+    "installation",
     "revision"
   ],
   "title": "CNAB Claims json schema",
