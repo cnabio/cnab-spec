@@ -16,7 +16,7 @@
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "custom": {},
   "modified": "2018-08-30T20:39:59.611068556-06:00",
-  "name": "technosophos.hellohelm",
+  "installation": "technosophos.hellohelm",
   "parameters": {},
   "result": {
     "action": "install",
