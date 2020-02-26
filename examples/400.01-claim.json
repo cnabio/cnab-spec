@@ -1,27 +1,111 @@
 {
+  "action": "install",
   "bundle": {
-    "credentials": {},
-    "images": {},
+    "credentials": {
+      "hostkey": {
+        "env": "HOST_KEY",
+        "path": "/etc/hostkey.txt"
+      }
+    },
+    "custom": {
+      "com.example.backup-preferences": {
+        "frequency": "daily"
+      },
+      "com.example.duffle-bag": {
+        "icon": "https://example.com/icon.png",
+        "iconType": "PNG"
+      }
+    },
+    "definitions": {
+      "http_port": {
+        "default": 80,
+        "maximum": 10240,
+        "minimum": 10,
+        "type": "integer"
+      },
+      "port": {
+        "maximum": 65535,
+        "minimum": 1024,
+        "type": "integer"
+      },
+      "string": {
+        "type": "string"
+      },
+      "x509Certificate": {
+        "contentEncoding": "base64",
+        "contentMediaType": "application/x-x509-user-cert",
+        "type": "string",
+        "writeOnly": true
+      }
+    },
+    "description": "An example 'thin' helloworld Cloud-Native Application Bundle",
+    "images": {
+      "my-microservice": {
+        "contentDigest": "sha256:aaaaaaaaaaaa...",
+        "description": "my microservice",
+        "image": "example/microservice:1.2.3"
+      }
+    },
     "invocationImages": [
       {
-        "image": "technosophos/demo2:0.2.0",
+        "contentDigest": "sha256:aaaaaaa...",
+        "image": "example/helloworld:0.1.0",
         "imageType": "docker"
       }
     ],
-    "name": "technosophos.hellohelm",
-    "parameters": {},
+    "maintainers": [
+      {
+        "email": "matt.butcher@microsoft.com",
+        "name": "Matt Butcher",
+        "url": "https://example.com"
+      }
+    ],
+    "name": "helloworld",
+    "outputs": {
+      "clientCert": {
+        "definition": "x509Certificate",
+        "path": "/cnab/app/outputs/clientCert"
+      },
+      "hostName": {
+        "applyTo": [
+          "install"
+        ],
+        "definition": "string",
+        "description": "the hostname produced installing the bundle",
+        "path": "/cnab/app/outputs/hostname"
+      },
+      "port": {
+        "definition": "port",
+        "path": "/cnab/app/outputs/port"
+      }
+    },
+    "parameters": {
+      "backend_port": {
+        "definition": "http_port",
+        "description": "The port that the back-end will listen on",
+        "destination": {
+          "env": "BACKEND_PORT"
+        }
+      }
+    },
     "schemaVersion": "v1.0.0",
-    "version": "0.1.0"
+    "version": "0.1.2"
   },
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "custom": {},
-  "modified": "2018-08-30T20:39:59.611068556-06:00",
-  "installation": "technosophos.hellohelm",
-  "parameters": {},
+  "installation": "technosophos.helloworld",
+  "parameters": {
+    "backend_port": 81
+  },
   "result": {
-    "action": "install",
-    "message": "",
-    "status": "success"
+      "modified":"2018-08-30T20:39:59.611068556-06:00",
+      "message": "",
+      "status": "success",
+      "outputs": [
+        "clientCert",
+        "hostName",
+        "port"
+      ]
   },
   "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
 }
