@@ -98,10 +98,11 @@ The fields above are defined as follows:
   - `revision` (REQUIRED): An [ULID](https://github.com/ulid/spec) that MUST change each time the claim is modified. It MUST NOT change when a [non-modifying operation](https://github.com/cnabio/cnab-spec/blob/master/101-bundle-json.md#custom-actions) is performed on an installation.
   - `started` (OPTIONAL): A timestamp indicating when execution of the operation started.
   - `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
-    - `failure`: failed before completion
-    - `pending`: in progress. This should only be used if the invocation container MUST exit before it can determine whether all operations are complete. Note that `pending` is a _long term status_ that indicates that the installation's final state cannot be determined by the system. For this reason, it should be avoided. When used, `pending` should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failure` or `success`.
-    - `unknown`: the state is unknown. This is an error condition.
-    - `success`: completed successfully
+    - `failure`: Failed before completion.
+    - `pending`: Execution has been requested and has not begun.
+    - `running`: Execution is in progress and has not completed.
+    - `unknown`: The state is unknown. This is an error condition.
+    - `success`: Completed successfully.
   - `stopped` (OPTIONAL): A timestamp indicating when the execution of the operation stopped.
 
 > Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action. Implementations of the claims specification are expected to retrieve the credential requirements from the `bundle` field.

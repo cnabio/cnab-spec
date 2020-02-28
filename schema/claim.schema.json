@@ -29,6 +29,7 @@
             "failure",
             "success",
             "pending",
+            "running",
             "unknown"
           ],
           "type": "string"
