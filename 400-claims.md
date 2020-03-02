@@ -99,8 +99,8 @@ The fields above are defined as follows:
   - `started` (OPTIONAL): A timestamp indicating when execution of the operation started.
   - `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
     - `failure`: Failed before completion.
-    - `pending`: Execution has been requested and has not begun.
-    - `running`: Execution is in progress and has not completed.
+    - `pending`: Execution has been requested and has not begun. This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failure` or `success`.
+    - `running`: Execution is in progress and has not completed.  This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failure` or `success`.
     - `unknown`: The state is unknown. This is an error condition.
     - `success`: Completed successfully.
   - `stopped` (OPTIONAL): A timestamp indicating when the execution of the operation stopped.
