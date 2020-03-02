@@ -19,6 +19,10 @@
             "type": "string"
           }
         },
+        "started": {
+          "description": "The date when execution of the operation started, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
+          "type": "string"
+        },
         "status": {
           "description": "The status of the last action",
           "enum": [
@@ -29,6 +33,10 @@
           ],
           "type": "string"
         }
+      },
+      "stopped": {
+        "description": "The date when execution of the operation stopped, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
+        "type": "string"
       },
       "required": [
         "message",
