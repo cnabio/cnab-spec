@@ -13,6 +13,7 @@
     "schemaVersion": "v1.0.0",
     "version": "0.1.0"
   },
+  "bundleReference": "hub.example.com/technosophos/hellohelm@sha256:eec03d9da1bad36b3e3a4526cc774153f7024a94f25df8d2dc3ca5602fc5273d",
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "custom": {},
   "modified": "2018-08-30T20:39:59.611068556-06:00",
