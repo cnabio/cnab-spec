@@ -98,6 +98,7 @@ The fields above are defined as follows:
   - `revision` (REQUIRED): An [ULID](https://github.com/ulid/spec) that MUST change each time the claim is modified. It MUST NOT change when a [non-modifying operation](https://github.com/cnabio/cnab-spec/blob/master/101-bundle-json.md#custom-actions) is performed on an installation.
   - `started` (OPTIONAL): A timestamp indicating when execution of the operation started.
   - `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
+    - `cancelled`: The operation was cancelled, potentially during the operation's execution. This is an error condition.
     - `failed`: Failed before completion.
     - `pending`: Execution has been requested and has not begun. This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
     - `running`: Execution is in progress and has not completed.  This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
