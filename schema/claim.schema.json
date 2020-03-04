@@ -37,6 +37,10 @@
       "$ref": "https://cnab.io/v1/bundle.schema.json",
       "description": "The bundle descriptor"
     },
+    "bundleReference": {
+      "description": "A canonical reference to the bundle used in the last action",
+      "type": "string"
+    },
     "created": {
       "description": "The date created, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
       "type": "string"
