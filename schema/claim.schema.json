@@ -26,8 +26,8 @@
         "status": {
           "description": "The status of the last action",
           "enum": [
-            "failure",
-            "success",
+            "failed",
+            "succeeded",
             "pending",
             "running",
             "unknown"
