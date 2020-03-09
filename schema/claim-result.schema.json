@@ -69,7 +69,6 @@
   "required": [
     "claimRef",
     "id",
-    "message",
     "modified",
     "status"
   ],
