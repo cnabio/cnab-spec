@@ -1,6 +1,5 @@
 BASE_DIR          := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 VALIDATOR_IMG     := deislabs/cnab-spec.ajv
-VALIDATOR_SCRIPTS := validate.sh validate-url.sh
 
 .PHONY: build-validator
 build-validator:
@@ -8,12 +7,17 @@ build-validator:
 
 .PHONY: validate
 validate: build-validator
-	@for script in $(VALIDATOR_SCRIPTS); do \
-		docker run --rm \
-			-v $(BASE_DIR):/root \
-			-w /root \
-			$(VALIDATOR_IMG) ./scripts/$$script ; \
-	done
+	@docker run --rm \
+		-v $(BASE_DIR):/root \
+		-w /root \
+		$(VALIDATOR_IMG) ./scripts/validate.sh
+
+.PHONY: validate-url
+validate-url: build-validator
+	@docker run --rm \
+		-v $(BASE_DIR):/root \
+		-w /root \
+		$(VALIDATOR_IMG) ./scripts/validate-url.sh
 
 .PHONY: build-validator-local
 build-validator-local:
@@ -21,7 +25,9 @@ build-validator-local:
 
 .PHONY: validate-local
 validate-local: build-validator-local
-	@for script in $(VALIDATOR_SCRIPTS); do \
-		./scripts/$$script ; \
-	done
+	./scripts/validate.sh
+
+.PHONY: validate-url-local
+validate-url-local: build-validator-local
+	./scripts/validate-url.sh
 

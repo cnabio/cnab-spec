@@ -5,7 +5,10 @@ const projectName = "cnab-spec";
 // Event handlers
 
 events.on("exec", (e, p) => {
-  validate(e, p).run();
+  return Group.runAll([
+    validate(e, p),
+    validateURL(e, p)
+  ]);
 });
 events.on("check_suite:requested", runSuite);
 events.on("check_suite:rerequested", runSuite);
@@ -28,10 +31,29 @@ function validate(e, project) {
   return validator
 }
 
+function validateURL(e, project) {
+  var validator = new Job(`${projectName}-validate-url`, "node:8-alpine");
+  validator.streamLogs = true;
+
+  validator.tasks = [
+    "apk add --update make curl jq",
+    "cd /src",
+    "make validate-url-local",
+  ];
+
+  return validator
+}
+
 // Here we can add additional Check Runs, which will run in parallel and
 // report their results independently to GitHub
 function runSuite(e, p) {
-  runValidation(e, p).catch(e => {console.error(e.toString())});
+  return runValidation(e, p)
+  .then(() => {
+    if (e.revision.ref == "master") {
+      validateURL(e, p).run();
+    }
+  })
+  .catch(e => {console.error(e.toString())});
 }
 
 // runValidation is a Check Run that is ran as part of a Checks Suite
