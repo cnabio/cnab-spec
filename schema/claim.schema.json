@@ -19,6 +19,10 @@
       "description": "The date created, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
       "type": "string"
     },
+    "modified": {
+      "description": "The date last modified, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
+      "type": "string"
+    },
     "custom": {
       "$comment": "reserved for custom extensions"
     },
@@ -39,6 +43,7 @@
     "action",
     "bundle",
     "created",
+    "modified",
     "installation",
     "revision"
   ],
