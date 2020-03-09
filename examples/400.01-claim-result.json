@@ -1,0 +1,18 @@
+{
+  "claimRef": {
+    "installation": "technosophos.helloworld",
+    "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
+  },
+  "custom": {},
+  "id": "01E2ZZ2FKSE0V41DCXFCSW5D1M",
+  "modified": "2018-08-30T20:39:59.611068556-06:00",
+  "message": "",
+  "outputs": {
+    "clientCert": {},
+    "hostName": {},
+    "port": {}
+  },
+  "started": "2018-08-30T20:39:55.549002887-06:00",
+  "status": "succeeded",
+  "stopped": "2018-08-30T20:39:59.611068556-06:00"
+}

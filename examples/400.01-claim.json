@@ -98,17 +98,5 @@
   "parameters": {
     "backend_port": 81
   },
-  "result": {
-    "modified": "2018-08-30T20:39:59.611068556-06:00",
-    "message": "",
-    "outputs": [
-      "clientCert",
-      "hostName",
-      "port"
-    ],
-    "started": "2018-08-30T20:39:55.549002887-06:00",
-    "status": "succeeded",
-    "stopped": "2018-08-30T20:39:59.611068556-06:00"
-  },
   "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
 }
