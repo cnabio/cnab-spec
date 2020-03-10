@@ -2,6 +2,9 @@ const { events, Job, Group } = require("brigadier");
 const { Check } = require("@brigadecore/brigade-utils");
 
 const projectName = "cnab-spec";
+// Currently a very lenient regex.
+// Could be made more strict.  Some examples: cnab-core-v1.0.0, cnab-claim-v1.0.0-DRAFT+abc1234
+const releaseTagRegex = /^refs\/tags\/(.*)/;
 
 // Event handlers
 
@@ -17,8 +20,11 @@ events.on("check_run:rerequested", runSuite);
 events.on("issue_comment:created", (e, p) => Check.handleIssueComment(e, p, runSuite));
 events.on("issue_comment:edited", (e, p) => Check.handleIssueComment(e, p, runSuite));
 events.on("push", (e, p) => {
-  if (e.revision.ref.startsWith("refs/tags/")) {
-    return publish(e, p).run();
+  let matchStr = e.revision.ref.match(releaseTagRegex);
+  if (matchStr) {
+    let matchTokens = Array.from(matchStr);
+    let version = matchTokens[1];
+    return publish(p, version).run();
   }
 });
 
@@ -50,7 +56,7 @@ function validateURL(e, project) {
   return validator;
 }
 
-function publish(e, p) {
+function publish(p, version) {
   var publisher = new Job(`${projectName}-publish`, "node:8-alpine");
 
   publisher.env.AZURE_STORAGE_CONNECTION_STRING = p.secrets.azureStorageConnectionString;
@@ -61,7 +67,7 @@ function publish(e, p) {
       chmod +x az-linux-amd64 && \
       mv az-linux-amd64 /usr/local/bin/az",
     "cd /src",
-    "make publish"
+    `VERSION=${version} make publish`
   );
 
   return publisher;
