@@ -10,8 +10,8 @@ const releaseTagRegex = /^refs\/tags\/(.*)/;
 
 events.on("exec", (e, p) => {
   return Group.runAll([
-    validate(e, p),
-    validateURL(e, p)
+    validate(),
+    validateURL()
   ]);
 });
 events.on("check_suite:requested", runSuite);
@@ -30,7 +30,7 @@ events.on("push", (e, p) => {
 
 // Functions/Helpers
 
-function validate(e, project) {
+function validate() {
   var validator = new Job(`${projectName}-validate`, "node:8-alpine");
   validator.streamLogs = true;
 
@@ -43,7 +43,7 @@ function validate(e, project) {
   return validator;
 }
 
-function validateURL(e, project) {
+function validateURL() {
   var validator = new Job(`${projectName}-validate-url`, "node:8-alpine");
   validator.streamLogs = true;
 
@@ -76,10 +76,10 @@ function publish(p, version) {
 // Here we can add additional Check Runs, which will run in parallel and
 // report their results independently to GitHub
 function runSuite(e, p) {
-  return runValidation(e, p, "validate")
+  return runValidation(e, p, validate)
   .then(() => {
     if (e.revision.ref == "master") {
-      validateURL(e, p).run();
+      validateURL().run();
     }
   })
   .catch(e => {console.error(e.toString())});
