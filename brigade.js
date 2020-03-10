@@ -60,6 +60,7 @@ function publish(e, p) {
     "curl -sLO https://github.com/carolynvs/az-cli/releases/download/v0.3.2/az-linux-amd64 && \
       chmod +x az-linux-amd64 && \
       mv az-linux-amd64 /usr/local/bin/az",
+    "cd /src",
     "make publish"
   );
 
