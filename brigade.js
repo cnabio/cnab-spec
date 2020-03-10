@@ -15,6 +15,11 @@ events.on("check_suite:rerequested", runSuite);
 events.on("check_run:rerequested", runSuite);
 events.on("issue_comment:created", handleIssueComment);
 events.on("issue_comment:edited", handleIssueComment);
+events.on("push", (e, p) => {
+  if (e.revision.ref.startsWith("refs/tags/")) {
+    return publish(e, p).run();
+  }
+});
 
 // Functions/Helpers
 
@@ -28,7 +33,7 @@ function validate(e, project) {
     "make validate-local",
   ];
 
-  return validator
+  return validator;
 }
 
 function validateURL(e, project) {
@@ -41,7 +46,23 @@ function validateURL(e, project) {
     "make validate-url-local",
   ];
 
-  return validator
+  return validator;
+}
+
+function publish(e, p) {
+  var publisher = new Job(`${projectName}-publish`, "node:8-alpine");
+
+  publisher.env.AZURE_STORAGE_CONNECTION_STRING = p.secrets.azureStorageConnectionString;
+  publisher.tasks.push(
+    "apk add --update make curl",
+    // Fetch az cli needed for publishing
+    "curl -sLO https://github.com/carolynvs/az-cli/releases/download/v0.3.2/az-linux-amd64 && \
+      chmod +x az-linux-amd64 && \
+      mv az-linux-amd64 /usr/local/bin/az",
+    "make publish"
+  );
+
+  return publisher;
 }
 
 // Here we can add additional Check Runs, which will run in parallel and
