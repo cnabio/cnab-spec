@@ -3,7 +3,7 @@ const { Check } = require("@brigadecore/brigade-utils");
 
 const projectName = "cnab-spec";
 // Currently a very lenient regex.
-// Could be made more strict.  Some examples: cnab-core-v1.0.0, cnab-claim-v1.0.0-DRAFT+abc1234
+// Could be made more strict.  Some examples: cnab-core-1.0.0, cnab-claim-1.0.0-DRAFT+abc1234
 const releaseTagRegex = /^refs\/tags\/(.*)/;
 
 // Event handlers
