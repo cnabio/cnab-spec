@@ -34,9 +34,12 @@ A small number of stability markers are allowed, as determined by [the foundatio
 
 - `PD`: Pre-draft indicates that the version of the resource is an unstable testing version.
 - `DRAFT`: Draft indicates that the version is an unstable in-development version
-- `GA`: Working Group Approval indicates that this version has been accepted by the maintainers, but not accepted by the Executive Directors. In practice, this marker MUST only be used internally for testing, and never for production. 
+- `GA`: Working Group Approval indicates that this version has been accepted by the maintainers, but not accepted by the Executive Directors. In practice, this marker MUST only be used internally for testing, and never for production.
+- `AD`: Final approval by the Executive Directors.
 
-The tags `GA` and `AD` should never be used in a SemVer stability marker.
+The tags `GA` and `AD` should never be used in a SemVer stability marker. `GA` is not a milestone that warrants publication, and `AD` is synonymous with the final release.
+
+The development process defines `Publication` and `Submission to Other Standards Bodies` as process steps. However, neither of these reflects a change in the specification. These are people processes.
 
 The stability markers `ALPHA`, `BETA`, and so on are _disallowed_ under this specification, and MUST NOT be used to express CNAB versions.
 
