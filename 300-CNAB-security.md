@@ -43,7 +43,7 @@ The basic idea is to use TUF as a transport protocol that distributes several fi
 * The software supply chains defined using in-toto.
 * The public keys used to verify these supply chains.
 
-While images and bundles are published on registries, TUF and in-toto metadata about images and bundles are published on [_metadata repositories_](301-CNAB-metadata-repositories.md). Metadata repositories are conceptually, but not necessarily physically, distinct from [CNAB](200-CNAB-registries.md) or [OCI](https://github.com/opencontainers/distribution-spec/blob/master/spec.md) registries. Furthermore, the key management models on metadata repositories are largely prescriptive. For these reasons and more, metadata repositories are out of the scope of this document.
+While images and bundles are published on registries, TUF and in-toto metadata about images and bundles are published on [_metadata repositories_](301-metadata-repositories.md). Metadata repositories are conceptually, but not necessarily physically, distinct from [CNAB](200-CNAB-registries.md) or [OCI](https://github.com/opencontainers/distribution-spec/blob/master/spec.md) registries. Furthermore, the key management models on metadata repositories are largely prescriptive. For these reasons and more, metadata repositories are out of the scope of this document.
 
 Unless specified otherwise, metadata are TUF and in-toto metadata, which may be produced using the suggested [signing workflows](302-signing-workflows.md).
 
