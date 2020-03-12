@@ -38,7 +38,7 @@ In either case, CNAB has the same schema, and this spec refers to this file as t
 
 When thin bundles are processed, the referenced content (such as invocation images and other images) are retrieved from their respective storage repositories and registries. A bundle is considered to be _well formed_ if its definition follows the CNAB schema and the images are in the correct formats. A bundle is considered _complete_ if it is packaged as a thick bundle, and all the components are present OR if it is packaged as a thin bundle and all of the references are resolvable. Completeness is thus in some cases contingent upon external factors such as network access.
 
-Bundles use cryptographic verification on multiple levels. Images (Docker, OCI, VM) are digested, and their cryptographic digest is then embedded into the `bundle.json`. The `bundle.json` is then signed using a public/private key system to ensure that it has not been tampered with. A signed bundle is named `bundle.cnab`. A bundle is considered _secure_ if the bundle definition contains the correct content digests for all images, and the bundle definition is cryptographically signed.
+Bundles use cryptographic verification on multiple levels. Images (Docker, OCI, VM) are digested, and their cryptographic digest is then embedded into the `bundle.json`. The `bundle.json` is then signed using a public/private key system to ensure that it has not been tampered with. A bundle is considered _secure_ if the bundle definition contains the correct content digests for all images, and the bundle definition is cryptographically signed.
 
 Finally, this document describes a format for invocation images, including file system layout and a functional description of how an invocation image is installed.
 
@@ -63,7 +63,6 @@ Invocation images allow limited configuration, as defined in two places in the b
 - Bundle: the collection of CNAB data and metadata necessary for installing an application on the designated cloud services.
 - Bundle definition: The information about a bundle, its parameters, credentials, images, and usage
 - `bundle.json`: The unsigned JSON-encoded representation of a bundle definition.
-- `bundle.cnab`: The signed JSON-encoded representation of a bundle definition.
 - Image: Used generically, a container image (e.g. OCI images) or a VM image.
 - Invocation Image: The image that contains the bootstrapping and installation logic for the bundle
 - Registry: A storage and retrieval service for CNAB objects.
