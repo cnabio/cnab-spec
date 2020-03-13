@@ -8,6 +8,8 @@ weight: 301
 * [Metadata repositories](#metadata-repositories)
 * [Minimum viable product (MVP)](#minimum-viable-product-mvp)
   * [Security analysis of MVP](#security-analysis-of-mvp)
+* [Maximum security product (MSP)](#maximum-security-product-msp)
+  * [Security analysis of MSP](#security-analysis-of-msp)
 
 This document is a _normative_ part of [CNAB Security](300-CNAB-security.md).
 
@@ -26,7 +28,7 @@ Note that:
 
 This subsection discusses the simplest way that developers MAY set up a metadata repository for their bundle. Every bundle MAY use a separate metadata repository on the same server, even if two or more bundles are maintained by the same group of developers. (This is similar to how images are signed using [Docker Content Trust](https://docs.docker.com/engine/security/trust/content_trust/). As noted earlier, the MVP has been optimized for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1). Nevertheless, note that developers MAY use _different_ servers to host metadata repositories for bundles. In [303](303-verification-workflows.md), we discuss how a bundle runtime MAY securely resolve different bundles from different metadata repositories on different servers.) Figure 1 illustrates our simple metadata repository for a bundle.
 
-![Figure 1: An MVP metadata repository for a bundle](img/example-metadata-repository.png)
+![Figure 1: An MVP metadata repository for a bundle](img/example-tuf-repository.png)
 **Figure 1**: An MVP metadata repository for a bundle.
 
 The metadata repository for a bundle SHOULD provide at least the TUF metadata for the four top-level roles: `root`, `timestamp`, `snapshot`, and `targets`.
@@ -41,7 +43,50 @@ Since metadata for both the `timestamp` and `snapshot` roles could be updated wh
 
 The `targets` role lists the file sizes and cryptographic hashes of available bundles (e.g., `example.com/example-org/example-bundle:latest`). Like the `root` role, it SHOULD also use a threshold (m, n) of offline keys, where n is the number of developers, and m is the number of quorum members that must agree on new `targets` metadata. Its metadata SHOULD expire monthly, or however often developers expect to produce new bundles.
 
-The rest of this subsection, which discusses how to add in-toto metadata to provide the provenance for a bundle, is OPTIONAL.
+The following code listing is an example of the `targets` metadata for a bundle:
+
+```json
+{
+  "signatures": {...},
+  "signed": {
+    ...,
+    "delegations": {},
+    "targets": {
+      "example.com/example-org/example-bundle:latest": {
+        "hashes": {
+          "sha256": "eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09"
+        },
+        "length": 7206
+      },
+    }
+    ...,
+  }
+}
+```
+
+For operational simplicity, bundles that share the same developers MAY share `root` and `targets` keys across different metadata repositories for these bundles.
+
+### Security analysis of MVP
+
+With regard to key management, we assume that the `root` and `targets` keys are kept offline from the metadata repository, perhaps on private infrastructure controlled by the bundle developers. In contrast, we assume that `timestamp` and `snapshot` keys are kept online on the metadata repository.
+
+We assume that attackers can:
+
+1. Compromise any combination of the aforementioned keys.
+1. Serve new TUF metadata as well as bundles. This can be done either with a man-in-the-middle (MitM) attack, or by compromising the metadata repository and CNAB registry.
+
+If attackers compromise the metadata repository alone, then they have access to only the `timestamp` and `snapshot` keys. In this case, at worst, they can carry freeze and rollback attacks (limited by the expiration of `root` or `targets` metadata, whichever is earlier).
+
+However, if attackers also compromise, say, the private infrastructure controlled by the bundle developers, then they also have access to the `targets` key. This is because the `targets` key is very likely to be kept online _within_ this private infrastructure so that developers can use CI/CD to sign new bundles on demand. In this case, at worst, attackers can sign off malicious bundles. Developers can use the `root` key to rotate all other keys.
+
+Finally, if attackers somehow also compromise the `root` key, which SHOULD be kept securely on, say, a disconnected [hardware security module](https://en.wikipedia.org/wiki/Hardware_security_module) within the aforementioned private infrastructure, then attackers can not only sign off malicious bundles, but also rotate all keys on the metadata repository. Nevertheless, developers can still use the `root` key to rotate all keys, including itself, for end-users who have not yet downloaded malicious bundles. Other end-users will need to reset their systems, and update out-of-band.
+
+## Maximum security product (MSP)
+
+This subsection discusses . Figure 2 illustrates our simple metadata repository for a bundle.
+
+![Figure 2: An MSP metadata repository for a bundle](img/example-tuf-in-toto-repository.png)
+**Figure 2**: An MSP metadata repository for a bundle.
 
 The `targets` role MAY sign targets metadata about:
 
@@ -65,7 +110,20 @@ The following code listing is an example of the `targets` metadata for a bundle:
   "signatures": {...},
   "signed": {
     ...,
-    "delegations": {},
+    "delegations": {
+      "keys": {...},
+      "roles": [
+        {
+          "keyids": [...],
+          "name": "targets/releases",
+          "paths": [
+            "example.com/example/example-image:*",
+            "example.com/example/example-image/in-toto-metadata/*/*.link"
+          ],
+          "threshold": 1
+        }
+      ]
+    },
     "targets": {
       "example.com/example-org/example-bundle/in-toto-metadata/root.layout": {
         "custom": {
@@ -97,7 +155,23 @@ The following code listing is an example of the `targets` metadata for a bundle:
           "sha256": "8cb4a254ae123a8bd91b1c9abdd99e719aa8349ff7eafd168988ce8a935d51a1"
         },
         "length": 799
-      },
+      }
+    }
+    ...,
+  }
+}
+```
+
+
+The following code listing is an example of the `targets/releases` metadata for a bundle:
+
+```json
+{
+  "signatures": {...},
+  "signed": {
+    ...,
+    "delegations": {},
+    "targets": {
       "example.com/example-org/example-bundle:latest": {
         "custom": {
           "in-toto": [
@@ -129,9 +203,9 @@ The following code listing is an example of the `targets` metadata for a bundle:
 }
 ```
 
-### Security analysis of MVP
+### Security analysis of MSP
 
-Table 1 presents a summary of possible attacks given the key compromise of one or more TUF roles and in-toto functionaries. We assume that attackers can:
+Table 2 presents a summary of possible attacks given the key compromise of one or more TUF roles and in-toto functionaries. We assume that attackers can:
 
 1. Compromise any combination of keys as per any row in Table 1.
 1. Serve new TUF and in-toto metadata as well as bundles. This can be done either with a man-in-the-middle (MitM) attack, or by compromising the metadata repository and CNAB registry.
@@ -145,9 +219,9 @@ Table 1 presents a summary of possible attacks given the key compromise of one o
 | timestamp + snapshot + targets (TUF) + step1 (in-toto)       | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
 | timestamp + snapshot + targets (TUF) + step2 (in-toto)       | Yes (limited by TUF root)         | Yes                               | Yes              | Yes                        |
 
-**Table 1**: The security attacks that are possible given the key compromise of one or more TUF role or in-toto functionary. Columns marked "Yes" indicate that the specified attack is possible _given_ the compromise of _all_ of the specified keys, whereas columns marked "No" indicate that they are not.
+**Table 2**: The security attacks that are possible given the key compromise of one or more TUF role or in-toto functionary. Columns marked "Yes" indicate that the specified attack is possible _given_ the compromise of _all_ of the specified keys, whereas columns marked "No" indicate that they are not.
 
-As Table 1 suggests, bundle developers SHOULD use offline keys to sign:
+As Table 2 suggests, bundle developers SHOULD use offline keys to sign:
 
 1. The TUF `root` and `targets` metadata. (For operational simplicity, bundles that share the same developers MAY share `root` and `targets` keys across different metadata repositories for these bundles.)
 2. The in-toto root layouts as well as their associated public keys.
