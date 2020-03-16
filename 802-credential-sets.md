@@ -68,7 +68,7 @@ The created and modified timestamps are in [RFC 3339](https://www.ietf.org/rfc/r
 
 ## Credential Injection
 
-Credentials must be injected into the runtime of the invocation image. The following strategies are known to work:
+Credentials must be injected into the runtime of an invocation image. The following strategies are known to work:
 
 - Environment Variables:
   - Injected via environment variable services (Docker and Kubernetes)

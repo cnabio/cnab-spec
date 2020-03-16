@@ -5,7 +5,7 @@
     "result": {
       "properties": {
         "message": {
-          "description": "the last message from the invocation image or runtime",
+          "description": "the last message from an invocation image or runtime",
           "type": "string"
         },
         "modified": {

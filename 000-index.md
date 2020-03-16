@@ -5,9 +5,9 @@ weight: 001
 
 # CNAB Specifications
 
-1. [Cloud Native Application Bundle Core 1.0.0 (CNAB1)](100-CNAB.md)
+1. [Cloud Native Application Bundle Core 1.1.0 (CNAB1.1)](100-CNAB.md)
     - [The bundle.json File](101-bundle-json.md)
-    - [The Invocation Image Format](102-invocation-image.md)
+    - [Invocation Image Format](102-invocation-image.md)
     - [The Bundle Runtime](103-bundle-runtime.md)
     - [Bundle Formats (Thick and Thin)](104-bundle-formats.md)
 2. [Cloud Native Application Bundle Registry 1.0.0 (CNAB-Reg)](200-CNAB-registries.md)
@@ -19,5 +19,6 @@ weight: 001
     - [Repositories](803-repositories.md)
     - [Well known custom actions](804-well-known-custom-actions.md)
     - [Disconnected Scenarios](805-airgap.md)
+    - [Declarative Installation Support](806-declarative-installation-support.md)
 6. Process Documentation
     - [Specification Process](901-process.md)

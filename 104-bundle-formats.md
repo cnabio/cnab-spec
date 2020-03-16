@@ -18,7 +18,7 @@ A thin bundle contains only one object: The bundle descriptor. Thus, the format 
 A thick bundle contains multiple objects:
 
 - The bundle descriptor (`bundle.json`)
-- One or more invocation images
+- Zero or more invocation images
 - Zero or more images
 
 As defined in this specification, objects of these three types are collected into a single archive file encoded as a gzipped tar archive.

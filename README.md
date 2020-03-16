@@ -4,7 +4,7 @@
 
 Cloud Native Application Bundles (CNAB) are a package format specification that describes a technology for bundling, installing, and managing distributed applications, that are by design, cloud agnostic.
 
-## CNAB Core 1.0 (Final)
+## CNAB Core 1.1 (Pre-Draft)
 
 The CNAB Working Group with the joint approval of the Executive Directors has approved the CNAB Core 1.0 specification for publication. CNAB Core 1.0 is complete.
 
@@ -18,9 +18,9 @@ For more information on the approval process, see [the process documentation](90
 
 ## Table of Contents
 
-- Chapter 1: [Cloud Native Application Bundle Core 1.0.0 (CNAB1)](100-CNAB.md)
+- Chapter 1: [Cloud Native Application Bundle Core 1.1.0 (CNAB1.1)](100-CNAB.md)
   1. [The bundle.json File](101-bundle-json.md)
-  1. [The Invocation Image Format](102-invocation-image.md)
+  1. [Invocation Image Format](102-invocation-image.md)
   1. [The Bundle Runtime](103-bundle-runtime.md)
   1. [Bundle Formats (Thick and Thin)](104-bundle-formats.md)
 - Chapter 2: [Cloud Native Application Bundle Registry 1.0.0 (CNAB-Reg)](200-CNAB-registries.md)
@@ -36,6 +36,7 @@ For more information on the approval process, see [the process documentation](90
   1. [Repositories](803-repositories.md)
   1. [Well known custom actions](804-well-known-custom-actions.md)
   1. [Disconnected Scenarios](805-airgap.md)
+  1. [Declarative Installation Support](806-declarative-installation-support.md)
 - Chapter 9: Appendix
   1. [Appendix A: Preliminary Release Process](901-process.md)
 

@@ -1,14 +1,14 @@
 ---
-title: The Invocation Images
+title: Invocation Images
 weight: 102
 ---
 
-# The Invocation Images
+# Invocation Images
 
-The `invocationImages` section of a `bundle.json` MUST contain at least one image (the invocation image). This image MUST be formatted according to the specification laid out in the present document.
-The appropriate invocation image is selected by the CNAB runtime.
+The optional `invocationImages` section of a `bundle.json` MAY contain zero or more invocation images. These images MUST be formatted according to the specification laid out in the present document.
+An appropriate invocation image is selected by the CNAB runtime.
 
-When a bundle is executed, the invocation image will be retrieved (if necessary) and started. Credential, parameter and image map data is passed to it, and then its `run` tool is executed. (See [The Bundle Runtime](103-bundle-runtime.md) for details).
+When a bundle is executed, an invocation image will be retrieved (if necessary) and started. Credential, parameter and image map data is passed to it, and then its `run` tool is executed. (See [The Bundle Runtime](103-bundle-runtime.md) for details).
 
 This section describes the layout of an invocation image.
 
@@ -77,7 +77,7 @@ Examples:
 
 This subsection is non-normative. Images may be built using any suitable tooling, but this section describes the process using a `Dockerfile`.
 
-The `Dockerfile` used to build the invocation image MAY be stored inside of the invocation image. This is to ensure reproducibility, and in order to allow rename operations that require a rebuild. (Likewise, if a build tool like Packer is used, this tool's configuration MAY be placed in the bundle.)
+The `Dockerfile` used to build an invocation image MAY be stored inside of the invocation image. This is to ensure reproducibility, and in order to allow rename operations that require a rebuild. (Likewise, if a build tool like Packer is used, this tool's configuration MAY be placed in the bundle.)
 
 This is a normal Dockerfile, and MAY derive from any base image.
 

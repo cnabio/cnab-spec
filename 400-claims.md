@@ -220,13 +220,13 @@ into the invocation container at runtime:
 - `$CNAB_REVISION`: The ULID for the present revision. (On upgrade, this is the _new_ revision)
 - `$CNAB_CLAIMS_VERSION`: The version of this specification (currently `CNAB-Claims-1.0-WD`)
 
-> Credential data, which is also injected into the invocation image, is _not_ managed by the claim system. Rules for injecting credentials are found in [the bundle runtime definition](103-bundle-runtime.md).
+> Credential data, which is also injected into an invocation image, is _not_ managed by the claim system. Rules for injecting credentials are found in [the bundle runtime definition](103-bundle-runtime.md).
 
 Parameters declared with an `env` key in the `destination` object MUST have their values injected as environment variables according to the name specified. Likewise, files MUST be injected if `path` is set on `destination`.
 
 ### Files
 
-The invocation image may benefit from accessing the claim. Consequently, a claim MUST be attached to the invocation image when the invocation image is started.
+An invocation image may benefit from accessing the claim. Consequently, a claim MUST be attached to an invocation image when the invocation image is started.
 
 The claim MUST be mounted at the path `/cnab/claim.json` inside of the bundle. The version of this claim that is to be mounted is the _version prior to this operation beginning_. In other words, when a bundle is installed, it creates the original installation claim. On the first upgrade, the claim describing the _installation_ is located at `/cnab/claim.json`. This allows the invocation image to inspect the former state and compare it to the desired new state.
 
@@ -234,7 +234,7 @@ Note: Systems may be compliant with the core specification but not support the c
 
 ## Calculating the Result
 
-The `result` object is populated by the result of the invocation image's action. For example, consider the case where an invocation image executes an installation action. The action is represented by the following shell script, and `$CNAB_INSTALLATION_NAME` is set to `my_first_install`:
+The `result` object is populated by the result of an invocation image's action. For example, consider the case where an invocation image executes an installation action. The action is represented by the following shell script, and `$CNAB_INSTALLATION_NAME` is set to `my_first_install`:
 
 ```bash
 #!/bin/bash

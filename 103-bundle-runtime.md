@@ -5,7 +5,7 @@ weight: 103
 
 # The Bundle Runtime
 
-This section describes how the invocation image is executed, and how data is injected into the image.
+This section describes how an invocation image is executed, and how data is injected into the image.
 
 The [Invocation Image definition](102-invocation-image.md) specifies the layout of a CNAB invocation image. This section focuses on how the image is executed, with the goal of managing a cloud application.
 
@@ -25,14 +25,14 @@ The run tool MUST observe standard conventions for executing, exiting, and writi
 
 The bundle definition is made accessible from inside the invocation image in order to allow the run tool to reference information in the file. The `bundle.json` MUST be mounted to `/cnab/bundle.json`.
 
-### Injecting Data Into the Invocation Image
+### Injecting Data Into an Invocation Image
 
-CNAB allows injecting data into the invocation image in two ways:
+CNAB allows injecting data into an invocation image in two ways:
 
 - Environment Variables: This is the preferred method. In this method, data is encoded as a string and placed into the the environment with an associated name.
-- Files: Additional files MAY be injected _at known points_ into the invocation image via credentials or parameters.
+- Files: Additional files MAY be injected _at known points_ into an invocation image via credentials or parameters.
 
-The spec does not define or constrain any network interactions between the invocation image and external services or sources.
+The spec does not define or constrain any network interactions between an invocation image and external services or sources.
 
 ### Environment Variables
 
@@ -99,11 +99,13 @@ An implementation of a CNAB runtime MUST support sending the following actions t
 
 Invocation images SHOULD implement `install` and `uninstall`. If one of these REQUIRED actions is not implemented, an invocation image MUST NOT generate an error (though it MAY generate a warning). Implementations MAY map the same underlying operations to multiple actions (example: `install` and `upgrade` MAY perform the same action). The runtime MUST NOT perform a [bundle version](101-bundle-json.md#name-and-version-identifying-metadata) comparison when executing an action against an existing installation but the invocation image MAY return an error if the version transition is not supported.
 
-In addition to the default actions, CNAB runtimes MAY support custom actions (as defined in [the bundle definition](101-bundle-json.md)). Any invocation image whose accompanying bundle definition specifies custom actions SHOULD implement those custom actions. A CNAB runtime MAY exit with an error if a custom action is declared in the bundle definition, but cannot be executed by the invocation image.
+In addition to the default actions, CNAB runtimes MAY support custom actions (as defined in [the bundle definition](101-bundle-json.md)). Any invocation image whose accompanying bundle definition specifies custom actions SHOULD implement those custom actions. A CNAB runtime MAY exit with an error if a custom action is declared in the bundle definition, but cannot be executed by an invocation image.
 
 A bundle MUST exit with an error if the action is executed, but fails to run to completion. A CNAB runtime MUST issue an error if a bundle issues an error. And an error MUST NOT be issued if one of the three built-in actions is requested, but not present in the bundle. Errors are reserved for cases where something has gone wrong.
 
 In the event of an an error, the installation state MUST be considered as undefined. A subsequent execution of the same action or another action MAY resolve the installation state (example: a failed `install` action MAY be fixed by executing the `upgrade` action, a failed `upgrade` action MAY be fixed by executing the `upgrade` action again). A subsequent execution of the `uninstall` action SHOULD resolve the installation state.
+
+If an attempt is made to execute the run tool of a bundle with no invocation image, the runtime MUST exit with an error. A runtime MAY support CNAB actions on bundles with no invocation image (e.g. by handing the action itself and not attempting to execute the bundle's run tool).
 
 ## Setting Parameter Values
 
@@ -189,7 +191,7 @@ Credentials MAY be supplied as files on the file system. In such cases, the foll
 - If a file is NOT specified in the `bundle.json`, and is not present, the run tool SHOULD NOT cause an error (though it MAY emit a warning)
 - If a file is present, but not correctly formatted, the run tool MAY cause a fatal error
 - If a file's permissions or metadata is incorrect, the run tool MAY try to remediate (e.g. run `chmod`), or MAY cause a fatal error
-- The run tool MAY modify credential files. Consequently, any runtime implementation MUST ensure that credentials changed inside of the invocation image will not result in modifications to the source.
+- The run tool MAY modify credential files. Consequently, any runtime implementation MUST ensure that credentials changed inside of an invocation image will not result in modifications to the source.
 
 ## <a name="relocation-mapping">Image Relocation</a>
 
@@ -200,7 +202,7 @@ The relocation mapping MUST include in its keys all the image references defined
 
 Any image references defined by a CNAB bundle which are semantically equivalent MUST be included as separate entries in the map and MUST map to values which are semantically equivalent to each other. For example, "ubuntu" and "library/ubuntu" are semantically equivalent. On the other hand, image references which differ only by tag and/or digest are not semantically equivalent (even though they _could_ refer to the same image).
 
-At runtime a relocation mapping MAY be mounted in the invocation image's container as file `/cnab/app/relocation-mapping.json`. If the file is not mounted, this indicates that images have not been relocated.
+At runtime a relocation mapping MAY be mounted in an invocation image's container as file `/cnab/app/relocation-mapping.json`. If the file is not mounted in an invocation image's container, this indicates that images have not been relocated.
 
 For example, if a CNAB bundle with an image `example/microservice@sha256:cca460afa270d4c527981ef9ca4989346c56cf9b20217dcea37df1ece8120687` and an invocation image `outside/helloworld:0.1.0` is relocated to a private registry `my.registry`, a mapping like the following would be mounted as the file `/cnab/app/relocation-mapping.json`:
 

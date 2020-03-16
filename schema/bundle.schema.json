@@ -234,7 +234,7 @@
       "type": "object"
     },
     "invocationImages": {
-      "description": "The array of invocation image definitions for this bundle",
+      "description": "Invocation image definitions for this bundle",
       "items": {
         "$ref": "#/definitions/invocationImage"
       },
@@ -312,11 +312,10 @@
     }
   },
   "required": [
-    "invocationImages",
     "name",
     "schemaVersion",
     "version"
   ],
-  "title": "CNAB1 Bundle Descriptor",
+  "title": "CNAB1.1 Bundle Descriptor",
   "type": "object"
 }

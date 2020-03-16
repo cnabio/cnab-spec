@@ -9,7 +9,7 @@ This section is non-normative, but is here to propose a common set of optional a
 
 A CNAB indicates that it supports those actions by including them in its custom action list (as defined in [the bundle definition](101-bundle-json.md)).
 - `io.cnab.dry-run` (with `stateless`: true and `modifies`: false): execute the installation in a dry-run mode, allowing to see what would happen with the given set of parameter values.
-- `io.cnab.help` (with `stateless`: true and `modifies`: false): print an help message to the standard output. Implementations MAY print different messages depending on the parameters values passed to the invocation image.
+- `io.cnab.help` (with `stateless`: true and `modifies`: false): print an help message to the standard output. Implementations MAY print different messages depending on the parameters values passed to an invocation image.
 - `io.cnab.log` (with `stateless`: false and `modifies`: false): print logs of the installed system to the standard output.
 - `io.cnab.status` (with `stateless`: false and `modifies`: false): print a human readable status message to the standard output. This action also produces an output file named `status` describing the detailed status as in the example below ([here](schema/status.schema.json) is the JSON schema for this):
 	```json

@@ -57,8 +57,8 @@ auditing and digital forensics of all code and references used in the CNAB.
 When the images of a CNAB are _relocated_ to (that is, stored in), a private registry, the images should be loaded from the private registry when they are run.
 This ensures that CNAB operations can function properly even if the original image repositories are unavailable.
 
-The runtime uses the relocated reference of the invocation image so that the image is loaded from the private registry.
+The runtime uses the relocated reference of any invocation image so that the image is loaded from the private registry.
 
-A [relocation mapping](103-bundle-runtime.md#relocation-mapping) is mounted so that the invocation
+A [relocation mapping](103-bundle-runtime.md#relocation-mapping) is mounted so that an invocation
 image is aware of the original and new values of image references and can replace the original image references with their relocated counterparts.
 Thus the images referenced by the CNAB are also loaded from the private registry.

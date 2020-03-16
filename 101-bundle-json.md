@@ -26,7 +26,7 @@ A `bundle.json` is broken down into the following categories of information:
 - A list of outputs (name, type and location) that the application produces
 - A set of schema definitions used to validate user input
 
-The bundle definition is made accessible from inside the invocation image in order to allow the run tool to reference information in the file. The bundle.json MUST be mounted to /cnab/bundle.json.
+The bundle definition is made accessible from inside an invocation image in order to allow the run tool to reference information in the file. The bundle.json MUST be mounted to /cnab/bundle.json.
 
 The `bundle.json` is also known as a _thin bundle_. Bundles come in two formats: thick and thin. Read more about thick and thin bundles in the [bundle formats section](104-bundle-formats.md).
 
@@ -294,9 +294,7 @@ The following fields are informational pieces of metadata designed to convey add
 
 ## Invocation Images
 
-The `invocationImages` section describes the images that are responsible for bootstrapping the installation. The appropriate invocation image is selected by the CNAB runtime, typically by considering the runtime requirements of the bundle. For example, both a Windows and a Linux version of the invocation image may be included in the list. It is up to the CNAB runtime to determine which one to use. If no sufficient image is found, the CNAB runtime MUST emit an error and stop processing. If multiple images match the criterion set by the user, the runtime MUST execute only one, and MUST execute the first match as determined by the order of the `invocationImages` list.
-
-A CNAB bundle MUST have at least one invocation image.
+The optional `invocationImages` section describes images that are responsible for bootstrapping the installation. The appropriate invocation image is selected by the CNAB runtime, typically by considering the runtime requirements of the bundle. For example, both a Windows and a Linux version of the invocation image may be included in the list. It is up to the CNAB runtime to determine which one to use. If no sufficient image is found, the CNAB runtime MAY emit an error and stop processing. If multiple images match the criterion set by the user, the runtime MUST execute only one, and MUST execute the first match as determined by the order of the `invocationImages` list.
 
 ```json
 {
@@ -419,7 +417,7 @@ Evaluation of the validation keywords should conform to the applicable sections 
 
 ## Parameters
 
-The `parameters` and `definitions` sections of the `bundle.json` define which parameters a user (person installing a CNAB bundle) MAY configure on an invocation image and how those parameters should be validated by a runtime. Parameters represent information about the application configuration, and may be persisted by the runtime.
+The `parameters` and `definitions` sections of the `bundle.json` define which parameters a user (person installing a CNAB bundle) MAY configure on an invocation image and how those parameters should be validated by a runtime. Parameters represent information about the application configuration, and may be persisted by the runtime. If a bundle has no invocation images, the parameters section SHOULD be omitted.
 
 Parameter specifications consist of name/value pairs. The name is fixed, but the value MAY be overridden by the user. The parameter definition includes a specification of how to constrain the values submitted by the user.
 
@@ -542,7 +540,7 @@ The structure of a `parameters` and `definitions` section looks like the section
 }
 ```
 
-See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters are injected into the invocation image.
+See [The Bundle Runtime](103-bundle-runtime.md) for details of how parameters are injected into an invocation image.
 
 ### Examples
 
@@ -636,7 +634,7 @@ Check out the [JSON Schema specification](https://json-schema.org/) for more exa
 
 ### Resolving Destinations
 
-When resolving destinations, there are two ways a particular parameter value MAY be placed into the invocation image. Here is an example illustrating both:
+When resolving destinations, there are two ways a particular parameter value MAY be placed into an invocation image. Here is an example illustrating both:
 
 ```json
 {
@@ -679,7 +677,7 @@ If both `env` and `path` are specified, implementations MUST put a copy of the d
 
 ## Credentials
 
-A `bundle.json` MAY contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that are required by the invocation image in order for the invocation image to perform its tasks.
+A `bundle.json` MAY contain a section that describes which credentials the bundle expects to have access to in the invocation image. This information is provided so that users can be informed about the credentials that are required by the invocation image in order for the invocation image to perform its tasks. If a bundle has no invocation images, the credentials section SHOULD be omitted.
 
 Credentials differ from parameters in intention: A _parameter_ represents application configuration. A _credential_ represents the _identity of the agent performing the action_. For example, the lifecycle of one bundle installation may be managed by several individuals. When interacting with that bundle, individuals may use their own credentials. However, the bundle's _parameters_ are assumed to be attached to the bundle itself, regardless of which individual is presently acting on that bundle.
 
@@ -940,7 +938,7 @@ Source: [101.03-bundle.json](examples/101.03-bundle.json)
 
 ## Outputs
 
-The `outputs` section of the `bundle.json` defines which outputs an application will produce during the course of executing a bundle. Outputs are expected to be written to one or more files on the file system of the invocation image. The location of this file MUST be provided in the output definition.
+The `outputs` section of the `bundle.json` defines which outputs an application will produce during the course of executing a bundle. Outputs are expected to be written to one or more files on the file system of an invocation image. The location of this file MUST be provided in the output definition.  If a bundle has no invocation images, the outputs section SHOULD be omitted.
 
 Output specifications are flat (not tree-like), consisting of name/value pairs. The output definition includes a destination the output will be written to, along with a definition to help validate their contents.
 
@@ -997,4 +995,4 @@ A runtime can leverage appropriate [in-memory](https://docs.docker.com/v17.09/en
 
 A runtime may validate outputs based on schema references by the definition field.
 
-Next section: [The invocation image definition](102-invocation-image.md)
+Next section: [Invocation image definition](102-invocation-image.md)
