@@ -8,8 +8,8 @@ weight: 301
 * [Metadata repositories](#metadata-repositories)
 * [Minimum viable product (MVP)](#minimum-viable-product-mvp)
   * [Security analysis of MVP](#security-analysis-of-mvp)
-* [Maximum security product (MSP)](#maximum-security-product-msp)
-  * [Security analysis of MSP](#security-analysis-of-msp)
+* [Extending the MVP the verify the provenance of bundles](#extending-the-MVP-to-verify-the-provenance-of-bundles)
+  * [Security analysis of extension](#security-analysis-of-extension)
 
 This document is a _normative_ part of [CNAB Security](300-CNAB-security.md).
 
@@ -81,12 +81,12 @@ However, if attackers also compromise, say, the private infrastructure controlle
 
 Finally, if attackers somehow also compromise the `root` key, which SHOULD be kept securely on, say, a disconnected [hardware security module](https://en.wikipedia.org/wiki/Hardware_security_module) within the aforementioned private infrastructure, then attackers can not only sign off malicious bundles, but also rotate all keys on the metadata repository. Nevertheless, developers can still use the `root` key to rotate all keys, including itself, for end-users who have not yet downloaded malicious bundles. Other end-users will need to reset their systems, and update out-of-band.
 
-## Maximum security product (MSP)
+## Extending the MVP to verify the provenance of bundles
 
 This subsection discusses . Figure 2 illustrates our simple metadata repository for a bundle.
 
-![Figure 2: An MSP metadata repository for a bundle](img/example-tuf-in-toto-repository.png)
-**Figure 2**: An MSP metadata repository for a bundle.
+![Figure 2: Extending the MVP metadata repository for a bundle](img/example-tuf-in-toto-repository.png)
+**Figure 2**: Extending the MVP metadata repository for a bundle.
 
 The `targets` role MAY sign targets metadata about:
 
@@ -203,7 +203,7 @@ The following code listing is an example of the `targets/releases` metadata for 
 }
 ```
 
-### Security analysis of MSP
+### Security analysis of extension
 
 Table 2 presents a summary of possible attacks given the key compromise of one or more TUF roles and in-toto functionaries. We assume that attackers can:
 
