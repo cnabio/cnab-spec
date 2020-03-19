@@ -209,4 +209,10 @@ The following code listing is an example of the `targets/releases` metadata for 
 
 ### Security analysis of extension
 
-TBD.
+The biggest difference between this extension and the MVP itself is that there is now compromise-resilient distribution of the software supply chain for the bundle using the in-toto root layout.
+
+Assuming that the `targets/releases` key is kept on private infrastructure controlled by the bundle developers, and even if attackers compromise this key, then they cannot change the rules governing the software supply chain.
+
+However, we cannot analyze the security provided by the software supply chain itself. This is because different bundles are very likely to have different software supply chains. For example, if all the keys used to sign all the steps (and therefore in-toto link metadata) in the software supply chain are kept online on the aforementioned private infrastructure, then this is not as secure a setup as the case where source code must be signed off by developers using keys protected using hardware security keys.  Known [implementations](304-known-implementations.md) SHOULD provide usable software supply chains out of the box that provide sufficiently strong security guarantees without hampering usability by developers.
+
+For an example of how to design a secure software supply chain, please see the following [example](https://www.datadoghq.com/blog/engineering/secure-publication-of-datadog-agent-integrations-with-tuf-and-in-toto/).
