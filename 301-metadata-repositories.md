@@ -8,7 +8,7 @@ weight: 301
 * [Metadata repositories](#metadata-repositories)
 * [Minimum viable product (MVP)](#minimum-viable-product-mvp)
   * [Security analysis of MVP](#security-analysis-of-mvp)
-* [Extending the MVP the verify the provenance of bundles](#extending-the-MVP-to-verify-the-provenance-of-bundles)
+* [Extending the MVP to verify the provenance of bundles](#extending-the-MVP-to-verify-the-provenance-of-bundles)
   * [Security analysis of extension](#security-analysis-of-extension)
 
 This document is a _normative_ part of [CNAB Security](300-CNAB-security.md).
@@ -83,7 +83,7 @@ Finally, if attackers somehow also compromise the `root` key, which SHOULD be ke
 
 ## Extending the MVP to verify the provenance of bundles
 
-This subsection discusses how to extend the MVP to verify the provenance of bundles. We do this by transparently in-toto metadata using TUF as a [compromise-resilient transport protocol](https://www.datadoghq.com/blog/engineering/secure-publication-of-datadog-agent-integrations-with-tuf-and-in-toto/). Figure 2 illustrates our simple metadata repository for a bundle.
+This subsection discusses how to extend the MVP to verify the provenance of bundles. We do this by transparently including in-toto metadata using TUF as a [compromise-resilient transport protocol](https://www.datadoghq.com/blog/engineering/secure-publication-of-datadog-agent-integrations-with-tuf-and-in-toto/). Figure 2 illustrates our simple metadata repository for a bundle.
 
 ![Figure 2: Extending the MVP metadata repository for a bundle](img/example-tuf-in-toto-repository.png)
 **Figure 2**: Extending the MVP metadata repository for a bundle.
@@ -209,10 +209,10 @@ The following code listing is an example of the `targets/releases` metadata for 
 
 ### Security analysis of extension
 
-The biggest difference between this extension and the MVP itself is that there is now compromise-resilient distribution of the software supply chain for the bundle using the in-toto root layout.
+The biggest difference between this extension and the MVP itself is that there is now compromise-resilient distribution of the software supply chain for the bundle using the in-toto root layout. In addition to the assurances of the MVP, this provides additional assurance that attackers cannot change the rules of the software supply chain governing how this bundle was produced.
 
 Assuming that the `targets/releases` key is kept on private infrastructure controlled by the bundle developers, and even if attackers compromise this key, then they cannot change the rules governing the software supply chain.
 
-However, we cannot analyze the security provided by the software supply chain itself. This is because different bundles are very likely to have different software supply chains. For example, if all the keys used to sign all the steps (and therefore in-toto link metadata) in the software supply chain are kept online on the aforementioned private infrastructure, then this is not as secure a setup as the case where source code must be signed off by developers using keys protected using hardware security keys.  Known [implementations](304-known-implementations.md) SHOULD provide usable software supply chains out of the box that provide sufficiently strong security guarantees without hampering usability by developers.
+However, we _cannot_ analyze the security provided by the software supply chain itself. This is because different bundles are very likely to have different software supply chains. For example, if all the keys used to sign all the steps (and therefore in-toto link metadata) in the software supply chain are kept online on the aforementioned private infrastructure, then this is _not_ as secure a setup as the case where source code must be signed off by developers using keys protected using hardware security keys.  Known [implementations](304-known-implementations.md) SHOULD provide usable software supply chains out of the box that provide sufficiently strong security guarantees without hampering usability by developers.
 
 For an example of how to design a secure software supply chain, please see the following [example](https://www.datadoghq.com/blog/engineering/secure-publication-of-datadog-agent-integrations-with-tuf-and-in-toto/).
