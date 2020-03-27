@@ -1,24 +1,36 @@
 const { events, Job, Group } = require("brigadier");
+const { Check } = require("@brigadecore/brigade-utils");
 
 const projectName = "cnab-spec";
+// Currently a very lenient regex.
+// Could be made more strict.  Some examples: cnab-core-1.0.0, cnab-claim-1.0.0-DRAFT+abc1234
+const releaseTagRegex = /^refs\/tags\/(.*)/;
 
 // Event handlers
 
 events.on("exec", (e, p) => {
   return Group.runAll([
-    validate(e, p),
-    validateURL(e, p)
+    validate(),
+    validateURL()
   ]);
 });
 events.on("check_suite:requested", runSuite);
 events.on("check_suite:rerequested", runSuite);
 events.on("check_run:rerequested", runSuite);
-events.on("issue_comment:created", handleIssueComment);
-events.on("issue_comment:edited", handleIssueComment);
+events.on("issue_comment:created", (e, p) => Check.handleIssueComment(e, p, runSuite));
+events.on("issue_comment:edited", (e, p) => Check.handleIssueComment(e, p, runSuite));
+events.on("push", (e, p) => {
+  let matchStr = e.revision.ref.match(releaseTagRegex);
+  if (matchStr) {
+    let matchTokens = Array.from(matchStr);
+    let version = matchTokens[1];
+    return publish(p, version).run();
+  }
+});
 
 // Functions/Helpers
 
-function validate(e, project) {
+function validate() {
   var validator = new Job(`${projectName}-validate`, "node:8-alpine");
   validator.streamLogs = true;
 
@@ -28,10 +40,10 @@ function validate(e, project) {
     "make validate-local",
   ];
 
-  return validator
+  return validator;
 }
 
-function validateURL(e, project) {
+function validateURL() {
   var validator = new Job(`${projectName}-validate-url`, "node:8-alpine");
   validator.streamLogs = true;
 
@@ -41,116 +53,41 @@ function validateURL(e, project) {
     "make validate-url-local",
   ];
 
-  return validator
+  return validator;
+}
+
+function publish(p, version) {
+  var publisher = new Job(`${projectName}-publish`, "node:8-alpine");
+
+  publisher.env.AZURE_STORAGE_CONNECTION_STRING = p.secrets.azureStorageConnectionString;
+  publisher.tasks.push(
+    "apk add --update make curl",
+    // Fetch az cli needed for publishing
+    "curl -sLO https://github.com/carolynvs/az-cli/releases/download/v0.3.2/az-linux-amd64 && \
+      chmod +x az-linux-amd64 && \
+      mv az-linux-amd64 /usr/local/bin/az",
+    "cd /src",
+    `VERSION=${version} make publish`
+  );
+
+  return publisher;
 }
 
 // Here we can add additional Check Runs, which will run in parallel and
 // report their results independently to GitHub
 function runSuite(e, p) {
-  return runValidation(e, p)
+  return runValidation(e, p, validate)
   .then(() => {
     if (e.revision.ref == "master") {
-      validateURL(e, p).run();
+      validateURL().run();
     }
   })
   .catch(e => {console.error(e.toString())});
 }
 
 // runValidation is a Check Run that is ran as part of a Checks Suite
-function runValidation(e, p) {
-  // Create Notification object (which is just a Job to update GH using the Checks API)
-  var note = new Notification(`validation`, e, p);
-  note.conclusion = "";
-  note.title = "Run Validation";
-  note.summary = "Running the schema validation for " + e.revision.commit;
-  note.text = "Ensuring all bundle.json files adhere to json schema specs"
-
-  // Send notification, then run, then send pass/fail notification
-  return notificationWrap(validate(e, p), note)
-}
-
-// handleIssueComment handles an issue_comment event, parsing the comment
-// text and determining whether or not to trigger a corresponding action
-function handleIssueComment(e, p) {
-  if (e.payload) {
-    payload = JSON.parse(e.payload);
-
-    // Extract the comment body and trim whitespace
-    comment = payload.body.comment.body.trim();
-
-    // Here we determine if a comment should provoke an action
-    switch(comment) {
-    case "/brig run":
-      return runSuite(e, p);
-    default:
-      console.log(`No applicable action found for comment: ${comment}`);
-    }
-  }
-}
-
-// A GitHub Check Suite notification
-class Notification {
-  constructor(name, e, p) {
-    this.proj = p;
-    this.payload = e.payload;
-    this.name = name;
-    this.externalID = e.buildID;
-    this.detailsURL = `https://brigadecore.github.io/kashti/builds/${ e.buildID }`;
-    this.title = "running check";
-    this.text = "";
-    this.summary = "";
-
-    // count allows us to send the notification multiple times, with a distinct pod name
-    // each time.
-    this.count = 0;
-
-    // One of: "success", "failure", "neutral", "cancelled", or "timed_out".
-    this.conclusion = "neutral";
-  }
-
-  // Send a new notification, and return a Promise<result>.
-  run() {
-    this.count++
-    var j = new Job(`${ this.name }-${ this.count }`, "brigadecore/brigade-github-check-run:v0.1.0");
-    j.env = {
-      CHECK_CONCLUSION: this.conclusion,
-      CHECK_NAME: this.name,
-      CHECK_TITLE: this.title,
-      CHECK_PAYLOAD: this.payload,
-      CHECK_SUMMARY: this.summary,
-      CHECK_TEXT: this.text,
-      CHECK_DETAILS_URL: this.detailsURL,
-      CHECK_EXTERNAL_ID: this.externalID
-    }
-    return j.run();
-  }
-}
-
-// Helper to wrap a job execution between two notifications.
-async function notificationWrap(job, note, conclusion) {
-  if (conclusion == null) {
-    conclusion = "success"
-  }
-  await note.run();
-  try {
-    let res = await job.run()
-    const logs = await job.logs();
-
-    note.conclusion = conclusion;
-    note.summary = `Task "${ job.name }" passed`;
-    note.text = note.text = "```" + res.toString() + "```\nTest Complete";
-    return await note.run();
-  } catch (e) {
-    const logs = await job.logs();
-    note.conclusion = "failure";
-    note.summary = `Task "${ job.name }" failed for ${ e.buildID }`;
-    note.text = "```" + logs + "```\nFailed with error: " + e.toString();
-    try {
-      return await note.run();
-    } catch (e2) {
-      console.error("failed to send notification: " + e2.toString());
-      console.error("original error: " + e.toString());
-      return e2;
-    }
-  }
+function runValidation(e, p, jobFunc) {
+  var check = new Check(e, p, jobFunc(),
+    `https://brigadecore.github.io/kashti/builds/${e.buildID}`);
+  return check.run();
 }

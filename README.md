@@ -58,6 +58,14 @@ The specification is licensed under [OWF Contributor License Agreement 1.0 - Cop
 
 We operate a [mailing list](https://lists.jointdevelopment.org/g/CNAB-Main) via the Joint Development Foundation.
 
+## Versioned Schema URLs
+
+CNAB Spec schema defined in this repo (under `/schema`) will be hosted for all tagged versions.  This way, implementations can require specific schema versions for validation and assert compatibility with the corresponding versions.
+
+Note that some tagged versions don't directly map to official schema versions.  For instance, a Git SHA may be appended if the spec is still in a Draft state, e.g. `cnab-claim-1.0.0-DRAFT+abc1234`.  Again, this facilitates the ability for implementations to pin to a certain tag whilst a spec is under heavy development with many breaking changes.
+
+The schema files are hosted via `https://cnab.io/schema/<VERSION>/<SCHEMA>.schema.json`, e.g. https://cnab.io/schema/cnab-core-1.0/bundle.schema.json
+
 ## Notational Conventions
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" are to be interpreted as described in [RFC 2119][rfc2119].

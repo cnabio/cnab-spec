@@ -1,5 +1,6 @@
-BASE_DIR          := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-VALIDATOR_IMG     := deislabs/cnab-spec.ajv
+VERSION       ?= $(shell git describe --tags 2> /dev/null || echo v0)
+BASE_DIR      := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+VALIDATOR_IMG := deislabs/cnab-spec.ajv
 
 .PHONY: build-validator
 build-validator:
@@ -31,3 +32,7 @@ validate-local: build-validator-local
 validate-url-local: build-validator-local
 	./scripts/validate-url.sh
 
+# AZURE_STORAGE_CONNECTION_STRING will be used for auth in the following target
+.PHONY: publish
+publish:
+	@az storage blob upload-batch -d schema/$(VERSION) -s schema
