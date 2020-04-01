@@ -50,6 +50,34 @@ Finally, certain small errata may be fixed on an existing release without increm
 - Adding a revised link when a broken link appears. This should be done by appending the text `(Updated link: http://example.com...)`. The text may be corrected fully during the next version change.
 - In extenuating circumstances, the Executive Directors may approve retroactively editing text to meet legal requirements. In such cases, the directors will not approve changes that break the specification. Under such circumstances, the directors may issue a _retraction of a specification_ (removing a published specification), and publish a new specification version that meets the legal requirements. For example, an intellectual property infringement may only be correctable by a retraction.
 
+## Git Release Flow
+
+This section deals with the practical considerations of versioning in Git, this repo's version control system.
+
+### Patch releases
+
+When a patch release of a specification is required, the working group must approve the scope of commits proposed for inclusion. The patch commit(s) should be merged to the `master` branch when ready. Next, a new branch should be created for the designated patch. For example, if the previous most recent branch name of the specification is `cnab-core-1.0.0-ga`, the new branch would be created from `cnab-core-1.0.0-ga` and named `cnab-core-1.0.1-ga`. The patch commit(s) should then be cherry-picked into this new branch.
+
+When the final release is approved, a Git tag should also be pushed, which triggers schema artifact publishing. Extending the example above, a `cnab-core-1.0.1` tag should be created from the `cnab-core-1.0.1-ga` branch and pushed to origin. We drop the `-ga` suffix as branches and tags may not have the same name in Git.
+
+### Minor releases
+
+When a minor release of a specification is required, the working group must approve the scope of commits proposed for inclusion. Likely this will be the `master` branch once the approved commit(s) are merged. Next, a new branch should be created from `master` and named `cnab-core-1.1.0-ga` (here assuming that the version immediately prior was `cnab-core-1.0.0`).
+
+When the final release is approved, a Git tag should also be pushed, which triggers schema artifact publishing. Extending the example above, a `cnab-core-1.1.0` tag should be created from the `cnab-core-1.1.0-ga` branch and pushed to origin. We drop the `-ga` suffix as branches and tags may not have the same name in Git.
+
+### Major releases
+
+When a minor release of a specification is required, the working group must approve the scope of commits proposed for inclusion. Likely this will be the `master` branch once the approved commit(s) are merged. Next, a new branch should be created from `master` and named `cnab-core-2.0.0-ga` (here assuming that the version immediately prior was `cnab-core-1.0.0`).
+
+When the final release is approved, a Git tag should also be pushed, which triggers schema artifact publishing. Extending the example above, a `cnab-core-2.0.0` tag should be created from the `cnab-core-2.0.0-ga` branch and pushed to origin. We drop the `-ga` suffix as branches and tags may not have the same name in Git.
+
+### Ad hoc schema releases
+
+In addition to the scenarios above, if schemas at a certain commit need to be preserved in the form of artifacts and published, ad hoc versioning (i.e. not tied to a release branch) is permitted via the following Git tag flow. This is intended for specifications in `DRAFT` state which are perhaps under heavy development.
+
+To enable implementations to pin at a certain version prior to an official release, we can issue a Git tag and CI will handle publishing the schemas. For example, if the Claims specification is still in the `DRAFT` state but its schemas at a particular commit are needed for implementation verification, we can push an appropriate tag to origin. The tag form is: `cnab-claim-1.0.0-DRAFT+abc1234`, where `cnab-claim-1.0.0-DRAFT` is the current working version and `abc1234` is the short SHA of the commit the tag will be created from.
+
 ## Development Process
 
 The specification will proceed through the following phases:
