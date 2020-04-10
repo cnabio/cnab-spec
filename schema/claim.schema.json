@@ -19,12 +19,12 @@
       "description": "The date created, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
       "type": "string"
     },
-    "modified": {
-      "description": "The date last modified, as an ISO-8601 Extended Format date string, as specified in the ECMAScript standard",
-      "type": "string"
-    },
     "custom": {
       "$comment": "reserved for custom extensions"
+    },
+    "id": {
+      "description": "the ID (a ULID)",
+      "type": "string"
     },
     "installation": {
       "description": "the name of the installation",
@@ -43,7 +43,7 @@
     "action",
     "bundle",
     "created",
-    "modified",
+    "id",
     "installation",
     "revision"
   ],
