@@ -91,12 +91,12 @@ This subsection discusses how to extend the MVP to verify the provenance of bund
 Instead of signing for new versions of a bundle itself, the `targets` role here SHOULD sign targets metadata about:
 
 1. The in-toto [root layout](300-CNAB-security.md) for this collection of bundles (e.g., `example.com/example-org/example-bundle/in-toto-metadata/root.layout`).
-1. All the public keys needed to verify this root layout in the first place (e.g., `example-org/example-bundle/in-toto-pubkeys/*.pub`).
+1. All the public keys needed to verify this root layout in the first place (e.g., `example.com/example-org/example-bundle/in-toto-pubkeys/*.pub`).
 
-The `targets` role SHOULD delegate all versions of the bundle (e.g., `example.com/example-org/example-bundle:*`) as well as associated in-toto link metadata (e.g., `example-org/example-bundle/in-toto-metadata/*/*.link`) to the `targets/releases` role. Therefore, the `targets/releases` role SHOULD sign targets metadata about:
+The `targets` role SHOULD delegate all versions of the bundle (e.g., `example.com/example-org/example-bundle:*`) as well as associated in-toto link metadata (e.g., `example.com/example-org/example-bundle/in-toto-metadata/*/*.link`) to the `targets/releases` role. Therefore, the `targets/releases` role SHOULD sign targets metadata about:
 
 1. All available versions of the bundle (e.g., `example.com/example-org/example-bundle:*`).
-1. All the in-toto [link metadata](300-CNAB-security.md) associated with available bundles (e.g., `example-org/example-bundle/in-toto-metadata/*/*.link`).
+1. All the in-toto [link metadata](300-CNAB-security.md) associated with available bundles (e.g., `example.com/example-org/example-bundle/in-toto-metadata/*/*.link`).
 
 With regard to the last bullet point, the `targets/releases` role SHOULD include [custom targets metadata](300-CNAB-security.md) about every version of a bundle such that:
 
@@ -121,8 +121,8 @@ The following code listing is an example of the `targets` metadata for a bundle:
           "keyids": [...],
           "name": "targets/releases",
           "paths": [
-            "example.com/example/example-image:*",
-            "example.com/example/example-image/in-toto-metadata/*/*.link"
+            "example.com/example-org/example-bundle:*",
+            "example.com/example-org/example-bundle/in-toto-metadata/*/*.link"
           ],
           "threshold": 1
         }
@@ -180,8 +180,8 @@ The following code listing is an example of the `targets/releases` metadata for 
         "custom": {
           "in-toto": [
             "example.com/example-org/example-bundle/in-toto-metadata/root.layout",
-            "example.com/example-org/example-image/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step1.87d52666.link",
-            "example.com/example-org/example-image/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step2.20585de1.link"
+            "example.com/example-org/example-bundle/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step1.87d52666.link",
+            "example.com/example-org/example-bundle/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step2.20585de1.link"
           ]
         },
         "hashes": {
@@ -189,13 +189,13 @@ The following code listing is an example of the `targets/releases` metadata for 
         },
         "length": 7206
       },
-      "example.com/example-org/example-image/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step1.87d52666.link": {
+      "example.com/example-org/example-bundle/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step1.87d52666.link": {
         "hashes": {
           "sha256": "0a33cbf67b70f315c0b7a83923bcef35308e986140169950e609e3be38585289"
         },
         "length": 132251
       },
-      "example.com/example-org/example-image/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step2.20585de1.link": {
+      "example.com/example-org/example-bundle/in-toto-metadata/eb4189fc29d97463822ecd6409677e9a4fcb9d66d9bee392e9f9aece0917fc09/step2.20585de1.link": {
         "hashes": {
           "sha256": "e5076f59e2096fb64deae6b13384575d3d63c1c4f7a42f48d0a238097a8823eb"
         },
