@@ -4,15 +4,15 @@ weight: 400
 ---
 
 # CNAB Claims 1.0 (CNAB-Claims1)
-Draft, Feb. 2020
+Draft, Apr. 2020
 
 This specification describes the CNAB Claims system. This is not part of the [CNAB Core](100-CNAB.md) specification, but is a specification describing how records of CNAB installations may be formatted for storage. Implementations of CNAB Core can meet the CNAB Core specification without implementing this specification. Implementations that support claims MAY state that they comply with CNAB Claims 1.0-WD.
 
 In CNAB, an _installation_ is a particular installed instance of a CNAB bundle. For example, if a bundle named `myApp` is installed in two places, we say there are _two installations of `myApp`_.
 
-An installation MAY change over time, as a particular bundle is installed, then upgraded. In CNAB, each time a mutating (destructive) operation is performed (Such as `install`, `upgrade`, or custom operations that are not read-only), the claim gets a new _revision_. A revision is a unique identifier that identifies the combination of an _installation_ and a modification of that installation. For example, when a CNAB bundle is installed, the initial installation will have an initial revision ID. When that installation is upgraded, it will have a new revision ID. How revisions are used is outside of the scope of this document, but it is safe to assume that if a revision ID has changed, one or more artifacts owned by the installation has also been changed.
+An installation MAY change over time, as a particular bundle is installed, then upgraded. In CNAB, each time a mutating (destructive) operation is performed (Such as `install`, `upgrade`, or custom operations that are not read-only), the installation gets a new _revision_. A revision is a unique identifier that identifies the combination of an _installation_ and a modification of that installation. For example, when a CNAB bundle is installed, the initial installation will have an initial revision ID. When that installation is upgraded, it will have a new revision ID. How revisions are used is outside of the scope of this document, but it is safe to assume that if a revision ID has changed, one or more artifacts owned by the installation has also been changed.
 
-A _claim_ is a record of a CNAB _installation_. This specification defines the format of a claim, and describes certain necessary behaviors of a system that implements claims.
+A _claim_ is a record of an action against a CNAB _installation_. This specification defines the format of a claim, and describes certain necessary behaviors of a system that implements claims.
 
 A _host environment_ is an environment, possibly shared between multiple CNAB runtimes, that provides persistence to a CNAB configuration. For example, a filesystem may contain a record of claims that two different CNAB clients share. Or a database may contain the environment that is shared by multiple tools at different locations in the network. Each of these is a CNAB host environment.
 
@@ -46,37 +46,51 @@ This is done so that implementors can standardize on a way of relating an instal
 
 While implementors are not REQUIRED to implement claims, this is the standard format for claims-supporting systems.
 
-The CNAB claim is defined as a JSON document. The specification currently does not require that claims be formatted as Canonical JSON.
+The CNAB claim is defined as a JSON document. The specification currently does not require that claims be formatted as Canonical JSON. Claims are immutable and are not modified after creation. Before an action is executed against an installation, a new claim is created to represent the operation.
+
+The claim for the last modifying action MUST be retained. Previous claims, and/or claims for non-modifying actions, MAY be retained to provide a history of actions performed on an installation.
 
 ```json
 {
+  "action": "install",
   "bundle": {
     "credentials": {},
     "images": {},
     "invocationImages": [
       {
-        "image": "technosophos/demo2:0.2.0",
+        "image": "example/helloworld:0.1.0",
         "imageType": "docker"
       }
     ],
-    "name": "technosophos.hellohelm",
-    "outputs": {},
+    "name": "helloworld",
+    "outputs": {
+      "clientCert": {
+        "definition": "x509Certificate",
+        "path": "/cnab/app/outputs/clientCert"
+      },
+      "hostName": {
+        "applyTo": [
+          "install"
+        ],
+        "definition": "string",
+        "description": "the hostname produced installing the bundle",
+        "path": "/cnab/app/outputs/hostname"
+      },
+      "port": {
+        "definition": "port",
+        "path": "/cnab/app/outputs/port"
+      }
+    },
     "parameters": {},
     "schemaVersion": "v1.0.0",
-    "version": "0.1.0"
+    "version": "0.1.2"
   },
-  "bundleReference": "hub.example.com/my/bundle@sha256:eeeeeeeee...",
+  "bundleReference": "hub.example.com/technosophos/hellohelm@sha256:eec03d9da1bad36b3e3a4526cc774153f7024a94f25df8d2dc3ca5602fc5273d",
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "custom": {},
-  "installation": "technosophos.hellohelm",
-  "modified": "2018-08-30T20:39:59.611068556-06:00",
-  "outputs": {},
+  "id": "01E5G8ZYP714JVM8NHTJQ4FH15",
+  "installation": "technosophos.helloworld",
   "parameters": {},
-  "result": {
-    "action": "install",
-    "message": "",
-    "status": "succeeded"
-  },
   "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
 }
 ```
@@ -84,33 +98,21 @@ Source: [400.01-claim.json](examples/400.01-claim.json)
 
 The fields above are defined as follows:
 
-- `action` (REQUIRED): The name of the action that last caused this claim to be updated. This may be any of the built-in actions (`install`, `upgrade`, `uninstall`) as well as any custom actions as defined in the bundle descriptor. The special name `unknown` MAY be used in the case where the CNAB Runtime cannot determine the action name of a claim.
+- `action` (REQUIRED): The name of the action executed against the installation. This may be any of the built-in actions (`install`, `upgrade`, `uninstall`) as well as any custom actions as defined in the bundle descriptor. The special name `unknown` MAY be used in the case where the CNAB Runtime cannot determine the action name of a claim.
 - `bundle` (REQUIRED): The bundle, as defined in [the Bundle Definition](101-bundle-json.md).
-- `created` (OPTIONAL): A timestamp indicating when this release claim was first created. This MUST not be changed after initial creation.
-- `bundleReference` (OPTIONAL): A canonical reference to the bundle used in the last action. This bundle reference SHOULD be digested to identify a specific version of the referenced bundle.
+- `created` (REQUIRED): A timestamp indicating when this _claim_ was created.
+- `bundleReference` (OPTIONAL): A canonical reference to the bundle used in the action. This bundle reference SHOULD be digested to identify a specific version of the referenced bundle.
 - `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
+- `id` (REQUIRED): The claim id. A [ULID](https://github.com/ulid/spec) that MUST change with each new claim, so that every claim associated with an installation has a unique id. This is used to associate the the claim with its result(s). 
 - `installation` (REQUIRED): The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `installation` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
 - `parameters` (OPTIONAL): Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons. However, there are some caveats. See the [Parameters](#parameters) section below for details.
-- `result` (REQUIRED): The outcome of the bundle's last action (e.g. if action is install, this indicates the outcome of the installation.). It is an object with the following fields:
-  - `message` (OPTIONAL): A human-readable string that communicates the outcome. Error messages MAY be included in `failed` conditions.
-  - `modified` (OPTIONAL): A timestamp indicating the last time this result was modified. Executing the installation action MUST set this to a timestamp that matches the claim's `created`. Executing any modifying action (`upgrade`, `uninstall`, or a custom action with the property `"modifies": true`) MUST set this field to the time of the operation.
-  - `outputs` (OPTIONAL): List of output names generated by the operation. These are stored so that the user can access them after the operation completes. Some implementations MAY choose not to store these for security or portability reasons. See the [Outputs](#outputs) section for details. If this field is not present, it may be assumed that no outputs were generated as a result of the operation.
-  - `started` (OPTIONAL): A timestamp indicating when execution of the operation started.
-  - `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
-    - `cancelled`: The operation was cancelled, potentially during the operation's execution. This is an error condition.
-    - `failed`: Failed before completion.
-    - `pending`: Execution has been requested and has not begun. This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
-    - `running`: Execution is in progress and has not completed.  This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
-    - `unknown`: The state is unknown. This is an error condition.
-    - `succeeded`: Completed successfully.
-  - `stopped` (OPTIONAL): A timestamp indicating when the execution of the operation stopped.
-- `revision` (REQUIRED): An [ULID](https://github.com/ulid/spec) that MUST change each time the claim is modified. It MUST NOT change when a [non-modifying operation](https://github.com/cnabio/cnab-spec/blob/master/101-bundle-json.md#custom-actions) is performed on an installation.
+- `revision` (REQUIRED): The _installation_ revision. A [ULID](https://github.com/ulid/spec) that MUST change each time the installation is modified. It MUST NOT change when a [non-modifying operation](https://github.com/cnabio/cnab-spec/blob/master/101-bundle-json.md#custom-actions) is performed on the installation.
 
 > Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action. Implementations of the claims specification are expected to retrieve the credential requirements from the `bundle` field.
 
 Timestamps in JSON are defined in the [ECMAScript specification](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-date-time-string-format), which matches the [ISO-8601 Extended Format](https://www.iso.org/iso-8601-date-and-time-format.html).
 
-### ULIDs for Revisions
+### ULIDs
 
 ULIDs have two properties that are desirable:
 
@@ -128,9 +130,55 @@ The parameter data stored in a claim data is _the resolved key/value pairs_ that
   - Valid user-supplied values are presented
   - Default values are supplied for all parameters where `default` is provided and no user-supplied value overrides this
 
-### Outputs
+### Claim Results
 
-The claim `result` provides a list of output names generated by the operation. A tool may choose to request the contents of any outputs to persist them but is not required to do so.
+The result of executing an operation is defined separately in a claim result document. Claim results are immutable and are not modified after creation. A claim can have multiple results. Only the final status, such as `succeeded` or `failed` MUST be recorded for a claim, though an implemenation MAY choose to persist results for intermediate status transitions. For example, a claim may have a result for `starting` and another for `succeeded`, or have multiple results when the operation was cancelled and then retried.
+
+The last result associated with a retained claim MUST also be retained. Previous results MAY also be retained to provide a more detailed history of the operation's progress.
+
+```json
+{
+  "claimId": "01E5G8ZYP714JVM8NHTJQ4FH15",
+  "custom": {},
+  "id": "01E2ZZ2FKSE0V41DCXFCSW5D1M",
+  "created": "2018-08-30T20:39:55.549002887-06:00",
+  "message": "",
+  "outputs": {
+    "clientCert": {
+      "contentDigest":"sha256:aaa..."
+    },
+    "hostName": {
+      "contentDigest":"sha256:bbb..."
+    },
+    "port": {
+      "contentDigest":"sha256:ccc..."
+    }
+  },
+  "status": "succeeded"
+}
+```
+Source: [400.01-claim-result.json](examples/400.01-claim-result.json)
+
+The fields above are defined as follows:
+
+- `claimId` (REQUIRED): ID of the claim that generated this result.
+- `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
+- `id` (REQUIRED): A [ULID](https://github.com/ulid/spec) identifier for the result.
+- `created` (REQUIRED): A timestamp indicating when this result was created.
+- `message` (OPTIONAL): A human-readable string that communicates the outcome. Error messages MAY be included in `failed` conditions.
+- `outputs` (OPTIONAL): Outputs generated by the operation. It is a map from the output names to metadata about the output. The  output value is not stored in the claim result. See the [Outputs](#outputs) section for details. If this field is not present, it may be assumed that no outputs were generated as a result of the operation.
+  - `contentDigest` (OPTIONAL): The `contentDigest` field contains a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), which can be used to compute the integrity of the output.
+- `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
+  - `cancelled`: The operation was cancelled, potentially during the operation's execution. This is an error condition.
+  - `failed`: Failed before completion.
+  - `pending`: Execution has been requested and has not begun. This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
+  - `running`: Execution is in progress and has not completed.  This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
+  - `unknown`: The state is unknown. This is an error condition.
+  - `succeeded`: Completed successfully.
+
+#### Outputs
+
+The claim result provides metadata about the outputs generated by the operation. A tool may choose to request the contents of any outputs to persist them but is not required to do so.
 
 The output name, as defined in the bundle, is used to request the content of the file located at the path defined for that output.
 
@@ -138,54 +186,47 @@ Below, you can see an example of a claim result that includes an entry for the o
 
 ```json
 {
-  "action": "install",
-  "bundle": { 
-    "credentials":{},
-    "definitions":{ 
-        "x509Certificate":{ 
-          "contentEncoding":"base64",
-          "contentMediaType":"application/x-x509-user-cert",
-          "type":"string",
-          "writeOnly":true
-        }
-    },
-    "images":{},
-    "invocationImages":[ 
-        { 
-          "image":"technosophos/demo2:0.2.0",
-          "imageType":"docker"
-        }
-    ],
-    "name":"technosophos.hellohelm",
-    "outputs":{ 
-        "clientCert":{ 
-          "definition":"x509Certificate",
-          "path":"/cnab/app/outputs/clientCert"
-        }
-    },
-    "parameters":{},
-    "schemaVersion":"v1.0.0",
-    "version":"0.1.0"
-  },
+  "claimId": "01E5G8ZYP714JVM8NHTJQ4FH15",
+  "id": "01E2ZZ2FKSE0V41DCXFCSW5D1M",
   "created": "2018-08-30T20:39:55.549002887-06:00",
-  "installation": "technosophos.hellohelm",
-  "parameters": {},
-  "result": {
-    "message": "",
-    "modified": "2018-08-30T20:39:59.611068556-06:00",
-    "outputs": [
-        "clientCert"
-      ],
-    "status": "succeeded"
+  "message": "",
+  "outputs": {
+    "clientCert": {
+      "contentDigest":"sha256:aaa..."
+    },
+    "hostName": {
+      "contentDigest":"sha256:bbb..."
+    },
+    "port": {
+      "contentDigest":"sha256:ccc..."
+    }
   },
-  "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
+  "status": "succeeded",
 }
 ```
 
 The tool may request the contents of the output, retrieved from `/cnab/app/outputs/clientCert`, and persist it for later use.
 
 ```
------BEGIN CERTIFICATE-----\nMIIDBzCCAe+gAwIBAgIJAL2nOwEePOPvMA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV\nBAMMD3d3dy5leGFtcGxlLmNvbTAeFw0xOTA3MTUxNjQwMzdaFw0yOTA3MTIxNjQw\nMzdaMBoxGDAWBgNVBAMMD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB\nBQADggEPADCCAQoCggEBAJ7779ImmmvEt+ywP8GjfpzgM57n1WZ26fBTVy+ZibiH\nhKCJuzU5vynu5M0eYCufRFQ7LG/xet1GvpBIch0U6ilZVnNDrsNUtQ03Hpen144g\nli5ldPh5Sm88ibDbi4yEIgti2JBKIuVE+iEdkIejF8DZps008TbLLoENM1VpHpUT\nCIJY657t+Xhz9GOhp1w3bVoKEoF/6psvc6IFHK8bUMq+4003VGDZe2BMlgazZPHc\n3o5CqNviajnRoo9QnLUH1qOljNMR+mkewNOkL2PRGvkCuHJrEk0qmUU7lX3iVN1J\nC7y1fax53ePXajLD+5/sQNeszVg1cIIUlXBy2Bx/F7UCAwEAAaNQME4wHQYDVR0O\nBBYEFAZ1+cZNMujQhCrtCRKfPm+NLDg0MB8GA1UdIwQYMBaAFAZ1+cZNMujQhCrt\nCRKfPm+NLDg0MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAAuyyYER\nT5+E+KuFbDL/COmxRWZhF/u7wIW9cC2o5LlKCUp5rRQfAVRNJlqasldM/G4Bg/uQ\n5khSYe2XNe2C3iajVkR2RlqXBvCdQuCtudhZVd4jSGWi/yI7Ub2/HyOTjZ5eG82o\nF6e3pNRCQwTw0y0orQmdh0s+UmHEVjIe8PfbdRymfeQO70EXTxncBJ5elZx8s0E9\nTPPdbl2knZmKJhwnZFKCaa4DmDA6CDa2GPz+2++DQl1rCIB3mIcxpg6wSdMA6C6l\nnBJBX5Wnxckldp8G0FNXTa1DYqjPZ5U84tkh46pFSLsbSse45xNhrMPeZDWlgHsp\nWfK01YbCWioNVGk=\n-----END CERTIFICATE-----"
+-----BEGIN CERTIFICATE-----
+MIIDBzCCAe+gAwIBAgIJAL2nOwEePOPvMA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
+BAMMD3d3dy5leGFtcGxlLmNvbTAeFw0xOTA3MTUxNjQwMzdaFw0yOTA3MTIxNjQw
+MzdaMBoxGDAWBgNVBAMMD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
+BQADggEPADCCAQoCggEBAJ7779ImmmvEt+ywP8GjfpzgM57n1WZ26fBTVy+ZibiH
+hKCJuzU5vynu5M0eYCufRFQ7LG/xet1GvpBIch0U6ilZVnNDrsNUtQ03Hpen144g
+li5ldPh5Sm88ibDbi4yEIgti2JBKIuVE+iEdkIejF8DZps008TbLLoENM1VpHpUT
+CIJY657t+Xhz9GOhp1w3bVoKEoF/6psvc6IFHK8bUMq+4003VGDZe2BMlgazZPHc
+3o5CqNviajnRoo9QnLUH1qOljNMR+mkewNOkL2PRGvkCuHJrEk0qmUU7lX3iVN1J
+C7y1fax53ePXajLD+5/sQNeszVg1cIIUlXBy2Bx/F7UCAwEAAaNQME4wHQYDVR0O
+BBYEFAZ1+cZNMujQhCrtCRKfPm+NLDg0MB8GA1UdIwQYMBaAFAZ1+cZNMujQhCrt
+CRKfPm+NLDg0MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAAuyyYER
+T5+E+KuFbDL/COmxRWZhF/u7wIW9cC2o5LlKCUp5rRQfAVRNJlqasldM/G4Bg/uQ
+5khSYe2XNe2C3iajVkR2RlqXBvCdQuCtudhZVd4jSGWi/yI7Ub2/HyOTjZ5eG82o
+F6e3pNRCQwTw0y0orQmdh0s+UmHEVjIe8PfbdRymfeQO70EXTxncBJ5elZx8s0E9
+TPPdbl2knZmKJhwnZFKCaa4DmDA6CDa2GPz+2++DQl1rCIB3mIcxpg6wSdMA6C6l
+nBJBX5Wnxckldp8G0FNXTa1DYqjPZ5U84tkh46pFSLsbSse45xNhrMPeZDWlgHsp
+WfK01YbCWioNVGk=
+-----END CERTIFICATE-----
 ```
 
 ### How the Claim is Used
@@ -201,7 +242,7 @@ The claim is used to inform any CNAB tooling about how to address a particular i
 - Given an installation's name, mark the claim as deleted.
   - This is accompanied by running the `uninstall` path in the bundle
   - XXX: Do we want to allow the implementing system to remove the claim from its database (e.g. helm delete --purge) or remain silent on this matter?
-- Given an installation's name, return the contents of the outputs.
+- Given an installation's name, return the name(s) of the generated outputs.
 
 To satisfy these requirements, implementations of a CNAB package manager are expected to be able to store and retrieve state information. However, note that nothing in the CNAB specification tells _how or where_ this state information is to be stored. It is _not a requirement_ to store that state information inside of the invocation image. (In fact, this is discouraged.)
 
@@ -248,28 +289,19 @@ echo "yay!"
 
 (Note that the above script redirects data to `/dev/null` just to make the example easier. A production CNAB bundle might choose to include more verbose output.)
 
-If both commands exit with code `0`, then the resulting claim will look like this:
+If both commands exit with code `0`, then the claim result will look like this:
 
-```json
+```
 {
-  "action": "install",
-  "bundle": {
-    "name": "technosophos.example_cnab",
-    "uri": "hub.docker.com/technosophos/example_cnab",
-    "version": "0.1.0"
-  },
+  "claimId": "01E5G8ZYP714JVM8NHTJQ4FH15",
+  "id": "ULID",
+  "message": "yay!",    // From STDOUT (echo)
   "created": "TIMESTAMP",
-  "installation": "technosophos.my_first_install",
-  "result": {
-    "message": "yay!",    // From STDOUT (echo)
-    "modified": "TIMESTAMP",
-    "status": "succeeded"   // succeeded (exit == 0), failed (exit > 0), or unknown (connection terminated before exit code was received)
-  },
-  "revision": "01CN530TF9Q095VTRYP1M8797C"
+  "status": "succeeded"   // succeeded (exit == 0), failed (exit > 0), or unknown (connection terminated before exit code was received)
 }
 ```
 
-Tools that implement claims MAY then present `result` info to end users to show the result of running an invocation image.
+Tools that implement claims MAY then present this result info to end users to show the result of running an invocation image.
 
 ## Credentials, Parameters, and Claims
 

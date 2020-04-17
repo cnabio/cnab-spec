@@ -1,0 +1,19 @@
+{
+  "claimId": "01E5G8ZYP714JVM8NHTJQ4FH15",
+  "custom": {},
+  "id": "01E2ZZ2FKSE0V41DCXFCSW5D1M",
+  "created": "2018-08-30T20:39:55.549002887-06:00",
+  "message": "",
+  "outputs": {
+    "clientCert": {
+      "contentDigest":"sha256:aaa..."
+    },
+    "hostName": {
+      "contentDigest":"sha256:bbb..."
+    },
+    "port": {
+      "contentDigest":"sha256:ccc..."
+    }
+  },
+  "status": "succeeded"
+}

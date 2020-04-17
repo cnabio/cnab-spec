@@ -21,6 +21,13 @@ for json in $(ls -1 examples/*-claim.json); do
   ajv test -s $schema -d $json --valid -r schema/bundle.schema.json -r schema/definitions.schema.json
 done
 
+# Test all of the claim result files against the claim result schema.
+for json in $(ls -1 examples/*-claim-result.json); do
+  schema="schema/claim-result.schema.json"
+  echo "Testing json '$json' against schema '$schema'"
+  ajv test -s $schema -d $json --valid -r schema/definitions.schema.json
+done
+
 # Test all of the dependency files against the dependencies schema
 for json in $(ls -1 examples/*-dependencies.json); do
   schema="schema/dependencies.schema.json"

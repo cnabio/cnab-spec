@@ -94,21 +94,10 @@
   "bundleReference": "hub.example.com/technosophos/hellohelm@sha256:eec03d9da1bad36b3e3a4526cc774153f7024a94f25df8d2dc3ca5602fc5273d",
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "custom": {},
+  "id": "01E5G8ZYP714JVM8NHTJQ4FH15",
   "installation": "technosophos.helloworld",
   "parameters": {
     "backend_port": 81
-  },
-  "result": {
-    "modified": "2018-08-30T20:39:59.611068556-06:00",
-    "message": "",
-    "outputs": [
-      "clientCert",
-      "hostName",
-      "port"
-    ],
-    "started": "2018-08-30T20:39:55.549002887-06:00",
-    "status": "succeeded",
-    "stopped": "2018-08-30T20:39:59.611068556-06:00"
   },
   "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
 }
