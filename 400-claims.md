@@ -46,7 +46,7 @@ This is done so that implementors can standardize on a way of relating an instal
 
 While implementors are not REQUIRED to implement claims, this is the standard format for claims-supporting systems.
 
-The CNAB claim is defined as a JSON document. The specification currently does not require that claims be formatted as Canonical JSON. Claims are immutable and are not modified after creation. When another action is executed against an installation, a new claim is created to represent the operation.
+The CNAB claim is defined as a JSON document. The specification currently does not require that claims be formatted as Canonical JSON. Claims are immutable and are not modified after creation. Before an action is executed against an installation, a new claim is created to represent the operation.
 
 The claim for the last modifying action MUST be retained. Previous claims, and/or claims for non-modifying actions, MAY be retained to provide a history of actions performed on an installation.
 
@@ -103,7 +103,7 @@ The fields above are defined as follows:
 - `created` (REQUIRED): A timestamp indicating when this _claim_ was created.
 - `bundleReference` (OPTIONAL): A canonical reference to the bundle used in the action. This bundle reference SHOULD be digested to identify a specific version of the referenced bundle.
 - `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
-- `id` (REQUIRED): The claim id. An [ULID](https://github.com/ulid/spec) that MUST change with each new claim, so that every claim associated with an installation has a unique id. This is used to associate the the claim with its result(s). 
+- `id` (REQUIRED): The claim id. A [ULID](https://github.com/ulid/spec) that MUST change with each new claim, so that every claim associated with an installation has a unique id. This is used to associate the the claim with its result(s). 
 - `installation` (REQUIRED): The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `installation` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
 - `parameters` (OPTIONAL): Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons. However, there are some caveats. See the [Parameters](#parameters) section below for details.
 - `revision` (REQUIRED): The _installation_ revision. An [ULID](https://github.com/ulid/spec) that MUST change each time the installation is modified. It MUST NOT change when a [non-modifying operation](https://github.com/cnabio/cnab-spec/blob/master/101-bundle-json.md#custom-actions) is performed on the installation.
