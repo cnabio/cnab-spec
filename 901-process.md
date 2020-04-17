@@ -68,7 +68,7 @@ When the final release is approved, a Git tag should also be pushed, which trigg
 
 ### Major releases
 
-When a minor release of a specification is required, the working group must approve the scope of commits proposed for inclusion. Likely this will be the `master` branch once the approved commit(s) are merged. Next, a new branch should be created from `master` and named `cnab-core-2.0.0-ga` (here assuming that the version immediately prior was `cnab-core-1.0.0`).
+When a major release of a specification is required, the working group must approve the scope of commits proposed for inclusion. Likely this will be the `master` branch once the approved commit(s) are merged. Next, a new branch should be created from `master` and named `cnab-core-2.0.0-ga` (here assuming that the version immediately prior was `cnab-core-1.0.0`).
 
 When the final release is approved, a Git tag should also be pushed, which triggers schema artifact publishing. Extending the example above, a `cnab-core-2.0.0` tag should be created from the `cnab-core-2.0.0-ga` branch and pushed to origin. We drop the `-ga` suffix as branches and tags may not have the same name in Git.
 
