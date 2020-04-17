@@ -4,7 +4,14 @@
   "definitions": {
     "output": {
       "description": "A value that is produced by running an invocation image",
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "contentDigest": {
+          "description": "A cryptographic hash digest of the contents of the output that can be used to validate the output",
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "properties": {

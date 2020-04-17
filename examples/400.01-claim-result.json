@@ -5,9 +5,15 @@
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "message": "",
   "outputs": {
-    "clientCert": {},
-    "hostName": {},
-    "port": {}
+    "clientCert": {
+      "contentDigest":"sha256:aaa..."
+    },
+    "hostName": {
+      "contentDigest":"sha256:bbb..."
+    },
+    "port": {
+      "contentDigest":"sha256:ccc..."
+    }
   },
   "status": "succeeded"
 }
