@@ -15,7 +15,7 @@ See the [Dependencies Specification](500-CNAB-dependencies.md).
 
 ## Parameter Sources
 
-A custom bundle extension, `io.cnab.parameterSources`, MAY be defined that provides additional guidance for how a runtime MAY determine the default value of a [parameter][parameter]. The parameter source extension does not cover how the runtime should set the value of a parameter because each implemenation may have different information to take into account when determining the final value of a parameter.
+A custom bundle extension, `io.cnab.parameterSources`, MAY be defined that provides additional guidance for how a runtime MAY determine the default value of a [parameter][parameter]. The parameter source extension does not cover how the runtime should set the value of a parameter because each implementation may have different information to take into account when determining the final value of a parameter.
 
 In the example below, the [output][output] `tfstate` is initially generated during the install action, and the required parameter `tfstate` is used by the upgrade and uninstall actions. The parameter source specifies that the `tfstate` output can be used to set the `tfstate` parameter. This enables a bundle to pass data, in this case state, between actions.
 
