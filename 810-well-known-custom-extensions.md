@@ -58,12 +58,12 @@ In the example below, the [output][output] `tfstate` is initially generated duri
 }
 ```
 
-- `io.cnab.parameter-sources`: Defines the parameter sources extension. 
+- `io.cnab.parameter-sources`: Defines the parameter sources extension.
   - `<parameterName>`: The name of the destination parameter.
-    - `priority`: Array of source names in the priority order that the sources should be used to populated the parameter.
-    - `sources`: A map of key/value pairs of a source name and a source for the parameter value.
+    - `priority`: Array of source types in the priority order that they should be used to populated the parameter.
+    - `sources`: A map of key/value pairs of a source type and definition for the parameter value.
 
-### Well-known Sources
+### Well-known Source Types
 
 #### Output
 

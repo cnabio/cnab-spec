@@ -35,6 +35,13 @@ for json in $(ls -1 examples/*-dependencies.json); do
   ajv test -s $schema -d $json --valid
 done
 
+# Test all of the parameter sources files against the parameter sources schema
+for json in $(ls -1 examples/*-parameter-sources.json); do
+  schema="schema/parameter-sources.schema.json"
+  echo "Testing json '$json' against schema '$schema'"
+  ajv test -s $schema -d $json --valid
+done
+
 # Test all of the relocation mapping files against the relocation mapping schema.
 for json in $(ls -1 examples/*-relocation-mapping.json); do
   schema="schema/relocation-mapping.schema.json"
