@@ -1,0 +1,52 @@
+{
+    "$id": "https://cnab.io/specs/v1/parameter-sources.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "CNAB Parameter Sources Extension JSON Schema",
+    "definitions": {
+        "parameter-source": {
+            "type": "object",
+            "description": "",
+            "properties": {
+                "priority": {
+                    "type": "array",
+                    "description": "Array of source types in the priority order that they should be used to populated the parameter",
+                    "items": {
+                        "type": "string",
+                        "enum": ["output"]
+                    },
+                    "minItems": 1
+                },
+                "sources":{
+                    "type": "object",
+                    "description": "A map of key/value pairs of a source type and definition for the parameter value",
+                    "properties": {
+                        "output": { "$ref": "#/definitions/output" }
+                    },
+                    "additionalProperties": false,
+                    "minProperties": 1
+                }
+            },
+            "minProperties": 1,
+            "additionalProperties": false
+        },
+        "output": {
+            "type": "object",
+            "description": "Specifies that the source of the parameter is an output",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name of the source output",
+                    "minLength": 1
+                }
+            },
+            "additionalProperties": false,
+            "required": ["name"]
+        }
+    },
+    "type": "object",
+    "description": "Key/value pairs of parameter sources where the key is the parameter name",
+    "additionalProperties": {
+        "$ref": "#/definitions/parameter-source"
+      },
+    "minProperties": 1
+}

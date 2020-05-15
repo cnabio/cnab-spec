@@ -1,0 +1,12 @@
+{
+    "tfstate": {
+        "priority": [
+            "output"
+        ],
+        "sources": {
+            "output": {
+                "name": "tfstate"
+            }
+        }
+    }
+}
