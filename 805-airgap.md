@@ -62,3 +62,11 @@ The runtime uses the relocated reference of the invocation image so that the ima
 A [relocation mapping](103-bundle-runtime.md#relocation-mapping) is mounted so that the invocation
 image is aware of the original and new values of image references and can replace the original image references with their relocated counterparts.
 Thus the images referenced by the CNAB are also loaded from the private registry.
+
+## CNAB Security
+
+When copying images from public registries to an airgapped environment, the user has at least two options.
+
+The first option is that the user uses one of the [known implementations](304-known-implementations) of CNAB Security to verify signatures on bundles (and possibly images, although this is out of scope for CNAB Security) from public registries, but push unsigned bundles and images to their own private, airgapped registries. The pros here are that the user does verify the authenticity and integrity of public bundles, and does not need to maintain any private signing and verification infrastructure, but the con is that the user is not protected from internal attacks between registries and consumers.
+
+The second option is that the user uses one of the [known implementations] of CNAB Security to not only verify signatures on bundles (and optionally images) from public registries, but also _independently_ sign and push bundles (and images) to their own private, airgapped registries. The signing keys are independent from the public, upstream registries, because: (1) the known implementation may not support copying signatures, (2) the original signatures may expire within the airgapped environment, and (3) there may be transformation of bundles (such as producing private thick bundles from public thin bundles). This option is more complicated than the first one, but does not suffer from the same cons.
