@@ -49,8 +49,6 @@ Unless specified otherwise, metadata are TUF and in-toto metadata, which may be 
 
 When a [bundle runtime](103-bundle-runtime.md) installs a bundle, it should first verify images and bundles using the suggested [verification workflows](303-verification-workflows.md).
 
-[**TODO** Figure 1 illustrates a high-level overview of how the components described in this document interact with each other.]
-
 ### Gradual security
 
 Implementors / adopters MAY wish to implement security gradually instead of an all-or-nothing approach.
