@@ -19,5 +19,6 @@ weight: 001
     - [Repositories](803-repositories.md)
     - [Well known custom actions](804-well-known-custom-actions.md)
     - [Disconnected Scenarios](805-airgap.md)
+    - [Well known custom extensions](810-well-known-custom-extensions.md)
 6. Process Documentation
     - [Specification Process](901-process.md)
