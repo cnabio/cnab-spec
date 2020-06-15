@@ -5,11 +5,11 @@ weight: 301
 
 # Metadata repositories
 
-* [Metadata repositories](#metadata-repositories)
-* [Minimum viable product (MVP)](#minimum-viable-product-mvp)
-  * [Security analysis of MVP](#security-analysis-of-mvp)
-* [Extending the MVP to verify the provenance of bundles](#extending-the-MVP-to-verify-the-provenance-of-bundles)
-  * [Security analysis of extension](#security-analysis-of-extension)
+- [Metadata repositories](#metadata-repositories)
+- [Minimum viable product (MVP)](#minimum-viable-product-mvp)
+  - [Security analysis of MVP](#security-analysis-of-mvp)
+- [Extending the MVP to verify the provenance of bundles](#extending-the-MVP-to-verify-the-provenance-of-bundles)
+  - [Security analysis of extension](#security-analysis-of-extension)
 
 This document is a _normative_ part of [CNAB Security](300-CNAB-security.md).
 
@@ -20,11 +20,12 @@ The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, REC
 A _metadata repository_ is a service that hosts The Update Framework (TUF) and in-toto metadata about bundles. As discussed in [300](300-CNAB-security.md), TUF adds signed metadata that provides authenticity and integrity of bundles between [CNAB registries](200-CNAB-registries.md) and users, whereas in-toto adds signed metadata that provides authenticity and integrity of bundles between developers and CNAB registries. By combining both types of signed metadata, we get end-to-end authenticity and integrity of bundles between developers and users.
 
 Note that:
-* A metadata repository MAY be physically distinct from a CNAB registry, or not (e.g., bundles as well as TUF and/or in-toto metadata MAY live as [OCI Artifacts](https://stevelasker.blog/2019/08/25/oci-artifacts-and-a-view-of-the-future/) on a CNAB registry).
-* Both TUF and in-toto are frameworks that can be configured in a wide variety of ways to achieve varying degrees of security. However, we discuss one [minimum viable product (MVP)](#minimum-viable-product-mvp), which has been optimized in particular for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1), in this document.
-* Although we discuss only the signing and verification of bundles, exactly the same principles apply to images.
-* Trust for different metadata repositories with different roots of trust can be established out-of-band using an approach like [TAP 4](https://github.com/theupdateframework/taps/blob/master/tap4.md). For example, a bundle runtime could be shipped with known good copies of TUF `root` metadata for different repositories, or there could even be a meta metadata repository that distributes these `root` metadata.
-* How to establish whether a `root` metadata file is trustworthy is outside the scope of this document. Simply assuming a `root` metadata file is trustworthy (e.g., by "clicking through") voids all guarantees (of end-to-end authenticity and integrity of bundles) provided by the corresponding metadata repository.
+
+- A metadata repository MAY be physically distinct from a CNAB registry, or not (e.g., bundles as well as TUF and/or in-toto metadata MAY live as [OCI Artifacts](https://stevelasker.blog/2019/08/25/oci-artifacts-and-a-view-of-the-future/) on a CNAB registry).
+- Both TUF and in-toto are frameworks that can be configured in a wide variety of ways to achieve varying degrees of security. However, we discuss one [minimum viable product (MVP)](#minimum-viable-product-mvp), which has been optimized in particular for [Docker Content Trust / Notary 0.6.1](https://github.com/theupdateframework/notary/releases/tag/v0.6.1), in this document.
+- Although we discuss only the signing and verification of bundles, exactly the same principles apply to images.
+- Trust for different metadata repositories with different roots of trust can be established out-of-band using an approach like [TAP 4](https://github.com/theupdateframework/taps/blob/master/tap4.md). For example, a bundle runtime could be shipped with known good copies of TUF `root` metadata for different repositories, or there could even be a meta metadata repository that distributes these `root` metadata.
+- How to establish whether a `root` metadata file is trustworthy is outside the scope of this document. Simply assuming a `root` metadata file is trustworthy (e.g., by "clicking through") voids all guarantees (of end-to-end authenticity and integrity of bundles) provided by the corresponding metadata repository.
 
 ## Minimum viable product (MVP)
 
@@ -168,7 +169,6 @@ The following code listing is an example of the `targets` metadata for a bundle:
 }
 ```
 
-
 The following code listing is an example of the `targets/releases` metadata for a bundle:
 
 ```json
@@ -215,6 +215,6 @@ The biggest difference between this extension and the MVP itself is that there i
 
 Assuming that the `targets/releases` key is kept on private infrastructure controlled by the bundle developers, and even if attackers compromise this key, then they cannot change the rules governing the software supply chain.
 
-However, we _cannot_ analyze the security provided by the software supply chain itself. This is because different bundles are very likely to have different software supply chains. For example, if all the keys used to sign all the steps (and therefore in-toto link metadata) in the software supply chain are kept online on the aforementioned private infrastructure, then this is _not_ as secure a setup as the case where source code must be signed off by developers using keys protected using hardware security keys.  Known [implementations](304-known-implementations.md) SHOULD provide usable software supply chains out of the box that provide sufficiently strong security guarantees without hampering usability by developers.
+However, we _cannot_ analyze the security provided by the software supply chain itself. This is because different bundles are very likely to have different software supply chains. For example, if all the keys used to sign all the steps (and therefore in-toto link metadata) in the software supply chain are kept online on the aforementioned private infrastructure, then this is _not_ as secure a setup as the case where source code must be signed off by developers using keys protected using hardware security keys. Known [implementations](806-security-known-implementations.md) SHOULD provide usable software supply chains out of the box that provide sufficiently strong security guarantees without hampering usability by developers.
 
 For an example of how to design a secure software supply chain, please see the following [example](https://www.datadoghq.com/blog/engineering/secure-publication-of-datadog-agent-integrations-with-tuf-and-in-toto/).

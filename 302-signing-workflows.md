@@ -5,7 +5,7 @@ weight: 302
 
 # Signing Workflows
 
-* [Signing workflow for the minimum viable product (MVP)](#signing-workflow-for-the-minimum-viable-product-mvp)
+- [Signing workflow for the minimum viable product (MVP)](#signing-workflow-for-the-minimum-viable-product-mvp)
 
 This document is a _normative_ part of [CNAB Security](300-CNAB-security.md).
 
@@ -17,7 +17,7 @@ This subsection documents how a signing workflow MAY typically work for an [MVP 
 
 ### Setup (one-time task)
 
-When bundle developers set up an MVP metadata repository for the first time, they SHOULD use one of the [known implementations of CNAB-Sec](304-known-implementations) to set up at least a complete set of the `root`, `timestamp`, `snapshot`, and `targets` TUF metadata.
+When bundle developers set up an MVP metadata repository for the first time, they SHOULD use one of the [known implementations of CNAB-Sec](806-security-known-implementations.md) to set up at least a complete set of the `root`, `timestamp`, `snapshot`, and `targets` TUF metadata.
 
 To do so, developers SHOULD begin by generating the private keys for the `root` and `targets` roles. There are two options for the `timestamp` and `snapshot` roles. One is that developers MAY also generate and manage their private keys. The other is that the metadata repository MAY automatically generate and manage their private keys, as is the default on [Docker Content Trust](https://docs.docker.com/engine/security/trust/trust_key_mng/).
 

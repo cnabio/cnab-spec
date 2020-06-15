@@ -1,9 +1,9 @@
 ---
-title: CNAB Security: Known implementations
-weight: 304
+title: Known implementations for CNAB Security
+weight: 806
 ---
 
-The security implementation prescribes the structure and format that trust metadata SHOULD follow, but _not_ which specific implementations should be used. This document presents known implementations of the CNAB security specification, and as more projects implement the specification, they will be added here.
+The security implementation prescribes the structure and format that trust metadata SHOULD follow, but _not_ which specific implementations should be used. This document is non-normative, and presents known implementations of the CNAB security specification. As more projects implement the specification, they will be added here.
 
 ### [Signy][signy]
 
