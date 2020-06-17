@@ -36,6 +36,7 @@ For more information on the approval process, see [the process documentation](90
   1. [Repositories](803-repositories.md)
   1. [Well known custom actions](804-well-known-custom-actions.md)
   1. [Disconnected Scenarios](805-airgap.md)
+  1. [Known implementations for CNAB Security 1.0.0 (CNAB-Sec 1.0.0)](806-security-known-implementations.md)
 - Chapter 9: Appendix
   1. [Appendix A: Preliminary Release Process](901-process.md)
 
