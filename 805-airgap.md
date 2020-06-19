@@ -68,16 +68,16 @@ Thus the images referenced by the CNAB are also loaded from the private registry
 When copying images from public registries to an airgapped environment, the user has at least two options.
 
 The first option is to use one of the [known
-implementations](304-known-implementations) of CNAB Security to verify
-signatures on bundles (and possibly images, although this is out of scope for
-    CNAB Security) from public registries, but push unsigned bundles and images
-to their own private, airgapped registries. The pros here are that the user
-does verify the authenticity and integrity of public bundles, and does not need
-to maintain any private signing and verification infrastructure, but the con is
-that the user is not protected from internal attacks between registries and
-consumers.
+implementations](806-security-known-implementations.md) of CNAB Security to
+verify signatures on bundles (and possibly images, although this is out of
+scope for CNAB Security) from public registries, but push unsigned bundles
+and images to their own private, airgapped registries. The pros here are that
+the user does verify the authenticity and integrity of public bundles, and does
+not need to maintain any private signing and verification infrastructure, but
+the con is that the user is not protected from internal attacks between
+registries and consumers.
 
-The second option is to use one of the [known implementations] of CNAB Security
+The second option is to use one of the known implementations of CNAB Security
 to not only verify signatures on bundles (and optionally images) from public
 registries, but also _independently_ sign and push bundles (and images) to
 their own private, airgapped registries. The signing keys are independent from
