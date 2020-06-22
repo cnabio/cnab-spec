@@ -78,6 +78,10 @@ In addition to the scenarios above, if schemas at a certain commit need to be pr
 
 To enable implementations to pin at a certain version prior to an official release, we can issue a Git tag and CI will handle publishing the schemas. For example, if the Claims specification is still in the `DRAFT` state but its schemas at a particular commit are needed for implementation verification, we can push an appropriate tag to origin. The tag form is: `cnab-claim-1.0.0-DRAFT+abc1234`, where `cnab-claim-1.0.0-DRAFT` is the current working version and `abc1234` is the short SHA of the commit the tag will be created from.
 
+### Non-normative exclusions
+
+For non-normative documents (any in the `8xx` section), no formal release processes apply.  As long as the associated working group approves of additions or modifications to documents in this section (say, via a pull request), no further action or process is needed.
+
 ## Development Process
 
 The specification will proceed through the following phases:
