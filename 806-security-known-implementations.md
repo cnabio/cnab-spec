@@ -21,6 +21,8 @@ The current document is based on [v0.0.3][signy-release] of Signy, which:
 
 > Because Signy uses Notary, its implementation is very closely related to the Docker Content Trust model. For an architecture of a service running Notary, [see this document][notary-architecture].
 
+> Note that, at the time of writing (June 4th 2020), while Signy handles copying images from one registry to another, it does _not_ copy the associated Notary v1 signed metadata and private keys from the former to the latter, largely due to the limitations of Notary v1. However, users are free to use Signy to attach their own signatures on their own registry and [Notary services](https://docs.docker.com/notary/service_architecture/).
+
 #### Using Signy to perform TUF verifications
 
 - signing and pushing a bundle:

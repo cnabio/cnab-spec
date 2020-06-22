@@ -19,7 +19,7 @@ The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, REC
 
 The reader is assumed to be thoroughly familiar with the [TUF][tuf-spec] and [in-toto][in-toto-spec] specifications, and some deployment models such as [PEP 458][pep-458], [PEP 480][pep-480], [ITE-4][ite-4], [ITE-5][ite-5], and [Datadog Agent integrations][datadog-agent-integrations].
 
-The CNAB Security specification augments the [CNAB Core specification](100-CNAB.md) by standardizing on security mechanisms for signing, verifying, and attesting CNAB packages. It describes both a client/registry security model and a verification chain (provenance) model. By design, this provides security mechanisms that work in air-gapped networks.
+The CNAB Security specification augments the [CNAB Core specification](100-CNAB.md) by standardizing on security mechanisms for signing, verifying, and attesting CNAB packages. It describes both a client/registry security model and a verification chain (provenance) model.
 
 This specification is distinct from the CNAB Core specification. An implementation may comply with the CNAB Core specification, and yet not comply with this specification. The use of terms such as MUST and SHOULD in this document are statements about how a CNAB implementation may fulfill the CNAB Security specification _only_.
 
@@ -48,6 +48,8 @@ While images and bundles are published on registries, TUF and in-toto metadata a
 Unless specified otherwise, metadata are TUF and in-toto metadata, which may be produced using the suggested [signing workflows](302-signing-workflows.md).
 
 When a [bundle runtime](103-bundle-runtime.md) installs a bundle, it should first verify images and bundles using the suggested [verification workflows](303-verification-workflows.md).
+
+Considerations for airgapped environments are discussed [here](805-airgap.md#cnab-security).
 
 ### Gradual security
 
