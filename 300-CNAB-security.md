@@ -3,8 +3,11 @@ title: Bundle Security
 weight: 300
 ---
 
-# Cloud Native Application Bundles Security (CNAB-Sec) 1.0.0
-Draft, Feb. 2020
+# Cloud Native Application Bundles Security (CNAB-Sec) 1.0.0 GA
+*[Working Group Approval](901-process.md), Jun. 2020*
+
+The CNAB Working Group has approved the CNAB Security 1.0 specification. This specification is now pending approval from the CNAB Foundation executive committee, after which it will be finalized as CNAB Security 1.0 (AD). For more information on the approval process, see [the process documentation](901-process.md). Further changes to CNAB Security will be considered for CNAB Security 1.1.
+
 
 * [Introduction](#introduction)
 * [Roadmap](#roadmap)
