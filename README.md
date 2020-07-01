@@ -24,7 +24,7 @@ For more information on the approval process, see [the process documentation](90
   1. [The Bundle Runtime](103-bundle-runtime.md)
   1. [Bundle Formats (Thick and Thin)](104-bundle-formats.md)
 - Chapter 2: [Cloud Native Application Bundle Registry 1.0.0 (CNAB-Reg)](200-CNAB-registries.md)
-- Chapter 3: [# Cloud Native Application Bundles Security (CNAB-Sec) 1.0.0 GA](300-CNAB-security.md)
+- Chapter 3: [Cloud Native Application Bundles Security (CNAB-Sec) 1.0.0 GA](300-CNAB-security.md)
   1. [Cloud Native Application Bundles Security (CNAB-Sec): Metadata repositories 1.0.0 GA](301-metadata-repositories.md)
   1. [Cloud Native Application Bundles Security (CNAB-Sec): Signing workflows 1.0.0 GA](302-signing-workflows.md)
   1. [Cloud Native Application Bundles Security (CNAB-Sec): Verification workflows 1.0.0 GA](303-verification-workflows.md)
