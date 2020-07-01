@@ -72,6 +72,8 @@ When a major release of a specification is required, the working group must appr
 
 When the final release is approved, a Git tag should also be pushed, which triggers schema artifact publishing. Extending the example above, a `cnab-core-2.0.0` tag should be created from the `cnab-core-2.0.0-ga` branch and pushed to origin. We drop the `-ga` suffix as branches and tags may not have the same name in Git.
 
+**Note:** For all of the patch, minor and major release protocols above, the convention is to also add the resulting tag to the `Branch/Tag Structure` section of this repo's [README](README.md#branchtag-structure).
+
 ### Ad hoc schema releases
 
 In addition to the scenarios above, if schemas at a certain commit need to be preserved in the form of artifacts and published, ad hoc versioning (i.e. not tied to a release branch) is permitted via the following Git tag flow. This is intended for specifications in `DRAFT` state which are perhaps under heavy development.
