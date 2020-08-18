@@ -70,7 +70,7 @@ MUST only be used for this CNAB Dependencies Specification.
 
 ### sequence
 
-The `sequence` array defines the criteria for the sequencing bundles in a pre-defined order. The sequence for
+The `sequence` array defines the criteria for sequencing bundles in a pre-defined order. The sequence for
 each occurrence is a way for the bundle to reference the order of a dependency.
 
 ### requires
