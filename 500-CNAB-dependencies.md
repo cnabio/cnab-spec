@@ -31,13 +31,14 @@ There are two cases for how a bundle may need to depend upon another bundle:
 
 ## Depend on a named bundle
 
-The bundle depends on a specific named bundle that is known in advance. It is 
+The bundle depends on a specific named bundle that is known in advance. It is
 stored in the custom extensions section of the bundle.
 
 ```json
 {
   "custom": {
     "dependencies": {
+      "sequence": ["storage", "mysql"],
       "requires": {
         "storage": {
           "bundle": "somecloud/blob-storage"
@@ -64,8 +65,13 @@ This section is a placeholder and will be completed in a follow-up pull request.
 This specification introduces a `dependencies` object in the bundle.json
 that defines metadata necessary to specify a dependency.
 
-The entry `dependencies` in the custom extension map, `custom`, is reserved and
+The entry `dependencies` in the custom extension object, `custom`, is reserved and
 MUST only be used for this CNAB Dependencies Specification.
+
+### sequence
+
+The `sequence` array defines the criteria for the sequencing bundles in a pre-defined order. The sequence for
+each occurrence is a way for the bundle to reference the order of a dependency.
 
 ### requires
 
