@@ -15,6 +15,7 @@
     },
     "io.cnab.dependencies": [
       {
+        "sequence": ["mysql"],
         "requires": {
           "bundle": "azure/mysql",
           "version": {
