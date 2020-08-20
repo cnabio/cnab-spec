@@ -315,7 +315,7 @@ The `imageType` field MUST describe the format of the image. The list of formats
 The `image` field MUST give a path-like or URI-like representation of the location of the image. It is REQUIRED. The expectation is that an installer should be able to locate the image (given the image type) without additional information.
 
 The `contentDigest` field MUST contain a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the `contentDigest` is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images are checksums).
-  - If the `imageType` is `oci` or `docker`, the value for this field MUST be the registry-compressed digest (known as a repo digest, [image digest](https://docs.docker.com/engine/reference/commandline/images/#list-image-digests) and/or manifest digest) as opposed to the registry-independent image ID.
+  - If the `imageType` is `oci` or `docker`, the value for this field MUST be the registry-compressed digest (known as a repo digest, [image digest][image-digest] and/or manifest digest) as opposed to the registry-independent image ID.
   - During bundle development, it may be ideal to omit the `contentDigest` field and/or skip validation. Once a bundle is ready to be transmitted as a thick or thin bundle, it MUST have a `contentDigest` field.
   - If a `contentDigest` field is present, a runtime MUST validate the image digest prior to executing an action
   - If the `contentDigest` is not present, the runtime SHOULD report an error so the user is aware that there is no `contentDigest` provided.
@@ -358,7 +358,7 @@ Fields:
   - `description`: The description field provides additional context of the purpose of the image.
   - `imageType`: The `imageType` field MUST describe the format of the image. The list of formats is open-ended, but any CNAB-compliant system MUST implement `docker` and `oci`. The default is `oci`.
   - `image`: The REQUIRED `image` field provides a valid reference for the image. Note that SHOULD be a CAS SHA, as in the example above, not a version tag.
-  - `contentDigest`: MUST contain a digest of the contents of the image, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the contentDigest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images use checksums.) If the `imageType` is `oci` or `docker`, the value for this field MUST be the registry-compressed digest (known as a repo digest, [image digest](https://docs.docker.com/engine/reference/commandline/images/#list-image-digests) and/or manifest digest) as opposed to the registry-independent image ID.
+  - `contentDigest`: MUST contain a digest of the contents of the image, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), to be used to compute the integrity of the image. The calculation of how the image matches the contentDigest is dependent upon image type. (OCI, for example, uses a Merkle tree while VM images use checksums.) If the `imageType` is `oci` or `docker`, the value for this field MUST be the registry-compressed digest (known as a repo digest, [image digest][image-digest] and/or manifest digest) as opposed to the registry-independent image ID.
   - `size`: The image size in bytes
   - `labels`: Key/value pairs that used to specify identifying attributes of images:
   - `mediaType`: The media type of the image
@@ -1003,3 +1003,5 @@ A runtime can leverage appropriate [in-memory](https://docs.docker.com/v17.09/en
 A runtime may validate outputs based on schema references by the definition field.
 
 Next section: [The invocation image definition](102-invocation-image.md)
+
+[image-digest]: https://docs.docker.com/engine/reference/commandline/images/#list-image-digests
