@@ -3,6 +3,13 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "CNAB Dependencies JSON Schema",
     "definitions": {
+        "sequence":{
+            "type": "array",
+            "description": "Defines the criteria for sequencing bundles in a pre-defined order. The sequence for each occurrence is a way for the bundle to reference the order of a dependency",
+            "items": {
+                "type": "string"
+            }
+        },
         "requires": {
             "type": "object",
             "description": "Defines the criteria for the dependent bundle. The key for each dependency is a way for the bundle to reference the dependency",
