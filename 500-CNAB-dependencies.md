@@ -70,8 +70,10 @@ MUST only be used for this CNAB Dependencies Specification.
 
 ### sequence
 
-The `sequence` array defines the criteria for sequencing bundles in a pre-defined order. The sequence for
-each occurrence is a way for the bundle to reference the order of a dependency.
+The `sequence` array is a pre-defined sequencing of the dependant bundles.
+If the `sequence` array is non-empty, the runtime MUST execute each dependency according to this pre-defined order
+unless the runtime is capable of resolving the dependency graph to determine an execution order itself.
+The `sequence` for each occurrence is a way for the bundle to reference the order of a dependency.
 
 ### requires
 
