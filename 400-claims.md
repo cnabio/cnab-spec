@@ -18,7 +18,7 @@ A _host environment_ is an environment, possibly shared between multiple CNAB ru
 
 The word _claim_ was chosen because it represents the relationship between a certain CNAB host environment and the resources that were created by a CNAB runtime in that host environment. In this sense, an environment takes responsibility for those resources if and only if it can _claim_ them. A claim is an _external assertion of ownership_. That is, the claim itself is not "installed" into the host environment. It is stored separately, possibly in an entirely different location.
 
-The claims system is designed to satisfy the requirements of the [Bundle Runtime specification](103-bundle-runtime.md) regarding the tracking `CNAB_REVISION` and `CNAB_LAST_REVISION`. It also provides a description of how the state of a bundle installation may be represented.
+The claims system is designed to satisfy the requirements of the [Bundle Runtime specification](103-bundle-runtime.md) regarding the tracking of `CNAB_REVISION` and `CNAB_LAST_REVISION`. It also provides a description of how the state of a bundle installation may be represented.
 
 This specification uses the terminology defined in [the CNAB Core specification](100-CNAB.md).
 
@@ -231,7 +231,7 @@ WfK01YbCWioNVGk=
 
 ### How the Claim is Used
 
-The claim is used to inform any CNAB tooling about how to address a particular installation. For example, given the claim record, a package manager that implements CNAB should be able to:
+The claim is used to inform any CNAB tooling about how to address a particular installation. For example, given the claim record, a runtime that implements the CNAB Claims spec should be able to:
 
 - List the _names_ of the installations, given a _bundle name_
 - Given an installation's _name_, return the _bundle info_ that is installed under that name
@@ -239,16 +239,15 @@ The claim is used to inform any CNAB tooling about how to address a particular i
   - This is accompanied by running the `install` path in the bundle
 - Given an installation's _name_, replace the _bundle info_ with updated _bundle info_, and update the revision with a new ULID, and the modified timestamp with the current time. This is an upgrade operation.
   - This is accompanied by running the `upgrade` path in the bundle
-- Given an installation's name, mark the claim as deleted.
+- Given an installation's name, mark the installation as deleted.
   - This is accompanied by running the `uninstall` path in the bundle
-  - XXX: Do we want to allow the implementing system to remove the claim from its database (e.g. helm delete --purge) or remain silent on this matter?
 - Given an installation's name, return the name(s) of the generated outputs.
 
-To satisfy these requirements, implementations of a CNAB package manager are expected to be able to store and retrieve state information. However, note that nothing in the CNAB specification tells _how or where_ this state information is to be stored. It is _not a requirement_ to store that state information inside of the invocation image. (In fact, this is discouraged.)
+To satisfy these requirements, implementations of a CNAB runtime are expected to be able to store and retrieve state information. However, note that nothing in the CNAB Claims specification tells _how or where_ this state information is to be stored. It is _not a requirement_ to store that state information inside of the invocation image. (In fact, this is discouraged.)
 
 ## Injecting Claim Data into an Invocation Image
 
-Compliant CNAB implementations MUST conform to this section.
+Compliant CNAB Claims Spec implementations MUST conform to this section.
 
 ### Environment Variables
 
@@ -269,7 +268,7 @@ Parameters declared with an `env` key in the `destination` object MUST have thei
 
 The invocation image may benefit from accessing the claim. Consequently, a claim MUST be attached to the invocation image when the invocation image is started.
 
-The claim MUST be mounted at the path `/cnab/claim.json` inside of the bundle. The version of this claim that is to be mounted is the _version prior to this operation beginning_. In other words, when a bundle is installed, it creates the original installation claim. On the first upgrade, the claim describing the _installation_ is located at `/cnab/claim.json`. This allows the invocation image to inspect the former state and compare it to the desired new state.
+The claim MUST be mounted at the path `/cnab/claim.json` inside of the bundle. The version of this claim that is to be mounted is the _version representing the current operation_. In other words, when a bundle is installed, the runtime creates the original installation claim and passes this in. On the first upgrade, the claim describing the _upgrade_ operation is located at `/cnab/claim.json`.
 
 Note: Systems may be compliant with the core specification but not support the claims specification. If `$CNAB_CLAIMS_VERSION` is not present, a runtime SHOULD assume that the claims specification is not implemented. Bundle authors may therefore have to take care when relying upon `/cnab/claim.json`, accommodating the case where the runtime does not support claims.
 
