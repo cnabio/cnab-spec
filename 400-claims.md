@@ -105,7 +105,7 @@ The fields above are defined as follows:
 - `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
 - `id` (REQUIRED): The claim id. A [ULID](https://github.com/ulid/spec) that MUST change with each new claim, so that every claim associated with an installation has a unique id. This is used to associate the the claim with its result(s). 
 - `installation` (REQUIRED): The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `installation` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
-- `parameters` (OPTIONAL): Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. Some implementations MAY choose not to store these for security or portability reasons. However, there are some caveats. See the [Parameters](#parameters) section below for details.
+- `parameters` (OPTIONAL): Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. See the [Parameters](#parameters) section below for more details.
 - `revision` (REQUIRED): The _installation_ revision. A [ULID](https://github.com/ulid/spec) that MUST change each time the installation is modified. It MUST NOT change when a [non-modifying operation](https://github.com/cnabio/cnab-spec/blob/master/101-bundle-json.md#custom-actions) is performed on the installation.
 
 > Note that credential data is _never_ stored in a claim. For this reason, a claim is not considered _trivially repeatable_. Credentials MUST be supplied on each action. Implementations of the claims specification are expected to retrieve the credential requirements from the `bundle` field.
@@ -123,7 +123,7 @@ Compared to a monotonic increment, ULID has strong advantages when it cannot be 
 
 ### Parameters
 
-The parameter data stored in a claim data is _the resolved key/value pairs_ that result from the following transformation:
+If parameters are passed in during the operation, they MUST be stored on the claim.  The parameter data stored in a claim is _the resolved key/value pairs_ that result from the following transformation:
 
 - The values supplied by the user are validated by the rules specified in the `bundle.json` file
 - The output of this operation is a set of key/value pairs in which:
