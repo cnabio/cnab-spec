@@ -18,7 +18,7 @@ A _host environment_ is an environment, possibly shared between multiple CNAB ru
 
 The word _claim_ was chosen because it represents the relationship between a certain CNAB host environment and the resources that were created by a CNAB runtime in that host environment. In this sense, an environment takes responsibility for those resources if and only if it can _claim_ them. A claim is an _external assertion of ownership_. That is, the claim itself is not "installed" into the host environment. It is stored separately, possibly in an entirely different location.
 
-The claims system is designed to satisfy the requirements of the [Bundle Runtime specification](103-bundle-runtime.md) regarding the tracking of `CNAB_REVISION` and `CNAB_LAST_REVISION`. It also provides a description of how the state of a bundle installation may be represented.
+The claims system is designed to satisfy the requirements of the [Bundle Runtime specification](103-bundle-runtime.md) regarding the tracking of `CNAB_REVISION`. It also provides a description of how the state of a bundle installation may be represented.
 
 This specification uses the terminology defined in [the CNAB Core specification](100-CNAB.md).
 
