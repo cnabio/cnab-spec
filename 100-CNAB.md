@@ -3,7 +3,7 @@ title: CNAB Core
 weight: 100
 ---
 
-# Cloud Native Application Bundle Core 1.0.0 (CNAB1)
+# Cloud Native Application Bundle Core 1.1.0 (CNAB1)
 *[Final Approval, Published](901-process.md), Sept. 2019*
 
 
