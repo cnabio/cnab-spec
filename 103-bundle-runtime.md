@@ -58,8 +58,6 @@ Revisions are regenerated on destructive operations so that one installation may
 
 A `CNAB_REVISION` SHOULD be a [ULID](https://github.com/ulid/spec).
 
-A `CNAB_LAST_REVISION` SHOULD be provided during `upgrade` and `uninstall` operations. It MAY be provided during actions specified in the bundle descriptor. When provided, it MUST be set to the revision from the previous operation. If no previous revision exist, this SHOULD be set to the empty string (`""`). (It SHOULD NOT be set to `0`, as is sometimes the practice in UNIX programming, as `0` is considered a possible, though undesirable, revision ID)
-
 ### Parameters as Variables
 
 As specified in the `bundle.json`, some parameters MAY be injected into the environment as environment variables.
