@@ -16,6 +16,7 @@ For more information on the approval process, see [the process documentation](90
 - [cnab-core-1.1.0](https://github.com/cnabio/cnab-spec/tree/cnab-core-1.1.0) is the CNAB Core 1.1.0 final draft
 - [cnab-core-1.0.1](https://github.com/cnabio/cnab-spec/tree/cnab-core-1.0.1) is the CNAB Core 1.0.1 final draft
 - [cnab-core-1.0](https://github.com/cnabio/cnab-spec/tree/cnab-core-1.0) is the CNAB Core 1.0.0 final draft
+- [cnab-claims-1.0.0](https://github.com/cnabio/cnab-spec/tree/cnab-claims-1.0.0) is the CNAB Claims 1.0.0 final draft
 - [cnab-security-1.0.0](https://github.com/cnabio/cnab-spec/tree/cnab-security-1.0.0) is the CNAB Security 1.0.0 final draft
 
 ## Table of Contents
