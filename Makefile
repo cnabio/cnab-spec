@@ -1,6 +1,6 @@
 VERSION       ?= $(shell git describe --tags 2> /dev/null || echo v0)
 BASE_DIR      := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-VALIDATOR_IMG := deislabs/cnab-spec.ajv
+VALIDATOR_IMG := cnabio/cnab-spec.ajv
 
 .PHONY: build-validator
 build-validator:
@@ -22,7 +22,7 @@ validate-url: build-validator
 
 .PHONY: build-validator-local
 build-validator-local:
-	@npm install -g ajv-cli
+	@npm install -g ajv-cli@3.3.0
 
 .PHONY: validate-local
 validate-local: build-validator-local
