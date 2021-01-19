@@ -11,7 +11,9 @@ A bundle indicates that it uses a custom extension by including them in its cust
 
 ## Dependencies
 
-See the [Dependencies Specification](500-CNAB-dependencies.md).
+A custom bundle extension, `io.cnab.dependencies`, MAY be defined that specifies
+that the bundle depends up on other bundles. See the [Dependencies
+Specification](500-CNAB-dependencies.md) for details.
 
 ## Parameter Sources
 

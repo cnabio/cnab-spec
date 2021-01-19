@@ -37,7 +37,7 @@ stored in the custom extensions section of the bundle.
 ```json
 {
   "custom": {
-    "dependencies": {
+    "io.cnab.dependencies": {
       "sequence": ["storage", "mysql"],
       "requires": {
         "storage": {
@@ -62,10 +62,10 @@ This section is a placeholder and will be completed in a follow-up pull request.
 
 ## Dependencies Metadata
 
-This specification introduces a `dependencies` object in the bundle.json
+This specification introduces a `io.cnab.dependencies` custom extension in the bundle.json
 that defines metadata necessary to specify a dependency.
 
-The entry `dependencies` in the custom extension object, `custom`, is reserved and
+The entry `io.cnab.dependencies` in the custom extension object, `custom`, is reserved and
 MUST only be used for this CNAB Dependencies Specification.
 
 ### sequence
