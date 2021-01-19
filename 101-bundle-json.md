@@ -491,7 +491,7 @@ The structure of a `parameters` and `definitions` section looks like the section
       "definitions": {
         "<definition-name>": <json-schema>
       },
-      "dependencies": {
+      "io.cnab.dependencies": {
         "<first-property-name>": <json-schema>,
         "<second-property-name>": [ <string> ]
       },

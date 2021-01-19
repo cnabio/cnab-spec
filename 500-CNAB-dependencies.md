@@ -21,8 +21,7 @@ dependency.
 This specification defines [dependencies metadata](#dependencies-metadata) in the
 bundle.json for specifying dependencies but does not dictate that the metadata is
 specifically used at a particular time, or how the dependency graph is resolved.
-Each tool may choose to use the information differently, for example [porter](https://porter.sh) resolves dependencies when the bundle is built, but another tool could
-use this information at runtime.
+Each tool may choose to use the information differently.
 
 There are two cases for how a bundle may need to depend upon another bundle:
 
@@ -37,7 +36,7 @@ stored in the custom extensions section of the bundle.
 ```json
 {
   "custom": {
-    "dependencies": {
+    "io.cnab.dependencies": {
       "sequence": ["storage", "mysql"],
       "requires": {
         "storage": {
@@ -62,10 +61,10 @@ This section is a placeholder and will be completed in a follow-up pull request.
 
 ## Dependencies Metadata
 
-This specification introduces a `dependencies` object in the bundle.json
+This specification introduces a `io.cnab.dependencies` custom extension in the bundle.json
 that defines metadata necessary to specify a dependency.
 
-The entry `dependencies` in the custom extension object, `custom`, is reserved and
+The entry `io.cnab.dependencies` in the custom extension object, `custom`, is reserved and
 MUST only be used for this CNAB Dependencies Specification.
 
 ### sequence
