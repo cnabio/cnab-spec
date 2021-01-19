@@ -21,8 +21,7 @@ dependency.
 This specification defines [dependencies metadata](#dependencies-metadata) in the
 bundle.json for specifying dependencies but does not dictate that the metadata is
 specifically used at a particular time, or how the dependency graph is resolved.
-Each tool may choose to use the information differently, for example [porter](https://porter.sh) resolves dependencies when the bundle is built, but another tool could
-use this information at runtime.
+Each tool may choose to use the information differently.
 
 There are two cases for how a bundle may need to depend upon another bundle:
 
