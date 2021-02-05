@@ -5,7 +5,7 @@
 #
 # If a new schema is added to this repository, a new redirect rule can be
 # added to the cnabio/cnab.io repository.
-# See https://github.com/cnabio/cnab.io/blob/master/static/_redirects
+# See https://github.com/cnabio/cnab.io/blob/main/static/_redirects
 #
 ###
 

@@ -78,7 +78,7 @@ function publish(p, version) {
 function runSuite(e, p) {
   return runValidation(e, p, validate)
   .then(() => {
-    if (e.revision.ref == "master") {
+    if (e.revision.ref == "main") {
       validateURL().run();
     }
   })
