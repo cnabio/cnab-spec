@@ -12,7 +12,7 @@ For more information on the approval process, see [the process documentation](90
 
 ### Branch/Tag Structure
 
-- [master](https://github.com/cnabio/cnab-spec) is the current working draft of all specs
+- [main](https://github.com/cnabio/cnab-spec) is the current working draft of all specs
 - [cnab-core-1.1.0](https://github.com/cnabio/cnab-spec/tree/cnab-core-1.1.0) is the CNAB Core 1.1.0 final draft
 - [cnab-core-1.0.1](https://github.com/cnabio/cnab-spec/tree/cnab-core-1.0.1) is the CNAB Core 1.0.1 final draft
 - [cnab-core-1.0](https://github.com/cnabio/cnab-spec/tree/cnab-core-1.0) is the CNAB Core 1.0.0 final draft

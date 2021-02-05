@@ -30,7 +30,7 @@ Inspired by SemVer 2, CNAB follows a rigid versioning scheme. Versions are prese
 
 Stability markers provide a way to indicate that a bundle or runtime is experimenting with features or fixes. _If an object is tagged with a stability marker, it MUST be treated as incompatible with any other version number. E.g. `1.0.0-GA` MUST be considered incompatible with `1.0.0`. Production artifacts SHOULD NOT use stability markers.
 
-A small number of stability markers are allowed, as determined by [the foundation's governance documents](https://github.com/cnabio/community/blob/master/governance.md):
+A small number of stability markers are allowed, as determined by [the foundation's governance documents](https://github.com/cnabio/community/blob/main/governance.md):
 
 - `PD`: Pre-draft indicates that the version of the resource is an unstable testing version.
 - `DRAFT`: Draft indicates that the version is an unstable in-development version
@@ -56,19 +56,19 @@ This section deals with the practical considerations of versioning in Git, this 
 
 ### Patch releases
 
-When a patch release of a specification is required, the working group must approve the scope of commits proposed for inclusion. The patch commit(s) should be merged to the `master` branch when ready. Next, a new branch should be created for the designated patch. For example, if the previous most recent branch name of the specification is `cnab-core-1.0.0-ga`, the new branch would be created from `cnab-core-1.0.0-ga` and named `cnab-core-1.0.1-ga`. The patch commit(s) should then be cherry-picked into this new branch.
+When a patch release of a specification is required, the working group must approve the scope of commits proposed for inclusion. The patch commit(s) should be merged to the `main` branch when ready. Next, a new branch should be created for the designated patch. For example, if the previous most recent branch name of the specification is `cnab-core-1.0.0-ga`, the new branch would be created from `cnab-core-1.0.0-ga` and named `cnab-core-1.0.1-ga`. The patch commit(s) should then be cherry-picked into this new branch.
 
 When the final release is approved, a Git tag should also be pushed, which triggers schema artifact publishing. Extending the example above, a `cnab-core-1.0.1` tag should be created from the `cnab-core-1.0.1-ga` branch and pushed to origin. We drop the `-ga` suffix as branches and tags may not have the same name in Git.
 
 ### Minor releases
 
-When a minor release of a specification is required, the working group must approve the scope of commits proposed for inclusion. Likely this will be the `master` branch once the approved commit(s) are merged. Next, a new branch should be created from `master` and named `cnab-core-1.1.0-ga` (here assuming that the version immediately prior was `cnab-core-1.0.0`).
+When a minor release of a specification is required, the working group must approve the scope of commits proposed for inclusion. Likely this will be the `main` branch once the approved commit(s) are merged. Next, a new branch should be created from `main` and named `cnab-core-1.1.0-ga` (here assuming that the version immediately prior was `cnab-core-1.0.0`).
 
 When the final release is approved, a Git tag should also be pushed, which triggers schema artifact publishing. Extending the example above, a `cnab-core-1.1.0` tag should be created from the `cnab-core-1.1.0-ga` branch and pushed to origin. We drop the `-ga` suffix as branches and tags may not have the same name in Git.
 
 ### Major releases
 
-When a major release of a specification is required, the working group must approve the scope of commits proposed for inclusion. Likely this will be the `master` branch once the approved commit(s) are merged. Next, a new branch should be created from `master` and named `cnab-core-2.0.0-ga` (here assuming that the version immediately prior was `cnab-core-1.0.0`).
+When a major release of a specification is required, the working group must approve the scope of commits proposed for inclusion. Likely this will be the `main` branch once the approved commit(s) are merged. Next, a new branch should be created from `main` and named `cnab-core-2.0.0-ga` (here assuming that the version immediately prior was `cnab-core-1.0.0`).
 
 When the final release is approved, a Git tag should also be pushed, which triggers schema artifact publishing. Extending the example above, a `cnab-core-2.0.0` tag should be created from the `cnab-core-2.0.0-ga` branch and pushed to origin. We drop the `-ga` suffix as branches and tags may not have the same name in Git.
 
@@ -105,4 +105,4 @@ An earlier "provisional" process was outlined here, based on W3's model. That pr
 
 Anything previously marked "Working Draft" is now considered to be a Draft, as they have been accepted for work by the working group.
 
-The [CNAB Foundation's governance documents](https://github.com/cnabio/community/blob/master/governance.md) cover the acceptance process in more detail.
+The [CNAB Foundation's governance documents](https://github.com/cnabio/community/blob/main/governance.md) cover the acceptance process in more detail.
