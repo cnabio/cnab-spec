@@ -5,7 +5,8 @@
       "path": "/etc/hostkey.txt"
     },
     "image_token": {
-      "env": "AZ_IMAGE_TOKEN"
+      "env": "AZ_IMAGE_TOKEN",
+      "applyTo": ["install"]
     },
     "kubeconfig": {
       "path": "/home/.kube/config"
