@@ -10,6 +10,13 @@
           "description": "A user-friendly description of this credential",
           "type": "string"
         },
+        "applyTo": {
+          "description": "An optional exhaustive list of actions handling this credential",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "env": {
           "description": "The environment variable name, such as MY_VALUE, into which the credential will be placed",
           "type": "string"

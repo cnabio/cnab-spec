@@ -147,7 +147,8 @@ What follows is an example of a thick bundle. Notice how the `invocationImage` a
          "path":"/etc/hostkey.txt"
       },
       "image_token":{
-         "env":"AZ_IMAGE_TOKEN"
+         "env":"AZ_IMAGE_TOKEN", 
+         "applyTo": ["install"]
       },
       "kubeconfig":{
          "path":"/home/.kube/config"
@@ -701,7 +702,8 @@ What about parameters such as database passwords used by the application? Proper
     },
     "image_token": {
       "env": "AZ_IMAGE_TOKEN",
-      "required": true
+      "required": true,
+      "applyTo": ["install"]
     },
     "kubeconfig": {
       "path": "/home/.kube/config"
@@ -712,6 +714,7 @@ What about parameters such as database passwords used by the application? Proper
 
 - The `credentials` container is a map of human-friendly credential names to a description of where the invocation image expects to find them.
   - The name key MUST be human-readable
+    - `applyTo`: restricts this credential to a given list of actions. If empty or missing, applies to all actions (OPTIONAL).
     - `path` describes the _absolute path within the invocation image_ where the invocation image expects to find the credential. Specified path MUST NOT be a subpath of `/cnab/app/outputs`.
     - `env` contains _the name of an environment variable_ that the invocation image expects to have available when executing the CNAB `run` tool (covered in the next section).
     - `description` contains a user-friendly description of the credential.
