@@ -254,6 +254,13 @@
       },
       "type": "array"
     },
+    "labels": {
+      "description": "Labels are a set of key/value pairs of type string that MAY be used for querying.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
     "license": {
       "description": "The SPDX license code or proprietary license name for this bundle",
       "type": "string"

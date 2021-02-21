@@ -53,6 +53,9 @@
         "imageType": "docker"
       }
     ],
+    "labels": {
+      "app": "helloworld"
+    },
     "maintainers": [
       {
         "email": "matt.butcher@microsoft.com",
@@ -96,6 +99,7 @@
   "custom": {},
   "id": "01E5G8ZYP714JVM8NHTJQ4FH15",
   "installation": "technosophos.helloworld",
+  "namespace": "demo",
   "parameters": {
     "backend_port": 81
   },

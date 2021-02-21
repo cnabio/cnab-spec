@@ -24,8 +24,19 @@
       "description": "The ID (a ULID)",
       "type": "string"
     },
+    "labels": {
+      "description": "Labels are a set of key/value pairs of type string that MAY be used for querying.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
     "message": {
       "description": "The last message from the invocation image or runtime",
+      "type": "string"
+    },
+    "namespace": {
+      "description": "The namespace of the installation",
       "type": "string"
     },
     "created": {

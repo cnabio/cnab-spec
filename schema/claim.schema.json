@@ -30,6 +30,17 @@
       "description": "the name of the installation",
       "type": "string"
     },
+    "labels": {
+      "description": "Labels are a set of key/value pairs of type string that MAY be used for querying.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "namespace": {
+      "description": "The namespace of the installation",
+      "type": "string"
+    },
     "parameters": {
       "description": "key/value pairs of parameter name to parameter value.",
       "type": "object"

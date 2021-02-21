@@ -90,6 +90,10 @@ The claim for the last modifying action MUST be retained. Previous claims, and/o
   "custom": {},
   "id": "01E5G8ZYP714JVM8NHTJQ4FH15",
   "installation": "technosophos.helloworld",
+  "labels": {
+    "app": "helloworld"
+  },
+  "namespace": "demo",
   "parameters": {},
   "revision": "01CP6XM0KVB9V1BQDZ9NK8VP29"
 }
@@ -105,6 +109,8 @@ The fields above are defined as follows:
 - `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
 - `id` (REQUIRED): The claim id. A [ULID](https://github.com/ulid/spec) that MUST change with each new claim, so that every claim associated with an installation has a unique id. This is used to associate the the claim with its result(s). 
 - `installation` (REQUIRED): The name of the _installation_. This can be automatically generated, though humans may need to interact with it. It MUST be unique within the installation environment, though that constraint MUST be imposed externally. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `installation` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
+- `labels` (OPTIONAL): Labels are a set of key/value pairs of type string that MAY be used for querying. Labels defined on an installation MUST be included in the claim.
+- `namespace` (OPTIONAL): The namespace. Claims MUST be defined in the same namespace as the installation.
 - `parameters` (OPTIONAL): Key/value pairs that were passed in during the operation. These are stored so that the operation can be re-run. See the [Parameters](#parameters) section below for more details.
 - `revision` (REQUIRED): The _installation_ revision. A [ULID](https://github.com/ulid/spec) that MUST change each time the installation is modified. It MUST NOT change when a [non-modifying operation](https://github.com/cnabio/cnab-spec/blob/main/101-bundle-json.md#custom-actions) is performed on the installation.
 
@@ -121,6 +127,24 @@ ULIDs have two properties that are desirable:
 
 Compared to a monotonic increment, ULID has strong advantages when it cannot be assumed that only one actor will be acting upon the CNAB claim record. While other unique IDs are not meaningfully sortable, ULIDs are. Thus, even unordered claim storage records can be sorted.
 
+### Namespaces
+
+Installation data MAY be scoped to a namespace. When a namespace is unset or empty, the document is considered to be global.
+Documents in a namespace MAY reference a global document, but global documents MUST NOT reference namespaced documents.
+
+* The combination of namespace and name must be unique. 
+  How the namespace and name are represented to create a unique key is out of scope of this specification and is up to the implementing storage provider.
+* All data (installation, claim, result, and output) created by an installation MUST be defined in the same namespace.
+* When a CNAB host environment is shared between a tool that supports namespaces and one that does not, 
+  namespaced documents are not guaranteed to be accessible using a tool that does not support namespaces.
+
+### Labels
+
+Documents MAY define labels which can be used by storage providers to query for the document.
+For example, retrieving all installations with particular label. Labels are key/value pairs and MUST be strings.
+
+How labels are represented in storage is out-of-scope of this spec and is up to the implementing storage provider.
+
 ### Parameters
 
 If parameters are passed in during the operation, they MUST be stored on the claim.  The parameter data stored in a claim is _the resolved key/value pairs_ that result from the following transformation:
@@ -132,7 +156,7 @@ If parameters are passed in during the operation, they MUST be stored on the cla
 
 ### Claim Results
 
-The result of executing an operation is defined separately in a claim result document. Claim results are immutable and are not modified after creation. A claim can have multiple results. Only the final status, such as `succeeded` or `failed` MUST be recorded for a claim, though an implemenation MAY choose to persist results for intermediate status transitions. For example, a claim may have a result for `starting` and another for `succeeded`, or have multiple results when the operation was cancelled and then retried.
+The result of executing an operation is defined separately in a claim result document. Claim results are immutable and are not modified after creation. A claim can have multiple results. Only the final status, such as `succeeded` or `failed` MUST be recorded for a claim, though an implementation MAY choose to persist results for intermediate status transitions. For example, a claim may have a result for `starting` and another for `succeeded`, or have multiple results when the operation was cancelled and then retried.
 
 The last result associated with a retained claim MUST also be retained. Previous results MAY also be retained to provide a more detailed history of the operation's progress.
 
@@ -142,10 +166,15 @@ The last result associated with a retained claim MUST also be retained. Previous
   "custom": {},
   "id": "01E2ZZ2FKSE0V41DCXFCSW5D1M",
   "created": "2018-08-30T20:39:55.549002887-06:00",
+  "labels": {},
   "message": "",
+  "namespace": "demo",
   "outputs": {
     "clientCert": {
-      "contentDigest":"sha256:aaa..."
+      "contentDigest":"sha256:aaa...",
+      "labels": {
+      	"persisted": "false"
+      }
     },
     "hostName": {
       "contentDigest":"sha256:bbb..."
@@ -165,9 +194,12 @@ The fields above are defined as follows:
 - `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
 - `id` (REQUIRED): A [ULID](https://github.com/ulid/spec) identifier for the result.
 - `created` (REQUIRED): A timestamp indicating when this result was created.
+- `labels` (OPTIONAL): Labels are a set of key/value pairs of type string that MAY be used for querying.
 - `message` (OPTIONAL): A human-readable string that communicates the outcome. Error messages MAY be included in `failed` conditions.
+- `namespace` (OPTIONAL): The namespace. Claim results MUST be in the same namespace as the installation
 - `outputs` (OPTIONAL): Outputs generated by the operation. It is a map from the output names to metadata about the output. The  output value is not stored in the claim result. See the [Outputs](#outputs) section for details. If this field is not present, it may be assumed that no outputs were generated as a result of the operation.
   - `contentDigest` (OPTIONAL): The `contentDigest` field contains a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), which can be used to compute the integrity of the output.
+  - `labels` (OPTIONAL): Labels are a set of key/value pairs of type string that MAY be used for querying.
 - `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
   - `cancelled`: The operation was cancelled, potentially during the operation's execution. This is an error condition.
   - `failed`: Failed before completion.
@@ -180,6 +212,9 @@ The fields above are defined as follows:
 
 The claim result provides metadata about the outputs generated by the operation. A tool may choose to request the contents of any outputs to persist them but is not required to do so.
 
+* Outputs do not have a representation for its namespace and are always in the same namespace as the installation.
+* Labels for an output are defined on the claim result's output declaration.
+
 The output name, as defined in the bundle, is used to request the content of the file located at the path defined for that output.
 
 Below, you can see an example of a claim result that includes an entry for the output `clientCert`.
@@ -190,9 +225,13 @@ Below, you can see an example of a claim result that includes an entry for the o
   "id": "01E2ZZ2FKSE0V41DCXFCSW5D1M",
   "created": "2018-08-30T20:39:55.549002887-06:00",
   "message": "",
+  "namespace": "demo",
   "outputs": {
     "clientCert": {
-      "contentDigest":"sha256:aaa..."
+      "contentDigest":"sha256:aaa...",
+      "labels": {
+      	"persisted": "false"
+      }
     },
     "hostName": {
       "contentDigest":"sha256:bbb..."
@@ -233,6 +272,7 @@ WfK01YbCWioNVGk=
 
 The claim is used to inform any CNAB tooling about how to address a particular installation. For example, given the claim record, a runtime that implements the CNAB Claims spec should be able to:
 
+- List the _names_ of installations defined within a given _namespace_
 - List the _names_ of the installations, given a _bundle name_
 - Given an installation's _name_, return the _bundle info_ that is installed under that name
 - Given an installation _name_ and a _bundle_, generate a _bundle info_.

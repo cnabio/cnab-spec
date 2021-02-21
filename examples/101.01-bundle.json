@@ -51,6 +51,9 @@
       "imageType": "docker"
     }
   ],
+  "labels": {
+    "app": "helloworld"
+  },
   "maintainers": [
     {
       "email": "matt.butcher@microsoft.com",
