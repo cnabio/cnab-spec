@@ -293,7 +293,7 @@ The following fields are informational pieces of metadata designed to convey add
 
 - `description`: A short description of a bundle (OPTIONAL)
 - `keywords`: A list of keywords (OPTIONAL)
-- `labels`: Key/value pairs of type string that specify identifying attributes of the bundle.
+- `labels`: Key/value pairs of type string that specify identifying attributes of the bundle (OPTIONAL)
 - `license`: The license under which this bundle is covered. This SHOULD use one of the [SPDX License Identifiers](https://spdx.org/licenses/) whenever possible (OPTIONAL)
 - `maintainers`: An OPTIONAL list of maintainers, where each maintainer MAY optionally have the following:
   - `name`: Maintainer name
