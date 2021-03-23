@@ -293,7 +293,7 @@ The following fields are informational pieces of metadata designed to convey add
 
 - `description`: A short description of a bundle (OPTIONAL)
 - `keywords`: A list of keywords (OPTIONAL)
-- `labels`: Key/value pairs of type string that specify identifying attributes of the bundle (OPTIONAL)
+- `labels`: Key/value pairs of type string that specify identifying attributes of the bundle (OPTIONAL). MUST follow the [CNAB Label Format].
 - `license`: The license under which this bundle is covered. This SHOULD use one of the [SPDX License Identifiers](https://spdx.org/licenses/) whenever possible (OPTIONAL)
 - `maintainers`: An OPTIONAL list of maintainers, where each maintainer MAY optionally have the following:
   - `name`: Maintainer name
@@ -1016,3 +1016,4 @@ A runtime may validate outputs based on schema references by the definition fiel
 Next section: [The invocation image definition](102-invocation-image.md)
 
 [image-digest]: https://docs.docker.com/engine/reference/commandline/images/#list-image-digests
+[CNAB Label Format]: /105-labels.md
