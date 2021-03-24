@@ -1,0 +1,18 @@
+{
+    "name": "local-dev-parameters",
+    "namespace": "dev",
+    "created": "2020-01-20T12:00:00.000Z",
+    "modified": "2020-01-28T18:30:00.111Z",
+    "labels": {
+      "env": "dev"
+    },
+    "parameters": [
+       {
+          "name": "backend_port",
+          "source": {
+             "value": "8080"
+          }
+       }
+    ]
+ }
+ 
