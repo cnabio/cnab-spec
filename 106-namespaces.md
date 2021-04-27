@@ -15,6 +15,6 @@ Namespaces also make it easier to organize environment data. For example by crea
 
 Namespace values:
 
-* must be 63 characters or less (cannot be empty),
-* must begin and end with an alphanumeric character ([a-z0-9A-Z]),
-* could contain dashes (-), underscores (_), dots (.), and alphanumerics between.
+* MUST be 63 characters or less (cannot be empty),
+* MUST begin and end with an alphanumeric character ([a-z0-9A-Z]),
+* MAY contain dashes (-), underscores (_), dots (.), and alphanumerics between.

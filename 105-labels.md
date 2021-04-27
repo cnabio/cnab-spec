@@ -42,13 +42,13 @@ For example a bundle that installs Redis 6.2.1 could use the label `cnab.io/appV
 
 ### cnab.io/executor
 
-The label key `cnab.io/executor` MAY be used by a claim or claim result to indicate the tool that executed the bool.
+The label key `cnab.io/executor` MAY be used by a claim or claim result to indicate the tool that executed the bundle.
 For example, Porter could apply the label `cnab.io/executor=porter` to the claim when it executes the bundle.
 
 ### cnab.io/executorVersion
 
-The label key `cnab.io/executorVersion` MAY be used by a claim or claim result to indicate the version of the tool that executed the bool.
-For example, Porter could apply the label `cnab.io/executor=v0.36.0` to the claim when it executes the bundle.
+The label key `cnab.io/executorVersion` MAY be used by a claim or claim result to indicate the version of the tool that executed the bundle.
+For example, Porter could apply the label `cnab.io/executorVersion=v0.36.0` to the claim when it executes the bundle.
 
 ### cnab.io/retry
 
