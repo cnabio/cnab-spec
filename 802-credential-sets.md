@@ -5,7 +5,7 @@ weight: 802
 
 # Credential and Parameter Sets
 
-This is a non-normative section that describes how credentials and parameters can be passed into an invocation image. This strategy is implemented by [Duffle] and [Porter].
+This is a non-normative section that describes how credentials and parameters MAY be passed into an invocation image. This strategy is implemented by [Duffle] and [Porter].
 
 [Duffle]: https://duffle.sh
 [Porter]: https://porter.sh
@@ -39,7 +39,7 @@ The names on each credential are unique within the bundle:
 - `image_token`
 - `hostkey`
 
-That name can be used to reference the credential from tooling. Consequently, tooling may choose to construct a map from an external value to the credential name.
+That name MAY be used to reference the credential from tooling. Consequently, tooling MAY choose to construct a map from an external value to the credential name.
 
 Porter, for example, maps local credentials to bundle credentials by _credential sets_. Here is an example:
 
@@ -88,7 +88,7 @@ The created and modified timestamps are in [RFC 3339](https://www.ietf.org/rfc/r
 
 ## Parameter Mapping
 
-Parameter values can be mapped by the runtime using parameter sets, which works the same as credential sets.
+Parameter values MAY be mapped by the runtime using parameter sets, which work the same as credential sets.
 
 In the bundle.json parameters are defined:
 
@@ -132,7 +132,7 @@ Source: [802.01-parameter-set.json](/examples/802.01-parameter-set.json)
 ### Namespaces
 
 Credential and Parameter Sets MAY be scoped to a namespace.
-The combination of namespace and name must be unique.
+The combination of namespace and name MUST be unique.
 When a namespace is unset or empty, the document is considered to be global.
 Documents in a namespace MAY reference a global document, but global documents MUST NOT reference namespaced documents and namespaced documents MUST NOT reference documents in a different namespace.
 
@@ -140,7 +140,7 @@ Namespaces MUST follow the [CNAB Namespace Format].
 
 ### Labels
 
-Credential and Parameter Sets MAY define labels which can be used by storage providers to query for the document.
+Credential and Parameter Sets MAY define labels which MAY be used by storage providers to query for the document.
 For example, retrieving credential sets intended for use within a particular environment such as test or production.
 
 How labels are used for querying is out-of-scope of this spec and is up to the implementing storage provider.
@@ -158,7 +158,7 @@ Below are some well-known sources of values that a runtime MAY support:
 
 ## Value Injection
 
-Credential and parameters must be injected into the runtime of the invocation image. The following strategies are known to work:
+Credential and parameters MUST be injected into the runtime of the invocation image. The following strategies are known to work:
 
 - Environment Variables:
   - Injected via environment variable services (Docker and Kubernetes)

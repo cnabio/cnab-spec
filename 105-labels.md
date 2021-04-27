@@ -15,7 +15,7 @@ The name segment is required and MUST be 63 characters or less, beginning and en
 The prefix is optional. 
 If specified, the prefix MUST be a DNS subdomain: a series of DNS labels separated by dots (.), not longer than 253 characters in total, followed by a slash (/).
 
-If the prefix is omitted, the label key is presumed to be private to the user.
+If the prefix is omitted, the label key is presumed to be private to the installation.
 CNAB tools which add labels to end-user objects MUST specify a prefix.
 
 Valid label keys and values:

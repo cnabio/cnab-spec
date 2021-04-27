@@ -39,7 +39,7 @@ From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/cscope.rb
 
 The CNAB Installation State specification does not define where or how records are stored. However, this specification describes how a CNAB-based system MUST emit a claim to an invocation image, and provides some guidance on maintaining integrity of the system. This is done so that implementors can standardize on a way of relating a claim to operations like `install`, `upgrade`, or `uninstall`. This, in turn, is necessary if CNAB bundles are expected to be executable by different implementations.
 
-Installation data is used to inform any CNAB tooling about how to address a particular installation. For example, given the documents for an installation, a runtime that implements the CNAB Installation State specification should be able to:
+Installation data is used to inform any CNAB tooling about how to address a particular installation. For example, given the documents for an installation, a runtime that implements the CNAB Installation State specification SHOULD be able to:
 
 - List the _names_ of installations defined within a given _namespace_
 - List the _names_ of the installations, given a _bundle name_
@@ -52,7 +52,7 @@ Installation data is used to inform any CNAB tooling about how to address a part
   - This is accompanied by running the `uninstall` path in the bundle
 - Given an installation's name, return the name(s) of the generated outputs.
 
-To satisfy these requirements, implementations of a CNAB runtime are expected to be able to store and retrieve state information. However, note that nothing in the CNAB Installation State specification tells _how or where_ this state information is to be stored. It is _not a requirement_ to store that state information inside of the invocation image. (In fact, this is discouraged.)
+To satisfy these requirements, implementations of a CNAB runtime are expected to be able to store and retrieve state information. However, note that nothing in the CNAB Installation State specification says _how or where_ this state information is to be stored. It is _not a requirement_ to store that state information inside of the invocation image. (In fact, this is discouraged.)
 
 
 ## Documents
@@ -95,7 +95,7 @@ The fields above are defined as follows:
 - `created` (REQUIRED): A [timestamp](#timestamps) indicating when this _installation_ was created.
 - `custom` (OPTIONAL): A section for custom extension data applicable to a given runtime.
 - `labels` (OPTIONAL): [Labels](#labels) are a set of key/value pairs of type string that MAY be used for querying. Labels defined on the bundle SHOULD be copied to the labels field on the installation. MUST follow the [CNAB Label Format]. 
-- `name` (REQUIRED): The name of the _installation_. Elsewhere, this field is referenced as the _installation name_. The format of this field must follow the same format used for the `installation` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
+- `name` (REQUIRED): The name of the _installation_. Elsewhere, this field is referenced as the _installation name_. The format of this field MUST follow the same format used for the `installation` field in the [bundle.json file specification](101-bundle-json.md#the-bundlejson-file).
 - `namespace` (OPTIONAL): The [namespace](#namespaces) of the installation. MUST follow the [CNAB Namespace Format].
 
 
@@ -105,7 +105,7 @@ A _claim_ is a record of the inputs to an action against a CNAB _installation_.
 
 The word _claim_ was chosen because it represents the relationship between a certain CNAB host environment and the resources that were created by a CNAB runtime in that host environment. In this sense, an environment takes responsibility for those resources if and only if it can _claim_ them. A claim is an _external assertion of ownership_. That is, the claim itself is not "installed" into the host environment. It is stored separately, possibly in an entirely different location.
 
-An installation MAY change over time, as a particular bundle is installed, then upgraded. In CNAB, each time a modifying operation is performed (Such as `install`, `upgrade`, or custom operations that are not read-only), the installation gets a new _revision_. A revision is a unique identifier that identifies the combination of an _installation_ and a modification of that installation. Revision is stored on the claim. For example, when a CNAB bundle is installed, the installation will have an initial revision ID. When that installation is upgraded, it will have a new revision ID. How revisions are used is outside of the scope of this document, but it is safe to assume that if a revision ID has changed, one or more artifacts owned by the installation has also been changed.
+An installation MAY change over time, as a particular bundle is installed, then upgraded. In CNAB, each time a modifying operation is performed (such as `install`, `upgrade`, or custom operations that are not read-only), the installation gets a new _revision_. A revision is a unique identifier that identifies the combination of an _installation_ and a modification of that installation. Revision is stored on the claim. For example, when a CNAB bundle is installed, the installation will have an initial revision ID. When that installation is upgraded, it will have a new revision ID. How revisions are used is outside of the scope of this document, but it is safe to assume that if a revision ID has changed, one or more artifacts owned by the installation has also been changed.
 
 The claims system is designed to satisfy the requirements of the [Bundle Runtime specification](103-bundle-runtime.md) regarding the tracking of `CNAB_REVISION`. It also provides a description of how the state of a bundle installation may be represented.
 
@@ -189,7 +189,7 @@ Note that credential data is _never_ stored in a claim. For this reason, a claim
 
 #### Parameters
 
-If parameters are passed in during the operation, they MUST be stored on the claim.  The parameter data stored in a claim is _the resolved key/value pairs_ that result from the following transformation:
+If parameters are passed in during the operation, they MUST be stored on the claim. The parameter data stored in a claim is _the resolved key/value pairs_ that result from the following transformation:
 
 - The values supplied by the user are validated by the rules specified in the `bundle.json` file
 - The output of this operation is a set of key/value pairs in which:
@@ -203,7 +203,7 @@ A _claim result_ is a record of the result of an action against a CNAB _installa
 The CNAB claim result is stored as a JSON document. Claim results are immutable and are not modified after creation. A claim can have multiple results. Only the final status, such as `succeeded` or `failed` MUST be recorded for a claim, though an implementation MAY choose to persist results for intermediate status transitions. For example, a claim may have a result for `starting` and another for `succeeded`, or have multiple results when the operation was cancelled and then retried.
 
 The last result associated with a retained claim MUST also be retained. Previous results MAY also be retained to provide a more detailed history of the operation's progress. 
-The claim result provides metadata about the outputs generated by the operation. A tool may choose to request the contents of any outputs to persist them but is not required to do so.
+The claim result provides metadata about the outputs generated by the operation. A tool MAY choose to request the contents of any outputs to persist them but is not required to do so.
 
 ```json
 {
@@ -244,15 +244,15 @@ The fields above are defined as follows:
 - `labels` (OPTIONAL): [Labels](#labels) are a set of key/value pairs of type string that MAY be used for querying. MUST follow the [CNAB Label Format].
 - `message` (OPTIONAL): A human-readable string that communicates the outcome. Error messages MAY be included in `failed` conditions.
 - `namespace` (OPTIONAL): The [namespace](#namespaces) of the result. Claim results MUST be in the same namespace as the installation. MUST follow the [CNAB Namespace Format].
-- `outputs` (OPTIONAL): Outputs generated by the operation. It is a map from the output names to metadata about the output. The output value is not stored in the claim result. If this field is not present, it may be assumed that no outputs were generated as a result of the operation.
+- `outputs` (OPTIONAL): Outputs generated by the operation. It is a map from the output names to metadata about the output. The output value is not stored in the claim result. If this field is not present, it MAY be assumed that no outputs were generated as a result of the operation.
   - `contentDigest` (OPTIONAL): Contains a digest, in [OCI format](https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests), which can be used to compute the integrity of the output.
   - `generatedByBundle` (OPTIONAL): Indicates if the output was defined in the bundle and populated by the invocation image's execution. Outputs on the result can also be dynamically generated by the CNAB runtime.
   - `labels` (OPTIONAL): [Labels](#labels) are a set of key/value pairs of type string that MAY be used for querying. Labels defined on an output in a bundle SHOULD be copied to the output's labels field on the claim result that generated the output. MUST follow the [CNAB Label Format].
 - `status` (REQUIRED): Indicates the status of the last phase transition. Valid statuses are:
   - `cancelled`: The operation was cancelled, potentially during the operation's execution. This is an error condition.
   - `failed`: Failed before completion.
-  - `pending`: Execution has been requested and has not begun. This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
-  - `running`: Execution is in progress and has not completed.  This should be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
+  - `pending`: Execution has been requested and has not begun. This SHOULD be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
+  - `running`: Execution is in progress and has not completed. This SHOULD be considered a temporary status, and the runtime SHOULD work to resolve this to either `failed` or `succeeded`.
   - `unknown`: The state is unknown. This is an error condition.
   - `succeeded`: Completed successfully.
 
@@ -302,7 +302,7 @@ Below, you can see an example of a claim result that includes an entry for the o
 }
 ```
 
-The tool may request the contents of the output, retrieved from `/cnab/app/outputs/clientCert`, and persist it for later use.
+The tool MAY request the contents of the output, retrieved from `/cnab/app/outputs/clientCert`, and persist it for later use.
 
 ```
 -----BEGIN CERTIFICATE-----
@@ -356,8 +356,8 @@ Compared to a monotonic increment, ULID has strong advantages when it cannot be 
 Installation data MAY be scoped to a [namespace](/106-namespaces.md).
 Namespaces MUST follow the [CNAB Namespace Format]. 
 
-* The combination of namespace and name must be unique.
-* IDs must be globally unique across namespaces.
+* The combination of namespace and name MUST be unique.
+* IDs MUST be globally unique across namespaces.
 * All data created by an installation MUST be defined in the same namespace.
 
 ### Labels
@@ -394,7 +394,7 @@ The invocation image may benefit from accessing the claim. Consequently, a claim
 
 The claim MUST be mounted at the path `/cnab/claim.json` inside of the bundle. The version of this claim that is to be mounted is the _version representing the current operation_. In other words, when a bundle is installed, the runtime creates the original installation claim and passes this in. On the first upgrade, the claim describing the _upgrade_ operation is located at `/cnab/claim.json`.
 
-Note: Systems may be compliant with the CNAB Core specification but not support the Installation State specification. If `$CNAB_CLAIMS_VERSION` is not present, a runtime SHOULD assume that the Installation State specification is not implemented. Bundle authors may therefore have to take care when relying upon `/cnab/claim.json`, accommodating the case where the runtime does not support claims.
+Note: Systems MAY be compliant with the CNAB Core specification but not support the Installation State specification. If `$CNAB_CLAIMS_VERSION` is not present, a runtime SHOULD assume that the Installation State specification is not implemented. Bundle authors may therefore have to take care when relying upon `/cnab/claim.json`, accommodating the case where the runtime does not support claims.
 
 ## Determine Execution Status
 
@@ -433,11 +433,11 @@ The Installation State specification makes two assumptions about security:
 - Claims are safe for writing sensitive information
 - Claims are not a means for proxying identity
 
-Parameters may contain sensitive information, such as database passwords. And this specification assumes that storing such information (un-redacted) can be done securely. However, the precise security mechanisms applied at the storage layer are beyond the scope of this specification.
+Parameters MAY contain sensitive information, such as database passwords. And this specification assumes that storing such information (un-redacted) can be done securely. However, the precise security mechanisms applied at the storage layer are beyond the scope of this specification.
 
 Parameter values MUST be stored in claims. Implementations of the Installation State specification MUST NOT provide methods to block certain parameters from having their values written to the claim.
 
-Credentials, on the other hand, are proxies for user identity, including potentially both authentication information and authorization information. Claims are not intended to provide a proxy for identity. In other words, a claim record should allow two users with identical permissions the ability to install the same configuration, it should not provide a way for one user to _gain_ the permissions of another user.
+Credentials, on the other hand, are proxies for user identity, including potentially both authentication information and authorization information. Claims are not intended to provide a proxy for identity. In other words, a claim record SHOULD allow two users with identical permissions the ability to install the same configuration, it SHOULD NOT provide a way for one user to _gain_ the permissions of another user.
 
 Credential data MUST NOT be stored in claims. Credentials are identity-specific, while claims are identity-neutral.
 
