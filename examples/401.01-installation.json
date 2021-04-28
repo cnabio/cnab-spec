@@ -10,5 +10,6 @@
       "cnab.io/appVersion": "v1.0.0"
     },
     "name": "hello-world",
-    "namespace": "demo"  
+    "namespace": "demo",
+    "schemaVersion": "1.0.0-DRAFT+abc123"
   }

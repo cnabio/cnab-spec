@@ -48,6 +48,10 @@
     "revision": {
       "description": "the revision ID (ideally a ULID)",
       "type": "string"
+    },
+    "schemaVersion": {
+      "description": "The version of the CNAB Installation State specification",
+      "type": "string"
     }
   },
   "required": [
@@ -56,7 +60,8 @@
     "created",
     "id",
     "installation",
-    "revision"
+    "revision",
+    "schemaVersion"
   ],
   "title": "CNAB Claims json schema",
   "type": "object"
