@@ -28,6 +28,13 @@ for json in $(ls -1 examples/400*-claim-result.json); do
   ajv test -s $schema -d $json --valid -r schema/definitions.schema.json
 done
 
+# Test all of the installation files against the installation state schema.
+for json in $(ls -1 examples/401*-installation.json); do
+  schema="schema/installation.schema.json"
+  echo "Testing json '$json' against schema '$schema'"
+  ajv test -s $schema -d $json --valid -r schema/definitions.schema.json
+done
+
 # Test all of the claim files against the installation state schema.
 for json in $(ls -1 examples/401*-claim.json); do
   schema="schema/claim.v2.schema.json"
