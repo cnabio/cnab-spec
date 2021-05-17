@@ -225,7 +225,7 @@
     },
     "definitions": {
       "additionalProperties": {
-        "$ref": "https://cnab.io/v1/definitions.schema.json"
+        "$ref": "http://json-schema.org/draft-07/schema#"
       },
       "type": "object"
     },

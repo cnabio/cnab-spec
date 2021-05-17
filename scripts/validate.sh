@@ -11,21 +11,21 @@ set -eou pipefail
 for json in $(ls -1 examples/*-bundle.json); do
   schema="schema/bundle.schema.json"
   echo "Testing json '$json' against schema '$schema'"
-  ajv test -s $schema -d $json --valid -r schema/definitions.schema.json
+  ajv test -s $schema -d $json --valid
 done
 
 # Test all of the claim files against the claim schema.
 for json in $(ls -1 examples/*-claim.json); do
   schema="schema/claim.schema.json"
   echo "Testing json '$json' against schema '$schema'"
-  ajv test -s $schema -d $json --valid -r schema/bundle.schema.json -r schema/definitions.schema.json
+  ajv test -s $schema -d $json --valid -r schema/bundle.schema.json
 done
 
 # Test all of the claim result files against the claim result schema.
 for json in $(ls -1 examples/*-claim-result.json); do
   schema="schema/claim-result.schema.json"
   echo "Testing json '$json' against schema '$schema'"
-  ajv test -s $schema -d $json --valid -r schema/definitions.schema.json
+  ajv test -s $schema -d $json --valid
 done
 
 # Test all of the dependency files against the dependencies schema
