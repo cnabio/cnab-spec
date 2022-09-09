@@ -11,7 +11,7 @@ Whether you are a user or contributor, official support channels include:
 Weekly community meetings are held every Wednesday from 9am-10am PT on zoom. More information can be found on [this agenda document](https://hackmd.io/TfLYtyRnS8Kfx4ekgLwWLg).
 
 ## DCO Requirements
-This project welcomes contributions and suggestions. To contribute to the specification, you must sign off every commit you contributed as acknowledgement of the [DCO](https://developercertificate.org/). The repository's DCO bot will check to ensure that every commit is signed, and will block any unsigned commits.
+This project welcomes contributions and suggestions. To contribute to the specification, you must sign off every commit you contributed as acknowledgment of the [DCO](https://developercertificate.org/). The repository's DCO bot will check to ensure that every commit is signed, and will block any unsigned commits.
 
 The easiest way to sign-off a commit is to use the Git `--signoff/-s` flag: `git commit -s`.
 
